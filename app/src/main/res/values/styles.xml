@@ -1,0 +1,71 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowActionBar">false</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/c_24334F</item>
+        <item name="colorPrimaryDark">@color/c_26A69A</item>
+        <item name="colorAccent">@color/c_24334F</item>
+        <!-- AppCompatEditText选择的底线颜色 -->
+        <item name="colorControlActivated">@color/c_26A69A</item>
+    </style>
+
+    <style name="AppTheme" parent="AppBaseTheme"></style>
+
+    <style name="ThemeSplash" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:background">@mipmap/splash</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@android:color/transparent</item>
+        <item name="android:windowBackground">@color/c_24334F</item>
+        <item name="colorPrimary">@color/c_24334F</item>
+        <item name="colorPrimaryDark">@color/c_26A69A</item>
+        <item name="colorAccent">@color/c_24334F</item>
+    </style>
+
+    <style name="customDialogTheme" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.3</item>
+    </style>
+
+    <style name="AlertDialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:backgroundDimEnabled">@null</item>
+        <item name="android:windowIsTranslucent">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+    </style>
+
+    <style name="style_item_font_15">
+        <item name="android:textSize">15sp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textColor">@color/c_4c4c4c</item>
+    </style>
+
+    <style name="style_alert_dialog_button_font">
+        <item name="android:textSize">18sp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/c_00b1f8</item>
+    </style>
+
+    <style name="MDStyleDialogRoundBg" parent="android:style/Theme.Material.Dialog.NoActionBar">
+        <item name="android:windowBackground">@drawable/dialog_transparent_round_bg</item>
+    </style>
+</resources>

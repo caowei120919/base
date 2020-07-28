@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">DIMP</string>
+    <string name="app_exit_tips">再按一次退出应用</string>
+    <string name="password">密码</string>
+    <string name="username">用户名</string>
+    <string name="enterprise_id_code">企业标识码</string>
+    <string name="remember_userinfo">记住用户信息</string>
+    <string name="use_vpn">使用VPN</string>
+    <string name="login">登 录</string>
+    <string name="setting_up">配置</string>
+    <string name="please_check_the_network">请检查网络</string>
+    <string name="please_enter_the_user_name">请输入用户名</string>
+    <string name="please_enter_your_password">请输入密码</string>
+    <string name="Enter_your_enterprise_id_or_configure_the_semf_service_address">请输入企业标识码或者配置SEMF服务地址</string>
+    <string name="please_wait">请稍后</string>
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
+    <string name="warm_prompt">温馨提示</string>
+</resources>

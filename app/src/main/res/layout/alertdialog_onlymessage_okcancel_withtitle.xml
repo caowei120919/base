@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_round_white"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/W20"
+    android:paddingRight="@dimen/W20">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/H18"
+        android:layout_marginTop="@dimen/H25"
+        android:text="@string/warm_prompt"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/c_cc000000"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/llMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:minWidth="@dimen/W200"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textColor="@color/c_cc000000"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginBottom="@dimen/H13"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/btnNegative"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/H12"
+            android:paddingLeft="@dimen/W12"
+            android:paddingRight="@dimen/W12"
+            android:paddingTop="@dimen/H12"
+            android:text="@string/cancel"
+            android:background="@drawable/navigation_bar_ripple_bg"
+            android:textColor="@color/c_ff00b1f8"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/btnPositive"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/W3"
+            android:paddingBottom="@dimen/H12"
+            android:paddingLeft="@dimen/W12"
+            android:paddingRight="@dimen/W12"
+            android:background="@drawable/navigation_bar_ripple_bg"
+            android:paddingTop="@dimen/H12"
+            android:text="@string/confirm"
+            android:textColor="@color/c_ff00b1f8"
+            android:textSize="14sp" />
+    </LinearLayout>
+</LinearLayout>

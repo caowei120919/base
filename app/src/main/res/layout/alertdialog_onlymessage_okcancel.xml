@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_round_white"
+    android:paddingTop="@dimen/H30">
+
+    <LinearLayout
+        android:id="@+id/llMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minWidth="@dimen/W200"
+        android:layout_marginLeft="@dimen/W19"
+        android:layout_marginRight="@dimen/W19"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Message"
+            android:textAppearance="@style/style_item_font_15"
+            android:textColor="@color/c_343434"/>
+    </LinearLayout>
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/H28"
+        layout="@layout/item_diliver"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H48"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/H1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnNegative"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/selector_item_background_leftbottomround"
+            android:paddingBottom="@dimen/H1"
+            android:text="@string/cancel"
+            android:textAppearance="@style/style_alert_dialog_button_font"/>
+
+        <ImageView
+            android:id="@+id/ivPhotoPreview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@color/c_ffcdcdcd"/>
+
+        <Button
+            android:id="@+id/btnPositive"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/selector_item_background_rightbottomround"
+            android:paddingBottom="@dimen/H1"
+            android:text="@string/confirm"
+            android:textAppearance="@style/style_alert_dialog_button_font"/>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DIMP</string>
+    <string name="app_exit_tips">Press again to exit the application</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="enterprise_id_code">Enterprise identification code</string>
+    <string name="remember_userinfo">Remember user information</string>
+    <string name="use_vpn">Using VPN</string>
+    <string name="login">login</string>
+    <string name="setting_up">Setting up</string>
+    <string name="please_check_the_network">Please check the network</string>
+    <string name="please_enter_the_user_name">Please enter the user name</string>
+    <string name="please_enter_your_password">Please enter your password</string>
+    <string name="Enter_your_enterprise_id_or_configure_the_semf_service_address">
+        Enter your enterprise id or configure the SEMF service address
+    </string>
+    <string name="please_wait">Please later</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="warm_prompt">Warm prompt</string>
+</resources>

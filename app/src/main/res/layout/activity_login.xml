@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_bg">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/W105"
+        android:layout_marginRight="@dimen/W105">
+
+        <ImageView
+            android:id="@+id/img_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/login_top">
+        </ImageView>
+
+        <EditText
+            android:id="@+id/ed_code"
+            android:layout_below="@id/img_top"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/H100"
+            android:textSize="14sp"
+            android:textColor="@color/c_FFFFFF"
+            android:imeOptions="actionNext"
+            android:hint="@string/enterprise_id_code"
+            android:singleLine="true"
+            android:drawablePadding="@dimen/W40"
+            android:padding="@dimen/H10"
+            android:inputType="text"
+            android:textColorHint="@color/c_5D7F7E"
+            android:drawableLeft="@mipmap/login_enterprise_code">
+        </EditText>
+
+        <EditText
+            android:id="@+id/ed_userName"
+            android:layout_below="@id/ed_code"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/H100"
+            android:layout_marginTop="@dimen/H24"
+            android:textSize="14sp"
+            android:padding="@dimen/H10"
+            android:textColor="@color/c_FFFFFF"
+            android:imeOptions="actionNext"
+            android:hint="@string/username"
+            android:singleLine="true"
+            android:drawablePadding="@dimen/W40"
+            android:inputType="text"
+            android:textColorHint="@color/c_5D7F7E"
+            android:drawableLeft="@mipmap/login_name">
+        </EditText>
+
+        <EditText
+            android:id="@+id/ed_pwd"
+            android:layout_below="@id/ed_userName"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/H100"
+            android:layout_marginTop="@dimen/H24"
+            android:textSize="14sp"
+            android:textColor="@color/c_FFFFFF"
+            android:imeOptions="actionNext"
+            android:hint="@string/password"
+            android:padding="@dimen/H10"
+            android:password="true"
+            android:singleLine="true"
+            android:drawablePadding="@dimen/W40"
+            android:inputType="text"
+            android:textColorHint="@color/c_5D7F7E"
+            android:drawableLeft="@mipmap/login_pwd">
+        </EditText>
+
+        <CheckBox
+            android:layout_alignLeft="@id/ed_pwd"
+            android:id="@+id/cb_rememberUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ed_pwd"
+            android:layout_marginTop="@dimen/H12"
+            android:button="@null"
+            android:background="@null"
+            android:drawableLeft="@drawable/selector_check"
+            android:drawablePadding="@dimen/W30"
+            android:paddingLeft="0dp"
+            android:text="@string/remember_userinfo"
+            android:textSize="14sp"
+            android:textColor="@color/c_5D7F7E">
+        </CheckBox>
+
+        <CheckBox
+            android:layout_alignRight="@id/ed_pwd"
+            android:id="@+id/cb_userVPN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ed_pwd"
+            android:layout_marginTop="@dimen/H12"
+            android:button="@null"
+            android:background="@null"
+            android:drawableLeft="@drawable/selector_check"
+            android:drawablePadding="@dimen/W30"
+            android:paddingLeft="0dp"
+            android:text="@string/use_vpn"
+            android:textSize="14sp"
+            android:textColor="@color/c_5D7F7E">
+        </CheckBox>
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/H80"
+            android:background="@mipmap/btn_login_bg"
+            android:layout_below="@id/cb_userVPN"
+            android:text="@string/login"
+            android:textColor="@color/c_FFFFFF"
+            android:textSize="16sp"
+            android:layout_marginTop="@dimen/H60">
+        </Button>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/setting_up"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:textColor="@color/c_FFFFFF"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/H30"
+        android:layout_marginRight="@dimen/W30"
+        android:padding="@dimen/W40">
+    </TextView>
+</RelativeLayout>

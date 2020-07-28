@@ -1,0 +1,78 @@
+package com.datacvg.sempmobile.baseandroid.download;
+
+import java.io.File;
+
+/**
+ * FileName: DownloadInfo
+ * Author: 曹伟
+ * Date: 2019/9/16 15:09
+ * Description:
+ */
+
+public class DownloadInfo {
+    private String name;
+    private String uri;
+    private File dir;
+    private long length;
+    private long finished;
+    private boolean acceptRanges;
+
+    private int status;
+
+    public DownloadInfo() {
+    }
+
+    public DownloadInfo(String name, String uri, File dir) {
+        this.name = name;
+        this.uri = uri;
+        this.dir = dir;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    public File getDir() {
+        return dir;
+    }
+
+    public void setDir(File dir) {
+        this.dir = dir;
+    }
+
+    public long getLength() {
+        return length;
+    }
+
+    public void setLength(long length) {
+        this.length = length;
+    }
+
+    public long getFinished() {
+        return finished;
+    }
+
+    public void setFinished(long finished) {
+        this.finished = finished;
+    }
+
+    public boolean isAcceptRanges() {
+        return acceptRanges;
+    }
+
+    public void setAcceptRanges(boolean acceptRanges) {
+        this.acceptRanges = acceptRanges;
+    }
+}
