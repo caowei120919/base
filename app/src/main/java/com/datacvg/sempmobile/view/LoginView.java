@@ -1,6 +1,8 @@
 package com.datacvg.sempmobile.view;
 
 import com.datacvg.sempmobile.baseandroid.mvp.MvpView;
+import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
+import com.datacvg.sempmobile.bean.UserLoginBean;
 
 /**
  * @Author : T-Bag (茶包)
@@ -13,4 +15,10 @@ public interface LoginView extends MvpView {
      * @param updateStandardURL
      */
     void onUpdateVersion(String updateStandardURL);
+
+    /**
+     * 登录成功
+     * @param baseBean
+     */
+    void loginSuccess(BaseBean<UserLoginBean> baseBean);
 }

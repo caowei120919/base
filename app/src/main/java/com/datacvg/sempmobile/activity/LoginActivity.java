@@ -8,13 +8,18 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import com.datacvg.sempmobile.R;
+import com.datacvg.sempmobile.baseandroid.config.Constants;
+import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.sempmobile.baseandroid.utils.AndroidUtils;
+import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.baseandroid.utils.StatusBarUtil;
 import com.datacvg.sempmobile.baseandroid.utils.ToastUtils;
 import com.datacvg.sempmobile.baseandroid.widget.CVGOKCancelWithTitle;
+import com.datacvg.sempmobile.bean.UserLoginBean;
 import com.datacvg.sempmobile.presenter.LoginPresenter;
 import com.datacvg.sempmobile.view.LoginView;
 import butterknife.BindView;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
@@ -113,7 +118,7 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
                 if(cbUserVPN.isChecked()){
 
                 }else {
-                    getPresenter().login(companyCode,userName,password);
+                    getPresenter().checkUrlOrVersion(companyCode,userName,password);
                 }
                 break;
         }
@@ -126,14 +131,24 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
     @Override
     public void onUpdateVersion(String updateUrl) {
         CVGOKCancelWithTitle dialogOKCancel = new CVGOKCancelWithTitle(mContext);
-        dialogOKCancel.setMessage(mContext.getResources().getString(R.string.cancel));
+        dialogOKCancel.setMessage(mContext.getResources()
+                .getString(R.string.a_new_version_of_the_application_has_been_detected_is_it_updated));
         dialogOKCancel.getPositiveButton().setText(mContext.getResources().getString(R.string.confirm));
         dialogOKCancel.setOnClickPositiveButtonListener(view -> {
-            ToastUtils.showLongToast("确认");
+            ToastUtils.showLongToast(mContext.getResources().getString(R.string.confirm));
         });
         dialogOKCancel.setOnClickListenerNegativeBtn(view -> {
-            ToastUtils.showLongToast("取消");
+            getPresenter().login(userName,password);
         });
         dialogOKCancel.show();
+    }
+
+    /**
+     * 登录成功回调
+     * @param baseBean
+     */
+    @Override
+    public void loginSuccess(BaseBean<UserLoginBean> baseBean) {
+        Constants.saveUser(baseBean.getResdata(),cbRememberUser.isChecked(),password);
     }
 }

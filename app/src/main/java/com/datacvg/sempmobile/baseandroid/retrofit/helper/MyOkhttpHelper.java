@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import me.jessyan.retrofiturlmanager.RetrofitUrlManager;
 import okhttp3.Cookie;
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
@@ -72,7 +73,8 @@ public class MyOkhttpHelper {
         OkLogInterceptor okLogInterceptor = new OkLogInterceptor();
         builder.addInterceptor(okLogInterceptor);
 
-        mHttpClient = builder.build();
+
+        mHttpClient = RetrofitUrlManager.getInstance().with(builder).build();
     }
 
 

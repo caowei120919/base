@@ -17,6 +17,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import javax.inject.Inject;
+
+import me.jessyan.retrofiturlmanager.RetrofitUrlManager;
 import okhttp3.Cookie;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -57,7 +59,7 @@ public class OkhttpHelper {
         OkLogInterceptor okLogInterceptor = new OkLogInterceptor();
         builder.addInterceptor(okLogInterceptor);
 
-        mHttpClient = builder.build();
+        mHttpClient = RetrofitUrlManager.getInstance().with(builder).build();
     }
 
     public class UserAgentInterceptor implements Interceptor {

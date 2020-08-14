@@ -19,4 +19,6 @@
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
     <string name="warm_prompt">Warm prompt</string>
+    <string name="a_new_version_of_the_application_has_been_detected_is_it_updated">
+        A new version of the application has been detected. Is it updated?</string>
 </resources>

@@ -2,13 +2,16 @@ package com.datacvg.sempmobile.baseandroid.retrofit;
 
 import android.net.ParseException;
 
+import com.datacvg.sempmobile.baseandroid.config.Constants;
 import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.baseandroid.utils.ToastUtils;
 import com.datacvg.sempmobile.bean.ServiceBean;
+import com.datacvg.sempmobile.event.RefreshTokenEvent;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonParseException;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 
 import java.net.ConnectException;
@@ -33,9 +36,12 @@ public class RxObserver<T> implements Observer <T>{
     @Override
     public void onNext(T t) {
         if(t instanceof BaseBean){
-            if(((BaseBean) t).getStatus() == 1){
+            if(((BaseBean) t).getStatus() == Constants.SERVICE_CODE_SUCCESS_MOBILE
+                    || ((BaseBean) t).getStatus() == Constants.SERVICE_CODE_SUCCESS_FIS){
                 onNext(t);
-            }else{
+            }else if(((BaseBean) t).getStatus() == Constants.SERVICE_CODE_FAIL_FOR_TOKEN){
+                EventBus.getDefault().post(new RefreshTokenEvent());
+            }else {
                 ToastUtils.showLongToast(((BaseBean) t).getMessage());
             }
         }else if(t instanceof ServiceBean){
@@ -49,7 +55,6 @@ public class RxObserver<T> implements Observer <T>{
 
     @Override
     public void onError(Throwable e) {
-        PLog.e("onError");
         String msg = "";
         if (e instanceof ConnectException) {
             msg = "网络不可用";

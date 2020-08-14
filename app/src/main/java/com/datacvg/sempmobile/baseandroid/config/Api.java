@@ -6,7 +6,7 @@ public class Api {
     /**
      * 接口地址
      */
-    public static String PHP_BASE_URL = "";
+    public static String BASE_URL = "";
     //测试
     public static final String BASE_URL_TEST = "http://testapp.wobianmall.com";
     //正式
@@ -52,12 +52,12 @@ public class Api {
 
             case DEV_TEST_ENV:
                 isDevelop = true;
-                PHP_BASE_URL = BASE_URL_TEST;
+                BASE_URL = BASE_URL_TEST;
                 break;
 
             case REL_PRE_ENV:
                 isDevelop = false;
-                PHP_BASE_URL = BASE_URL_PRODUCT;
+                BASE_URL = BASE_URL_PRODUCT;
                 break;
 
             default:

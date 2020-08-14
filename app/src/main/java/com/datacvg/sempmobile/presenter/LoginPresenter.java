@@ -7,13 +7,21 @@ import com.datacvg.sempmobile.baseandroid.config.Constants;
 import com.datacvg.sempmobile.baseandroid.config.LoginApi;
 import com.datacvg.sempmobile.baseandroid.config.MobileApi;
 import com.datacvg.sempmobile.baseandroid.retrofit.RxObserver;
+import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.sempmobile.baseandroid.utils.AndroidUtils;
 import com.datacvg.sempmobile.baseandroid.utils.RxUtils;
 import com.datacvg.sempmobile.baseandroid.utils.StringUtils;
 import com.datacvg.sempmobile.baseandroid.utils.ToastUtils;
 import com.datacvg.sempmobile.bean.ServiceBean;
+import com.datacvg.sempmobile.bean.UserLoginBean;
 import com.datacvg.sempmobile.view.LoginView;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.inject.Inject;
+
+import me.jessyan.retrofiturlmanager.RetrofitUrlManager;
 
 /**
  * @Author : T-Bag (茶包)
@@ -36,7 +44,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
      * @param userName      用户账号
      * @param password      用户密码
      */
-    public void login(String companyCode, String userName, String password) {
+    public void checkUrlOrVersion(String companyCode, String userName, String password) {
         if(TextUtils.isEmpty(companyCode)){
             if(StringUtils.equals(Constants.BASE_URL,Constants.DATA_CVG_BASE_URL)){
                 ToastUtils.showLongToast(AndroidUtils.getContext().getResources()
@@ -70,23 +78,47 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                     public void onNext(ServiceBean serviceBean) {
                         if(serviceBean != null && serviceBean.getAndroidresdata() != null){
                             ServiceBean.AndroidresdataBean bean = serviceBean.getAndroidresdata();
+
                             Constants.BASE_FIS_URL = bean.getFisServer() ;
                             Constants.BASE_MOBILE_URL = bean.getHttpServer() ;
                             Constants.BASE_UPLOAD_URL = bean.getUpdateURL() ;
-                            if(BuildConfig.APP_STAND){
-                                if(bean.getAppStandardVersionCode() > BuildConfig.VERSION_CODE){
-                                    getView().onUpdateVersion(bean.getUpdateStandardURL());
-                                }else{
 
-                                }
+                            RetrofitUrlManager.getInstance().setGlobalDomain(Constants.BASE_MOBILE_URL);
+                            RetrofitUrlManager.getInstance().putDomain("upload_apk",Constants.BASE_UPLOAD_URL);
+                            RetrofitUrlManager.getInstance().putDomain("fis_api",Constants.BASE_FIS_URL);
+
+                            if(bean.getAppVersionCode() > BuildConfig.VERSION_CODE){
+                                getView().onUpdateVersion(bean.getUpdateURL());
                             }else{
-                                if(bean.getAppVersionCode() > BuildConfig.VERSION_CODE){
-                                    getView().onUpdateVersion(bean.getUpdateURL());
-                                }else{
-
-                                }
+                                login(userName,password);
                             }
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+                });
+    }
+
+
+    public void login(String userName, String password) {
+        Map<String,String> params = new HashMap<>();
+        params.put("loginname",userName);
+        params.put("password",password);
+        mobileApi.login(params)
+                .compose(RxUtils.applySchedulersLifeCycle(getView()))
+                .subscribe(new RxObserver<BaseBean<UserLoginBean>>(){
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                    }
+
+                    @Override
+                    public void onNext(BaseBean<UserLoginBean> baseBean) {
+                        Constants.token = baseBean.getUser_token();
+                        getView().loginSuccess(baseBean);
                     }
 
                     @Override
