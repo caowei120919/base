@@ -33,11 +33,11 @@ ext {
 }
 
 def getVersionCode() {
-    return 1000
+    return 3030
 }
 
 def getVersionName() {
-    return "1.0.0"
+    return "3.0.3"
 }
 
 task clean(type: Delete) {

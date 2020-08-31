@@ -17,15 +17,16 @@ import com.datacvg.sempmobile.bean.UserLoginBean;
 public class Constants {
 
     public static final String DATA_CVG_BASE_URL = "http://datacvg.com/" ;
-    private static final String USER_TOKEN = "USER_TOKEN";
-    private static final String USER_PKID = "USER_PKID";
-    private static final String USER_PWD = "USER_PWD";
-    private static final String USER_ORG_NAME = "USER_ORG_NAME";
-    private static final String USER_NAME = "USER_NAME";
-    private static final String USER_DEFAULT_TIME = "USER_DEFAULT_TIME";
-    private static final String USER_ORG_EN_NAME = "USER_ORG_EN_NAME";
-    private static final String USER_ID = "USER_ID";
-    private static final String USER_COMPANY_CODE = "USER_COMPANY_CODE";
+    public static final String USER_TOKEN = "USER_TOKEN";
+    public static final String USER_PKID = "USER_PKID";
+    public static final String USER_PWD = "USER_PWD";
+    public static final String USER_ORG_NAME = "USER_ORG_NAME";
+    public static final String USER_NAME = "USER_NAME";
+    public static final String USER_DEFAULT_TIME = "USER_DEFAULT_TIME";
+    public static final String USER_ORG_EN_NAME = "USER_ORG_EN_NAME";
+    public static final String USER_ID = "USER_ID";
+    public static final String USER_COMPANY_CODE = "USER_COMPANY_CODE";
+    public static final String USER_CHECK_REMEMBER = "USER_CHECK_REMEMBER";
     public static String BASE_MOBILE_URL = "" ;
     public static String BASE_FIS_URL = "" ;
     public static String BASE_UPLOAD_URL = "" ;
@@ -82,5 +83,6 @@ public class Constants {
             PreferencesHelper.put(USER_COMPANY_CODE,companyCode);
             PreferencesHelper.put(USER_PWD,password);
         }
+        PreferencesHelper.put(USER_CHECK_REMEMBER,checked);
     }
 }

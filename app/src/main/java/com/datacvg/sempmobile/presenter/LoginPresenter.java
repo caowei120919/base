@@ -87,7 +87,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                             RetrofitUrlManager.getInstance().putDomain("upload_apk",Constants.BASE_UPLOAD_URL);
                             RetrofitUrlManager.getInstance().putDomain("fis_api",Constants.BASE_FIS_URL);
 
-                            if(bean.getAppVersionCode() > BuildConfig.VERSION_CODE){
+                            if(bean.getAppVersion().compareTo(BuildConfig.VERSION_NAME) > 0){
                                 getView().onUpdateVersion(bean.getUpdateURL());
                             }else{
                                 login(userName,password);

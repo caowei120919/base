@@ -1,5 +1,6 @@
 package com.datacvg.sempmobile.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -10,16 +11,16 @@ import android.widget.EditText;
 import com.datacvg.sempmobile.R;
 import com.datacvg.sempmobile.baseandroid.config.Constants;
 import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
+import com.datacvg.sempmobile.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.sempmobile.baseandroid.utils.AndroidUtils;
-import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.baseandroid.utils.StatusBarUtil;
+import com.datacvg.sempmobile.baseandroid.utils.StringUtils;
 import com.datacvg.sempmobile.baseandroid.utils.ToastUtils;
 import com.datacvg.sempmobile.baseandroid.widget.CVGOKCancelWithTitle;
 import com.datacvg.sempmobile.bean.UserLoginBean;
 import com.datacvg.sempmobile.presenter.LoginPresenter;
 import com.datacvg.sempmobile.view.LoginView;
 import butterknife.BindView;
-import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
@@ -94,7 +95,21 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
 
     @Override
     protected void setupData(Bundle savedInstanceState) {
+        cbRememberUser.setChecked(PreferencesHelper
+                .get(Constants.USER_CHECK_REMEMBER,false));
+        companyCode = PreferencesHelper.get(Constants.USER_COMPANY_CODE,"");
+        userName = PreferencesHelper.get(Constants.USER_NAME,"");
+        password = PreferencesHelper.get(Constants.USER_PWD,"");
 
+        if(!StringUtils.isEmpty(companyCode)){
+            edCode.setText(companyCode);
+        }
+        if(!StringUtils.isEmpty(userName)){
+            edUserName.setText(userName);
+        }
+        if(!StringUtils.isEmpty(password)){
+            edPwd.setText(password);
+        }
     }
 
     @OnClick({R.id.btn_login})
@@ -149,6 +164,8 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
      */
     @Override
     public void loginSuccess(BaseBean<UserLoginBean> baseBean) {
-        Constants.saveUser(baseBean.getResdata(),cbRememberUser.isChecked(),password);
+        Constants.saveUser(baseBean.getResdata(),cbRememberUser.isChecked(),password,companyCode);
+        mContext.startActivity(new Intent(mContext,MainActivity.class));
+        finish();
     }
 }
