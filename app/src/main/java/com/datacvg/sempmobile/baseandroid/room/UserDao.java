@@ -50,7 +50,6 @@ public interface UserDao {
     @Delete
     public void deleteUsers(List<User> userList);
 
-    //@Query的值为SQL语句，可以被SQLite执行。@Query支持查询语句，删除语句和更新语句，不支持插入语句。
     @Query("DELETE FROM Users")
     void deleteAllUsers();
 

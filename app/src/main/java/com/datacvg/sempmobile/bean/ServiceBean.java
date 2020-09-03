@@ -1,5 +1,7 @@
 package com.datacvg.sempmobile.bean;
 
+import androidx.annotation.Keep;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -9,6 +11,7 @@ import java.io.Serializable;
  * @Time : 2020-07-27
  * @Description :
  */
+@Keep
 public class ServiceBean implements Serializable {
 
     /**

@@ -24,7 +24,6 @@ public interface DebugInfoDao {
     @Query("SELECT * FROM debuginfo")
     public Flowable<List<DebugInfo>> loadAll();
 
-    //Using Room DB,Need to Use DataSource.Factory Implement PositionalDataSource
     @Query("SELECT * FROM debuginfo")
     public DataSource.Factory<Integer, DebugInfo> loadDataSource();
 

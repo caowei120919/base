@@ -194,5 +194,4 @@ dependencies {
     //database+preferences
     implementation 'com.orhanobut:hawk:2.0.1'
     implementation 'com.pnikosis:materialish-progress:1.7'
-
 }

@@ -33,17 +33,6 @@ public class BaseApplication extends Application {
 
     public static boolean DEBUGMODE = false;
 
-    public static String getDormitory() {
-        return dormitory;
-    }
-
-    public static void setDormitory(String dormitory) {
-
-        BaseApplication.dormitory = dormitory;
-    }
-
-    public static String dormitory = "" ;
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -55,6 +44,16 @@ public class BaseApplication extends Application {
         initDownloader(this);
 
         Hawk.init(this).build();
+
+        registerFlutter();
+
+    }
+
+    /**
+     * 注册flutter
+     */
+    private void registerFlutter() {
+
     }
 
     public static void setDebugMode(boolean debugmode) {

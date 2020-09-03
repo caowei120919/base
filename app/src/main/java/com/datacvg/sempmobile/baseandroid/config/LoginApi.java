@@ -1,15 +1,9 @@
 package com.datacvg.sempmobile.baseandroid.config;
 
 
-import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.sempmobile.bean.ServiceBean;
-
-import java.util.Map;
-
 import io.reactivex.Observable;
-import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.POST;
 import retrofit2.http.Url;
 
 /**

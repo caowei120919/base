@@ -15,12 +15,9 @@ import com.datacvg.sempmobile.baseandroid.utils.ToastUtils;
 import com.datacvg.sempmobile.bean.ServiceBean;
 import com.datacvg.sempmobile.bean.UserLoginBean;
 import com.datacvg.sempmobile.view.LoginView;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.inject.Inject;
-
 import me.jessyan.retrofiturlmanager.RetrofitUrlManager;
 
 /**
@@ -83,9 +80,12 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                             Constants.BASE_MOBILE_URL = bean.getHttpServer() ;
                             Constants.BASE_UPLOAD_URL = bean.getUpdateURL() ;
 
-                            RetrofitUrlManager.getInstance().setGlobalDomain(Constants.BASE_MOBILE_URL);
-                            RetrofitUrlManager.getInstance().putDomain("upload_apk",Constants.BASE_UPLOAD_URL);
-                            RetrofitUrlManager.getInstance().putDomain("fis_api",Constants.BASE_FIS_URL);
+                            RetrofitUrlManager.getInstance()
+                                    .setGlobalDomain(Constants.BASE_MOBILE_URL);
+                            RetrofitUrlManager.getInstance()
+                                    .putDomain("upload_apk",Constants.BASE_UPLOAD_URL);
+                            RetrofitUrlManager.getInstance()
+                                    .putDomain("fis_api",Constants.BASE_FIS_URL);
 
                             if(bean.getAppVersion().compareTo(BuildConfig.VERSION_NAME) > 0){
                                 getView().onUpdateVersion(bean.getUpdateURL());

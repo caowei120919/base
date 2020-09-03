@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="module_title">
+        <item>指标</item>
+        <item>报告</item>
+        <item>行动</item>
+        <item>报表</item>
+        <item>大屏</item>
+        <item>个人</item>
+    </string-array>
+</resources>
