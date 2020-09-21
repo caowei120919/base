@@ -2,6 +2,7 @@ package com.datacvg.sempmobile.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import androidx.annotation.NonNull;
@@ -38,6 +39,7 @@ public abstract class BaseActivity<V extends MvpView,P extends MvpBasePresenter<
     private ActivityComponent mActivityComponent;
     private WeakReference<Activity> softActivity ;
     protected BaseActivity mContext ;
+    protected Resources resources ;
 
     /**
      * Instantiate a presenter instance
@@ -72,6 +74,7 @@ public abstract class BaseActivity<V extends MvpView,P extends MvpBasePresenter<
         if(getLayoutId() != 0){
             setContentView(getLayoutId());
         }
+        resources = mContext.getResources() ;
         mUnbinder = ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         setup(savedInstanceState);
@@ -92,7 +95,7 @@ public abstract class BaseActivity<V extends MvpView,P extends MvpBasePresenter<
             //如果不支持设置深色风格 为了兼容总不能让状态栏白白的看不清, 于是设置一个状态栏颜色为半透明,
             //这样半透明+白=灰, 状态栏的文字能看得清
             StatusBarUtil.setStatusBarColor(this,mContext.getResources()
-                    .getColor(R.color.c_24334F));
+                    .getColor(R.color.c_FFFFFF));
         }
         setupView();
         setupData(savedInstanceState);

@@ -4,7 +4,6 @@ import android.net.ParseException;
 
 import com.datacvg.sempmobile.baseandroid.config.Constants;
 import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
-import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.baseandroid.utils.ToastUtils;
 import com.datacvg.sempmobile.bean.ServiceBean;
 import com.datacvg.sempmobile.event.RefreshTokenEvent;

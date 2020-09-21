@@ -3,9 +3,7 @@ package com.datacvg.sempmobile.baseandroid.download;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-
 import androidx.annotation.NonNull;
-
 import com.datacvg.sempmobile.baseandroid.download.downinterface.DownLoadCallBack;
 import com.datacvg.sempmobile.baseandroid.download.downinterface.DownloadStub;
 import com.datacvg.sempmobile.baseandroid.download.downinterfaceimpl.DownloadStubImpl;
@@ -17,7 +15,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import static java.util.concurrent.Executors.*;
 
 
 /**
@@ -63,7 +61,7 @@ public class DownloadManager {
             throw new IllegalArgumentException("thread num must < max thread num");
         }
         mConfig = config;
-        mExecutorService = Executors.newFixedThreadPool(mConfig.getMaxThreadNum());
+        mExecutorService = newFixedThreadPool(mConfig.getMaxThreadNum());
         mMainHandler = new Handler(Looper.getMainLooper());
     }
 
@@ -71,7 +69,6 @@ public class DownloadManager {
         String key = DigestUtils.md5Hex(uri);
         if (check(key)) {
             if (allowSame) {
-                // multi download the same file
                 key = UUID.randomUUID().toString() + "-" + key;
                 filename = UUID.randomUUID().toString() + "-" + filename;
                 DownloadStub downloader = new DownloadStubImpl(uri, folder, filename, downLoadCallBack, mExecutorService, key, mConfig);

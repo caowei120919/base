@@ -18,4 +18,5 @@
     <string name="warm_prompt">温馨提示</string>
     <string name="a_new_version_of_the_application_has_been_detected_is_it_updated">检测到应用有新版本，是否更新？</string>
     <string name="click_again_exit_app">再按一次退出应用</string>
+    <string name="configuration">配置</string>
 </resources>

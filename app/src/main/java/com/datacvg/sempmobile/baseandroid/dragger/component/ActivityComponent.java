@@ -5,6 +5,7 @@ import android.app.Activity;
 
 import com.datacvg.sempmobile.activity.LoginActivity;
 import com.datacvg.sempmobile.activity.MainActivity;
+import com.datacvg.sempmobile.activity.SettingVpnActivity;
 import com.datacvg.sempmobile.activity.SplashActivity;
 import com.datacvg.sempmobile.baseandroid.dragger.module.ActivityModule;
 import com.datacvg.sempmobile.baseandroid.dragger.scope.ActivityScope;
@@ -24,4 +25,6 @@ public interface ActivityComponent {
     void inject(LoginActivity loginActivity);
 
     void inject(MainActivity mainActivity);
+
+    void inject(SettingVpnActivity settingVpnActivity);
 }

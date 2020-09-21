@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.FrameLayout;
 import android.widget.RadioGroup;
-
 import com.datacvg.sempmobile.R;
 import com.datacvg.sempmobile.baseandroid.utils.StatusBarUtil;
 import com.datacvg.sempmobile.baseandroid.utils.ToastUtils;
@@ -25,8 +24,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @BindView(R.id.content)
     FrameLayout content ;
 
-    private String[] title ;
-
     /**
      *记录返回键点击时间
      */
@@ -45,13 +42,12 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @Override
     protected void setupView() {
         StatusBarUtil.setStatusBarColor(mContext
-                ,mContext.getResources().getColor(R.color.c_24334F));
+                ,mContext.getResources().getColor(R.color.c_FFFFFF));
     }
 
     @Override
     protected void setupData(Bundle savedInstanceState) {
-        title = mContext.getResources().getStringArray(R.array.module_title);
-        getPresenter().getPermissionModule();
+//        getPresenter().getPermissionModule();
     }
 
     /**
@@ -78,5 +74,13 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    /**
+     * 模块获取成功
+     */
+    @Override
+    public void getModuleSuccess() {
+
     }
 }

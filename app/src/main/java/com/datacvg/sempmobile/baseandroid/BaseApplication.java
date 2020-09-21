@@ -8,7 +8,6 @@ import android.os.StrictMode;
 
 import androidx.annotation.NonNull;
 import androidx.multidex.MultiDex;
-
 import com.datacvg.sempmobile.baseandroid.download.DownloadConfiguration;
 import com.datacvg.sempmobile.baseandroid.download.DownloadManager;
 import com.datacvg.sempmobile.baseandroid.dragger.component.AppComponent;
@@ -46,7 +45,6 @@ public class BaseApplication extends Application {
         Hawk.init(this).build();
 
         registerFlutter();
-
     }
 
     /**

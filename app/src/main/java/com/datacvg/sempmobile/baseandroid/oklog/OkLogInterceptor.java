@@ -39,7 +39,6 @@ public class OkLogInterceptor implements Interceptor {
             response = chain.proceed(requestLogData.getRequest());
         } catch (Exception e) {
             logDataBuilder.requestFailed();
-            /*------respone error--------*/
             debugInfo.setDebugtype("network");
             logDataBuilder.responseBody("<-- HTTP FAILED: " + e.getMessage());
             debugInfo.setDebuginfo(logDataBuilder.toString());
@@ -52,7 +51,6 @@ public class OkLogInterceptor implements Interceptor {
         logDataBuilder.responseDurationMs(tookMs);
 
         BaseLogDataInterceptor.ResponseLogData<Response> responseLogData = logDataInterceptor.processResponse(logDataBuilder, response);
-        /*------respone success--------*/
         debugInfo.setDebugtype("network");
         debugInfo.setDebuginfo(logDataBuilder.toString());
         debugInfo.setDebugtime(TimeUtils.getCurDateStr(TimeUtils.FORMAT_YMDH_CN));

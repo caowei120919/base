@@ -1,5 +1,4 @@
 package com.datacvg.sempmobile.activity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -8,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
+
 import com.datacvg.sempmobile.R;
 import com.datacvg.sempmobile.baseandroid.config.Constants;
 import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
@@ -23,7 +24,6 @@ import com.datacvg.sempmobile.view.LoginView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
-
 /**
  * @Author : T-Bag (茶包)
  * @Time : 2020-07-24
@@ -90,7 +90,7 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
     @Override
     protected void setupView() {
         StatusBarUtil.setStatusBarColor(mContext
-                ,mContext.getResources().getColor(R.color.c_24334F));
+                ,mContext.getResources().getColor(R.color.c_FFFFFF));
     }
 
     @Override
@@ -112,7 +112,7 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
         }
     }
 
-    @OnClick({R.id.btn_login})
+    @OnClick({R.id.btn_login,R.id.tv_settingVpn})
     public void onClick(View v){
         switch (v.getId()){
             case R.id.btn_login :
@@ -135,6 +135,10 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
                 }else {
                     getPresenter().checkUrlOrVersion(companyCode,userName,password);
                 }
+                break;
+
+            case R.id.tv_settingVpn :
+                    startActivity(new Intent(mContext,SettingVpnActivity.class));
                 break;
         }
     }

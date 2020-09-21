@@ -1,6 +1,7 @@
 package com.datacvg.sempmobile.view;
 
 import com.datacvg.sempmobile.baseandroid.mvp.MvpView;
+import com.datacvg.sempmobile.bean.ModuleListBean;
 
 /**
  * @Author : T-Bag (茶包)
@@ -8,4 +9,8 @@ import com.datacvg.sempmobile.baseandroid.mvp.MvpView;
  * @Description :
  */
 public interface MainView extends MvpView {
+    /**
+     * 模块获取成功
+     */
+    void getModuleSuccess();
 }

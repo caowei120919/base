@@ -22,4 +22,5 @@
     <string name="a_new_version_of_the_application_has_been_detected_is_it_updated">
         A new version of the application has been detected. Is it updated?</string>
     <string name="click_again_exit_app">click again exit app</string>
+    <string name="configuration">Configuration</string>
 </resources>

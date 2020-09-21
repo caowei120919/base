@@ -4,8 +4,13 @@ import com.datacvg.sempmobile.baseandroid.config.MobileApi;
 import com.datacvg.sempmobile.baseandroid.retrofit.RxObserver;
 import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.sempmobile.baseandroid.utils.RxUtils;
+import com.datacvg.sempmobile.bean.ModuleBean;
 import com.datacvg.sempmobile.bean.ModuleListBean;
 import com.datacvg.sempmobile.view.MainView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -33,7 +38,13 @@ public class MainPresenter extends BasePresenter<MainView>{
 
                     @Override
                     public void onNext(BaseBean<ModuleListBean> stringBaseBean) {
+                        List<String> buildModuleList = new ArrayList<>();
+                        for (ModuleBean bean: stringBaseBean.getResdata()) {
+                            switch (bean.getRes_clname()){
 
+                            }
+                        }
+                        getView().getModuleSuccess();
                     }
 
                     @Override
