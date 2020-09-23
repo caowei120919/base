@@ -16,6 +16,8 @@ import com.datacvg.sempmobile.bean.UserLoginBean;
 @Keep
 public class Constants {
 
+    public static final String EXTRA_DATA_FOR_BEAN = "EXTRA_DATA_FOR_BEAN" ;
+
     public static final String DATA_CVG_BASE_URL = "http://datacvg.com/" ;
     public static final String USER_TOKEN = "USER_TOKEN";
     public static final String USER_PKID = "USER_PKID";
@@ -34,6 +36,12 @@ public class Constants {
     public final static int SERVICE_CODE_SUCCESS_MOBILE = 1 ;
     public final static int SERVICE_CODE_SUCCESS_FIS = 2000 ;
     public final static int SERVICE_CODE_FAIL_FOR_TOKEN = 401 ;
+
+    /**
+     * vpn模式
+     */
+    public final static String VPN_MODEL_EASY = "easyapp" ;
+    public final static String VPN_MODEL_L3 = "l3vpn" ;
 
     /**
      * 用于获取接口服务器地址的url

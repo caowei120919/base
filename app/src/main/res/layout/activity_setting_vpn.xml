@@ -3,5 +3,223 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/actionbar_title"/>
+    <include android:id="@+id/layout_title"
+        layout="@layout/actionbar_title"/>
+
+    <TextView
+        android:id="@+id/tv_hint_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_title"
+        android:layout_marginTop="@dimen/H80"
+        android:layout_marginLeft="@dimen/W100"
+        android:text="@string/semf_service_address"
+        android:textSize="12sp"
+        android:textColor="@color/c_666666">
+    </TextView>
+
+    <EditText
+        android:id="@+id/ed_address"
+        android:layout_below="@id/tv_hint_address"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H100"
+        android:textSize="14sp"
+        android:textColor="@color/c_cc000000"
+        android:imeOptions="actionNext"
+        android:singleLine="true"
+        android:layout_marginLeft="@dimen/W100"
+        android:layout_marginRight="@dimen/W100"
+        android:padding="@dimen/H10"
+        android:inputType="textUri">
+    </EditText>
+
+    <TextView
+        android:id="@+id/tv_hint_license"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ed_address"
+        android:layout_marginTop="@dimen/H30"
+        android:layout_marginLeft="@dimen/W100"
+        android:text="@string/license_service_address"
+        android:textSize="12sp"
+        android:textColor="@color/c_666666">
+    </TextView>
+
+    <EditText
+        android:id="@+id/ed_license"
+        android:layout_below="@id/tv_hint_license"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H100"
+        android:textSize="14sp"
+        android:textColor="@color/c_cc000000"
+        android:imeOptions="actionNext"
+        android:singleLine="true"
+        android:layout_marginLeft="@dimen/W100"
+        android:layout_marginRight="@dimen/W100"
+        android:padding="@dimen/H10"
+        android:inputType="textUri">
+    </EditText>
+
+    <TextView
+        android:id="@+id/tv_hint_vpn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ed_license"
+        android:layout_marginTop="@dimen/H30"
+        android:layout_marginLeft="@dimen/W100"
+        android:text="@string/vpn_model"
+        android:textSize="12sp"
+        android:textColor="@color/c_666666">
+    </TextView>
+
+    <RadioGroup
+        android:id="@+id/rg_vpnModel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/W100"
+        android:layout_marginLeft="@dimen/W100"
+        android:layout_marginTop="@dimen/H30"
+        android:layout_below="@id/tv_hint_vpn"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radio_easy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/easy_app"
+            android:textColor="@color/c_666666"
+            android:textSize="16sp"
+            android:checked="true"
+            android:gravity="center"
+            android:layout_gravity="center_vertical">
+        </RadioButton>
+
+        <RadioButton
+            android:id="@+id/radio_L3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/l_three_vpn"
+            android:textColor="@color/c_666666"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_gravity="center_vertical">
+        </RadioButton>
+    </RadioGroup>
+
+    <LinearLayout
+        android:id="@+id/lin_vpnAddress"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H100"
+        android:layout_below="@id/rg_vpnModel"
+        android:layout_marginTop="@dimen/H60"
+        android:layout_marginRight="@dimen/W100"
+        android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/W100">
+
+        <TextView
+            android:layout_width="@dimen/W120"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/vpn_address"
+            android:textColor="@color/c_666666"
+            android:textSize="12sp">
+        </TextView>
+
+        <EditText
+            android:id="@+id/ed_vpn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/W15"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:textColor="@color/c_cc000000"
+            android:imeOptions="actionNext"
+            android:singleLine="true"
+            android:padding="@dimen/H10"
+            android:inputType="textUri">
+        </EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lin_account"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H100"
+        android:layout_below="@id/lin_vpnAddress"
+        android:layout_marginTop="@dimen/H30"
+        android:layout_marginRight="@dimen/W100"
+        android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/W100">
+
+        <TextView
+            android:layout_width="@dimen/W120"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/account"
+            android:textColor="@color/c_666666"
+            android:textSize="12sp">
+        </TextView>
+
+        <EditText
+            android:id="@+id/ed_account"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/W15"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:textColor="@color/c_cc000000"
+            android:imeOptions="actionNext"
+            android:singleLine="true"
+            android:padding="@dimen/H10"
+            android:inputType="text">
+        </EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lin_pwd"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H100"
+        android:layout_below="@id/lin_account"
+        android:layout_marginTop="@dimen/H30"
+        android:layout_marginRight="@dimen/W100"
+        android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/W100">
+
+        <TextView
+            android:layout_width="@dimen/W120"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/password"
+            android:textColor="@color/c_666666"
+            android:textSize="12sp">
+        </TextView>
+
+        <EditText
+            android:id="@+id/ed_pwd"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/W15"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:textColor="@color/c_cc000000"
+            android:imeOptions="actionNext"
+            android:singleLine="true"
+            android:padding="@dimen/H10"
+            android:inputType="text">
+        </EditText>
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H80"
+        android:layout_below="@id/lin_pwd"
+        android:layout_marginTop="@dimen/H80"
+        android:layout_marginLeft="@dimen/W100"
+        android:layout_marginRight="@dimen/W100"
+        android:text="@string/save"
+        android:textColor="@color/c_666666"
+        android:background="@drawable/bg_round_white"
+        android:textSize="16sp">
+    </Button>
 </RelativeLayout>

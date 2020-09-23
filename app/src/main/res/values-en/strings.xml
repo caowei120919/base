@@ -15,6 +15,9 @@
     <string name="Enter_your_enterprise_id_or_configure_the_semf_service_address">
         Enter your enterprise id or configure the SEMF service address
     </string>
+    <string name="to_generate_the_qr_code_you_need_read_and_write_permission_please_authorize_it_and_try_again">
+        To generate the QR code, you need read and write permission. Please authorize it and try again
+    </string>
     <string name="please_wait">Please later</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
@@ -23,4 +26,14 @@
         A new version of the application has been detected. Is it updated?</string>
     <string name="click_again_exit_app">click again exit app</string>
     <string name="configuration">Configuration</string>
+    <string name="semf_service_address">SEMF Service Address</string>
+    <string name="license_service_address">license Address</string>
+    <string name="vpn_model">VPN Model</string>
+    <string name="easy_app">EasyApp</string>
+    <string name="vpn_address">VPN Address</string>
+    <string name="account">Account</string>
+    <string name="save">Save</string>
+    <string name="l_three_vpn">L3VPN</string>
+    <string name="qr_code_generation_fails">Qr code generation fails</string>
+    <string name="qr_code">Qr Code</string>
 </resources>
