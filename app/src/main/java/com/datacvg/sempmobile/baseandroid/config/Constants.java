@@ -18,6 +18,10 @@ public class Constants {
 
     public static final String EXTRA_DATA_FOR_BEAN = "EXTRA_DATA_FOR_BEAN" ;
 
+    public static final int REQUEST_TAKE_PHOTO = 0x00001024 ;
+    public static final int REQUEST_OPEN_CAMERA = 0x00001023 ;
+    public static final int RESULT_SCAN_RESULT = 0x00001022 ;
+
     public static final String DATA_CVG_BASE_URL = "http://datacvg.com/" ;
     public static final String USER_TOKEN = "USER_TOKEN";
     public static final String USER_PKID = "USER_PKID";

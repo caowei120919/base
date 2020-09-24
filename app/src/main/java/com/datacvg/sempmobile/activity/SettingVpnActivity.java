@@ -4,22 +4,30 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import androidx.annotation.Nullable;
+
+import com.datacvg.sempmobile.BuildConfig;
 import com.datacvg.sempmobile.R;
 import com.datacvg.sempmobile.baseandroid.config.Constants;
 import com.datacvg.sempmobile.baseandroid.retrofit.RxObserver;
+import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.baseandroid.utils.RxUtils;
 import com.datacvg.sempmobile.baseandroid.utils.StatusBarUtil;
 import com.datacvg.sempmobile.baseandroid.utils.ToastUtils;
 import com.datacvg.sempmobile.bean.VPNConfigBean;
 import com.datacvg.sempmobile.presenter.SettingVpnPresenter;
 import com.datacvg.sempmobile.view.SettingVpnView;
+import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -41,6 +49,18 @@ public class SettingVpnActivity extends BaseActivity<SettingVpnView, SettingVpnP
     ImageView imgOther ;
     @BindView(R.id.rg_vpnModel)
     RadioGroup rgVPNModel ;
+    @BindView(R.id.ed_pwd)
+    EditText edPwd ;
+    @BindView(R.id.ed_account)
+    EditText edAccount ;
+    @BindView(R.id.ed_vpn)
+    EditText edVpn ;
+    @BindView(R.id.ed_license)
+    EditText edLicense ;
+    @BindView(R.id.ed_address)
+    EditText edAddress ;
+    @BindView(R.id.tv_hint_license)
+    TextView tvHintLicense ;
 
     private String mSemfAddress ;
     private String mLicenseCode ;
@@ -49,6 +69,8 @@ public class SettingVpnActivity extends BaseActivity<SettingVpnView, SettingVpnP
     private String mVPNPassword ;
     private String mVpnModel = Constants.VPN_MODEL_EASY ;
     private IntentIntegrator mIntentIntegrator ;
+
+    private VPNConfigBean vpnConfigBean ;
 
     @Override
     protected int getLayoutId() {
@@ -64,6 +86,8 @@ public class SettingVpnActivity extends BaseActivity<SettingVpnView, SettingVpnP
     protected void setupView() {
         StatusBarUtil.setStatusBarColor(mContext,resources.getColor(R.color.c_FFFFFF));
         tvTitle.setText(resources.getString(R.string.configuration));
+        tvHintLicense.setVisibility(BuildConfig.APP_STAND ? View.VISIBLE : View.GONE);
+        edLicense.setVisibility(BuildConfig.APP_STAND ? View.VISIBLE : View.GONE);
         imgRight.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.vpn_scan));
         imgOther.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.qr_code));
     }
@@ -84,9 +108,20 @@ public class SettingVpnActivity extends BaseActivity<SettingVpnView, SettingVpnP
              * 扫描二维码
              */
             case R.id.img_right :
-                mIntentIntegrator = new IntentIntegrator(mContext);
-                mIntentIntegrator.setCaptureActivity(SettingVpnActivity.class);
-                mIntentIntegrator.initiateScan();
+                new RxPermissions(mContext)
+                        .request(Manifest.permission.CAMERA
+                                , Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        .compose(RxUtils.applySchedulersLifeCycle(getMvpView()))
+                        .subscribe(new RxObserver<Boolean>(){
+                            @Override
+                            public void onNext(Boolean aBoolean) {
+                                if (aBoolean) {      //授权通过拍摄照片
+                                    mIntentIntegrator = new IntentIntegrator(mContext);
+                                    mIntentIntegrator.setCaptureActivity(ScanActivity.class);
+                                    mIntentIntegrator.initiateScan();
+                                }
+                            }
+                        });
                 break;
 
             /**
@@ -172,8 +207,70 @@ public class SettingVpnActivity extends BaseActivity<SettingVpnView, SettingVpnP
         mVPNAccount = editable.toString().trim();
     }
 
+    /**
+     * 密码输入监听
+     * @param editable
+     */
     @OnTextChanged(value = R.id.ed_pwd,callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onPasswordTextChange(Editable editable){
         mVPNPassword = editable.toString().trim();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (resultCode){
+            case Constants.RESULT_SCAN_RESULT :
+                vpnConfigBean
+                        = (VPNConfigBean) data.getSerializableExtra(Constants.EXTRA_DATA_FOR_BEAN);
+                PLog.e(new Gson().toJson(data.getSerializableExtra(Constants.EXTRA_DATA_FOR_BEAN)));
+                resetView(vpnConfigBean);
+                break;
+
+            case RESULT_CANCELED :
+
+                break;
+
+            case RESULT_OK :
+                    if(requestCode == IntentIntegrator.REQUEST_CODE){
+                        IntentResult result
+                                = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+                        vpnConfigBean = new Gson()
+                                .fromJson(result.getContents(),VPNConfigBean.class);
+                        PLog.e(result.getContents());
+                        resetView(vpnConfigBean);
+                    }else {
+                        ToastUtils.showShortToast(resources
+                                .getString(R.string.this_qr_code_is_not_supported));
+                    }
+                break;
+
+            default:
+                ToastUtils.showShortToast(resources
+                        .getString(R.string.this_qr_code_is_not_supported));
+                break;
+        }
+    }
+
+    /**
+     * 根据二维码结果填充数据
+     * @param vpnConfigBean
+     */
+    private void resetView(VPNConfigBean vpnConfigBean) {
+        edPwd.setText(vpnConfigBean.getVpnpassword() != null ? vpnConfigBean.getVpnpassword() : "");
+        edAccount.setText(vpnConfigBean.getVpnuser() != null ? vpnConfigBean.getVpnuser() : "");
+        edVpn.setText(vpnConfigBean.getVpnurl() != null ? vpnConfigBean.getVpnurl() : "");
+        if(BuildConfig.APP_STAND){
+            edLicense.setText(vpnConfigBean.getLicenseurl() != null ? vpnConfigBean.getLicenseurl() : "");
+        }
+        edAddress.setText(vpnConfigBean.getSemfurl() != null ? vpnConfigBean.getSemfurl() : "");
+        if(vpnConfigBean.getVpnmodel() != null
+                && vpnConfigBean.getVpnmodel().equals(Constants.VPN_MODEL_L3)){
+            rgVPNModel.check(R.id.radio_L3);
+            mVpnModel = Constants.VPN_MODEL_L3 ;
+        }else{
+            rgVPNModel.check(R.id.radio_easy) ;
+            mVpnModel = Constants.VPN_MODEL_EASY ;
+        }
     }
 }

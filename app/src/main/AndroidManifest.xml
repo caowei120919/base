@@ -45,6 +45,11 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity android:name=".activity.ScanActivity"
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait">
+        </activity>
+
         <activity android:name=".activity.MainActivity"
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait">

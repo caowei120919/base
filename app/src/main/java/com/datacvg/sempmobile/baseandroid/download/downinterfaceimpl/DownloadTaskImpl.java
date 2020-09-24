@@ -8,7 +8,7 @@ import com.datacvg.sempmobile.baseandroid.download.DownloadInfo;
 import com.datacvg.sempmobile.baseandroid.download.DownloadStatus;
 import com.datacvg.sempmobile.baseandroid.download.downinterface.DownloadTask;
 import com.datacvg.sempmobile.baseandroid.download.downinterface.OnDownloadListener;
-import com.datacvg.sempmobile.baseandroid.room.ThreadInfo;
+import com.datacvg.sempmobile.baseandroid.greendao.bean.ThreadInfo;
 import com.datacvg.sempmobile.baseandroid.utils.javaio.StreamUtil;
 
 import java.io.File;

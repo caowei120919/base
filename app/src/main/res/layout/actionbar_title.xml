@@ -51,7 +51,6 @@
         android:layout_alignParentRight="true"
         android:paddingLeft="@dimen/W30"
         android:paddingRight="@dimen/W30"
-        android:text="@string/password"
         android:gravity="center"
         android:textSize="14sp"
         android:textColor="@color/c_666666">

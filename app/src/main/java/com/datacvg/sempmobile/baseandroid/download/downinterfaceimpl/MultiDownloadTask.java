@@ -2,8 +2,8 @@ package com.datacvg.sempmobile.baseandroid.download.downinterfaceimpl;
 
 import com.datacvg.sempmobile.baseandroid.download.DownloadInfo;
 import com.datacvg.sempmobile.baseandroid.download.downinterface.OnDownloadListener;
-import com.datacvg.sempmobile.baseandroid.room.ThreadInfo;
-import com.datacvg.sempmobile.baseandroid.room.ThreadInfoDataSource;
+import com.datacvg.sempmobile.baseandroid.greendao.bean.ThreadInfo;
+import com.datacvg.sempmobile.baseandroid.greendao.controller.DbThreadInfoController;
 import com.datacvg.sempmobile.baseandroid.utils.AndroidUtils;
 
 import java.io.File;
@@ -61,7 +61,7 @@ public class MultiDownloadTask extends DownloadTaskImpl {
     }
 
     protected void insertOrUpdateDb(ThreadInfo info) {
-        ThreadInfoDataSource.getInstance(AndroidUtils.getContext())
-                .insertOrUpdateDebugInfo(info);
+        DbThreadInfoController.getInstance(AndroidUtils.getContext())
+                .insertThreadInfo(info);
     }
 }

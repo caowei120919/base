@@ -11,8 +11,8 @@ import com.datacvg.sempmobile.baseandroid.download.downinterface.DownloadStub;
 import com.datacvg.sempmobile.baseandroid.download.downinterface.DownloadTask;
 import com.datacvg.sempmobile.baseandroid.download.downinterface.OnConnectListener;
 import com.datacvg.sempmobile.baseandroid.download.downinterface.OnDownloadListener;
-import com.datacvg.sempmobile.baseandroid.room.ThreadInfo;
-import com.datacvg.sempmobile.baseandroid.room.ThreadInfoDataSource;
+import com.datacvg.sempmobile.baseandroid.greendao.bean.ThreadInfo;
+import com.datacvg.sempmobile.baseandroid.greendao.controller.DbThreadInfoController;
 import com.datacvg.sempmobile.baseandroid.utils.AndroidUtils;
 import com.datacvg.sempmobile.baseandroid.utils.FileUtils;
 
@@ -231,7 +231,7 @@ public class DownloadStubImpl implements DownloadStub, OnConnectListener, OnDown
     private void initDownloadTasks(final long length, boolean acceptRanges) {
         mDownloadTasks.clear();
         if (acceptRanges) {
-            List<ThreadInfo> threadInfos = ThreadInfoDataSource.getInstance(AndroidUtils.getContext())
+            List<ThreadInfo> threadInfos = DbThreadInfoController.getInstance(AndroidUtils.getContext())
                     .getThreadInfo(mTag);
             if (threadInfos.isEmpty() || threadInfos.size() != mConfig.getThreadNum()) {
                 deleteFromDB();
@@ -424,7 +424,7 @@ public class DownloadStubImpl implements DownloadStub, OnConnectListener, OnDown
 
 
     private void deleteFromDB() {
-        ThreadInfoDataSource.getInstance(AndroidUtils.getContext())
+        DbThreadInfoController.getInstance(AndroidUtils.getContext())
                 .deleteThreadInfo(mTag);
     }
 }

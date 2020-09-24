@@ -3,7 +3,7 @@ package com.datacvg.sempmobile.baseandroid.download.downinterfaceimpl;
 
 import com.datacvg.sempmobile.baseandroid.download.DownloadInfo;
 import com.datacvg.sempmobile.baseandroid.download.downinterface.OnDownloadListener;
-import com.datacvg.sempmobile.baseandroid.room.ThreadInfo;
+import com.datacvg.sempmobile.baseandroid.greendao.bean.ThreadInfo;
 
 import java.io.File;
 import java.io.IOException;

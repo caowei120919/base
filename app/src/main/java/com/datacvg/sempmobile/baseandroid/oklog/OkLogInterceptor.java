@@ -1,14 +1,12 @@
 package com.datacvg.sempmobile.baseandroid.oklog;
 
 
-import com.datacvg.sempmobile.baseandroid.room.DebugInfo;
-import com.datacvg.sempmobile.baseandroid.room.DebugInfoDataSource;
+import com.datacvg.sempmobile.baseandroid.greendao.bean.DebugInfo;
+import com.datacvg.sempmobile.baseandroid.greendao.controller.DbDebugInfoController;
 import com.datacvg.sempmobile.baseandroid.utils.AndroidUtils;
 import com.datacvg.sempmobile.baseandroid.utils.TimeUtils;
-
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -43,8 +41,8 @@ public class OkLogInterceptor implements Interceptor {
             logDataBuilder.responseBody("<-- HTTP FAILED: " + e.getMessage());
             debugInfo.setDebuginfo(logDataBuilder.toString());
             debugInfo.setDebugtime(TimeUtils.getCurDateStr(TimeUtils.FORMAT_YMDH_CN));
-            DebugInfoDataSource.getInstance(AndroidUtils.getContext())
-                    .insertOrUpdateDebugInfo(debugInfo);
+            DbDebugInfoController.getInstance(AndroidUtils.getContext())
+                    .insertDebugInfo(debugInfo);
             throw e;
         }
         long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
@@ -54,8 +52,8 @@ public class OkLogInterceptor implements Interceptor {
         debugInfo.setDebugtype("network");
         debugInfo.setDebuginfo(logDataBuilder.toString());
         debugInfo.setDebugtime(TimeUtils.getCurDateStr(TimeUtils.FORMAT_YMDH_CN));
-        DebugInfoDataSource.getInstance(AndroidUtils.getContext())
-                .insertOrUpdateDebugInfo(debugInfo);
+        DbDebugInfoController.getInstance(AndroidUtils.getContext())
+                .insertDebugInfo(debugInfo);
         return responseLogData.getResponse();
     }
 
