@@ -11,11 +11,17 @@
         android:layout_height="match_parent">
     </FrameLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H2"
+        android:background="@color/c_ffeeeeee">
+    </TextView>
+
     <RadioGroup
         android:id="@+id/radio_module"
         android:layout_width="match_parent"
         android:layout_height="@dimen/H100"
-        android:background="@color/c_24334F"
+        android:background="@color/c_FFFFFF"
         android:gravity="center">
     </RadioGroup>
 </LinearLayout>

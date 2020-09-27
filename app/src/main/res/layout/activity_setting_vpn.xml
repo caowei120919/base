@@ -211,6 +211,7 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/btn_save"
         android:layout_width="match_parent"
         android:layout_height="@dimen/H80"
         android:layout_below="@id/lin_pwd"

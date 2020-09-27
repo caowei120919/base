@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -17,10 +18,14 @@ import androidx.annotation.Nullable;
 import com.datacvg.sempmobile.BuildConfig;
 import com.datacvg.sempmobile.R;
 import com.datacvg.sempmobile.baseandroid.config.Constants;
+import com.datacvg.sempmobile.baseandroid.greendao.bean.VpnInfo;
 import com.datacvg.sempmobile.baseandroid.retrofit.RxObserver;
+import com.datacvg.sempmobile.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.baseandroid.utils.RxUtils;
+import com.datacvg.sempmobile.baseandroid.utils.ShareUtils;
 import com.datacvg.sempmobile.baseandroid.utils.StatusBarUtil;
+import com.datacvg.sempmobile.baseandroid.utils.StringUtils;
 import com.datacvg.sempmobile.baseandroid.utils.ToastUtils;
 import com.datacvg.sempmobile.bean.VPNConfigBean;
 import com.datacvg.sempmobile.presenter.SettingVpnPresenter;
@@ -94,10 +99,21 @@ public class SettingVpnActivity extends BaseActivity<SettingVpnView, SettingVpnP
 
     @Override
     protected void setupData(Bundle savedInstanceState) {
-
+        if(BuildConfig.APP_STAND){
+            edLicense.setText(PreferencesHelper.get(Constants.VPN_LICENSE_URL,""));
+        }
+        edAccount.setText(PreferencesHelper.get(Constants.VPN_USER,""));
+        edAddress.setText(PreferencesHelper.get(Constants.VPN_SEMF_URL,""));
+        edVpn.setText(PreferencesHelper.get(Constants.VPN_URL,""));
+        edPwd.setText(PreferencesHelper.get(Constants.VPN_PASSWORD,""));
+        if(PreferencesHelper.get(Constants.VPN_MODEL,"").equals(Constants.VPN_MODEL_L3)){
+            rgVPNModel.check(R.id.radio_L3);
+            mVpnModel = Constants.VPN_MODEL_L3 ;
+        }
     }
 
-    @OnClick({R.id.img_left,R.id.img_right,R.id.img_other,R.id.radio_easy,R.id.radio_L3})
+    @OnClick({R.id.img_left,R.id.img_right,R.id.img_other,R.id.radio_easy,R.id.radio_L3
+            ,R.id.btn_save})
     public void OnClick(View view){
         switch (view.getId()){
             case R.id.img_left :
@@ -168,7 +184,23 @@ public class SettingVpnActivity extends BaseActivity<SettingVpnView, SettingVpnP
                 ((RadioButton)view).setChecked(true);
                 mVpnModel = Constants.VPN_MODEL_L3 ;
                 break;
+
+            case R.id.btn_save :
+                    saveVpnConfig();
+                break;
         }
+    }
+
+    /**
+     * 保存配置的vpn信息
+     */
+    private void saveVpnConfig() {
+        PreferencesHelper.put(Constants.VPN_LICENSE_URL,mLicenseCode);
+        PreferencesHelper.put(Constants.VPN_SEMF_URL,mSemfAddress);
+        PreferencesHelper.put(Constants.VPN_USER,mVPNAccount);
+        PreferencesHelper.put(Constants.VPN_URL,mVPNAddress);
+        PreferencesHelper.put(Constants.VPN_MODEL,mVpnModel);
+        PreferencesHelper.put(Constants.VPN_PASSWORD,mVPNPassword);
     }
 
     /**

@@ -8,11 +8,16 @@ import android.os.StrictMode;
 
 import androidx.annotation.NonNull;
 import androidx.multidex.MultiDex;
+
+import com.datacvg.sempmobile.R;
+import com.datacvg.sempmobile.baseandroid.config.Constants;
 import com.datacvg.sempmobile.baseandroid.download.DownloadConfiguration;
 import com.datacvg.sempmobile.baseandroid.download.DownloadManager;
 import com.datacvg.sempmobile.baseandroid.dragger.component.AppComponent;
 import com.datacvg.sempmobile.baseandroid.dragger.component.DaggerAppComponent;
 import com.datacvg.sempmobile.baseandroid.dragger.module.AppModule;
+import com.datacvg.sempmobile.baseandroid.greendao.bean.ModuleInfo;
+import com.datacvg.sempmobile.baseandroid.greendao.controller.DbModuleInfoController;
 import com.datacvg.sempmobile.baseandroid.manager.BaseAppManager;
 import com.datacvg.sempmobile.baseandroid.utils.AndroidUtils;
 import com.facebook.stetho.Stetho;
@@ -31,6 +36,12 @@ public class BaseApplication extends Application {
     private static RefWatcher mRefWatcher;
 
     public static boolean DEBUGMODE = false;
+    private int[] normalIds = {R.mipmap.tab_index_normal,R.mipmap.tab_textreport_normal
+            ,R.mipmap.tab_report_normal,R.mipmap.tab_action_normal,R.mipmap.tab_screen_normal
+            ,R.mipmap.tab_account_normal};
+    private int[] selectedIds = {R.mipmap.tab_index_selected,R.mipmap.tab_textreport_selected
+            ,R.mipmap.tab_report_selected,R.mipmap.tab_action_selected,R.mipmap.tab_screen_selected
+            ,R.mipmap.tab_account_selected};
 
     @Override
     public void onCreate() {
@@ -44,7 +55,32 @@ public class BaseApplication extends Application {
 
         Hawk.init(this).build();
 
+        buildAppModule();
+
         registerFlutter();
+    }
+
+    /**
+     * 构建App初始模块
+     *      已经构建过则不需做重复操作
+     */
+    private void buildAppModule() {
+        if(DbModuleInfoController.getInstance(this).getModuleList().size() > 0){
+            return;
+        }
+        String[] module_title = this.getResources().getStringArray(R.array.module_title) ;
+        String[] module_id = this.getResources().getStringArray(R.array.module_id) ;
+        for (int i = 0; i < module_title.length; i ++){
+            ModuleInfo moduleInfo = new ModuleInfo();
+            moduleInfo.setModule_id(i);
+            moduleInfo.setModule_name(module_title[i]);
+            moduleInfo.setModule_res_id(module_id[i]);
+            moduleInfo.setModule_checked(i != 4);
+            moduleInfo.setModule_permission(i == 5 || false);
+            moduleInfo.setModule_normal_res(normalIds[i]);
+            moduleInfo.setModule_selected_res(selectedIds[i]);
+            DbModuleInfoController.getInstance(this).insertModuleInfo(moduleInfo);
+        }
     }
 
     /**
@@ -74,10 +110,6 @@ public class BaseApplication extends Application {
                     .build());
 
         }
-    }
-
-    public static RefWatcher getRefWatcher(Context context) {
-        return mRefWatcher;
     }
 
     private static void initDownloader(Context context) {

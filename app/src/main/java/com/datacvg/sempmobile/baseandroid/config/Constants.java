@@ -2,10 +2,7 @@ package com.datacvg.sempmobile.baseandroid.config;
 
 import androidx.annotation.Keep;
 
-import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.sempmobile.baseandroid.retrofit.helper.PreferencesHelper;
-import com.datacvg.sempmobile.baseandroid.utils.AndroidUtils;
-import com.datacvg.sempmobile.baseandroid.utils.PreferencesUtils;
 import com.datacvg.sempmobile.bean.UserLoginBean;
 
 /**
@@ -46,6 +43,12 @@ public class Constants {
      */
     public final static String VPN_MODEL_EASY = "easyapp" ;
     public final static String VPN_MODEL_L3 = "l3vpn" ;
+    public final static String VPN_SEMF_URL = "VPN_SEMF_URL" ;
+    public final static String VPN_LICENSE_URL = "VPN_LICENSE_URL" ;
+    public final static String VPN_MODEL = "VPN_MODEL" ;
+    public final static String VPN_URL = "VPN_URL" ;
+    public final static String VPN_USER = "VPN_USER" ;
+    public final static String VPN_PASSWORD = "VPN_PASSWORD" ;
 
     /**
      * 用于获取接口服务器地址的url

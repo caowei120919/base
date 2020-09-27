@@ -38,13 +38,7 @@ public class MainPresenter extends BasePresenter<MainView>{
 
                     @Override
                     public void onNext(BaseBean<ModuleListBean> stringBaseBean) {
-                        List<String> buildModuleList = new ArrayList<>();
-                        for (ModuleBean bean: stringBaseBean.getResdata()) {
-                            switch (bean.getRes_clname()){
-
-                            }
-                        }
-                        getView().getModuleSuccess();
+                        getView().getModuleSuccess(stringBaseBean.getResdata());
                     }
 
                     @Override

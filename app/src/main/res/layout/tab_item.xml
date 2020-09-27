@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/W150"
+    android:layout_height="@dimen/H100"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="@dimen/W150"
+        android:layout_height="@dimen/H100"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/img_tab"
+            android:layout_width="@dimen/W35"
+            android:layout_height="@dimen/H35"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/tab_account_normal">
+        </ImageView>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_marginTop="@dimen/H4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/c_999999"
+            android:layout_centerHorizontal="true"
+            tools:text="个人中心">
+        </TextView>
+    </LinearLayout>
+</RelativeLayout>

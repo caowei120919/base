@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="module_title">
-        <item>指标</item>
-        <item>报告</item>
-        <item>行动</item>
-        <item>报表</item>
-        <item>大屏</item>
-        <item>个人</item>
+        <item>数字神经</item>
+        <item>管理画布</item>
+        <item>主题报表</item>
+        <item>行动方案</item>
+        <item>数字大屏</item>
+        <item>个人中心</item>
+    </string-array>
+
+    <string-array name="module_id">
+        <item>984334190737608058406</item>
+        <item>586179787115851444628</item>
+        <item>141776322849706849</item>
+        <item>984340827973376254805</item>
+        <item>1937145860555486918436</item>
+        <item>00000000000000001</item>
     </string-array>
 </resources>

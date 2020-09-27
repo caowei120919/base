@@ -11,6 +11,7 @@ import com.datacvg.sempmobile.bean.ModuleListBean;
 public interface MainView extends MvpView {
     /**
      * 模块获取成功
+     * @param resdata
      */
-    void getModuleSuccess();
+    void getModuleSuccess(ModuleListBean resdata);
 }

@@ -98,7 +98,7 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
         cbRememberUser.setChecked(PreferencesHelper
                 .get(Constants.USER_CHECK_REMEMBER,false));
         companyCode = PreferencesHelper.get(Constants.USER_COMPANY_CODE,"");
-        userName = PreferencesHelper.get(Constants.USER_NAME,"");
+        userName = PreferencesHelper.get(Constants.USER_ID,"");
         password = PreferencesHelper.get(Constants.USER_PWD,"");
 
         if(!StringUtils.isEmpty(companyCode)){
