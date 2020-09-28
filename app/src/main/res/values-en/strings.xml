@@ -43,4 +43,15 @@
     </string>
     <string name="choose_photos">Choose photos</string>
     <string name="this_qr_code_is_not_supported">This QR code is not supported</string>
+    <string name="set_the_password_lock">Set the password lock</string>
+    <string name="the_current_version">The current version</string>
+    <string name="adapt_semf_service">Adapt SEMF service</string>
+    <string name="clear_the_cache">Clear the cache</string>
+    <string name="fingerprint_authentication_login">Fingerprint authentication login</string>
+    <string name="module_settings">Module Settings</string>
+    <string name="language_settings">Language Settings</string>
+    <string name="set">setting up</string>
+    <string name="are_you_sure_you_want_to_change_the_application_language">
+        Are you sure you want to change the application language ?
+    </string>
 </resources>

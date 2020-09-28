@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.StrictMode;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.multidex.MultiDex;
 
 import com.datacvg.sempmobile.R;
@@ -19,7 +21,9 @@ import com.datacvg.sempmobile.baseandroid.dragger.module.AppModule;
 import com.datacvg.sempmobile.baseandroid.greendao.bean.ModuleInfo;
 import com.datacvg.sempmobile.baseandroid.greendao.controller.DbModuleInfoController;
 import com.datacvg.sempmobile.baseandroid.manager.BaseAppManager;
+import com.datacvg.sempmobile.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.sempmobile.baseandroid.utils.AndroidUtils;
+import com.datacvg.sempmobile.baseandroid.utils.LanguageUtils;
 import com.facebook.stetho.Stetho;
 import com.orhanobut.hawk.Hawk;
 import com.squareup.leakcanary.LeakCanary;
@@ -43,11 +47,14 @@ public class BaseApplication extends Application {
             ,R.mipmap.tab_report_selected,R.mipmap.tab_action_selected,R.mipmap.tab_screen_selected
             ,R.mipmap.tab_account_selected};
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onCreate() {
         super.onCreate();
 
         AndroidUtils.init(this);
+
+        checkLanguage();
 
         initAppInject(this);
 
@@ -58,6 +65,23 @@ public class BaseApplication extends Application {
         buildAppModule();
 
         registerFlutter();
+    }
+
+    /**
+     * 切换语言
+     */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void checkLanguage() {
+        /**
+         * 对于7.0以下，需要在Application创建的时候进行语言切换
+         */
+        String language = PreferencesHelper.get(Constants.APP_LANGUAGE,Constants.APP_LANGUAGE);
+        if(language.equals(Constants.LANGUAGE_AUTO)){
+            return;
+        }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            LanguageUtils.changeAppLanguage(this, language);
+        }
     }
 
     /**

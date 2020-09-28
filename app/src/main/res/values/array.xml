@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- 模块名称-->
     <string-array name="module_title">
         <item>数字神经</item>
         <item>管理画布</item>
@@ -9,6 +10,7 @@
         <item>个人中心</item>
     </string-array>
 
+    <!--模块id-->
     <string-array name="module_id">
         <item>984334190737608058406</item>
         <item>586179787115851444628</item>
@@ -17,4 +19,18 @@
         <item>1937145860555486918436</item>
         <item>00000000000000001</item>
     </string-array>
+
+    <!--语言-->
+    <string-array name="language_name">
+        <item>自动</item>
+        <item>简体中文</item>
+        <item>英语</item>
+    </string-array>
+
+    <string-array name="language_value">
+        <item>auto</item>
+        <item>zh</item>
+        <item>en</item>
+    </string-array>
+
 </resources>

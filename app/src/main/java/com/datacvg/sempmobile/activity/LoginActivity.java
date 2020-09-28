@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.datacvg.sempmobile.R;
 import com.datacvg.sempmobile.baseandroid.config.Constants;
+import com.datacvg.sempmobile.baseandroid.greendao.bean.ModuleInfo;
+import com.datacvg.sempmobile.baseandroid.greendao.controller.DbModuleInfoController;
 import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.sempmobile.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.sempmobile.baseandroid.utils.AndroidUtils;
@@ -138,7 +140,8 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
                 break;
 
             case R.id.tv_settingVpn :
-                    startActivity(new Intent(mContext,SettingVpnActivity.class));
+                    startActivity(new Intent(mContext,SettingActivity.class));
+//                    startActivity(new Intent(mContext,SettingVpnActivity.class));
                 break;
         }
     }

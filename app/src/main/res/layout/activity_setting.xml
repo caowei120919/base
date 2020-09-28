@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/actionbar_title"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H110"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginRight="@dimen/W40">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:drawablePadding="@dimen/W30"
+            android:drawableLeft="@mipmap/setting_password"
+            android:textSize="14sp"
+            android:text="@string/set_the_password_lock"
+            android:textColor="@color/c_333333">
+        </TextView>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/account_next"
+            android:scaleType="centerInside"
+            android:layout_alignParentRight="true">
+        </ImageView>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H2"
+        android:background="@color/c_f2f2f2"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginRight="@dimen/W40">
+    </View>
+
+    <RelativeLayout
+        android:id="@+id/rel_language"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H110"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginRight="@dimen/W40">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:drawablePadding="@dimen/W30"
+            android:drawableLeft="@mipmap/setting_lang"
+            android:textSize="14sp"
+            android:text="@string/language_settings"
+            android:textColor="@color/c_333333">
+        </TextView>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/account_next"
+            android:scaleType="centerInside"
+            android:layout_alignParentRight="true">
+        </ImageView>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H2"
+        android:background="@color/c_f2f2f2"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginRight="@dimen/W40">
+    </View>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H110"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginRight="@dimen/W40">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:drawablePadding="@dimen/W30"
+            android:drawableLeft="@mipmap/setting_module"
+            android:textSize="14sp"
+            android:text="@string/module_settings"
+            android:textColor="@color/c_333333">
+        </TextView>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/account_next"
+            android:scaleType="centerInside"
+            android:layout_alignParentRight="true">
+        </ImageView>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H2"
+        android:background="@color/c_f2f2f2"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginRight="@dimen/W40">
+    </View>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H110"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginRight="@dimen/W40">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:drawablePadding="@dimen/W30"
+            android:drawableLeft="@mipmap/setting_touch"
+            android:textSize="14sp"
+            android:text="@string/fingerprint_authentication_login"
+            android:textColor="@color/c_333333">
+        </TextView>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch_login"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center">
+        </androidx.appcompat.widget.SwitchCompat>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H2"
+        android:background="@color/c_f2f2f2"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginRight="@dimen/W40">
+    </View>
+
+    <RelativeLayout
+        android:id="@+id/rel_clearCache"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H110"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginRight="@dimen/W40">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:drawablePadding="@dimen/W30"
+            android:drawableLeft="@mipmap/setting_deletecache"
+            android:textSize="14sp"
+            android:text="@string/clear_the_cache"
+            android:textColor="@color/c_333333">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_cache"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center">
+        </TextView>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H2"
+        android:background="@color/c_f2f2f2"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginRight="@dimen/W40">
+    </View>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H110"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginRight="@dimen/W40">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:drawablePadding="@dimen/W30"
+            android:drawableLeft="@mipmap/setting_server"
+            android:textSize="14sp"
+            android:text="@string/adapt_semf_service"
+            android:textColor="@color/c_333333">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="5.0.X"
+            android:layout_alignParentRight="true">
+        </TextView>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H2"
+        android:background="@color/c_f2f2f2"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginRight="@dimen/W40">
+    </View>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H110"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginRight="@dimen/W40">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:drawablePadding="@dimen/W30"
+            android:drawableLeft="@mipmap/setting_edition"
+            android:textSize="14sp"
+            android:text="@string/the_current_version"
+            android:textColor="@color/c_333333">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_version"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/c_333333"
+            android:gravity="center">
+        </TextView>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H2"
+        android:background="@color/c_f2f2f2"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginRight="@dimen/W40">
+    </View>
+
+
+</LinearLayout>

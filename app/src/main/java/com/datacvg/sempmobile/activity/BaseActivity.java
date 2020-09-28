@@ -1,6 +1,7 @@
 package com.datacvg.sempmobile.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import androidx.annotation.NonNull;
 import com.datacvg.sempmobile.MyApplication;
 import com.datacvg.sempmobile.R;
 import com.datacvg.sempmobile.baseandroid.BaseApplication;
+import com.datacvg.sempmobile.baseandroid.config.Constants;
 import com.datacvg.sempmobile.baseandroid.dragger.component.ActivityComponent;
 import com.datacvg.sempmobile.baseandroid.dragger.component.DaggerActivityComponent;
 import com.datacvg.sempmobile.baseandroid.dragger.component.MyAppComponent;
@@ -17,6 +19,8 @@ import com.datacvg.sempmobile.baseandroid.mvp.BaseDoubleClickExitHelper;
 import com.datacvg.sempmobile.baseandroid.mvp.MvpBaseActivity;
 import com.datacvg.sempmobile.baseandroid.mvp.MvpBasePresenter;
 import com.datacvg.sempmobile.baseandroid.mvp.MvpView;
+import com.datacvg.sempmobile.baseandroid.retrofit.helper.PreferencesHelper;
+import com.datacvg.sempmobile.baseandroid.utils.LanguageUtils;
 import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.baseandroid.utils.StatusBarUtil;
 import org.greenrobot.eventbus.EventBus;
@@ -66,6 +70,16 @@ public abstract class BaseActivity<V extends MvpView,P extends MvpBasePresenter<
 
     public ActivityComponent getActivityComponent() {
         return mActivityComponent;
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        String language = PreferencesHelper.get(Constants.APP_LANGUAGE,Constants.LANGUAGE_CHINESE);
+        if(language.equals(Constants.LANGUAGE_AUTO)){
+            super.attachBaseContext(newBase);
+        }else{
+            super.attachBaseContext(LanguageUtils.attachBaseContext(newBase,language));
+        }
     }
 
     @Override

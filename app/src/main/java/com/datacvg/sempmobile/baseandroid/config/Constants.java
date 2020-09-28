@@ -39,6 +39,14 @@ public class Constants {
     public final static int SERVICE_CODE_FAIL_FOR_TOKEN = 401 ;
 
     /**
+     * 应用语言
+     */
+    public final static String APP_LANGUAGE = "APP_LANGUAGE" ;
+    public final static String LANGUAGE_CHINESE = "zh" ;
+    public final static String LANGUAGE_ENGLISH = "en" ;
+    public final static String LANGUAGE_AUTO = "auto" ;
+
+    /**
      * vpn模式
      */
     public final static String VPN_MODEL_EASY = "easyapp" ;

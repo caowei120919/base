@@ -64,6 +64,16 @@
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait">
         </activity>
+
+        <activity android:name=".activity.SettingActivity"
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name=".activity.LanguageSettingActivity"
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>
