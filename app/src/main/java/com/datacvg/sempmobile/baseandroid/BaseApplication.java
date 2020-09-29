@@ -94,15 +94,17 @@ public class BaseApplication extends Application {
         }
         String[] module_title = this.getResources().getStringArray(R.array.module_title) ;
         String[] module_id = this.getResources().getStringArray(R.array.module_id) ;
+        String[] module_fragment = this.getResources().getStringArray(R.array.module_fragment);
         for (int i = 0; i < module_title.length; i ++){
             ModuleInfo moduleInfo = new ModuleInfo();
             moduleInfo.setModule_id(i);
             moduleInfo.setModule_name(module_title[i]);
             moduleInfo.setModule_res_id(module_id[i]);
             moduleInfo.setModule_checked(i != 4);
-            moduleInfo.setModule_permission(true || false);
+            moduleInfo.setModule_permission(i==5 || false);
             moduleInfo.setModule_normal_res(normalIds[i]);
             moduleInfo.setModule_selected_res(selectedIds[i]);
+            moduleInfo.setModule_fragment_name(module_fragment[i]);
             DbModuleInfoController.getInstance(this).insertModuleInfo(moduleInfo);
         }
     }
@@ -112,6 +114,14 @@ public class BaseApplication extends Application {
      */
     private void registerFlutter() {
 
+    }
+
+    public static RefWatcher getRefWatcher(Context context) {
+        // LeakCanary: Detect all memory leaks!
+        // LeakCanary.install() returns a pre configured RefWatcher. It also
+        // installs an ActivityRefWatcher that automatically detects if an activity is
+        // leaking after Activity.onDestroy() has been called.
+        return mRefWatcher;
     }
 
     public static void setDebugMode(boolean debugmode) {

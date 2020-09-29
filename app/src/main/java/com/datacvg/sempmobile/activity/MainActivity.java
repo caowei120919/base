@@ -3,10 +3,10 @@ package com.datacvg.sempmobile.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-
+import android.widget.ImageView;
+import androidx.fragment.app.Fragment;
 import com.datacvg.sempmobile.R;
 import com.datacvg.sempmobile.baseandroid.greendao.bean.ModuleInfo;
 import com.datacvg.sempmobile.baseandroid.greendao.controller.DbModuleInfoController;
@@ -14,11 +14,19 @@ import com.datacvg.sempmobile.baseandroid.utils.StatusBarUtil;
 import com.datacvg.sempmobile.baseandroid.utils.ToastUtils;
 import com.datacvg.sempmobile.bean.ModuleBean;
 import com.datacvg.sempmobile.bean.ModuleListBean;
+import com.datacvg.sempmobile.fragment.ActionFragment;
+import com.datacvg.sempmobile.fragment.DigitalFragment;
+import com.datacvg.sempmobile.fragment.PersonalFragment;
+import com.datacvg.sempmobile.fragment.ReportFragment;
+import com.datacvg.sempmobile.fragment.ScreenFragment;
+import com.datacvg.sempmobile.fragment.TableFragment;
 import com.datacvg.sempmobile.presenter.MainPresenter;
 import com.datacvg.sempmobile.view.MainView;
-
+import com.next.easynavigation.view.EasyNavigationBar;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 
@@ -28,11 +36,21 @@ import butterknife.BindView;
  * @Description :主页，
  */
 public class MainActivity extends BaseActivity<MainView, MainPresenter> implements MainView {
-    @BindView(R.id.radio_module)
-    RadioGroup tabModule;
+    @BindView(R.id.easy_tab)
+    EasyNavigationBar tabModule;
 
-    @BindView(R.id.content)
-    FrameLayout content ;
+    private PersonalFragment personalFragment ;
+    private ScreenFragment screenFragment ;
+    private DigitalFragment digitalFragment ;
+    private ReportFragment reportFragment ;
+    private TableFragment tableFragment ;
+    private ActionFragment actionFragment ;
+
+    String[] titles ;
+    int[] normalIcons ;
+    int[] selectIcons ;
+    private List<Fragment> fragments = new ArrayList<>();
+    private Map<String,Fragment> fragmentMap = new HashMap<>();
 
     /**
      *记录返回键点击时间
@@ -57,7 +75,43 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Override
     protected void setupData(Bundle savedInstanceState) {
+        buildFragment();
         getPresenter().getPermissionModule();
+    }
+
+    /**
+     * fragment初始化
+     */
+    private void buildFragment() {
+        if(null == personalFragment){
+            personalFragment = new PersonalFragment();
+        }
+        fragmentMap.put(personalFragment.getClass().getSimpleName(),personalFragment);
+
+        if (null == screenFragment){
+            screenFragment = new ScreenFragment();
+        }
+        fragmentMap.put(screenFragment.getClass().getSimpleName(),screenFragment);
+
+        if(null == digitalFragment){
+            digitalFragment = new DigitalFragment();
+        }
+        fragmentMap.put(digitalFragment.getClass().getSimpleName(),digitalFragment);
+
+        if (null == reportFragment){
+            reportFragment = new ReportFragment();
+        }
+        fragmentMap.put(reportFragment.getClass().getSimpleName(),reportFragment);
+
+        if(null == tableFragment){
+            tableFragment = new TableFragment();
+        }
+        fragmentMap.put(tableFragment.getClass().getSimpleName(),tableFragment);
+
+        if (null == actionFragment){
+            actionFragment = new ActionFragment();
+        }
+        fragmentMap.put(actionFragment.getClass().getSimpleName(),actionFragment);
     }
 
     /**
@@ -106,8 +160,45 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
      */
     private void buildTab() {
         moduleBeans = DbModuleInfoController.getInstance(mContext).getSelectedModuleList();
-        for (int i = 0 ; i < moduleBeans.size() ; i++){
-            RadioButton radioButton = new RadioButton(mContext);
+        for (ModuleInfo info : moduleBeans){
+            fragments.add(fragmentMap.get(info.getModule_fragment_name()));
         }
+        titles = new String[moduleBeans.size()];
+        normalIcons = new int[moduleBeans.size()];
+        selectIcons = new int[moduleBeans.size()];
+        for (int i = 0 ; i < moduleBeans.size() ; i++){
+            titles[i] = moduleBeans.get(i).getModule_name();
+            normalIcons[i] = moduleBeans.get(i).getModule_normal_res();
+            selectIcons[i] = moduleBeans.get(i).getModule_selected_res();
+        }
+        tabModule.defaultSetting()
+                .titleItems(titles)
+                .normalTextColor(resources.getColor(R.color.c_999999))
+                .selectTextColor(resources.getColor(R.color.c_da3a16))
+                .tabTextSize(10)
+                .iconSize(20)
+                .tabTextTop(2)
+                .normalIconItems(normalIcons)
+                .selectIconItems(selectIcons)
+                .scaleType(ImageView.ScaleType.CENTER_INSIDE)
+                .navigationBackground(resources.getColor(R.color.c_FFFFFF))
+                .setOnTabClickListener(new EasyNavigationBar.OnTabClickListener() {
+                    @Override
+                    public boolean onTabSelectEvent(View view, int position) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onTabReSelectEvent(View view, int position) {
+                        return false;
+                    }
+                })
+                .smoothScroll(false)
+                .canScroll(false)
+                .mode(EasyNavigationBar.NavigationMode.MODE_NORMAL)
+                .hasPadding(true)
+                .fragmentList(fragments)
+                .fragmentManager(getSupportFragmentManager())
+                .build();
     }
 }

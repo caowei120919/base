@@ -1,7 +1,6 @@
 package com.datacvg.sempmobile.baseandroid.greendao.bean;
 
 import androidx.annotation.Keep;
-
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
@@ -50,10 +49,13 @@ public class ModuleInfo {
      */
     private int module_normal_res ;
 
-    @Generated(hash = 703675415)
+    private String module_fragment_name ;
+
+    @Generated(hash = 1284691047)
     public ModuleInfo(long module_id, String module_name, String module_res_id,
             boolean module_checked, boolean module_permission,
-            int module_selected_res, int module_normal_res) {
+            int module_selected_res, int module_normal_res,
+            String module_fragment_name) {
         this.module_id = module_id;
         this.module_name = module_name;
         this.module_res_id = module_res_id;
@@ -61,6 +63,7 @@ public class ModuleInfo {
         this.module_permission = module_permission;
         this.module_selected_res = module_selected_res;
         this.module_normal_res = module_normal_res;
+        this.module_fragment_name = module_fragment_name;
     }
 
     @Generated(hash = 188743430)
@@ -123,5 +126,11 @@ public class ModuleInfo {
         this.module_normal_res = module_normal_res;
     }
 
-    
+    public String getModule_fragment_name() {
+        return this.module_fragment_name;
+    }
+
+    public void setModule_fragment_name(String module_fragment_name) {
+        this.module_fragment_name = module_fragment_name;
+    }
 }

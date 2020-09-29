@@ -56,4 +56,13 @@
     </string>
     <string name="please_select_four_module">Please Select The Modules, Up To 4, Drag To Sort</string>
     <string name="select_up_to_four_modules">Select up to 4 modules</string>
+    <string name="your_system_version_is_too_low_to_support_fingerprint_functionality">
+        Your system version is too low to support fingerprint functionality
+    </string>
+    <string name="your_mobile_phone_does_not_support_fingerprint_function">
+        Your mobile phone does not support fingerprint function
+    </string>
+    <string name="you_need_to_add_at_least_one_fingerprint_to_your_system_settings">
+        You need to add at least one fingerprint to your system Settings
+    </string>
 </resources>

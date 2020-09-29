@@ -10,6 +10,15 @@
         <item>个人中心</item>
     </string-array>
 
+    <string-array name="module_fragment">
+        <item>DigitalFragment</item>
+        <item>ReportFragment</item>
+        <item>TableFragment</item>
+        <item>ActionFragment</item>
+        <item>ScreenFragment</item>
+        <item>PersonalFragment</item>
+    </string-array>
+
     <!--模块id-->
     <string-array name="module_id">
         <item>984334190737608058406</item>

@@ -3,11 +3,16 @@ package com.datacvg.sempmobile.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.SwitchCompat;
 
 import com.datacvg.sempmobile.BuildConfig;
 import com.datacvg.sempmobile.R;
 import com.datacvg.sempmobile.baseandroid.utils.CacheUtils;
+import com.datacvg.sempmobile.baseandroid.utils.FingerPrintUtils;
+import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.baseandroid.utils.StatusBarUtil;
 import com.datacvg.sempmobile.presenter.SettingPresenter;
 import com.datacvg.sempmobile.view.SettingView;
@@ -31,6 +36,9 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
     @BindView(R.id.tv_cache)
     TextView tvCache ;
 
+    @BindView(R.id.switch_fingerprint)
+    SwitchCompat switchFingerprint ;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_setting;
@@ -52,9 +60,18 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
     protected void setupData(Bundle savedInstanceState) {
         tvVersion.setText(BuildConfig.VERSION_NAME);
         tvCache.setText(CacheUtils.getTotalCacheSize(mContext));
+
+        switchFingerprint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (FingerPrintUtils.supportFingerprint(mContext)){
+
+                }
+            }
+        });
     }
 
-    @OnClick({R.id.img_left,R.id.rel_clearCache,R.id.switch_login,R.id.rel_language
+    @OnClick({R.id.img_left,R.id.rel_clearCache,R.id.rel_language
             ,R.id.rel_moduleSetting})
     public void OnCLick(View view){
         switch (view.getId()){
@@ -67,13 +84,6 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
              */
             case R.id.rel_clearCache :
                     CacheUtils.clearAllCache(mContext);
-                break;
-
-            /**
-             * 开启关闭指纹登录
-             */
-            case R.id.switch_login :
-
                 break;
 
             /**

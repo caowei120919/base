@@ -1,27 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <FrameLayout
-        android:id="@+id/content"
-        android:layout_weight="1"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.next.easynavigation.view.EasyNavigationBar
+        android:id="@+id/easy_tab"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </FrameLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/H2"
-        android:background="@color/c_ffeeeeee">
-    </TextView>
-
-    <RadioGroup
-        android:id="@+id/radio_module"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/H100"
-        android:background="@color/c_FFFFFF"
-        android:gravity="center">
-    </RadioGroup>
-</LinearLayout>
+        app:Easy_navigationHeight="@dimen/H100"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+    </com.next.easynavigation.view.EasyNavigationBar>
+</androidx.constraintlayout.widget.ConstraintLayout>

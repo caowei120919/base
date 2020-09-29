@@ -140,8 +140,8 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
                 break;
 
             case R.id.tv_settingVpn :
-                    startActivity(new Intent(mContext,SettingActivity.class));
-//                    startActivity(new Intent(mContext,SettingVpnActivity.class));
+//                    startActivity(new Intent(mContext,SettingActivity.class));
+                    startActivity(new Intent(mContext,SettingVpnActivity.class));
                 break;
         }
     }

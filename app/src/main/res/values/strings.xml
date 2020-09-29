@@ -49,4 +49,13 @@
     </string>
     <string name="please_select_four_module">请选择您常用的模块，最多4个，顺序长按可拖动</string>
     <string name="select_up_to_four_modules">最多可选择4个模块</string>
+    <string name="your_system_version_is_too_low_to_support_fingerprint_functionality">
+        您的系统版本过低，不支持指纹功能
+    </string>
+    <string name="your_mobile_phone_does_not_support_fingerprint_function">
+        您的手机不支持指纹功能
+    </string>
+    <string name="you_need_to_add_at_least_one_fingerprint_to_your_system_settings">
+        您至少需要在系统设置中添加一个指纹
+    </string>
 </resources>
