@@ -74,6 +74,11 @@
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait">
         </activity>
+
+        <activity android:name=".activity.ModuleSettingActivity"
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

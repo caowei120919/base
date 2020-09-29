@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 模块名称-->
+    <string-array name="module_title">
+        <item>Digital nervous</item>
+        <item>Management of the canvas</item>
+        <item>The theme report</item>
+        <item>The action plan</item>
+        <item>Digital screen</item>
+        <item>Personal center</item>
+    </string-array>
+
+    <!--模块id-->
+    <string-array name="module_id">
+        <item>984334190737608058406</item>
+        <item>586179787115851444628</item>
+        <item>141776322849706849</item>
+        <item>984340827973376254805</item>
+        <item>1937145860555486918436</item>
+        <item>00000000000000001</item>
+    </string-array>
+
+    <!--语言-->
+    <string-array name="language_name">
+        <item>automatic</item>
+        <item>Chinese</item>
+        <item>English</item>
+    </string-array>
+
+    <string-array name="language_value">
+        <item>auto</item>
+        <item>zh</item>
+        <item>en</item>
+    </string-array>
+
+</resources>

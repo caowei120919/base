@@ -54,7 +54,8 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
         tvCache.setText(CacheUtils.getTotalCacheSize(mContext));
     }
 
-    @OnClick({R.id.img_left,R.id.rel_clearCache,R.id.switch_login,R.id.rel_language})
+    @OnClick({R.id.img_left,R.id.rel_clearCache,R.id.switch_login,R.id.rel_language
+            ,R.id.rel_moduleSetting})
     public void OnCLick(View view){
         switch (view.getId()){
             case R.id.img_left :
@@ -80,6 +81,13 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
              */
             case R.id.rel_language :
                 startActivity(new Intent(mContext,LanguageSettingActivity.class));
+                break;
+
+            /**
+             * 模块设置
+             */
+            case R.id.rel_moduleSetting :
+                startActivity(new Intent(mContext,ModuleSettingActivity.class));
                 break;
         }
     }

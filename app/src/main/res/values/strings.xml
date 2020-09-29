@@ -47,4 +47,6 @@
     <string name="are_you_sure_you_want_to_change_the_application_language">
         您确定要更换应用语言吗?
     </string>
+    <string name="please_select_four_module">请选择您常用的模块，最多4个，顺序长按可拖动</string>
+    <string name="select_up_to_four_modules">最多可选择4个模块</string>
 </resources>

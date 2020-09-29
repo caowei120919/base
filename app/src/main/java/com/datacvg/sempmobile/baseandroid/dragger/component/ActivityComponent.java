@@ -6,6 +6,7 @@ import android.app.Activity;
 import com.datacvg.sempmobile.activity.LanguageSettingActivity;
 import com.datacvg.sempmobile.activity.LoginActivity;
 import com.datacvg.sempmobile.activity.MainActivity;
+import com.datacvg.sempmobile.activity.ModuleSettingActivity;
 import com.datacvg.sempmobile.activity.QRCodeActivity;
 import com.datacvg.sempmobile.activity.ScanActivity;
 import com.datacvg.sempmobile.activity.SettingActivity;
@@ -39,4 +40,6 @@ public interface ActivityComponent {
     void inject(SettingActivity settingActivity);
 
     void inject(LanguageSettingActivity languageSettingActivity);
+
+    void inject(ModuleSettingActivity moduleSettingActivity);
 }

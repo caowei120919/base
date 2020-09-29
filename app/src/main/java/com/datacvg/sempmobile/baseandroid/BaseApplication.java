@@ -100,7 +100,7 @@ public class BaseApplication extends Application {
             moduleInfo.setModule_name(module_title[i]);
             moduleInfo.setModule_res_id(module_id[i]);
             moduleInfo.setModule_checked(i != 4);
-            moduleInfo.setModule_permission(i == 5 || false);
+            moduleInfo.setModule_permission(true || false);
             moduleInfo.setModule_normal_res(normalIds[i]);
             moduleInfo.setModule_selected_res(selectedIds[i]);
             DbModuleInfoController.getInstance(this).insertModuleInfo(moduleInfo);

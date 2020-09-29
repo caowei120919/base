@@ -122,4 +122,6 @@ public class ModuleInfo {
     public void setModule_normal_res(int module_normal_res) {
         this.module_normal_res = module_normal_res;
     }
+
+    
 }

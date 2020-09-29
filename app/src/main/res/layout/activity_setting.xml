@@ -80,6 +80,7 @@
     </View>
 
     <RelativeLayout
+        android:id="@+id/rel_moduleSetting"
         android:layout_width="match_parent"
         android:layout_height="@dimen/H110"
         android:layout_marginLeft="@dimen/W40"
@@ -174,6 +175,7 @@
         <TextView
             android:id="@+id/tv_cache"
             android:layout_width="wrap_content"
+            android:textColor="@color/c_333333"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center">
@@ -211,6 +213,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
+            android:textColor="@color/c_333333"
             android:text="5.0.X"
             android:layout_alignParentRight="true">
         </TextView>

@@ -54,4 +54,6 @@
     <string name="are_you_sure_you_want_to_change_the_application_language">
         Are you sure you want to change the application language ?
     </string>
+    <string name="please_select_four_module">Please Select The Modules, Up To 4, Drag To Sort</string>
+    <string name="select_up_to_four_modules">Select up to 4 modules</string>
 </resources>
