@@ -58,8 +58,8 @@ public class MyOkhttpHelper {
                 .connectTimeout(60, TimeUnit.SECONDS)
                 .readTimeout(60,TimeUnit.SECONDS)
                 .writeTimeout(60,TimeUnit.SECONDS)
-                .sslSocketFactory(SSLSocketClient.getSSLSocketFactory())//配置
-                .hostnameVerifier(SSLSocketClient.getHostnameVerifier())//配置
+                .sslSocketFactory(SSLSocketClient.getSSLSocketFactory())
+                .hostnameVerifier(SSLSocketClient.getHostnameVerifier())
 //                .addInterceptor(userAgentInterceptor)
                 .addInterceptor(headerInterceptor);
 

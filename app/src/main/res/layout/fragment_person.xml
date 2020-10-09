@@ -1,12 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/c_FFFFFF">
+
+    <include layout="@layout/actionbar_title"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H284"
+        android:layout_marginTop="@dimen/H75"
+        android:background="@mipmap/account_header_bg">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circle_head"
+            android:layout_width="@dimen/H174"
+            android:layout_height="@dimen/H174"
+            android:layout_marginTop="@dimen/H20"
+            android:layout_marginLeft="@dimen/W60">
+        </de.hdodenhof.circleimageview.CircleImageView>
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/circle_head"
+            android:layout_marginLeft="@dimen/W80"
+            android:textSize="20sp"
+            android:textColor="@color/c_000000"
+            tools:text="舒婷">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_companyName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tv_name"
+            android:layout_below="@id/tv_name"
+            android:textSize="16sp"
+            android:layout_marginTop="@dimen/H16"
+            android:textColor="@color/c_000000"
+            tools:text="舒婷">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_jobName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tv_name"
+            android:layout_below="@id/tv_companyName"
+            android:textSize="16sp"
+            android:drawableRight="@mipmap/choose_job"
+            android:drawablePadding="@dimen/W32"
+            android:layout_marginTop="@dimen/H56"
+            android:textColor="@color/c_666666"
+            tools:text="舒婷">
+        </TextView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rel_message"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H110"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginRight="@dimen/W24">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/H110"
+            android:text="@string/the_message_center"
+            android:gravity="center_vertical"
+            android:textColor="@color/c_333333"
+            android:textSize="14sp"
+            android:drawableLeft="@mipmap/person_message"
+            android:drawablePadding="@dimen/W40">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/W16"
+            android:layout_toLeftOf="@id/img_next">
+        </TextView>
+
+        <ImageView
+            android:id="@+id/img_next"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/person_next"
+            android:layout_alignParentRight="true">
+        </ImageView>
+    </RelativeLayout>
+
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="person"
-        android:textSize="30sp"
-        android:gravity="center"
-        android:textColor="@color/c_000000">
+        android:layout_height="@dimen/H2"
+        android:background="@color/c_f2f2f2"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginRight="@dimen/W24">
     </TextView>
-</RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rel_setting"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H110"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginRight="@dimen/W24">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/H110"
+            android:text="@string/set_up_the"
+            android:gravity="center_vertical"
+            android:textColor="@color/c_333333"
+            android:textSize="14sp"
+            android:drawableLeft="@mipmap/person_setting"
+            android:drawablePadding="@dimen/W40">
+        </TextView>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/person_next"
+            android:layout_alignParentRight="true">
+        </ImageView>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H2"
+        android:background="@color/c_f2f2f2"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginRight="@dimen/W24">
+    </TextView>
+
+    <RelativeLayout
+        android:id="@+id/rel_feedback"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H110"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginRight="@dimen/W24">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/H110"
+            android:text="@string/feedback"
+            android:gravity="center_vertical"
+            android:textColor="@color/c_333333"
+            android:textSize="14sp"
+            android:drawableLeft="@mipmap/person_feedback"
+            android:drawablePadding="@dimen/W40">
+        </TextView>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/person_next"
+            android:layout_alignParentRight="true">
+        </ImageView>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H2"
+        android:background="@color/c_f2f2f2"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginRight="@dimen/W24">
+    </TextView>
+
+    <RelativeLayout
+        android:id="@+id/rel_logout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H110"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginRight="@dimen/W24">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/H110"
+            android:text="@string/log_out"
+            android:gravity="center_vertical"
+            android:textColor="@color/c_333333"
+            android:textSize="14sp"
+            android:drawableLeft="@mipmap/person_loginout"
+            android:drawablePadding="@dimen/W40">
+        </TextView>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/person_next"
+            android:layout_alignParentRight="true">
+        </ImageView>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H2"
+        android:background="@color/c_f2f2f2"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginRight="@dimen/W24">
+    </TextView>
+</LinearLayout>

@@ -80,6 +80,8 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                             Constants.BASE_MOBILE_URL = bean.getHttpServer() ;
                             Constants.BASE_UPLOAD_URL = bean.getUpdateURL() ;
 
+
+                            RetrofitUrlManager.getInstance().setRun(true);
                             RetrofitUrlManager.getInstance()
                                     .setGlobalDomain(Constants.BASE_MOBILE_URL);
                             RetrofitUrlManager.getInstance()

@@ -1,6 +1,7 @@
 package com.datacvg.sempmobile.fragment;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,7 @@ public abstract class BaseFragment<V extends MvpView,P extends MvpPresenter<V>>
 
     protected Unbinder mUnbinder;
     protected Context mContext ;
+    protected Resources resources ;
     private FragmentComponent mFragmentComponent;
 
 
@@ -67,6 +69,7 @@ public abstract class BaseFragment<V extends MvpView,P extends MvpPresenter<V>>
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutId(), container,false);
         mContext = getActivity() ;
+        resources = mContext.getResources() ;
         mUnbinder = ButterKnife.bind(this, view);
         EventBus.getDefault().register(this);
         return view;

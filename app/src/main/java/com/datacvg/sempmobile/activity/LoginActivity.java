@@ -132,15 +132,12 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
                             .getString(R.string.please_enter_your_password));
                     return;
                 }
-                if(cbUserVPN.isChecked()){
-
-                }else {
+                if(!cbUserVPN.isChecked()){
                     getPresenter().checkUrlOrVersion(companyCode,userName,password);
                 }
                 break;
 
             case R.id.tv_settingVpn :
-//                    startActivity(new Intent(mContext,SettingActivity.class));
                     startActivity(new Intent(mContext,SettingVpnActivity.class));
                 break;
         }

@@ -89,7 +89,7 @@ public class DbModuleInfoController {
      * 去除个人中心，可选择模块
      * @return
      */
-    public List<ModuleInfo> getModuleList() {
+    public List<ModuleInfo> getPermissionModuleList() {
         DaoMaster daoMaster = new DaoMaster(getReadableDatabase());
         DaoSession daoSession = daoMaster.newSession();
         ModuleInfoDao moduleInfoDao = daoSession.getModuleInfoDao();
@@ -106,6 +106,15 @@ public class DbModuleInfoController {
         ModuleInfoDao moduleInfoDao = daoSession.getModuleInfoDao();
         QueryBuilder<ModuleInfo> qb = moduleInfoDao.queryBuilder();
         qb.where(ModuleInfoDao.Properties.Module_checked.eq(true));
+        List<ModuleInfo> list = qb.list();
+        return list;
+    }
+
+    public List<ModuleInfo> getModuleList() {
+        DaoMaster daoMaster = new DaoMaster(getReadableDatabase());
+        DaoSession daoSession = daoMaster.newSession();
+        ModuleInfoDao moduleInfoDao = daoSession.getModuleInfoDao();
+        QueryBuilder<ModuleInfo> qb = moduleInfoDao.queryBuilder();
         List<ModuleInfo> list = qb.list();
         return list;
     }

@@ -79,6 +79,11 @@
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait">
         </activity>
+
+        <activity android:name=".activity.MyIndexActivity"
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

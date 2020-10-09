@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import androidx.fragment.app.Fragment;
 import com.datacvg.sempmobile.R;
@@ -14,6 +13,7 @@ import com.datacvg.sempmobile.baseandroid.utils.StatusBarUtil;
 import com.datacvg.sempmobile.baseandroid.utils.ToastUtils;
 import com.datacvg.sempmobile.bean.ModuleBean;
 import com.datacvg.sempmobile.bean.ModuleListBean;
+import com.datacvg.sempmobile.event.LoginOutEvent;
 import com.datacvg.sempmobile.fragment.ActionFragment;
 import com.datacvg.sempmobile.fragment.DigitalFragment;
 import com.datacvg.sempmobile.fragment.PersonalFragment;
@@ -23,6 +23,10 @@ import com.datacvg.sempmobile.fragment.TableFragment;
 import com.datacvg.sempmobile.presenter.MainPresenter;
 import com.datacvg.sempmobile.view.MainView;
 import com.next.easynavigation.view.EasyNavigationBar;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -200,5 +204,11 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                 .fragmentList(fragments)
                 .fragmentManager(getSupportFragmentManager())
                 .build();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(LoginOutEvent event){
+        mContext.startActivity(new Intent(mContext, LoginActivity.class));
+        finish();
     }
 }

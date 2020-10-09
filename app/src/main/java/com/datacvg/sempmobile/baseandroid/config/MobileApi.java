@@ -4,10 +4,14 @@ import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.sempmobile.bean.ModuleListBean;
 import com.datacvg.sempmobile.bean.UserLoginBean;
 import java.util.Map;
+import java.util.function.DoubleUnaryOperator;
+
 import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
+
 /**
  * @Author : T-Bag (茶包)
  * @Time : 2020-07-28
@@ -29,4 +33,19 @@ public interface MobileApi {
      */
     @GET("usermodel/usermodellist")
     Observable<BaseBean<ModuleListBean>> getPermissionModule();
+
+    /**
+     * 登出
+     * @return
+     */
+    @GET("login/userloginout")
+    Observable<BaseBean> loginOut();
+
+    /**
+     * 获取用户关联岗位信息
+     * @param userPkid  用户标识id
+     * @return
+     */
+    @GET("login/userposition")
+    Observable<BaseBean<String>> getJob(@Query("userPkid") String userPkid);
 }

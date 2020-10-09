@@ -65,4 +65,12 @@
     <string name="you_need_to_add_at_least_one_fingerprint_to_your_system_settings">
         You need to add at least one fingerprint to your system Settings
     </string>
+    <string name="the_message_center">The message center</string>
+    <string name="set_up_the">Set up the</string>
+    <string name="feedback">feedback</string>
+    <string name="log_out">Log out</string>
+    <string name="personal_center">Personal center</string>
+    <string name="year">years</string>
+    <string name="month">month</string>
+    <string name="day">day</string>
 </resources>

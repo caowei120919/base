@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.datacvg.sempmobile.R;
-import com.datacvg.sempmobile.adapter.LanguageAdapter;
 import com.datacvg.sempmobile.adapter.ModuleAdapter;
 import com.datacvg.sempmobile.baseandroid.greendao.bean.ModuleInfo;
 import com.datacvg.sempmobile.baseandroid.greendao.controller.DbModuleInfoController;
@@ -59,7 +58,7 @@ public class ModuleSettingActivity extends BaseActivity<ModuleSettingView, Modul
 
     @Override
     protected void setupData(Bundle savedInstanceState) {
-        moduleInfos = DbModuleInfoController.getInstance(mContext).getModuleList();
+        moduleInfos = DbModuleInfoController.getInstance(mContext).getPermissionModuleList();
         for (ModuleInfo bean:moduleInfos) {
             PLog.e(bean.getModule_name());
         }

@@ -17,6 +17,11 @@ public class TimeUtils {
     public static String FORMAT_Y = "yyyy";
 
     /**
+     * 英文简写如：2010
+     */
+    public static String FORMAT_YM = "yyyyMM";
+
+    /**
      * 英文简写如：12:01
      */
     public static String FORMAT_HM = "HH:mm";
@@ -55,6 +60,11 @@ public class TimeUtils {
      * 中文简写  如：2010年12月01日
      */
     public static String FORMAT_YMD_CN = "yyyy年MM月dd日";
+
+    /**
+     * 中文简写  如：2010年12月01日
+     */
+    public static String FORMAT_YM_CN = "yyyy年MM月";
 
     /**
      * 中文简写  如：2010年12月01日  12时
@@ -270,6 +280,11 @@ public class TimeUtils {
     }
 
 
+    public static int getYear(Date date){
+        calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.YEAR) ;
+    }
 
     /**
      * 功能描述：返回月
@@ -328,10 +343,8 @@ public class TimeUtils {
      * @return  默认的格式
      */
     public static String getDatePattern() {
-
-        return FORMAT_YMDHMS;
+        return FORMAT_YM;
     }
-
 
     /**
      * 返回秒钟
@@ -355,7 +368,12 @@ public class TimeUtils {
      */
     public static Date parse(String strDate) {
         return parse(strDate, getDatePattern());
+    }
 
+    public static String getNewStrDateForStr(String oldDate,String pattern){
+        Date date = parse(oldDate);
+        String newDate = date2Str(date,pattern);
+        return newDate;
     }
 
 
