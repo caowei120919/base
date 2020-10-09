@@ -1,12 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
-    <TextView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="report"
-        android:textSize="30sp"
-        android:gravity="center"
-        android:textColor="@color/c_000000">
-    </TextView>
+        android:layout_height="?actionBarSize"
+        android:background="@color/c_FFFFFF">
+
+        <ImageView
+            android:id="@+id/img_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:scaleType="center"
+            android:paddingLeft="@dimen/W30"
+            android:paddingRight="@dimen/W30">
+        </ImageView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true">
+
+            <TextView
+                android:id="@+id/divider"
+                android:layout_width="@dimen/W2"
+                android:layout_height="match_parent"
+                android:background="@color/c_d8d8d8"
+                android:layout_marginTop="@dimen/H30"
+                android:layout_marginBottom="@dimen/H30"
+                android:layout_centerInParent="true">
+            </TextView>
+
+            <TextView
+                android:id="@+id/tv_reportOfMine"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:textSize="16sp"
+                android:text="@string/my_report"
+                android:paddingLeft="@dimen/W30"
+                android:paddingRight="@dimen/W30"
+                android:singleLine="true"
+                android:layout_toLeftOf="@id/divider"
+                android:textColor="@drawable/selector_report"
+                android:gravity="center">
+            </TextView>
+
+            <TextView
+                android:id="@+id/tv_reportToShare"
+                android:layout_toRightOf="@id/divider"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:textSize="16sp"
+                android:paddingLeft="@dimen/W30"
+                android:paddingRight="@dimen/W30"
+                android:singleLine="true"
+                android:text="@string/share_the_report"
+                android:textColor="@drawable/selector_report"
+                android:gravity="center">
+            </TextView>
+        </RelativeLayout>
+
+    </RelativeLayout>
 </RelativeLayout>

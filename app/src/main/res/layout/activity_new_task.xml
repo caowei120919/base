@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c_FFFFFF"
+    android:orientation="vertical">
+
+    <include layout="@layout/actionbar_title"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/H100"
+                android:background="@color/c_f8f8fa"
+                android:drawableLeft="@mipmap/task_date"
+                android:gravity="center_vertical"
+                android:textColor="@color/c_303030"
+                android:textSize="16sp"
+                android:drawablePadding="@dimen/W70"
+                android:text="@string/expiration_date"
+                android:paddingLeft="@dimen/W90">
+            </TextView>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/H108"
+                android:layout_below="@id/tv_date"
+                android:layout_marginTop="@dimen/H64"
+                android:background="@drawable/shape_task"
+                android:layout_marginLeft="@dimen/W60"
+                android:layout_marginRight="@dimen/W60">
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

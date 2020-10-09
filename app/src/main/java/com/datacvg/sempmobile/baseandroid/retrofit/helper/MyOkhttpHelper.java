@@ -84,7 +84,9 @@ public class MyOkhttpHelper {
             Request originalRequest = chain.request();
 
             Request.Builder newRequestBuilder = originalRequest.newBuilder();
-            newRequestBuilder.addHeader(Constants.authorization, Constants.token);
+            newRequestBuilder.addHeader(Constants.AUTHORIZATION, Constants.token);
+            newRequestBuilder.addHeader(Constants.LANG,PreferencesHelper
+                    .get(Constants.APP_LANGUAGE,"zh"));
             StringBuilder postString = new StringBuilder();
             if (RequestMethod.supportBody(originalRequest.method())) {
                 if (originalRequest.body() instanceof FormBody) {

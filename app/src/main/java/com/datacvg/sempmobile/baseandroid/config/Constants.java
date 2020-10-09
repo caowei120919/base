@@ -30,6 +30,7 @@ public class Constants {
     public static final String USER_ID = "USER_ID";
     public static final String USER_COMPANY_CODE = "USER_COMPANY_CODE";
     public static final String USER_CHECK_REMEMBER = "USER_CHECK_REMEMBER";
+    public static final String LANG = "LANG";
     public static String BASE_MOBILE_URL = "" ;
     public static String BASE_FIS_URL = "" ;
     public static String BASE_UPLOAD_URL = "" ;
@@ -45,6 +46,14 @@ public class Constants {
     public final static String LANGUAGE_CHINESE = "zh" ;
     public final static String LANGUAGE_ENGLISH = "en" ;
     public final static String LANGUAGE_AUTO = "auto" ;
+
+    /**
+     * 报告展示形式
+     */
+    public final static String REPORT_GRID = "REPORT_GRID" ;
+    public final static String REPORT_LIST = "REPORT_LIST" ;
+    public static final String REPORT_MINE = "MODEL";
+    public static final String REPORT_SHARE = "SHARE";
 
     /**
      * vpn模式
@@ -83,7 +92,7 @@ public class Constants {
     /**
      * 大屏展示链接服务器的url，登录获取api服务器地址的时候,使用返回值代替
      */
-    public static final String authorization = "Authorization" ;
+    public static final String AUTHORIZATION = "Authorization" ;
 
     public static String token = "" ;
 

@@ -9,6 +9,7 @@ import com.datacvg.sempmobile.baseandroid.config.MobileApi;
 import com.datacvg.sempmobile.baseandroid.retrofit.RxObserver;
 import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.sempmobile.baseandroid.utils.AndroidUtils;
+import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.baseandroid.utils.RxUtils;
 import com.datacvg.sempmobile.baseandroid.utils.StringUtils;
 import com.datacvg.sempmobile.baseandroid.utils.ToastUtils;
@@ -76,7 +77,8 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                         if(serviceBean != null && serviceBean.getAndroidresdata() != null){
                             ServiceBean.AndroidresdataBean bean = serviceBean.getAndroidresdata();
 
-                            Constants.BASE_FIS_URL = bean.getFisServer() ;
+                            Constants.BASE_FIS_URL = bean.getFisServer() + "/";
+                            PLog.e(Constants.BASE_FIS_URL);
                             Constants.BASE_MOBILE_URL = bean.getHttpServer() ;
                             Constants.BASE_UPLOAD_URL = bean.getUpdateURL() ;
 

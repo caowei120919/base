@@ -1,13 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c_FFFFFF"
+    android:orientation="vertical">
 
-    <TextView
+    <include layout="@layout/actionbar_title"/>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="action"
-        android:textSize="30sp"
-        android:gravity="center"
-        android:textColor="@color/c_000000">
-    </TextView>
-</RelativeLayout>
+        android:layout_height="@dimen/H75"
+        android:layout_marginLeft="@dimen/W25"
+        android:layout_marginRight="@dimen/W25"
+        android:layout_marginTop="@dimen/H8"
+        android:orientation="horizontal"
+        android:background="@drawable/layer_background">
+
+        <TextView
+            android:id="@+id/tv_all"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:singleLine="true"
+            android:text="@string/all_tasks"
+            android:textColor="@drawable/selector_report"
+            android:layout_height="match_parent">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_issued"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:singleLine="true"
+            android:text="@string/has_been_issued"
+            android:textColor="@drawable/selector_report"
+            android:layout_height="match_parent">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_received"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:singleLine="true"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:text="@string/have_received"
+            android:textColor="@drawable/selector_report"
+            android:layout_height="match_parent">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_wait"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:singleLine="true"
+            android:text="@string/to_receive"
+            android:textColor="@drawable/selector_report"
+            android:layout_height="match_parent">
+        </TextView>
+    </LinearLayout>
+</LinearLayout>

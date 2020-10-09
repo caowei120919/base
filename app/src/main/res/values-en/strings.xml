@@ -73,4 +73,15 @@
     <string name="year">years</string>
     <string name="month">month</string>
     <string name="day">day</string>
+    <string name="digital_nervous">Digital nervous</string>
+    <string name="my_report">My Reports</string>
+    <string name="share_the_report">Share the report</string>
+    <string name="action">action</string>
+    <string name="all_tasks">All tasks</string>
+    <string name="has_been_issued">Has been issued</string>
+    <string name="have_received">Have received</string>
+    <string name="to_receive">To receive</string>
+    <string name="a_new_task">A new task</string>
+    <string name="create">create</string>
+    <string name="expiration_date">expiration date：#1</string>
 </resources>

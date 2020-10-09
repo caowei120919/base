@@ -12,11 +12,16 @@ import com.datacvg.sempmobile.activity.SettingActivity;
 import com.datacvg.sempmobile.baseandroid.config.Constants;
 import com.datacvg.sempmobile.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.sempmobile.baseandroid.utils.StatusBarUtil;
+import com.datacvg.sempmobile.bean.UserJobsBean;
+import com.datacvg.sempmobile.bean.UserJobsListBean;
 import com.datacvg.sempmobile.event.LoginOutEvent;
 import com.datacvg.sempmobile.presenter.PersonPresenter;
 import com.datacvg.sempmobile.view.PersonView;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -45,6 +50,8 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
     @BindView(R.id.tv_jobName)
     TextView tvJobName ;
 
+    private List<UserJobsBean> userJobsBeans = new ArrayList<>();
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_person;
@@ -69,7 +76,6 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
         tvName.setText(PreferencesHelper.get(Constants.USER_NAME,""));
         tvCompanyName.setText(PreferencesHelper.get(Constants.USER_ORG_NAME,""));
         tvName.setText(PreferencesHelper.get(Constants.USER_NAME,""));
-//        String url =
         getPresenter().getJob(PreferencesHelper.get(Constants.USER_PKID,""));
     }
 
@@ -107,5 +113,19 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
         RetrofitUrlManager.getInstance().setRun(false);
 
         EventBus.getDefault().post(new LoginOutEvent());
+    }
+
+    /**
+     * 用户职位获取成功
+     * @param resdata
+     */
+    @Override
+    public void getUseJobsSuccess(UserJobsListBean resdata) {
+        userJobsBeans = resdata ;
+        for (UserJobsBean bean: resdata) {
+            if (bean.getUser_pkid().equals(PreferencesHelper.get(Constants.USER_PKID,""))){
+                tvJobName.setText(bean.getPost_clname());
+            }
+        }
     }
 }

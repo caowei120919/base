@@ -4,6 +4,7 @@ import com.datacvg.sempmobile.baseandroid.config.MobileApi;
 import com.datacvg.sempmobile.baseandroid.retrofit.RxObserver;
 import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.sempmobile.baseandroid.utils.RxUtils;
+import com.datacvg.sempmobile.bean.UserJobsListBean;
 import com.datacvg.sempmobile.view.PersonView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -54,15 +55,15 @@ public class PersonPresenter extends BasePresenter<PersonView> {
     public void getJob(String userPkid) {
         api.getJob(userPkid)
                 .compose(RxUtils.applySchedulersLifeCycle(getView()))
-                .subscribe(new RxObserver<BaseBean>(){
+                .subscribe(new RxObserver<BaseBean<UserJobsListBean>>(){
                     @Override
                     public void onComplete() {
                         super.onComplete();
                     }
 
                     @Override
-                    public void onNext(BaseBean bean) {
-                        getView().loginOutSuccess();
+                    public void onNext(BaseBean<UserJobsListBean> bean) {
+                        getView().getUseJobsSuccess(bean.getResdata());
                     }
 
                     @Override

@@ -2,6 +2,7 @@ package com.datacvg.sempmobile.baseandroid.config;
 
 import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.sempmobile.bean.ModuleListBean;
+import com.datacvg.sempmobile.bean.UserJobsListBean;
 import com.datacvg.sempmobile.bean.UserLoginBean;
 import java.util.Map;
 import java.util.function.DoubleUnaryOperator;
@@ -47,5 +48,5 @@ public interface MobileApi {
      * @return
      */
     @GET("login/userposition")
-    Observable<BaseBean<String>> getJob(@Query("userPkid") String userPkid);
+    Observable<BaseBean<UserJobsListBean>> getJob(@Query("userPkid") String userPkid);
 }

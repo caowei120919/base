@@ -66,4 +66,15 @@
     <string name="year">年</string>
     <string name="month">月</string>
     <string name="day">日</string>
+    <string name="digital_nervous">数字神经</string>
+    <string name="my_report">我的报告</string>
+    <string name="share_the_report">共享报告</string>
+    <string name="action">行动</string>
+    <string name="all_tasks">全部任务</string>
+    <string name="has_been_issued">已下达</string>
+    <string name="have_received">已接收</string>
+    <string name="to_receive">待接收</string>
+    <string name="a_new_task">新建任务</string>
+    <string name="create">创建</string>
+    <string name="expiration_date">截止日期：#1</string>
 </resources>

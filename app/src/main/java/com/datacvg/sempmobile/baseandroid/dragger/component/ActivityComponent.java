@@ -8,6 +8,7 @@ import com.datacvg.sempmobile.activity.LoginActivity;
 import com.datacvg.sempmobile.activity.MainActivity;
 import com.datacvg.sempmobile.activity.ModuleSettingActivity;
 import com.datacvg.sempmobile.activity.MyIndexActivity;
+import com.datacvg.sempmobile.activity.NewTaskActivity;
 import com.datacvg.sempmobile.activity.QRCodeActivity;
 import com.datacvg.sempmobile.activity.ScanActivity;
 import com.datacvg.sempmobile.activity.SettingActivity;
@@ -45,4 +46,6 @@ public interface ActivityComponent {
     void inject(ModuleSettingActivity moduleSettingActivity);
 
     void inject(MyIndexActivity myIndexActivity);
+
+    void inject(NewTaskActivity newTaskActivity);
 }
