@@ -84,4 +84,9 @@
     <string name="a_new_task">A new task</string>
     <string name="create">create</string>
     <string name="expiration_date">expiration date：#1</string>
+    <string name="the_theme_report">The theme report</string>
+    <string name="select_a_date">Select a date</string>
+    <string name="click_edit_task_Title">Click edit task Title (16 words only)</string>
+    <string name="screen">screen</string>
+    <string name="time_sequence">Time sequence</string>
 </resources>

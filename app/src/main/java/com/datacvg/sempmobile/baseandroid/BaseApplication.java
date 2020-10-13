@@ -26,6 +26,14 @@ import com.datacvg.sempmobile.baseandroid.utils.AndroidUtils;
 import com.datacvg.sempmobile.baseandroid.utils.LanguageUtils;
 import com.facebook.stetho.Stetho;
 import com.orhanobut.hawk.Hawk;
+import com.scwang.smart.refresh.footer.ClassicsFooter;
+import com.scwang.smart.refresh.header.ClassicsHeader;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshFooter;
+import com.scwang.smart.refresh.layout.api.RefreshHeader;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.DefaultRefreshFooterCreator;
+import com.scwang.smart.refresh.layout.listener.DefaultRefreshHeaderCreator;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -182,6 +190,22 @@ public class BaseApplication extends Application {
 
     public static void exitApp() {
         mAppManager.exitApp();
+    }
+
+    static {
+        SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
+            @Override
+            public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
+                layout.setPrimaryColorsId(R.color.c_999999, android.R.color.white);//全局设置主题颜色
+                return new ClassicsHeader(context);
+            }
+        });
+        SmartRefreshLayout.setDefaultRefreshFooterCreator(new DefaultRefreshFooterCreator() {
+            @Override
+            public RefreshFooter createRefreshFooter(Context context, RefreshLayout layout) {
+                return new ClassicsFooter(context).setDrawableSize(20);
+            }
+        });
     }
 
     public static void restartApp(@NonNull Activity activity) {

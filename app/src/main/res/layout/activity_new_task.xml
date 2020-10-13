@@ -30,16 +30,24 @@
                 android:paddingLeft="@dimen/W90">
             </TextView>
 
-            <RelativeLayout
+            <EditText
+                android:id="@+id/ed_title"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/H108"
                 android:layout_below="@id/tv_date"
                 android:layout_marginTop="@dimen/H64"
                 android:background="@drawable/shape_task"
+                android:drawableLeft="@mipmap/icon_add_task_title"
+                android:paddingLeft="@dimen/W50"
+                android:textColor="@color/c_000000"
+                android:textColorHint="@color/c_999999"
+                android:hint="@string/click_edit_task_Title"
+                android:drawablePadding="@dimen/W50"
+                android:textSize="14sp"
+                android:maxLength="16"
                 android:layout_marginLeft="@dimen/W60"
                 android:layout_marginRight="@dimen/W60">
-
-            </RelativeLayout>
+            </EditText>
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

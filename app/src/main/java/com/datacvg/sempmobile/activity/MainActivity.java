@@ -14,6 +14,7 @@ import com.datacvg.sempmobile.baseandroid.utils.ToastUtils;
 import com.datacvg.sempmobile.bean.ModuleBean;
 import com.datacvg.sempmobile.bean.ModuleListBean;
 import com.datacvg.sempmobile.event.LoginOutEvent;
+import com.datacvg.sempmobile.event.RebuildTableEvent;
 import com.datacvg.sempmobile.fragment.ActionFragment;
 import com.datacvg.sempmobile.fragment.DigitalFragment;
 import com.datacvg.sempmobile.fragment.PersonalFragment;
@@ -204,6 +205,11 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                 .fragmentList(fragments)
                 .fragmentManager(getSupportFragmentManager())
                 .build();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(RebuildTableEvent event){
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

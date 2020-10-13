@@ -13,14 +13,5 @@ import retrofit2.http.Query;
  * @Description :
  */
 public interface FisApi {
-    /**
-     * 查询报告
-     * @param reportType
-     * @param t
-     * @return
-     */
-    @Headers({"Domain-Name: fis_api"})
-    @GET("dataexporler/report/folder")
-    Observable<BaseBean<String>> getReport(@Query("type") String reportType,
-                                           @Query("_t") String t);
+
 }

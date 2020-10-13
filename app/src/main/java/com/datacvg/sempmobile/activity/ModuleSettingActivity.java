@@ -15,8 +15,11 @@ import com.datacvg.sempmobile.baseandroid.greendao.bean.ModuleInfo;
 import com.datacvg.sempmobile.baseandroid.greendao.controller.DbModuleInfoController;
 import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.baseandroid.utils.StatusBarUtil;
+import com.datacvg.sempmobile.event.RebuildTableEvent;
 import com.datacvg.sempmobile.presenter.ModuleSettingPresenter;
 import com.datacvg.sempmobile.view.ModuleSettingView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -85,6 +88,7 @@ public class ModuleSettingActivity extends BaseActivity<ModuleSettingView, Modul
                     moduleInfos.get(i).setModule_id(i);
                 }
                 DbModuleInfoController.getInstance(mContext).updateModuleInfoAll(moduleInfos);
+                EventBus.getDefault().post(new RebuildTableEvent());
                 finish();
                 break;
         }

@@ -1,6 +1,6 @@
 package com.datacvg.sempmobile.presenter;
 
-import com.datacvg.sempmobile.baseandroid.config.FisApi;
+import com.datacvg.sempmobile.baseandroid.config.MobileApi;
 import com.datacvg.sempmobile.baseandroid.retrofit.RxObserver;
 import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.sempmobile.baseandroid.utils.RxUtils;
@@ -14,10 +14,10 @@ import javax.inject.Inject;
  * @Description :
  */
 public class ReportPresenter extends BasePresenter<ReportView>{
-    private FisApi api ;
+    private MobileApi api ;
 
     @Inject
-    public ReportPresenter(FisApi api) {
+    public ReportPresenter(MobileApi api) {
         this.api = api ;
     }
 

@@ -6,8 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
 import com.datacvg.sempmobile.R;
+import com.datacvg.sempmobile.activity.ScanActivity;
 import com.datacvg.sempmobile.activity.SettingActivity;
 import com.datacvg.sempmobile.baseandroid.config.Constants;
 import com.datacvg.sempmobile.baseandroid.retrofit.helper.PreferencesHelper;
@@ -17,9 +20,7 @@ import com.datacvg.sempmobile.bean.UserJobsListBean;
 import com.datacvg.sempmobile.event.LoginOutEvent;
 import com.datacvg.sempmobile.presenter.PersonPresenter;
 import com.datacvg.sempmobile.view.PersonView;
-
 import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,10 +77,14 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
         tvName.setText(PreferencesHelper.get(Constants.USER_NAME,""));
         tvCompanyName.setText(PreferencesHelper.get(Constants.USER_ORG_NAME,""));
         tvName.setText(PreferencesHelper.get(Constants.USER_NAME,""));
+        GlideUrl imgUrl = new GlideUrl(Constants.BASE_MOBILE_URL + Constants.HEAD_IMG_URL
+                + PreferencesHelper.get(Constants.USER_PKID,"")
+                , new LazyHeaders.Builder().addHeader(Constants.AUTHORIZATION,Constants.token).build());
+        Glide.with(mContext).load(imgUrl).into(circleHead);
         getPresenter().getJob(PreferencesHelper.get(Constants.USER_PKID,""));
     }
 
-    @OnClick({R.id.rel_setting,R.id.rel_logout})
+    @OnClick({R.id.rel_setting,R.id.rel_logout,R.id.img_right})
     public void OnClick(View view){
         switch (view.getId()){
             /**
@@ -94,6 +99,10 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
              */
             case R.id.rel_logout :
                     getPresenter().loginOut();
+                break;
+
+            case R.id.img_right :
+                    mContext.startActivity(new Intent(mContext, ScanActivity.class));
                 break;
         }
     }

@@ -6,4 +6,72 @@
 
     <include layout="@layout/actionbar_title"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H2"
+        android:background="@color/c_f8f8fa">
+    </TextView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H120"
+        android:background="@color/c_FFFFFF"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_orgDimension"
+            android:layout_width="@dimen/W1"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_weight="1"
+            android:textSize="16sp"
+            android:visibility="invisible"
+            android:textColor="@color/c_666666"
+            android:paddingLeft="@dimen/W25"
+            android:paddingRight="@dimen/W20"
+            android:drawableRight="@mipmap/icon_push_down">
+        </TextView>
+
+        <TextView
+            android:layout_width="@dimen/W2"
+            android:layout_height="@dimen/H100"
+            android:layout_gravity="center_vertical"
+            android:background="@color/c_f8f8fa">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_areaDimension"
+            android:layout_width="@dimen/W1"
+            android:visibility="invisible"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:textSize="16sp"
+            android:textColor="@color/c_666666"
+            android:paddingLeft="@dimen/W25"
+            android:layout_weight="1"
+            android:paddingRight="@dimen/W20"
+            android:drawableRight="@mipmap/icon_push_down">
+        </TextView>
+
+        <TextView
+            android:layout_width="@dimen/W2"
+            android:layout_height="@dimen/H100"
+            android:layout_gravity="center_vertical"
+            android:background="@color/c_f8f8fa">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_proDimension"
+            android:layout_width="@dimen/W1"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:visibility="invisible"
+            android:layout_weight="1"
+            android:textSize="16sp"
+            android:textColor="@color/c_666666"
+            android:paddingLeft="@dimen/W25"
+            android:paddingRight="@dimen/W20"
+            android:drawableRight="@mipmap/icon_push_down">
+        </TextView>
+    </LinearLayout>
 </LinearLayout>

@@ -203,4 +203,7 @@ dependencies {
     implementation 'com.github.Vincent7Wong:EasyNavigation:2.0.5'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.contrarywind:Android-PickerView:4.1.9'
+    implementation  'com.scwang.smart:refresh-layout-kernel:2.0.1'
+    implementation  'com.scwang.smart:refresh-header-classics:2.0.1'
+    implementation  'com.scwang.smart:refresh-footer-classics:2.0.1'
 }

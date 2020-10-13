@@ -82,7 +82,6 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                             Constants.BASE_MOBILE_URL = bean.getHttpServer() ;
                             Constants.BASE_UPLOAD_URL = bean.getUpdateURL() ;
 
-
                             RetrofitUrlManager.getInstance().setRun(true);
                             RetrofitUrlManager.getInstance()
                                     .setGlobalDomain(Constants.BASE_MOBILE_URL);
@@ -90,6 +89,8 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                                     .putDomain("upload_apk",Constants.BASE_UPLOAD_URL);
                             RetrofitUrlManager.getInstance()
                                     .putDomain("fis_api",Constants.BASE_FIS_URL);
+                            RetrofitUrlManager.getInstance()
+                                    .putDomain("local_api",Constants.BASE_LOCAL_URL);
 
                             if(bean.getAppVersion().compareTo(BuildConfig.VERSION_NAME) > 0){
                                 getView().onUpdateVersion(bean.getUpdateURL());

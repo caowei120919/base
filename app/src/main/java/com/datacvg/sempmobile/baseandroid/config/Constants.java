@@ -31,9 +31,12 @@ public class Constants {
     public static final String USER_COMPANY_CODE = "USER_COMPANY_CODE";
     public static final String USER_CHECK_REMEMBER = "USER_CHECK_REMEMBER";
     public static final String LANG = "LANG";
+    public static final String DESC = "desc";
+    public static final String ASC = "asc";
     public static String BASE_MOBILE_URL = "" ;
     public static String BASE_FIS_URL = "" ;
     public static String BASE_UPLOAD_URL = "" ;
+    public static String HEAD_IMG_URL = "/login/readheadimg?userPkid=" ;
 
     public final static int SERVICE_CODE_SUCCESS_MOBILE = 1 ;
     public final static int SERVICE_CODE_SUCCESS_FIS = 2000 ;
@@ -67,6 +70,8 @@ public class Constants {
     public final static String VPN_USER = "VPN_USER" ;
     public final static String VPN_PASSWORD = "VPN_PASSWORD" ;
 
+
+    public static final String BASE_LOCAL_URL = "http://dimp.dev.datacvg.com/api/mobile";
     /**
      * 用于获取接口服务器地址的url
      */

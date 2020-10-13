@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
-    <TextView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/title"
+        layout="@layout/actionbar_title"/>
+
+    <androidx.appcompat.widget.SearchView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="table"
-        android:textSize="30sp"
-        android:gravity="center"
-        android:textColor="@color/c_000000">
-    </TextView>
+        android:layout_height="@dimen/H100"
+        android:background="@color/c_FFFFFF"
+        android:layout_below="@+id/title">
+    </androidx.appcompat.widget.SearchView>
 </RelativeLayout>
