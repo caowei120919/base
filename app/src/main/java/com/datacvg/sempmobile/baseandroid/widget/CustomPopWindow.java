@@ -13,9 +13,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
-
 import androidx.annotation.RequiresApi;
-
 import com.datacvg.sempmobile.baseandroid.utils.PLog;
 
 /**
@@ -36,25 +34,25 @@ public class CustomPopWindow implements PopupWindow.OnDismissListener{
     private PopupWindow mPopupWindow;
     private int mAnimationStyle = -1;
 
-    private boolean mClippEnable = true;//default is true
+    private boolean mClippEnable = true;
     private boolean mIgnoreCheekPress = false;
     private int mInputMode = -1;
     private PopupWindow.OnDismissListener mOnDismissListener;
     private int mSoftInputMode = -1;
-    private boolean mTouchable = true;//default is ture
+    private boolean mTouchable = true;
     private View.OnTouchListener mOnTouchListener;
 
-    private Window mWindow;//当前Activity 的窗口
+    private Window mWindow;
     /**
      * 弹出PopWindow 背景是否变暗，默认不会变暗。
      */
     private boolean mIsBackgroundDark = false;
 
-    private float mBackgroundDrakValue = 0;// 背景变暗的值，0 - 1
+    private float mBackgroundDrakValue = 0;
     /**
      * 设置是否允许点击 PopupWindow之外的地方，关闭PopupWindow
      */
-    private boolean enableOutsideTouchDisMiss = true;// 默认点击pop之外的地方可以关闭
+    private boolean enableOutsideTouchDisMiss = true;
 
     private CustomPopWindow(Context context){
         mContext = context;
@@ -247,7 +245,6 @@ public class CustomPopWindow implements PopupWindow.OnDismissListener{
             mOnDismissListener.onDismiss();
         }
 
-        //如果设置了背景变暗，那么在dissmiss的时候需要还原
         if(mWindow!=null){
             WindowManager.LayoutParams params = mWindow.getAttributes();
             params.alpha = 1.0f;

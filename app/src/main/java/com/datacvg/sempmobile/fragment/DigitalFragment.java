@@ -9,10 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
@@ -20,23 +18,29 @@ import com.bigkoo.pickerview.view.TimePickerView;
 import com.contrarywind.view.WheelView;
 import com.datacvg.sempmobile.R;
 import com.datacvg.sempmobile.activity.MyIndexActivity;
+import com.datacvg.sempmobile.adapter.DimensionIndexAdapter;
 import com.datacvg.sempmobile.adapter.DimensionPopAdapter;
 import com.datacvg.sempmobile.baseandroid.config.Constants;
 import com.datacvg.sempmobile.baseandroid.retrofit.helper.PreferencesHelper;
+import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.baseandroid.utils.StatusBarUtil;
 import com.datacvg.sempmobile.baseandroid.utils.TimeUtils;
 import com.datacvg.sempmobile.baseandroid.widget.CustomPopWindow;
+import com.datacvg.sempmobile.bean.ChatTypeRequestBean;
 import com.datacvg.sempmobile.bean.DimensionBean;
 import com.datacvg.sempmobile.bean.DimensionListBean;
+import com.datacvg.sempmobile.bean.DimensionPositionBean;
+import com.datacvg.sempmobile.bean.DimensionPositionListBean;
 import com.datacvg.sempmobile.bean.OtherDimensionBean;
 import com.datacvg.sempmobile.presenter.DigitalPresenter;
 import com.datacvg.sempmobile.view.DigitalView;
-
+import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -64,12 +68,22 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
     TextView tvProDimension ;
 
     private DimensionPopAdapter popAdapter ;
+    private DimensionIndexAdapter dimensionIndexAdapter ;
 
     private List<DimensionBean> orgDimensionBeans = new ArrayList<>();
     private List<DimensionBean> areaDimensionBeans = new ArrayList<>();
     private List<DimensionBean> proDimensionBeans = new ArrayList<>();
     private List<DimensionBean> popDimensionBeans = new ArrayList<>();
+    private List<DimensionPositionBean> dimensionPositionBeans = new ArrayList<>() ;
     private CustomPopWindow popWindow ;
+    private String mFuValue ;
+    private String mOrgValue ;
+    private String mPValue ;
+    private String mOrgDimension ;
+    private String mFuDimension ;
+    private String mPDimension ;
+    private String mLang ;
+    private String mTimeValue ;
 
     /**
      * 时间选择器
@@ -287,6 +301,8 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
         if(dimensions != null && dimensions.size() > 0){
             tvOrgDimension.setVisibility(View.VISIBLE);
             tvOrgDimension.setText(dimensions.get(0).getText());
+            mOrgValue = dimensions.get(0).getValue();
+            mOrgDimension = dimensions.get(0).getFlname();
             orgDimensionBeans.addAll(dimensions);
         }else{
             tvOrgDimension.setVisibility(View.INVISIBLE);
@@ -317,5 +333,36 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
             tvAreaDimension.setVisibility(View.INVISIBLE);
             tvProDimension.setVisibility(View.INVISIBLE);
         }
+    }
+
+    /**
+     * 获取指标列表成功
+     * @param dimensionPositionBeans
+     */
+
+    @Override
+    public void getDimensionPositionSuccess(DimensionPositionListBean dimensionPositionBeans) {
+        PLog.e(dimensionPositionBeans.size() + "");
+        ChatTypeRequestBean chatTypeRequestBean = new ChatTypeRequestBean();
+        chatTypeRequestBean.setFuValue("region");
+        chatTypeRequestBean.setOrgValue("DATACVG");
+        chatTypeRequestBean.setPValue("GOODS");
+        chatTypeRequestBean.setOrgDimension("14860367656855969470");
+        chatTypeRequestBean.setFuDimension("118306192070461277956");
+        chatTypeRequestBean.setPDimension("118341583624371459776");
+        chatTypeRequestBean.setLang("zh");
+        chatTypeRequestBean.setTimeValue("202004");
+        List<ChatTypeRequestBean.ChartTypeBean> beans = new ArrayList<>();
+        for (int position = 0 ; position < dimensionPositionBeans.size() ; position++){
+            ChatTypeRequestBean.ChartTypeBean bean = new ChatTypeRequestBean.ChartTypeBean();
+            bean.setAnalysisDim(dimensionPositionBeans.get(position).getAnalysis_dimension());
+            bean.setDataType(dimensionPositionBeans.get(position).getChart_type());
+            bean.setIndexId(dimensionPositionBeans.get(position).getIndex_id());
+            beans.add(bean);
+        }
+        chatTypeRequestBean.setChartType(beans);
+        Map map = new HashMap();
+        map = new Gson().fromJson(new Gson().toJson(chatTypeRequestBean),Map.class);
+        getPresenter().getCharts(map);
     }
 }

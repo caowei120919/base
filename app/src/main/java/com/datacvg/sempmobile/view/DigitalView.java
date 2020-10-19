@@ -3,6 +3,7 @@ package com.datacvg.sempmobile.view;
 import com.datacvg.sempmobile.baseandroid.mvp.MvpView;
 import com.datacvg.sempmobile.bean.DimensionBean;
 import com.datacvg.sempmobile.bean.DimensionListBean;
+import com.datacvg.sempmobile.bean.DimensionPositionListBean;
 import com.datacvg.sempmobile.bean.OtherDimensionBean;
 
 import java.util.List;
@@ -24,4 +25,10 @@ public interface DigitalView extends MvpView {
      * @param dimensions
      */
     void getOtherDimensionSuccess(OtherDimensionBean dimensions);
+
+    /**
+     * 获取指标列表成功
+     * @param dimensionPositionBeans
+     */
+    void getDimensionPositionSuccess(DimensionPositionListBean dimensionPositionBeans);
 }

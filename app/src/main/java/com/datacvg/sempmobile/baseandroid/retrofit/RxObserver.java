@@ -56,7 +56,7 @@ public class RxObserver<T> implements Observer <T>{
     public void onError(Throwable e) {
         String msg = "";
         if (e instanceof ConnectException) {
-            msg = "网络不可用";
+                msg = "网络不可用";
         } else if (e instanceof UnknownHostException) {
             msg = "网络不可用";
         } else if (e instanceof SocketTimeoutException) {

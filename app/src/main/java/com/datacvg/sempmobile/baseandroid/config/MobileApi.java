@@ -1,13 +1,17 @@
 package com.datacvg.sempmobile.baseandroid.config;
 
 import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
+import com.datacvg.sempmobile.bean.ChartListBean;
 import com.datacvg.sempmobile.bean.DimensionListBean;
+import com.datacvg.sempmobile.bean.DimensionPositionListBean;
 import com.datacvg.sempmobile.bean.ModuleListBean;
 import com.datacvg.sempmobile.bean.OtherDimensionBean;
 import com.datacvg.sempmobile.bean.ScreenListBean;
 import com.datacvg.sempmobile.bean.UserJobsListBean;
 import com.datacvg.sempmobile.bean.UserLoginBean;
 import java.util.Map;
+import java.util.function.DoubleUnaryOperator;
+
 import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -78,7 +82,7 @@ public interface MobileApi {
      */
     @Headers({"Domain-Name: local_api"})
     @GET("indexpad/index/position_v2")
-    Observable<BaseBean<String>> getIndexPosition();
+    Observable<BaseBean<DimensionPositionListBean>> getIndexPosition();
 
     /**
      * 获取组织维度
@@ -93,4 +97,7 @@ public interface MobileApi {
      */
     @GET("indexpad/other/dimention")
     Observable<BaseBean<OtherDimensionBean>> getOtherDimension();
+
+    @POST("indexpad/echarts")
+    Observable<BaseBean<ChartListBean>> getCharts(@Body Map map);
 }
