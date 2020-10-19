@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
@@ -22,21 +24,26 @@ import com.datacvg.sempmobile.adapter.DimensionIndexAdapter;
 import com.datacvg.sempmobile.adapter.DimensionPopAdapter;
 import com.datacvg.sempmobile.baseandroid.config.Constants;
 import com.datacvg.sempmobile.baseandroid.retrofit.helper.PreferencesHelper;
+import com.datacvg.sempmobile.baseandroid.utils.LanguageUtils;
 import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.baseandroid.utils.StatusBarUtil;
 import com.datacvg.sempmobile.baseandroid.utils.TimeUtils;
 import com.datacvg.sempmobile.baseandroid.widget.CustomPopWindow;
+import com.datacvg.sempmobile.bean.ChartBean;
+import com.datacvg.sempmobile.bean.ChartListBean;
 import com.datacvg.sempmobile.bean.ChatTypeRequestBean;
 import com.datacvg.sempmobile.bean.DimensionBean;
 import com.datacvg.sempmobile.bean.DimensionListBean;
 import com.datacvg.sempmobile.bean.DimensionPositionBean;
 import com.datacvg.sempmobile.bean.DimensionPositionListBean;
+import com.datacvg.sempmobile.bean.DimensionType;
 import com.datacvg.sempmobile.bean.OtherDimensionBean;
 import com.datacvg.sempmobile.presenter.DigitalPresenter;
 import com.datacvg.sempmobile.view.DigitalView;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +56,8 @@ import butterknife.OnClick;
  * @Time : 2020-09-29
  * @Description : 数字神经
  */
-public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter> implements DigitalView {
+public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
+        implements DigitalView ,DimensionPopAdapter.DimensionCheckListener{
 
     @BindView(R.id.img_left)
     ImageView imgLeft ;
@@ -66,15 +74,22 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
     TextView tvAreaDimension ;
     @BindView(R.id.tv_proDimension)
     TextView tvProDimension ;
+    @BindView(R.id.recycler_chart)
+    RecyclerView recyclerChart ;
 
     private DimensionPopAdapter popAdapter ;
     private DimensionIndexAdapter dimensionIndexAdapter ;
 
     private List<DimensionBean> orgDimensionBeans = new ArrayList<>();
+    private boolean mOrgIsCreate = false ;
     private List<DimensionBean> areaDimensionBeans = new ArrayList<>();
+    private boolean mAreaIsCreate = false ;
     private List<DimensionBean> proDimensionBeans = new ArrayList<>();
+    private boolean mProIsCreate = false ;
     private List<DimensionBean> popDimensionBeans = new ArrayList<>();
     private List<DimensionPositionBean> dimensionPositionBeans = new ArrayList<>() ;
+    private List<ChartBean> chartBeans = new ArrayList<>();
+    private boolean mIndexIsCreate = false ;
     private CustomPopWindow popWindow ;
     private String mFuValue ;
     private String mOrgValue ;
@@ -110,13 +125,17 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
     protected void setupData(Bundle savedInstanceState) {
         imgLeft.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_share));
         imgRight.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_filter));
-        tvTitle.setText(TimeUtils.getNewStrDateForStr(PreferencesHelper
-                .get(Constants.USER_DEFAULT_TIME,""),TimeUtils.FORMAT_YM_CN));
+        mTimeValue = PreferencesHelper.get(Constants.USER_DEFAULT_TIME,"") ;
+        tvTitle.setText(TimeUtils.getNewStrDateForStr(mTimeValue,TimeUtils.FORMAT_YM_CN));
         Drawable drawable = resources.getDrawable(R.mipmap.icon_drop);
         drawable.setBounds(0,0,drawable.getMinimumWidth(),drawable.getMinimumHeight());
         tvTitle.setCompoundDrawables(null,null,drawable,null);
         tvTitle.setCompoundDrawablePadding(40);
 
+        dimensionIndexAdapter = new DimensionIndexAdapter(mContext,chartBeans);
+        recyclerChart.setLayoutManager(new GridLayoutManager(mContext,2));
+        recyclerChart.setAdapter(dimensionIndexAdapter);
+        mLang = LanguageUtils.isZh(mContext) ? "zh" : "en" ;
         initCustomPickView();
         getDimension();
         getOtherDimension();
@@ -251,19 +270,19 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
             case R.id.tv_orgDimension :
                 popDimensionBeans.clear();
                 popDimensionBeans.addAll(orgDimensionBeans);
-                showPopView(view);
+                showPopView(view,DimensionType.ORG);
                 break;
 
             case R.id.tv_areaDimension :
                 popDimensionBeans.clear();
                 popDimensionBeans.addAll(areaDimensionBeans);
-                showPopView(view);
+                showPopView(view,DimensionType.AREA);
                 break;
 
             case R.id.tv_proDimension :
                 popDimensionBeans.clear();
                 popDimensionBeans.addAll(proDimensionBeans);
-                showPopView(view);
+                showPopView(view,DimensionType.PRO);
                 break;
         }
     }
@@ -271,7 +290,7 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
     /**
      * 弹出维度选择框
      */
-    private void showPopView(View parent) {
+    private void showPopView(View parent, DimensionType pro) {
         if(popWindow == null){
             View view = LayoutInflater.from(mContext)
                     .inflate(R.layout.pop_dimension,null,false);
@@ -280,13 +299,15 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
             manager.setOrientation(RecyclerView.VERTICAL);
             manager.setAutoMeasureEnabled(true);
             recyclerDimension.setLayoutManager(manager);
-            popAdapter = new DimensionPopAdapter(mContext,popDimensionBeans);
+            popAdapter = new DimensionPopAdapter(mContext,popDimensionBeans,this);
+            popAdapter.setType(pro);
             recyclerDimension.setAdapter(popAdapter);
             popWindow = new CustomPopWindow.PopupWindowBuilder(mContext)
                     .setView(view).enableBackgroundDark(true).create();
             popWindow.showAtLocation(parent, Gravity.CENTER,0,0);
         }else{
             popWindow.showAtLocation(parent, Gravity.CENTER,0,0);
+            popAdapter.setType(pro);
             popAdapter.notifyDataSetChanged();
         }
     }
@@ -302,10 +323,14 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
             tvOrgDimension.setVisibility(View.VISIBLE);
             tvOrgDimension.setText(dimensions.get(0).getText());
             mOrgValue = dimensions.get(0).getValue();
-            mOrgDimension = dimensions.get(0).getFlname();
+            mOrgDimension = dimensions.get(0).getId();
             orgDimensionBeans.addAll(dimensions);
         }else{
             tvOrgDimension.setVisibility(View.INVISIBLE);
+        }
+        mOrgIsCreate = true ;
+        if(mOrgIsCreate && mProIsCreate && mAreaIsCreate && mIndexIsCreate){
+            getCharts();
         }
     }
 
@@ -317,6 +342,8 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
             if(dimensions.get_$0() != null && dimensions.get_$0().size() > 0){
                 tvAreaDimension.setVisibility(View.VISIBLE);
                 tvAreaDimension.setText(dimensions.get_$0().get(0).getText());
+                mFuValue = dimensions.get_$0().get(0).getValue() ;
+                mFuDimension = dimensions.get_$0().get(0).getId() ;
                 areaDimensionBeans.addAll(dimensions.get_$0());
             }else{
                 tvAreaDimension.setVisibility(View.INVISIBLE);
@@ -325,6 +352,8 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
             if(dimensions.get_$1() != null && dimensions.get_$1().size() > 0){
                 tvProDimension.setVisibility(View.VISIBLE);
                 tvProDimension.setText(dimensions.get_$1().get(0).getText());
+                mPValue = dimensions.get_$1().get(0).getValue() ;
+                mPDimension = dimensions.get_$1().get(0).getId() ;
                 proDimensionBeans.addAll(dimensions.get_$1());
             }else{
                 tvProDimension.setVisibility(View.INVISIBLE);
@@ -332,6 +361,12 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
         }else{
             tvAreaDimension.setVisibility(View.INVISIBLE);
             tvProDimension.setVisibility(View.INVISIBLE);
+        }
+
+        mProIsCreate = true ;
+        mAreaIsCreate = true ;
+        if(mOrgIsCreate && mProIsCreate && mAreaIsCreate && mIndexIsCreate){
+            getCharts();
         }
     }
 
@@ -343,15 +378,68 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
     @Override
     public void getDimensionPositionSuccess(DimensionPositionListBean dimensionPositionBeans) {
         PLog.e(dimensionPositionBeans.size() + "");
+        this.dimensionPositionBeans = dimensionPositionBeans;
+        mIndexIsCreate = true ;
+        if(mOrgIsCreate && mProIsCreate && mAreaIsCreate && mIndexIsCreate){
+            getCharts();
+        }
+    }
+
+    /**
+     * 获取数据图表成功
+     * @param chartBeans
+     */
+    @Override
+    public void getChartSuccess(ChartListBean chartBeans) {
+        this.chartBeans.clear();
+        this.chartBeans.addAll(chartBeans);
+        sortChart();
+        dimensionIndexAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 重新排序图表  确保1*1 图表没有空缺，最多一个空缺填充到最后
+     */
+    private void sortChart() {
+        int indexId = -1 ;
+        int positionId = -1 ;
+        for (int i = 0 ; i < chartBeans.size() ; i++){
+            if(chartBeans.get(i).getChart_wide() == 1 && chartBeans.get(i).getChart_high() == 1){
+                /**
+                 * 保存有空缺位置，讲此1*1调整到该位置，否则，保存此空缺位置
+                 */
+                ChartBean chartBean = chartBeans.get(i) ;
+                if(indexId != -1){
+                    chartBeans.remove(chartBean);
+                    chartBeans.add(indexId,chartBean);
+                    indexId = -1 ;
+                    positionId = -1 ;
+                }else{
+                    positionId = i ;
+                    indexId = i + 1;
+                }
+            }
+        }
+        if(positionId != -1){
+            ChartBean bean = chartBeans.get(positionId);
+            chartBeans.remove(positionId);
+            chartBeans.add(bean);
+        }
+    }
+
+    /**
+     * 获取图表数据
+     */
+    private void getCharts() {
         ChatTypeRequestBean chatTypeRequestBean = new ChatTypeRequestBean();
-        chatTypeRequestBean.setFuValue("region");
-        chatTypeRequestBean.setOrgValue("DATACVG");
-        chatTypeRequestBean.setPValue("GOODS");
-        chatTypeRequestBean.setOrgDimension("14860367656855969470");
-        chatTypeRequestBean.setFuDimension("118306192070461277956");
-        chatTypeRequestBean.setPDimension("118341583624371459776");
-        chatTypeRequestBean.setLang("zh");
-        chatTypeRequestBean.setTimeValue("202004");
+        chatTypeRequestBean.setFuValue(mFuValue);
+        chatTypeRequestBean.setOrgValue(mOrgValue);
+        chatTypeRequestBean.setPValue(mPValue);
+        chatTypeRequestBean.setOrgDimension(mOrgDimension);
+        chatTypeRequestBean.setFuDimension(mFuDimension);
+        chatTypeRequestBean.setPDimension(mPDimension);
+        chatTypeRequestBean.setLang(mLang);
+        chatTypeRequestBean.setTimeValue(mTimeValue);
         List<ChatTypeRequestBean.ChartTypeBean> beans = new ArrayList<>();
         for (int position = 0 ; position < dimensionPositionBeans.size() ; position++){
             ChatTypeRequestBean.ChartTypeBean bean = new ChatTypeRequestBean.ChartTypeBean();
@@ -361,8 +449,32 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
             beans.add(bean);
         }
         chatTypeRequestBean.setChartType(beans);
-        Map map = new HashMap();
-        map = new Gson().fromJson(new Gson().toJson(chatTypeRequestBean),Map.class);
+        Map map = new Gson().fromJson(new Gson().toJson(chatTypeRequestBean),Map.class);
         getPresenter().getCharts(map);
+    }
+
+    @Override
+    public void OnClick(int position,DimensionType type) {
+        popWindow.dissmiss();
+        switch (type){
+            case ORG:
+                tvOrgDimension.setText(popDimensionBeans.get(position).getText());
+                mOrgDimension = popDimensionBeans.get(position).getId();
+                mOrgValue = popDimensionBeans.get(position).getValue();
+                break;
+
+            case PRO:
+                tvProDimension.setText(popDimensionBeans.get(position).getText());
+                mPDimension = popDimensionBeans.get(position).getId();
+                mPValue = popDimensionBeans.get(position).getValue();
+                break;
+
+            case AREA:
+                tvAreaDimension.setText(popDimensionBeans.get(position).getText());
+                mFuDimension = popDimensionBeans.get(position).getId();
+                mFuValue = popDimensionBeans.get(position).getValue();
+                break;
+        }
+        getCharts();
     }
 }

@@ -112,6 +112,7 @@ public class DigitalPresenter extends BasePresenter<DigitalView>{
                     @Override
                     public void onNext(BaseBean<ChartListBean> bean) {
                         PLog.e(new Gson().toJson(bean));
+                        getView().getChartSuccess(bean.getResdata());
                         List<String> stringName = new ArrayList<>();
                         List<Float> floatValue = new ArrayList<>();
                         for (ChartBean chartBean : bean.getResdata()) {
@@ -120,7 +121,7 @@ public class DigitalPresenter extends BasePresenter<DigitalView>{
                                 for (int i = 0 ; i < datas.size() ; i++){
                                     stringName.add((String) ((LinkedTreeMap)datas.get(i)).get("name"));
                                     floatValue.add(Float.valueOf((String) ((LinkedTreeMap)datas.get(i)).get("value")));
-                                    PLog.e((String) ((LinkedTreeMap)datas.get(i)).get("name") + "----" + ((String) ((LinkedTreeMap)datas.get(i)).get("value")));
+                                    PLog.e(((LinkedTreeMap)datas.get(i)).get("name") + "----" + ((LinkedTreeMap)datas.get(i)).get("value"));
                                 }
                             }
                         }

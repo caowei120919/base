@@ -3,6 +3,7 @@ package com.datacvg.sempmobile.widget;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,11 +40,21 @@ public class DimensionPop {
         manager.setOrientation(RecyclerView.VERTICAL);
         manager.setAutoMeasureEnabled(true);
         recyclerDimension.setLayoutManager(manager);
-        popAdapter = new DimensionPopAdapter(mContext,dimensionBeans);
+        popAdapter = new DimensionPopAdapter(mContext,dimensionBeans, (DimensionPopAdapter.DimensionCheckListener) this);
         recyclerDimension.setAdapter(popAdapter);
         popWindow = new CustomPopWindow.PopupWindowBuilder(mContext)
                 .setView(view)
                 .enableBackgroundDark(true)
                 .create();
+    }
+
+    /**
+     * 设置数据
+     * @param dimensionBeans
+     */
+    private void setData(List<DimensionBean> dimensionBeans){
+        this.dimensionBeans.clear();
+        this.dimensionBeans.addAll(dimensionBeans);
+        popAdapter.notifyDataSetChanged();
     }
 }

@@ -22,9 +22,10 @@
             android:id="@+id/tv_orgDimension"
             android:layout_width="@dimen/W1"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:layout_weight="1"
-            android:textSize="16sp"
+            android:textSize="14sp"
+            android:singleLine="true"
             android:visibility="invisible"
             android:textColor="@color/c_666666"
             android:paddingLeft="@dimen/W25"
@@ -44,8 +45,9 @@
             android:layout_width="@dimen/W1"
             android:visibility="invisible"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:textSize="16sp"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:singleLine="true"
             android:textColor="@color/c_666666"
             android:paddingLeft="@dimen/W25"
             android:layout_weight="1"
@@ -64,14 +66,22 @@
             android:id="@+id/tv_proDimension"
             android:layout_width="@dimen/W1"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:visibility="invisible"
             android:layout_weight="1"
-            android:textSize="16sp"
+            android:textSize="14sp"
+            android:singleLine="true"
             android:textColor="@color/c_666666"
             android:paddingLeft="@dimen/W25"
             android:paddingRight="@dimen/W20"
             android:drawableRight="@mipmap/icon_push_down">
         </TextView>
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_chart"
+        android:layout_width="match_parent"
+        android:background="@color/c_f8f8fa"
+        android:layout_height="match_parent">
+    </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>

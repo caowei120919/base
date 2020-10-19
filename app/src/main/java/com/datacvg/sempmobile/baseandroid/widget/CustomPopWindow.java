@@ -209,7 +209,7 @@ public class CustomPopWindow implements PopupWindow.OnDismissListener{
                     final int y = (int) event.getY();
 
                     if ((event.getAction() == MotionEvent.ACTION_DOWN)
-                            && ((x < 0) || (x >= mWidth) || (y < 0) || (y >= mHeight))) {
+                        && ((x < 0) || (x >= mWidth) || (y < 0) || (y >= mHeight))) {
                         PLog.e(TAG,"out side ");
                         PLog.e(TAG,"width:"+mPopupWindow.getWidth()+"height:"+mPopupWindow.getHeight()+" x:"+x+" y  :"+y);
                         return true;

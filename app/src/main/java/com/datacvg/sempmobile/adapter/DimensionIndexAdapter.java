@@ -1,16 +1,24 @@
 package com.datacvg.sempmobile.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.datacvg.sempmobile.R;
-import com.datacvg.sempmobile.bean.DimensionPositionBean;
+import com.datacvg.sempmobile.baseandroid.utils.LanguageUtils;
+import com.datacvg.sempmobile.bean.ChartBean;
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -29,7 +37,14 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private Context mContext ;
     private LayoutInflater inflater ;
-    private List<DimensionPositionBean> dimensionPositionBeans = new ArrayList<>();
+    private List<ChartBean> chartBeans = new ArrayList<>();
+
+    public DimensionIndexAdapter(Context mContext, List<ChartBean> chartBeans) {
+        this.mContext = mContext;
+        this.inflater = LayoutInflater.from(mContext);
+        this.chartBeans = chartBeans;
+    }
+
 
     @NonNull
     @Override
@@ -71,16 +86,145 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public int getItemViewType(int position) {
+        if(chartBeans.size() == 0){
+            return 0;
+        }
+        switch (chartBeans.get(position).getChart_type()){
+            case "long_text" :
+                    return LONG_TEXT_CHART ;
 
+            case "line_chart" :
+                    return LINE_CHART ;
+
+            case "bar_chart" :
+                    return BAR_CHART ;
+
+            case "pie_chart" :
+                    return PIE_CHART ;
+
+            case "dashboard" :
+                    return DASHBOARD_CHART ;
+
+            case "bullet_map" :
+                    return BULLET_CHART ;
+
+            default:
+                    return TEXT_CHART ;
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if(holder instanceof TextHolder){
+            onBindViewTextHolder((TextHolder) holder,position);
+        }else if(holder instanceof LongTextHolder){
+            onBindViewLongHolder((LongTextHolder) holder,position);
+        }else if(holder instanceof LineHolder){
+            onBindViewLineHolder((LineHolder) holder,position);
+        }else if(holder instanceof BarHolder){
+            onBindViewBarHolder((BarHolder) holder,position);
+        }else if(holder instanceof PieHolder){
+            onBindViewPieHolder((PieHolder) holder,position);
+        }else if(holder instanceof DashBoardHolder){
+            onBindViewDashBoardHolder((DashBoardHolder) holder,position);
+        }else if(holder instanceof BulletHolder){
+            onBindViewBulletHolder((BulletHolder) holder,position);
+        }
+    }
+
+    /**
+     * 折线图
+     * @param holder
+     * @param position
+     */
+    private void onBindViewLineHolder(LineHolder holder, int position) {
+
+    }
+
+    /**
+     * 柱状图
+     * @param holder
+     * @param position
+     */
+    private void onBindViewBarHolder(BarHolder holder, int position) {
+
+    }
+
+    /**
+     * 饼图
+     * @param holder
+     * @param position
+     */
+    private void onBindViewPieHolder(PieHolder holder, int position) {
+
+    }
+
+    /**
+     * 仪表盘
+     * @param holder
+     * @param position
+     */
+    private void onBindViewDashBoardHolder(DashBoardHolder holder, int position) {
+
+    }
+
+    /**
+     * 子弹图
+     * @param holder
+     * @param position
+     */
+    private void onBindViewBulletHolder(BulletHolder holder, int position) {
+
+    }
+
+    /**
+     * 长文本
+     * @param holder
+     * @param position
+     */
+    private void onBindViewLongHolder(LongTextHolder holder, int position) {
+
+    }
+
+    /**
+     * 短文本
+     * @param holder
+     * @param position
+     */
+    private void onBindViewTextHolder(TextHolder holder, int position) {
+        ChartBean bean = chartBeans.get(position) ;
+        holder.tvName.setText(LanguageUtils.isZh(mContext)
+                ? bean.getIndex_clname() : bean.getIndex_flname());
+        String bottomValue = TextUtils.isEmpty(bean.getChart_bottom_title())
+                ? "" : bean.getChart_bottom_title()
+                + ((TextUtils.isEmpty(bean.getBottom_value()))
+                ? "" : bean.getBottom_value());
+        holder.tvBottomValue.setText(bottomValue);
+        holder.tvUnit.setText(bean.getChart_unit());
+        holder.tvDefaultValue.setText(bean.getDefault_value());
+        holder.tvDefaultValue.setTextColor(Color.parseColor(bean.getIndex_default_color()));
     }
 
     @Override
     public int getItemCount() {
-        return dimensionPositionBeans.size();
+        return chartBeans.size();
     }
 
     public class TextHolder extends RecyclerView.ViewHolder{
+        @BindView(R.id.tv_name)
+        TextView tvName ;
+        @BindView(R.id.tv_unit)
+        TextView tvUnit ;
+        @BindView(R.id.tv_defaultValue)
+        TextView tvDefaultValue ;
+        @BindView(R.id.img_indexForReport)
+        ImageView imgIndexForReport ;
+        @BindView(R.id.img_describe)
+        ImageView imgDescribe ;
+        @BindView(R.id.tv_bottomValue)
+        TextView tvBottomValue ;
+
         public TextHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
