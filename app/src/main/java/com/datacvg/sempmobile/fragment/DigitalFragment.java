@@ -89,7 +89,6 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
     private List<DimensionBean> popDimensionBeans = new ArrayList<>();
     private List<DimensionPositionBean> dimensionPositionBeans = new ArrayList<>() ;
     private List<ChartBean> chartBeans = new ArrayList<>();
-    private boolean mIndexIsCreate = false ;
     private CustomPopWindow popWindow ;
     private String mFuValue ;
     private String mOrgValue ;
@@ -132,14 +131,13 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
         tvTitle.setCompoundDrawables(null,null,drawable,null);
         tvTitle.setCompoundDrawablePadding(40);
 
-        dimensionIndexAdapter = new DimensionIndexAdapter(mContext,chartBeans);
+        dimensionIndexAdapter = new DimensionIndexAdapter(mContext,dimensionPositionBeans);
         recyclerChart.setLayoutManager(new GridLayoutManager(mContext,2));
         recyclerChart.setAdapter(dimensionIndexAdapter);
         mLang = LanguageUtils.isZh(mContext) ? "zh" : "en" ;
         initCustomPickView();
         getDimension();
         getOtherDimension();
-        getIndexPosition();
     }
 
     /**
@@ -160,7 +158,7 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
      *  获取指标列表
      */
     private void getIndexPosition() {
-        getPresenter().getIndexPosition();
+        getPresenter().getIndexPosition(mTimeValue,mOrgDimension,mFuDimension,mPDimension);
     }
 
     /**
@@ -329,8 +327,8 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
             tvOrgDimension.setVisibility(View.INVISIBLE);
         }
         mOrgIsCreate = true ;
-        if(mOrgIsCreate && mProIsCreate && mAreaIsCreate && mIndexIsCreate){
-            getCharts();
+        if(mOrgIsCreate && mProIsCreate && mAreaIsCreate){
+            getIndexPosition();
         }
     }
 
@@ -365,8 +363,8 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
 
         mProIsCreate = true ;
         mAreaIsCreate = true ;
-        if(mOrgIsCreate && mProIsCreate && mAreaIsCreate && mIndexIsCreate){
-            getCharts();
+        if(mOrgIsCreate && mProIsCreate && mAreaIsCreate){
+            getIndexPosition();
         }
     }
 
@@ -378,11 +376,11 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
     @Override
     public void getDimensionPositionSuccess(DimensionPositionListBean dimensionPositionBeans) {
         PLog.e(dimensionPositionBeans.size() + "");
-        this.dimensionPositionBeans = dimensionPositionBeans;
-        mIndexIsCreate = true ;
-        if(mOrgIsCreate && mProIsCreate && mAreaIsCreate && mIndexIsCreate){
-            getCharts();
-        }
+        this.dimensionPositionBeans.clear();
+        this.dimensionPositionBeans.addAll(dimensionPositionBeans);
+        sortChart();
+        dimensionIndexAdapter.notifyDataSetChanged();
+        getCharts();
     }
 
     /**
@@ -393,6 +391,9 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
     public void getChartSuccess(ChartListBean chartBeans) {
         this.chartBeans.clear();
         this.chartBeans.addAll(chartBeans);
+        for (int i = 0 ; i < chartBeans.size() ;i++) {
+            dimensionPositionBeans.get(i).setChartBean(chartBeans.get(i));
+        }
         sortChart();
         dimensionIndexAdapter.notifyDataSetChanged();
     }
@@ -403,15 +404,16 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
     private void sortChart() {
         int indexId = -1 ;
         int positionId = -1 ;
-        for (int i = 0 ; i < chartBeans.size() ; i++){
-            if(chartBeans.get(i).getChart_wide() == 1 && chartBeans.get(i).getChart_high() == 1){
+        for (int i = 0 ; i < dimensionPositionBeans.size() ; i++){
+            if(dimensionPositionBeans.get(i).getSize_x() == 1
+                    && dimensionPositionBeans.get(i).getSize_y() == 1){
                 /**
                  * 保存有空缺位置，讲此1*1调整到该位置，否则，保存此空缺位置
                  */
-                ChartBean chartBean = chartBeans.get(i) ;
+                DimensionPositionBean bean = dimensionPositionBeans.get(i);
                 if(indexId != -1){
-                    chartBeans.remove(chartBean);
-                    chartBeans.add(indexId,chartBean);
+                    dimensionPositionBeans.remove(bean);
+                    dimensionPositionBeans.add(indexId,bean);
                     indexId = -1 ;
                     positionId = -1 ;
                 }else{
@@ -421,9 +423,9 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
             }
         }
         if(positionId != -1){
-            ChartBean bean = chartBeans.get(positionId);
-            chartBeans.remove(positionId);
-            chartBeans.add(bean);
+            DimensionPositionBean bean = dimensionPositionBeans.get(positionId);
+            dimensionPositionBeans.remove(positionId);
+            dimensionPositionBeans.add(bean);
         }
     }
 
@@ -445,7 +447,7 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
             ChatTypeRequestBean.ChartTypeBean bean = new ChatTypeRequestBean.ChartTypeBean();
             bean.setAnalysisDim(dimensionPositionBeans.get(position).getAnalysis_dimension());
             bean.setDataType(dimensionPositionBeans.get(position).getChart_type());
-            bean.setIndexId(dimensionPositionBeans.get(position).getIndex_id());
+            bean.setIndexId(dimensionPositionBeans.get(position).getId());
             beans.add(bean);
         }
         chatTypeRequestBean.setChartType(beans);
@@ -475,6 +477,6 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
                 mFuValue = popDimensionBeans.get(position).getValue();
                 break;
         }
-        getCharts();
+        getIndexPosition();
     }
 }

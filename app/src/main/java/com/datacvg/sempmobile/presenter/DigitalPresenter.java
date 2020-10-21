@@ -36,9 +36,13 @@ public class DigitalPresenter extends BasePresenter<DigitalView>{
 
     /**
      * 获取指标列表
+     * @param mTimeValue
+     * @param mOrgDimension
+     * @param mFuDimension
+     * @param mPDimension
      */
-    public void getIndexPosition() {
-        api.getIndexPosition()
+    public void getIndexPosition(String mTimeValue, String mOrgDimension, String mFuDimension, String mPDimension) {
+        api.getIndexPosition(mTimeValue,mOrgDimension,mFuDimension,mPDimension)
                 .compose(RxUtils.applySchedulersLifeCycle(getView()))
                 .subscribe(new RxObserver<BaseBean<DimensionPositionListBean>>(){
                     @Override

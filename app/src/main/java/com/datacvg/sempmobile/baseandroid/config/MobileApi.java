@@ -1,6 +1,7 @@
 package com.datacvg.sempmobile.baseandroid.config;
 
 import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
+import com.datacvg.sempmobile.bean.ActionPlanListBean;
 import com.datacvg.sempmobile.bean.ChartListBean;
 import com.datacvg.sempmobile.bean.DimensionListBean;
 import com.datacvg.sempmobile.bean.DimensionPositionListBean;
@@ -78,11 +79,18 @@ public interface MobileApi {
 
     /**
      * 获取指标列表
+     * @param mTimeValue
+     * @param mOrgDimension
+     * @param mFuDimension
+     * @param mPDimension
      * @return
      */
     @Headers({"Domain-Name: local_api"})
-    @GET("indexpad/index/position_v2")
-    Observable<BaseBean<DimensionPositionListBean>> getIndexPosition();
+    @GET("indexpad/index/position")
+    Observable<BaseBean<DimensionPositionListBean>> getIndexPosition(@Query("timeval") String mTimeValue,
+                                                                     @Query("orgDimension") String mOrgDimension,
+                                                                     @Query("fuDimension") String mFuDimension,
+                                                                     @Query("pDimension") String mPDimension);
 
     /**
      * 获取组织维度
@@ -100,4 +108,7 @@ public interface MobileApi {
 
     @POST("indexpad/echarts")
     Observable<BaseBean<ChartListBean>> getCharts(@Body Map map);
+
+    @POST("actionplan/infotask")
+    Observable<BaseBean<ActionPlanListBean>> getActionList(@Body Map map);
 }

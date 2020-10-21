@@ -82,4 +82,5 @@
     <string name="click_edit_task_Title">点击编辑任务标题（限16字）</string>
     <string name="screen">大屏</string>
     <string name="time_sequence">时间排序</string>
+    <string name="task_detail">任务详情</string>
 </resources>

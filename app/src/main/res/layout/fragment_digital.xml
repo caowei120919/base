@@ -82,6 +82,9 @@
         android:id="@+id/recycler_chart"
         android:layout_width="match_parent"
         android:background="@color/c_f8f8fa"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="@dimen/W25"
+        android:layout_marginRight="@dimen/W25">
     </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>

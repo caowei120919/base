@@ -1,6 +1,7 @@
 package com.datacvg.sempmobile.adapter;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -8,16 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.datacvg.sempmobile.R;
 import com.datacvg.sempmobile.baseandroid.utils.LanguageUtils;
 import com.datacvg.sempmobile.bean.ChartBean;
+import com.datacvg.sempmobile.bean.DimensionPositionBean;
+
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -37,9 +38,9 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private Context mContext ;
     private LayoutInflater inflater ;
-    private List<ChartBean> chartBeans = new ArrayList<>();
+    private List<DimensionPositionBean> chartBeans = new ArrayList<>();
 
-    public DimensionIndexAdapter(Context mContext, List<ChartBean> chartBeans) {
+    public DimensionIndexAdapter(Context mContext, List<DimensionPositionBean> chartBeans) {
         this.mContext = mContext;
         this.inflater = LayoutInflater.from(mContext);
         this.chartBeans = chartBeans;
@@ -184,16 +185,11 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
      * @param position
      */
     private void onBindViewLongHolder(LongTextHolder holder, int position) {
-
-    }
-
-    /**
-     * 短文本
-     * @param holder
-     * @param position
-     */
-    private void onBindViewTextHolder(TextHolder holder, int position) {
-        ChartBean bean = chartBeans.get(position) ;
+        DimensionPositionBean dimensionPositionBean = chartBeans.get(position) ;
+        ChartBean bean = dimensionPositionBean.getChartBean();
+        if(bean == null){
+            return;
+        }
         holder.tvName.setText(LanguageUtils.isZh(mContext)
                 ? bean.getIndex_clname() : bean.getIndex_flname());
         String bottomValue = TextUtils.isEmpty(bean.getChart_bottom_title())
@@ -204,6 +200,75 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         holder.tvUnit.setText(bean.getChart_unit());
         holder.tvDefaultValue.setText(bean.getDefault_value());
         holder.tvDefaultValue.setTextColor(Color.parseColor(bean.getIndex_default_color()));
+        if(!TextUtils.isEmpty(dimensionPositionBean.getExistIndexthreshold())
+                && dimensionPositionBean.getExistIndexthreshold().equals("true")){
+            holder.imgIndexForReport.setVisibility(View.VISIBLE);
+        }else{
+            holder.imgIndexForReport.setVisibility(View.GONE);
+        }
+
+        if(!TextUtils.isEmpty(dimensionPositionBean.getExistDescription())
+                && dimensionPositionBean.getExistDescription().equals("true")){
+            switch (holder.imgIndexForReport.getVisibility()){
+                case View.VISIBLE :
+                    holder.imgDescribe.setVisibility(View.VISIBLE);
+                    break;
+
+                case View.GONE:
+                    holder.imgIndexForReport.setVisibility(View.VISIBLE);
+                    holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                            .decodeResource(mContext.getResources(),R.mipmap.icon_describe));
+                    break;
+            }
+        }else{
+            holder.imgDescribe.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * 短文本
+     * @param holder
+     * @param position
+     */
+    private void onBindViewTextHolder(TextHolder holder, int position) {
+        DimensionPositionBean dimensionPositionBean = chartBeans.get(position) ;
+        ChartBean bean = dimensionPositionBean.getChartBean();
+        if(bean == null){
+            return;
+        }
+        holder.tvName.setText(LanguageUtils.isZh(mContext)
+                ? bean.getIndex_clname() : bean.getIndex_flname());
+        String bottomValue = TextUtils.isEmpty(bean.getChart_bottom_title())
+                ? "" : bean.getChart_bottom_title()
+                + ((TextUtils.isEmpty(bean.getBottom_value()))
+                ? "" : bean.getBottom_value());
+        holder.tvBottomValue.setText(bottomValue);
+        holder.tvUnit.setText(bean.getChart_unit());
+        holder.tvDefaultValue.setText(bean.getDefault_value());
+        holder.tvDefaultValue.setTextColor(Color.parseColor(bean.getIndex_default_color()));
+        if(!TextUtils.isEmpty(dimensionPositionBean.getExistIndexthreshold())
+                && dimensionPositionBean.getExistIndexthreshold().equals("true")){
+            holder.imgIndexForReport.setVisibility(View.VISIBLE);
+        }else{
+            holder.imgIndexForReport.setVisibility(View.GONE);
+        }
+
+        if(!TextUtils.isEmpty(dimensionPositionBean.getExistDescription())
+                && dimensionPositionBean.getExistDescription().equals("true")){
+            switch (holder.imgIndexForReport.getVisibility()){
+                case View.VISIBLE :
+                       holder.imgDescribe.setVisibility(View.VISIBLE);
+                    break;
+
+                case View.GONE:
+                        holder.imgIndexForReport.setVisibility(View.VISIBLE);
+                        holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                                .decodeResource(mContext.getResources(),R.mipmap.icon_describe));
+                    break;
+            }
+        }else{
+            holder.imgDescribe.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -232,6 +297,19 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public class LongTextHolder extends RecyclerView.ViewHolder{
+        @BindView(R.id.tv_name)
+        TextView tvName ;
+        @BindView(R.id.tv_unit)
+        TextView tvUnit ;
+        @BindView(R.id.tv_defaultValue)
+        TextView tvDefaultValue ;
+        @BindView(R.id.img_indexForReport)
+        ImageView imgIndexForReport ;
+        @BindView(R.id.img_describe)
+        ImageView imgDescribe ;
+        @BindView(R.id.tv_bottomValue)
+        TextView tvBottomValue ;
+
         public LongTextHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
@@ -281,4 +359,23 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
+        if(manager instanceof GridLayoutManager){
+            ((GridLayoutManager)manager).setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    switch (getItemViewType(position)){
+                        case TEXT_CHART :
+                            return 1 ;
+
+                        default:
+                            return 2;
+                    }
+                }
+            });
+        }
+    }
 }
