@@ -104,6 +104,11 @@ public class DimensionPopAdapter extends RecyclerView.Adapter<DimensionPopAdapte
     }
 
     public interface DimensionCheckListener{
+        /**
+         * 单项点击时间
+         * @param position
+         * @param type
+         */
         void OnClick(int position, DimensionType type);
     }
 }

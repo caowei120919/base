@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c_FFFFFF">
+
+    <include
+        android:id="@+id/title"
+        layout="@layout/actionbar_title"/>
+
+    <TextView
+        android:layout_below="@id/title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H2"
+        android:background="@color/c_f8f8fa">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H100"
+        android:layout_below="@id/title"
+        android:layout_marginTop="@dimen/H2"
+        android:background="@color/c_FFFFFF"
+        android:gravity="center"
+        android:textColor="@color/c_666666">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_basic"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/H90"
+        android:layout_below="@id/tv_name"
+        android:layout_marginLeft="@dimen/W40"
+        android:textColor="@color/c_666666"
+        android:text="@string/basic_properties"
+        android:gravity="center">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_stay"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/H100"
+        android:layout_below="@id/tv_basic"
+        android:layout_marginLeft="@dimen/W40"
+        android:textColor="@color/c_666666"
+        android:text="@string/report_stay_time"
+        android:gravity="center">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_stayUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/H100"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/W40"
+        android:layout_below="@id/tv_basic"
+        android:drawableRight="@mipmap/icon_push_down"
+        android:drawablePadding="@dimen/W20"
+        android:gravity="center"
+        android:padding="@dimen/W10"
+        android:textColor="@color/c_666666" />
+
+    <EditText
+        android:layout_width="@dimen/W150"
+        android:layout_height="@dimen/H70"
+        android:layout_marginTop="@dimen/H15"
+        android:layout_below="@id/tv_basic"
+        android:inputType="number"
+        android:background="@drawable/shape_f8f8fa"
+        android:layout_toLeftOf="@id/tv_stayUnit">
+    </EditText>
+
+    <TextView
+        android:layout_below="@id/tv_stay"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H2"
+        android:background="@color/c_f8f8fa">
+    </TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/H100"
+        android:layout_marginTop="@dimen/H2"
+        android:layout_below="@id/tv_stay"
+        android:layout_marginLeft="@dimen/W40"
+        android:textColor="@color/c_666666"
+        android:text="@string/report_pre_load_time"
+        android:gravity="center">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_preUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/H100"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/W40"
+        android:layout_marginTop="@dimen/H2"
+        android:layout_below="@id/tv_stay"
+        android:drawableRight="@mipmap/icon_push_down"
+        android:drawablePadding="@dimen/W20"
+        android:gravity="center"
+        android:padding="@dimen/W10"
+        android:textColor="@color/c_666666" />
+
+    <TextView
+        android:layout_width="@dimen/W150"
+        android:layout_height="@dimen/H70"
+        android:layout_marginTop="@dimen/H15"
+        android:layout_below="@id/tv_stay"
+        android:inputType="number"
+        android:background="@drawable/shape_f8f8fa"
+        android:layout_toLeftOf="@id/tv_preUnit">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_timeNotice"
+        android:layout_width="match_parent"
+        android:layout_below="@id/tv_preUnit"
+        android:gravity="center_vertical"
+        android:paddingTop="@dimen/H20"
+        android:paddingBottom="@dimen/H20"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/W40"
+        android:paddingRight="@dimen/W40"
+        android:text="@string/set_the_prompt"
+        android:textColor="@color/c_999999"
+        android:textSize="14sp" />
+
+    <TextView
+        android:layout_below="@id/tv_timeNotice"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H2"
+        android:background="@color/c_f8f8fa">
+    </TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/H100"
+        android:layout_below="@id/tv_timeNotice"
+        android:layout_marginLeft="@dimen/W40"
+        android:textColor="@color/c_666666"
+        android:text="@string/report_animation_effect"
+        android:gravity="center">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_animation"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/H70"
+        android:layout_marginTop="@dimen/H15"
+        android:background="@drawable/shape_f8f8fa"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/W40"
+        android:layout_below="@id/tv_timeNotice"
+        android:drawableRight="@mipmap/icon_push_down"
+        android:drawablePadding="@dimen/W20"
+        android:gravity="center"
+        android:padding="@dimen/W10"
+        android:textColor="@color/c_666666" />
+
+    <TextView
+        android:layout_below="@id/tv_animation"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H2"
+        android:background="@color/c_f8f8fa">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/H100"
+        android:layout_below="@id/tv_animation"
+        android:layout_marginLeft="@dimen/W40"
+        android:textColor="@color/c_666666"
+        android:text="@string/time"
+        android:gravity="center">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_ms"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/H70"
+        android:layout_marginTop="@dimen/H15"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/W40"
+        android:layout_below="@id/tv_animation"
+        android:gravity="center"
+        android:text="毫秒"
+        android:padding="@dimen/W10"
+        android:textColor="@color/c_666666" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/H70"
+        android:layout_marginTop="@dimen/H15"
+        android:layout_toLeftOf="@id/tv_ms"
+        android:background="@drawable/shape_f8f8fa"
+        android:layout_marginRight="@dimen/W40"
+        android:layout_below="@id/tv_animation"
+        android:gravity="center"
+        android:inputType="number"
+        android:padding="@dimen/W10"
+        android:textColor="@color/c_666666" />
+
+    <TextView
+        android:layout_below="@id/tv_time"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H2"
+        android:background="@color/c_f8f8fa">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_global"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/H90"
+        android:layout_below="@id/tv_time"
+        android:layout_marginLeft="@dimen/W40"
+        android:textColor="@color/c_666666"
+        android:text="@string/global_properties"
+        android:gravity="center">
+    </TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/H100"
+        android:layout_below="@id/tv_global"
+        android:layout_marginLeft="@dimen/W40"
+        android:textColor="@color/c_666666"
+        android:text="@string/report_playing_mode"
+        android:gravity="center">
+    </TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/H100"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/W40"
+        android:layout_below="@id/tv_global"
+        android:drawableRight="@mipmap/icon_push_down"
+        android:drawablePadding="@dimen/W20"
+        android:gravity="center"
+        android:padding="@dimen/W10"
+        android:textColor="@color/c_666666" />
+
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H90"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/shape_round_8"
+        android:layout_marginLeft="@dimen/W100"
+        android:layout_marginRight="@dimen/W100"
+        android:text="@string/save"
+        android:layout_marginBottom="@dimen/H50"
+        android:textColor="@color/c_FFFFFF"
+        android:textSize="15sp"
+        android:layout_marginTop="@dimen/H124">
+    </Button>
+</RelativeLayout>

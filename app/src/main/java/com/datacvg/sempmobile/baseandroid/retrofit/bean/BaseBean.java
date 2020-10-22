@@ -19,6 +19,11 @@ public class BaseBean<T> {
     private String user_token ;
     private int status ;
     private T resdata ;
+    private T data ;
+
+    public T getData() {
+        return data;
+    }
 
     public String getMessage() {
         return message;

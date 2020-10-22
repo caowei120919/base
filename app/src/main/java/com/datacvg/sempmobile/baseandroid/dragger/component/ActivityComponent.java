@@ -11,6 +11,8 @@ import com.datacvg.sempmobile.activity.MyIndexActivity;
 import com.datacvg.sempmobile.activity.NewTaskActivity;
 import com.datacvg.sempmobile.activity.QRCodeActivity;
 import com.datacvg.sempmobile.activity.ScanActivity;
+import com.datacvg.sempmobile.activity.ScreenDetailActivity;
+import com.datacvg.sempmobile.activity.ScreenSettingActivity;
 import com.datacvg.sempmobile.activity.SettingActivity;
 import com.datacvg.sempmobile.activity.SettingVpnActivity;
 import com.datacvg.sempmobile.activity.SplashActivity;
@@ -48,4 +50,8 @@ public interface ActivityComponent {
     void inject(MyIndexActivity myIndexActivity);
 
     void inject(NewTaskActivity newTaskActivity);
+
+    void inject(ScreenDetailActivity screenDetailActivity);
+
+    void inject(ScreenSettingActivity screenSettingActivity);
 }

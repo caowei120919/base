@@ -6,7 +6,6 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.request.RequestOptions;
-import com.datacvg.sempmobile.R;
 import com.lzy.imagepicker.loader.ImageLoader;
 
 

@@ -2,13 +2,15 @@ package com.datacvg.sempmobile.bean;
 
 import androidx.annotation.Keep;
 
+import java.io.Serializable;
+
 /**
  * @Author : T-Bag (茶包)
  * @Time : 2020-10-10
  * @Description : 大屏
  */
 @Keep
-public class ScreenBean {
+public class ScreenBean implements Serializable {
 
     /**
      * pkid : 415900908808246763024

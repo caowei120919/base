@@ -95,8 +95,10 @@ public class ActionPlanAdapter extends RecyclerView.Adapter<ActionPlanAdapter.Vi
                 break;
         }
         holder.tvTittle.setText(bean.getTitle());
-        holder.tvCreateTime.setText(bean.getCreate_time());
-        holder.tvEndTime.setText(bean.getDeadline());
+        holder.tvCreateTime.setText(mContext.getResources().getString(R.string.creation_time)
+                + ":" + bean.getCreate_time());
+        holder.tvEndTime.setText(mContext.getResources().getString(R.string.by_the_time)
+                + ":" +bean.getDeadline());
         holder.tvContent.setText(bean.getText());
         holder.itemView.setOnClickListener(view ->{
             holder.relContent.setVisibility(holder.relContent.getVisibility()

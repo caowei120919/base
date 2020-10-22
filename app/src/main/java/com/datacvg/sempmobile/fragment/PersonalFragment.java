@@ -1,5 +1,6 @@
 package com.datacvg.sempmobile.fragment;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -13,13 +14,18 @@ import com.datacvg.sempmobile.R;
 import com.datacvg.sempmobile.activity.ScanActivity;
 import com.datacvg.sempmobile.activity.SettingActivity;
 import com.datacvg.sempmobile.baseandroid.config.Constants;
+import com.datacvg.sempmobile.baseandroid.retrofit.RxObserver;
 import com.datacvg.sempmobile.baseandroid.retrofit.helper.PreferencesHelper;
+import com.datacvg.sempmobile.baseandroid.utils.RxUtils;
 import com.datacvg.sempmobile.baseandroid.utils.StatusBarUtil;
 import com.datacvg.sempmobile.bean.UserJobsBean;
 import com.datacvg.sempmobile.bean.UserJobsListBean;
 import com.datacvg.sempmobile.event.LoginOutEvent;
 import com.datacvg.sempmobile.presenter.PersonPresenter;
 import com.datacvg.sempmobile.view.PersonView;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+
 import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +58,7 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
     TextView tvJobName ;
 
     private List<UserJobsBean> userJobsBeans = new ArrayList<>();
+    private IntentIntegrator mIntentIntegrator ;
 
     @Override
     protected int getLayoutId() {
@@ -102,7 +109,20 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
                 break;
 
             case R.id.img_right :
-                    mContext.startActivity(new Intent(mContext, ScanActivity.class));
+                new RxPermissions(getActivity())
+                        .request(Manifest.permission.CAMERA
+                                , Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        .compose(RxUtils.applySchedulersLifeCycle(getMvpView()))
+                        .subscribe(new RxObserver<Boolean>(){
+                            @Override
+                            public void onNext(Boolean aBoolean) {
+                                if (aBoolean) {      //授权通过拍摄照片
+                                    mIntentIntegrator = new IntentIntegrator(getActivity());
+                                    mIntentIntegrator.setCaptureActivity(ScanActivity.class);
+                                    mIntentIntegrator.initiateScan();
+                                }
+                            }
+                        });
                 break;
         }
     }

@@ -65,6 +65,16 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity android:name=".activity.ScreenDetailActivity"
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name=".activity.ScreenSettingActivity"
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait">
+        </activity>
+
         <activity android:name=".activity.QRCodeActivity"
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait">

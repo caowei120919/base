@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/title"
+        layout="@layout/actionbar_title"/>
+
+    <LinearLayout
+        android:id="@+id/lin_top"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H200"
+        android:layout_below="@id/title"
+        android:background="@color/c_FFFFFF"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/H2"
+            android:background="@color/c_f8f8fa">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/H78"
+            android:background="@drawable/shape_f8f8fa"
+            android:layout_marginTop="@dimen/H20"
+            android:layout_marginLeft="@dimen/W20"
+            android:layout_marginRight="@dimen/W20"
+            android:gravity="center"
+            android:textColor="@color/c_666666">
+        </TextView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/playlist"
+                android:gravity="center"
+                android:textColor="@color/c_666666"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="@dimen/W20">
+            </TextView>
+
+            <RelativeLayout
+                android:id="@+id/rel_screenPlayControl"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:layout_centerInParent="true">
+                <ImageView
+                    android:id="@+id/img_playOrStop"
+                    android:layout_width="@dimen/W110"
+                    android:layout_height="@dimen/H60"
+                    android:paddingTop="@dimen/H15"
+                    android:paddingBottom="@dimen/H15"
+                    android:paddingLeft="@dimen/W10"
+                    android:paddingRight="@dimen/W10"
+                    android:src="@mipmap/screen_pause_gray"
+                    android:layout_centerInParent="true">
+                </ImageView>
+
+                <ImageView
+                    android:id="@+id/img_pre"
+                    android:layout_width="@dimen/W125"
+                    android:layout_height="@dimen/H60"
+                    android:paddingTop="@dimen/H15"
+                    android:paddingLeft="@dimen/W25"
+                    android:paddingRight="@dimen/W10"
+                    android:paddingBottom="@dimen/H15"
+                    android:src="@mipmap/screen_pre_gray"
+                    android:layout_toLeftOf="@id/img_playOrStop"
+                    android:layout_centerVertical="true">
+                </ImageView>
+
+                <ImageView
+                    android:id="@+id/img_next"
+                    android:layout_width="@dimen/W125"
+                    android:layout_height="@dimen/H60"
+                    android:paddingTop="@dimen/H15"
+                    android:paddingBottom="@dimen/H15"
+                    android:paddingRight="@dimen/W25"
+                    android:paddingLeft="@dimen/W10"
+                    android:src="@mipmap/screen_next_gray"
+                    android:layout_toRightOf="@id/img_playOrStop"
+                    android:layout_centerVertical="true">
+                </ImageView>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_size"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:textColor="@color/c_666666"
+                android:layout_marginRight="@dimen/W20">
+            </TextView>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_playList"
+        android:layout_below="@id/lin_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/tv_add"
+        android:layout_width="@dimen/W600"
+        android:layout_height="@dimen/H200"
+        android:layout_below="@id/recycler_playList"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/H100"
+        android:text="@string/add_a_report_or_picture"
+        android:gravity="center"
+        android:paddingRight="@dimen/W80"
+        android:paddingLeft="@dimen/W80"
+        android:drawableLeft="@mipmap/icon_add"
+        android:background="@mipmap/screen_add_outline">
+    </TextView>
+</RelativeLayout>

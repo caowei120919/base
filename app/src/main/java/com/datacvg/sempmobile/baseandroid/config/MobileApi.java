@@ -7,6 +7,7 @@ import com.datacvg.sempmobile.bean.DimensionListBean;
 import com.datacvg.sempmobile.bean.DimensionPositionListBean;
 import com.datacvg.sempmobile.bean.ModuleListBean;
 import com.datacvg.sempmobile.bean.OtherDimensionBean;
+import com.datacvg.sempmobile.bean.ScreenDetailBean;
 import com.datacvg.sempmobile.bean.ScreenListBean;
 import com.datacvg.sempmobile.bean.UserJobsListBean;
 import com.datacvg.sempmobile.bean.UserLoginBean;
@@ -18,6 +19,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -111,4 +113,8 @@ public interface MobileApi {
 
     @POST("actionplan/infotask")
     Observable<BaseBean<ActionPlanListBean>> getActionList(@Body Map map);
+
+    @Headers({"Domain-Name: fis_api"})
+    @GET("largescreen/{id}")
+    Observable<BaseBean<ScreenDetailBean>> getScreenDetail(@Path("id") String screen_id);
 }

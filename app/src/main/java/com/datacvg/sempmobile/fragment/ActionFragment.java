@@ -3,6 +3,7 @@ package com.datacvg.sempmobile.fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -50,8 +51,6 @@ public class ActionFragment extends BaseFragment<ActionView, ActionPresenter>
     TextView tvIssued ;
     @BindView(R.id.tv_received)
     TextView tvReceived ;
-    @BindView(R.id.tv_wait)
-    TextView tvWait ;
     @BindView(R.id.recycler_action)
     RecyclerView recyclerAction;
 
@@ -63,7 +62,6 @@ public class ActionFragment extends BaseFragment<ActionView, ActionPresenter>
     private List<ActionPlanBean> allActionPlanBeans = new ArrayList<>();
     private List<ActionPlanBean> issuedActionPlanBeans = new ArrayList<>();
     private List<ActionPlanBean> receivedActionPlanBeans = new ArrayList<>();
-    private List<ActionPlanBean> waitActionPlanBeans = new ArrayList<>();
     private ActionPlanAdapter adapter ;
 
     @Override
@@ -89,6 +87,7 @@ public class ActionFragment extends BaseFragment<ActionView, ActionPresenter>
         imgRight.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_add));
         tvAll.setSelected(true);
         tag = tvAll.getId() ;
+        restoreTitleStyle();
 
         adapter = new ActionPlanAdapter(mContext,actionPlanBeans);
         LinearLayoutManager manager = new LinearLayoutManager(mContext);
@@ -111,7 +110,7 @@ public class ActionFragment extends BaseFragment<ActionView, ActionPresenter>
         getPresenter().getActionList(params);
     }
 
-    @OnClick({R.id.img_right,R.id.tv_all,R.id.tv_issued,R.id.tv_received,R.id.tv_wait})
+    @OnClick({R.id.img_right,R.id.tv_all,R.id.tv_issued,R.id.tv_received})
     public void OnClick(View view){
         switch (view.getId()){
             case R.id.img_right :
@@ -123,10 +122,10 @@ public class ActionFragment extends BaseFragment<ActionView, ActionPresenter>
                     tvAll.setSelected(true);
                     tvIssued.setSelected(false);
                     tvReceived.setSelected(false);
-                    tvWait.setSelected(false);
                     actionPlanBeans.clear();
                     actionPlanBeans.addAll(allActionPlanBeans);
                     adapter.notifyDataSetChanged();
+                    restoreTitleStyle();
                 break;
 
             case R.id.tv_issued :
@@ -134,10 +133,10 @@ public class ActionFragment extends BaseFragment<ActionView, ActionPresenter>
                     tvAll.setSelected(false);
                     tvIssued.setSelected(true);
                     tvReceived.setSelected(false);
-                    tvWait.setSelected(false);
                     actionPlanBeans.clear();
                     actionPlanBeans.addAll(issuedActionPlanBeans);
                     adapter.notifyDataSetChanged();
+                    restoreTitleStyle();
                 break;
 
             case R.id.tv_received :
@@ -145,23 +144,18 @@ public class ActionFragment extends BaseFragment<ActionView, ActionPresenter>
                     tvAll.setSelected(false);
                     tvIssued.setSelected(false);
                     tvReceived.setSelected(true);
-                    tvWait.setSelected(false);
                     actionPlanBeans.clear();
                     actionPlanBeans.addAll(receivedActionPlanBeans);
                     adapter.notifyDataSetChanged();
-                 break;
-
-            case R.id.tv_wait :
-                    tag = view.getId();
-                    tvAll.setSelected(false);
-                    tvIssued.setSelected(false);
-                    tvReceived.setSelected(false);
-                    tvWait.setSelected(true);
-                    actionPlanBeans.clear();
-                    actionPlanBeans.addAll(waitActionPlanBeans);
-                    adapter.notifyDataSetChanged();
+                    restoreTitleStyle();
                  break;
         }
+    }
+
+    private void restoreTitleStyle() {
+        tvAll.setTypeface(null, tvAll.isSelected() ? Typeface.BOLD : Typeface.NORMAL);
+        tvIssued.setTypeface(null, tvIssued.isSelected() ? Typeface.BOLD : Typeface.NORMAL);
+        tvReceived.setTypeface(null,tvReceived.isSelected() ? Typeface.BOLD : Typeface.NORMAL);
     }
 
     /**
@@ -175,31 +169,16 @@ public class ActionFragment extends BaseFragment<ActionView, ActionPresenter>
             allActionPlanBeans.clear();
             issuedActionPlanBeans.clear();
             receivedActionPlanBeans.clear();
-            waitActionPlanBeans.clear();
         }
         allActionPlanBeans.addAll(beans);
         for (ActionPlanBean bean:beans) {
-            if(bean.getCreate_user_pkid().equals(PreferencesHelper.get(Constants.USER_PKID,""))
-                    && bean.getUser_type() == 1){
+            if(bean.getCreate_user_pkid()
+                    .equals(PreferencesHelper.get(Constants.USER_PKID,""))){
                 issuedActionPlanBeans.add(bean);
-            }
-            if(bean.getState() == 1 && bean.getUser_type() == 2){
-                waitActionPlanBeans.add(bean);
-            }
-            if(bean.getState() == 1 && bean.getUser_type() == 2){
+            }else{
                 receivedActionPlanBeans.add(bean);
             }
         }
-        tvAll.setText(resources.getString(R.string.all_tasks)
-                + (allActionPlanBeans.size() == 0 ? "" : "(" + allActionPlanBeans.size() + ")"));
-        tvWait.setText(resources.getString(R.string.to_receive)
-                + (waitActionPlanBeans.size() == 0 ? "" : "(" + waitActionPlanBeans.size() + ")"));
-        tvReceived.setText(resources.getString(R.string.have_received)
-                + (receivedActionPlanBeans.size() == 0 ? ""
-                : "(" + receivedActionPlanBeans.size() + ")"));
-        tvIssued.setText(resources.getString(R.string.has_been_issued)
-                + (issuedActionPlanBeans.size() == 0 ? ""
-                : "(" + issuedActionPlanBeans.size() + ")"));
         switch (tag){
             case R.id.tv_all :
                 actionPlanBeans.clear();
@@ -214,11 +193,6 @@ public class ActionFragment extends BaseFragment<ActionView, ActionPresenter>
             case R.id.tv_received :
                 actionPlanBeans.clear();
                 actionPlanBeans.addAll(receivedActionPlanBeans);
-                break;
-
-            case R.id.tv_wait :
-                actionPlanBeans.clear();
-                actionPlanBeans.addAll(waitActionPlanBeans);
                 break;
         }
         adapter.notifyDataSetChanged();

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_marginLeft="@dimen/W20"
+    android:layout_marginRight="@dimen/W20"
+    android:layout_height="@dimen/H130">
+
+
+    <ImageView
+        android:id="@+id/img_title"
+        android:layout_width="@dimen/W50"
+        android:layout_height="@dimen/H50"
+        android:src="@mipmap/icon_screen_detail_title"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/W15">
+    </ImageView>
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:layout_toRightOf="@id/img_title"
+        android:layout_marginLeft="@dimen/W30"
+        android:textColor="@color/c_666666"
+        android:textSize="13sp"
+        android:maxWidth="@dimen/W500"
+        android:singleLine="true">
+    </TextView>
+
+    <ImageView
+        android:id="@+id/img_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@mipmap/setting_deletecache"
+        android:paddingLeft="@dimen/W20"
+        android:paddingRight="@dimen/W20"
+        android:layout_alignParentRight="true">
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/img_setting"
+        android:layout_toLeftOf="@id/img_delete"
+        android:paddingLeft="@dimen/W20"
+        android:paddingRight="@dimen/W20"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@mipmap/icon_setting_screen">
+    </ImageView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H2"
+        android:layout_alignParentBottom="true"
+        android:background="@color/c_d8d8d8">
+    </TextView>
+</RelativeLayout>

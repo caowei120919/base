@@ -1,5 +1,6 @@
 package com.datacvg.sempmobile.fragment;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.sempmobile.R;
+import com.datacvg.sempmobile.activity.ScreenDetailActivity;
 import com.datacvg.sempmobile.adapter.ScreenAdapter;
 import com.datacvg.sempmobile.baseandroid.config.Constants;
 import com.datacvg.sempmobile.baseandroid.utils.StatusBarUtil;
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * @Author : T-Bag (茶包)
@@ -32,7 +35,7 @@ import butterknife.BindView;
  * @Description : 大屏展示
  */
 public class ScreenFragment extends BaseFragment<ScreenView, ScreenPresenter>
-        implements ScreenView, OnRefreshListener {
+        implements ScreenView, OnRefreshListener, ScreenAdapter.ScreenItemClickListener {
 
     @BindView(R.id.img_left)
     ImageView imgLeft ;
@@ -78,7 +81,7 @@ public class ScreenFragment extends BaseFragment<ScreenView, ScreenPresenter>
         smartScreen.setEnableAutoLoadMore(false);
         smartScreen.setOnRefreshListener(this);
         smartScreen.setEnableRefresh(true);
-        adapter = new ScreenAdapter(mContext,screenBeans);
+        adapter = new ScreenAdapter(mContext,screenBeans,this);
         GridLayoutManager layoutManager = new GridLayoutManager(mContext,2);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerScreen.setLayoutManager(layoutManager);
@@ -108,5 +111,44 @@ public class ScreenFragment extends BaseFragment<ScreenView, ScreenPresenter>
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         getPresenter().getScreenList(screenType);
+    }
+
+    @OnClick({R.id.tv_right})
+    public void OnClick(View view){
+        switch (view.getId()){
+            case R.id.tv_right :
+                    switch (screenType){
+                        case Constants.DESC :
+                                screenType = Constants.ASC ;
+                                Drawable drawable = resources.getDrawable(R.mipmap.screen_asc);
+                                drawable.setBounds(0,0,drawable.getMinimumWidth()
+                                        ,drawable.getMinimumHeight());
+                                tvRight.setCompoundDrawables(null,null
+                                        ,drawable,null);
+                                tvRight.setCompoundDrawablePadding(40);
+                            break;
+
+                        case Constants.ASC :
+                                screenType = Constants.DESC ;
+                                Drawable drawableAsc = resources.getDrawable(R.mipmap.screen_desc);
+                            drawableAsc.setBounds(0,0,drawableAsc.getMinimumWidth()
+                                    ,drawableAsc.getMinimumHeight());
+                                tvRight.setCompoundDrawables(null,null
+                                        ,drawableAsc,null);
+                                tvRight.setCompoundDrawablePadding(40);
+                            break;
+                    }
+                getPresenter().getScreenList(screenType);
+                break;
+        }
+    }
+
+    @Override
+    public void onScreenClick(int position) {
+        Intent intent = new Intent(mContext, ScreenDetailActivity.class);
+        intent.putExtra("title",resources.getString(R.string.wit_screen)
+                + (position + 1));
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,screenBeans.get(position));
+        mContext.startActivity(intent);
     }
 }
