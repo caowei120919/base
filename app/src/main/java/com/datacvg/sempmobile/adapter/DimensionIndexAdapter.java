@@ -14,8 +14,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.sempmobile.R;
 import com.datacvg.sempmobile.baseandroid.utils.LanguageUtils;
+import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.bean.ChartBean;
 import com.datacvg.sempmobile.bean.DimensionPositionBean;
+import com.datacvg.sempmobile.bean.chart.PieChartBean;
+import com.datacvg.sempmobile.widget.LineChart;
+import com.datacvg.sempmobile.widget.PieChart;
+import com.google.gson.internal.LinkedTreeMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -149,7 +154,48 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
      * @param position
      */
     private void onBindViewBarHolder(BarHolder holder, int position) {
+        DimensionPositionBean dimensionPositionBean = chartBeans.get(position);
+        List<Double> chartBeans = new ArrayList<>();
+        List<Integer> colors = new ArrayList<>();
+        if (dimensionPositionBean.getChartBean() == null){
+            return;
+        }
+        List<Object> datas = dimensionPositionBean.getChartBean().getOption().getSeries().get(0).getData();
+        for (int i = 0 ; i < datas.size() ; i++){
+            chartBeans.add(Double.valueOf((String)(datas.get(i))));
+            colors.add(Color.parseColor(dimensionPositionBean.getChartBean().getIndex_default_color()));
+        }
+        if(!TextUtils.isEmpty(dimensionPositionBean.getExistIndexthreshold())
+                && dimensionPositionBean.getExistIndexthreshold().equals("true")){
+            holder.imgIndexForReport.setVisibility(View.VISIBLE);
+        }else{
+            holder.imgIndexForReport.setVisibility(View.GONE);
+        }
 
+        if(!TextUtils.isEmpty(dimensionPositionBean.getExistDescription())
+                && dimensionPositionBean.getExistDescription().equals("true")){
+            switch (holder.imgIndexForReport.getVisibility()){
+                case View.VISIBLE :
+                    holder.imgDescribe.setVisibility(View.VISIBLE);
+                    break;
+
+                case View.GONE:
+                    holder.imgIndexForReport.setVisibility(View.VISIBLE);
+                    holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                            .decodeResource(mContext.getResources(),R.mipmap.icon_describe));
+                    break;
+            }
+        }else{
+            holder.imgDescribe.setVisibility(View.GONE);
+        }
+        holder.tvUnit.setText(dimensionPositionBean.getChartBean().getChart_unit());
+        holder.tvName.setText(LanguageUtils.isZh(mContext)
+                ? dimensionPositionBean.getChartBean().getIndex_clname()
+                : dimensionPositionBean.getChartBean().getIndex_flname());
+        holder.tvDefaultValue.setText((int)(dimensionPositionBean.getChartBean().getIndex_data()) + "");
+        holder.tvDefaultValue.setTextColor(Color.parseColor(dimensionPositionBean
+                .getChartBean().getIndex_default_color()));
+        holder.lineChart.setColumnInfo(chartBeans,colors,6);
     }
 
     /**
@@ -158,7 +204,49 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
      * @param position
      */
     private void onBindViewPieHolder(PieHolder holder, int position) {
+        DimensionPositionBean dimensionPositionBean = chartBeans.get(position);
+        List<PieChartBean> pieChartBeans = new ArrayList<>();
+        if (dimensionPositionBean.getChartBean() == null){
+            return;
+        }
+        List<Object> datas = dimensionPositionBean.getChartBean().getOption().getSeries().get(0).getData();
+        for (int i = 0 ; i < datas.size() ; i++){
+            PieChartBean pieChartBean = new PieChartBean();
+            pieChartBean.setName((String) ((LinkedTreeMap)datas.get(i)).get("name"));
+            pieChartBean.setValue(Float.valueOf((String) ((LinkedTreeMap)datas.get(i)).get("value")));
+            pieChartBeans.add(pieChartBean);
+        }
+        if(!TextUtils.isEmpty(dimensionPositionBean.getExistIndexthreshold())
+                && dimensionPositionBean.getExistIndexthreshold().equals("true")){
+            holder.imgIndexForReport.setVisibility(View.VISIBLE);
+        }else{
+            holder.imgIndexForReport.setVisibility(View.GONE);
+        }
 
+        if(!TextUtils.isEmpty(dimensionPositionBean.getExistDescription())
+                && dimensionPositionBean.getExistDescription().equals("true")){
+            switch (holder.imgIndexForReport.getVisibility()){
+                case View.VISIBLE :
+                    holder.imgDescribe.setVisibility(View.VISIBLE);
+                    break;
+
+                case View.GONE:
+                    holder.imgIndexForReport.setVisibility(View.VISIBLE);
+                    holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                            .decodeResource(mContext.getResources(),R.mipmap.icon_describe));
+                    break;
+            }
+        }else{
+            holder.imgDescribe.setVisibility(View.GONE);
+        }
+        holder.tvUnit.setText(dimensionPositionBean.getChartBean().getChart_unit());
+        holder.tvName.setText(LanguageUtils.isZh(mContext)
+                ? dimensionPositionBean.getChartBean().getIndex_clname()
+                : dimensionPositionBean.getChartBean().getIndex_flname());
+        holder.tvDefaultValue.setText((int)(dimensionPositionBean.getChartBean().getIndex_data()) + "");
+        holder.tvDefaultValue.setTextColor(Color.parseColor(dimensionPositionBean
+                .getChartBean().getIndex_default_color()));
+        holder.pieChart.setDate(pieChartBeans);
     }
 
     /**
@@ -325,6 +413,19 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public class BarHolder extends RecyclerView.ViewHolder{
+        @BindView(R.id.lineChart)
+        LineChart lineChart ;
+        @BindView(R.id.tv_defaultValue)
+        TextView tvDefaultValue ;
+        @BindView(R.id.tv_name)
+        TextView tvName ;
+        @BindView(R.id.img_indexForReport)
+        ImageView imgIndexForReport ;
+        @BindView(R.id.img_describe)
+        ImageView imgDescribe ;
+        @BindView(R.id.tv_unit)
+        TextView tvUnit ;
+
         public BarHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
@@ -332,6 +433,18 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public class PieHolder extends RecyclerView.ViewHolder{
+        @BindView(R.id.pieChart)
+        PieChart pieChart ;
+        @BindView(R.id.tv_defaultValue)
+        TextView tvDefaultValue ;
+        @BindView(R.id.tv_name)
+        TextView tvName ;
+        @BindView(R.id.img_indexForReport)
+        ImageView imgIndexForReport ;
+        @BindView(R.id.img_describe)
+        ImageView imgDescribe ;
+        @BindView(R.id.tv_unit)
+        TextView tvUnit ;
         public PieHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
