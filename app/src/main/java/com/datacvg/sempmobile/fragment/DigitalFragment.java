@@ -2,6 +2,8 @@ package com.datacvg.sempmobile.fragment;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -133,6 +136,13 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
 
         dimensionIndexAdapter = new DimensionIndexAdapter(mContext,dimensionPositionBeans);
         recyclerChart.setLayoutManager(new GridLayoutManager(mContext,2));
+        recyclerChart.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                super.getItemOffsets(outRect, view, parent, state);
+                outRect.top = (int) resources.getDimension(R.dimen.W20);
+            }
+        });
         recyclerChart.setAdapter(dimensionIndexAdapter);
         mLang = LanguageUtils.isZh(mContext) ? "zh" : "en" ;
         initCustomPickView();

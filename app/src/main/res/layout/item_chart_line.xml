@@ -1,5 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H510"
+        android:background="@drawable/layer_background">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/W24"
+                android:layout_marginTop="@dimen/H13"
+                android:textColor="@color/c_000000"
+                android:textSize="13sp"
+                android:textStyle="bold">
+            </TextView>
+
+            <TextView
+                android:id="@+id/tv_defaultValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/H13"
+                android:layout_centerHorizontal="true"
+                android:textSize="18sp">
+            </TextView>
+
+            <TextView
+                android:id="@+id/tv_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="@dimen/W14"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="@dimen/H14"
+                android:textColor="@color/c_999999"
+                android:textSize="11sp">
+            </TextView>
+
+            <ImageView
+                android:id="@+id/img_indexForReport"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_index_report"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/tv_name"
+                android:layout_marginRight="@dimen/W16">
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/img_describe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_describe"
+                android:layout_toLeftOf="@id/img_indexForReport"
+                android:layout_alignTop="@id/tv_name"
+                android:layout_marginRight="@dimen/W16">
+            </ImageView>
+
+            <com.datacvg.sempmobile.widget.LineChart
+                android:id="@+id/lineChart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
+            </com.datacvg.sempmobile.widget.LineChart>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>

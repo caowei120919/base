@@ -1,6 +1,7 @@
 package com.datacvg.sempmobile.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,9 +57,9 @@ public class ScreenAdapter extends RecyclerView.Adapter<ScreenAdapter.ViewHolder
                 ,ScreenFormatBean.class);
         holder.tvDescribe.setText(bean.getSize()
                 + mContext.getResources().getString(R.string.inch) + bean.getType()
-                + (bean.getDirection().equals("horizontal") ?
+                + (TextUtils.isEmpty(bean.getDirection()) ? "" : (bean.getDirection().equals("horizontal") ?
                 mContext.getResources().getString(R.string.landscape) :
-                mContext.getResources().getString(R.string.vertical_screen)));
+                mContext.getResources().getString(R.string.vertical_screen))));
         Glide.with(mContext).load(Constants.BASE_FIS_URL + "largescreen/"
                 + screenBeans.get(position).getImg_path())
                 .placeholder(R.mipmap.screen_default)

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <declare-styleable name="StatusBarHeightView">
         <attr name="use_type" format="integer">
             <enum name="use_height" value="0" />
@@ -14,9 +14,6 @@
         <attr name="progress_text_color" format="color"></attr>
         <attr name="progress_text_size" format="dimension"></attr>
         <attr name="progress_text_offset" format="dimension"></attr>
-    </declare-styleable>
-    <declare-styleable name="RoundProgressBar">
-        <attr name="radius" format="dimension"></attr>
     </declare-styleable>
 
     <declare-styleable name="SwitchButton">
@@ -57,5 +54,17 @@
         <attr name="axisTextColor" format="color"></attr>
         <attr name="axisLineColor" format="color"></attr>
         <attr name="axisLineWidth" format="dimension"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="DashBoardView">
+        <!-- 仪表盘自定义属性 -->
+        <attr name="color_dial_lower" format="color"/>
+        <attr name="text_size_dial" format="dimension"/>
+        <attr name="stroke_width_dial" format="dimension"/>
+        <attr name="radius_circle_dial" format="dimension"/>
+        <attr name="text_title_dial" format="string"/>
+        <attr name="text_title_size" format="dimension"/>
+        <attr name="text_title_color" format="color"/>
+        <attr name="text_size_value" format="dimension"/>
     </declare-styleable>
 </resources>

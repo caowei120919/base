@@ -18,6 +18,8 @@ import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.bean.ChartBean;
 import com.datacvg.sempmobile.bean.DimensionPositionBean;
 import com.datacvg.sempmobile.bean.chart.PieChartBean;
+import com.datacvg.sempmobile.widget.BarChart;
+import com.datacvg.sempmobile.widget.DashBoardView;
 import com.datacvg.sempmobile.widget.LineChart;
 import com.datacvg.sempmobile.widget.PieChart;
 import com.google.gson.internal.LinkedTreeMap;
@@ -122,6 +124,9 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        holder.itemView.setOnClickListener(view -> {
+            PLog.e("点击");
+        });
         if(holder instanceof TextHolder){
             onBindViewTextHolder((TextHolder) holder,position);
         }else if(holder instanceof LongTextHolder){
@@ -145,17 +150,9 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
      * @param position
      */
     private void onBindViewLineHolder(LineHolder holder, int position) {
-
-    }
-
-    /**
-     * 柱状图
-     * @param holder
-     * @param position
-     */
-    private void onBindViewBarHolder(BarHolder holder, int position) {
         DimensionPositionBean dimensionPositionBean = chartBeans.get(position);
         List<Double> chartBeans = new ArrayList<>();
+        List<String> chartXTitles = new ArrayList<>();
         List<Integer> colors = new ArrayList<>();
         if (dimensionPositionBean.getChartBean() == null){
             return;
@@ -165,6 +162,7 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             chartBeans.add(Double.valueOf((String)(datas.get(i))));
             colors.add(Color.parseColor(dimensionPositionBean.getChartBean().getIndex_default_color()));
         }
+        chartXTitles.addAll(dimensionPositionBean.getChartBean().getOption().getXAxis().get(0).getData());
         if(!TextUtils.isEmpty(dimensionPositionBean.getExistIndexthreshold())
                 && dimensionPositionBean.getExistIndexthreshold().equals("true")){
             holder.imgIndexForReport.setVisibility(View.VISIBLE);
@@ -192,10 +190,62 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         holder.tvName.setText(LanguageUtils.isZh(mContext)
                 ? dimensionPositionBean.getChartBean().getIndex_clname()
                 : dimensionPositionBean.getChartBean().getIndex_flname());
-        holder.tvDefaultValue.setText((int)(dimensionPositionBean.getChartBean().getIndex_data()) + "");
+        holder.tvDefaultValue.setText(dimensionPositionBean.getChartBean().getIndex_data() + "");
         holder.tvDefaultValue.setTextColor(Color.parseColor(dimensionPositionBean
                 .getChartBean().getIndex_default_color()));
-        holder.lineChart.setColumnInfo(chartBeans,colors,6);
+        holder.lineChart.setColumnInfo(chartXTitles,chartBeans,colors,6);
+    }
+
+    /**
+     * 柱状图
+     * @param holder
+     * @param position
+     */
+    private void onBindViewBarHolder(BarHolder holder, int position) {
+        DimensionPositionBean dimensionPositionBean = chartBeans.get(position);
+        List<Double> chartBeans = new ArrayList<>();
+        List<String> chartXTitles = new ArrayList<>();
+        List<Integer> colors = new ArrayList<>();
+        if (dimensionPositionBean.getChartBean() == null){
+            return;
+        }
+        List<Object> datas = dimensionPositionBean.getChartBean().getOption().getSeries().get(0).getData();
+        for (int i = 0 ; i < datas.size() ; i++){
+            chartBeans.add(Double.valueOf((String)(datas.get(i))));
+            colors.add(Color.parseColor(dimensionPositionBean.getChartBean().getIndex_default_color()));
+        }
+        chartXTitles.addAll(dimensionPositionBean.getChartBean().getOption().getXAxis().get(0).getData());
+        if(!TextUtils.isEmpty(dimensionPositionBean.getExistIndexthreshold())
+                && dimensionPositionBean.getExistIndexthreshold().equals("true")){
+            holder.imgIndexForReport.setVisibility(View.VISIBLE);
+        }else{
+            holder.imgIndexForReport.setVisibility(View.GONE);
+        }
+
+        if(!TextUtils.isEmpty(dimensionPositionBean.getExistDescription())
+                && dimensionPositionBean.getExistDescription().equals("true")){
+            switch (holder.imgIndexForReport.getVisibility()){
+                case View.VISIBLE :
+                    holder.imgDescribe.setVisibility(View.VISIBLE);
+                    break;
+
+                case View.GONE:
+                    holder.imgIndexForReport.setVisibility(View.VISIBLE);
+                    holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                            .decodeResource(mContext.getResources(),R.mipmap.icon_describe));
+                    break;
+            }
+        }else{
+            holder.imgDescribe.setVisibility(View.GONE);
+        }
+        holder.tvUnit.setText(dimensionPositionBean.getChartBean().getChart_unit());
+        holder.tvName.setText(LanguageUtils.isZh(mContext)
+                ? dimensionPositionBean.getChartBean().getIndex_clname()
+                : dimensionPositionBean.getChartBean().getIndex_flname());
+        holder.tvDefaultValue.setText(dimensionPositionBean.getChartBean().getIndex_data() + "");
+        holder.tvDefaultValue.setTextColor(Color.parseColor(dimensionPositionBean
+                .getChartBean().getIndex_default_color()));
+        holder.lineChart.setColumnInfo(chartXTitles,chartBeans,colors,6);
     }
 
     /**
@@ -255,7 +305,38 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
      * @param position
      */
     private void onBindViewDashBoardHolder(DashBoardHolder holder, int position) {
+        DimensionPositionBean dimensionPositionBean = chartBeans.get(position);
+        if (dimensionPositionBean.getChartBean() == null){
+            return;
+        }
+        if(!TextUtils.isEmpty(dimensionPositionBean.getExistIndexthreshold())
+                && dimensionPositionBean.getExistIndexthreshold().equals("true")){
+            holder.imgIndexForReport.setVisibility(View.VISIBLE);
+        }else{
+            holder.imgIndexForReport.setVisibility(View.GONE);
+        }
 
+        if(!TextUtils.isEmpty(dimensionPositionBean.getExistDescription())
+                && dimensionPositionBean.getExistDescription().equals("true")){
+            switch (holder.imgIndexForReport.getVisibility()){
+                case View.VISIBLE :
+                    holder.imgDescribe.setVisibility(View.VISIBLE);
+                    break;
+
+                case View.GONE:
+                    holder.imgIndexForReport.setVisibility(View.VISIBLE);
+                    holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                            .decodeResource(mContext.getResources(),R.mipmap.icon_describe));
+                    break;
+            }
+        }else{
+            holder.imgDescribe.setVisibility(View.GONE);
+        }
+        holder.tvUnit.setText(dimensionPositionBean.getChartBean().getChart_unit());
+        holder.tvName.setText(LanguageUtils.isZh(mContext)
+                ? dimensionPositionBean.getChartBean().getIndex_clname()
+                : dimensionPositionBean.getChartBean().getIndex_flname());
+        holder.dashBoardChart.setChartValue(dimensionPositionBean.getChartBean());
     }
 
     /**
@@ -406,6 +487,19 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public class LineHolder extends RecyclerView.ViewHolder{
+        @BindView(R.id.lineChart)
+        LineChart lineChart ;
+        @BindView(R.id.tv_defaultValue)
+        TextView tvDefaultValue ;
+        @BindView(R.id.tv_name)
+        TextView tvName ;
+        @BindView(R.id.img_indexForReport)
+        ImageView imgIndexForReport ;
+        @BindView(R.id.img_describe)
+        ImageView imgDescribe ;
+        @BindView(R.id.tv_unit)
+        TextView tvUnit ;
+
         public LineHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
@@ -413,8 +507,8 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public class BarHolder extends RecyclerView.ViewHolder{
-        @BindView(R.id.lineChart)
-        LineChart lineChart ;
+        @BindView(R.id.barChart)
+        BarChart lineChart ;
         @BindView(R.id.tv_defaultValue)
         TextView tvDefaultValue ;
         @BindView(R.id.tv_name)
@@ -459,6 +553,17 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public class DashBoardHolder extends RecyclerView.ViewHolder{
+        @BindView(R.id.dashBoardChart)
+        DashBoardView dashBoardChart ;
+        @BindView(R.id.tv_name)
+        TextView tvName ;
+        @BindView(R.id.img_indexForReport)
+        ImageView imgIndexForReport ;
+        @BindView(R.id.img_describe)
+        ImageView imgDescribe ;
+        @BindView(R.id.tv_unit)
+        TextView tvUnit ;
+
         public DashBoardHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);

@@ -7,7 +7,7 @@ import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Rect;
+import android.graphics.Point;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -15,7 +15,10 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
 
+import androidx.annotation.Nullable;
+
 import com.datacvg.sempmobile.R;
+import com.datacvg.sempmobile.baseandroid.utils.DisplayUtils;
 import com.datacvg.sempmobile.baseandroid.utils.PLog;
 
 import java.util.ArrayList;
@@ -24,9 +27,9 @@ import java.util.List;
 
 /**
  * @Author : T-Bag (茶包)
- * @Time : 2020-10-23
- * @Description :   折线图
- * */
+ * @Time : 2020-10-27
+ * @Description : 折线图
+ */
 public class LineChart extends View {
     //图表标题
     private String graphTitle = "";
@@ -67,13 +70,18 @@ public class LineChart extends View {
     private int xAxisScaleHeight = 5;
     //刻度的最大值
     private double maxValue;
+    private double minValue;
     //y轴空留部分高度
     private int yMarign = 30;
 
     //柱状图数据
     private List<Double> columnList = new ArrayList<>();
+
+    private List<String> xTitles = new ArrayList<>();
     //柱状图颜色
     private List<Integer> columnColors = new ArrayList<>();
+    private float cellValue = 0f;
+    private int ceil = 0;
 
     public LineChart(Context context) {
         this(context, null);
@@ -144,19 +152,13 @@ public class LineChart extends View {
         drawXAxis(canvas);
         //绘制y轴
         drawYAxis(canvas);
-        //绘制x轴刻度
-//        drawXAxisScale(canvas);
         //绘制x轴刻度值
         drawXAxisScaleValue(canvas);
         //绘制y轴刻度
         drawYAxisScale(canvas);
         drawYAxisScaleValue(canvas);
-        //绘制x轴箭头
-//        drawXAxisArrow(canvas);
-        //绘制y轴箭头
-//        drawYAxisArrow(canvas);
         //绘制柱状图
-        drawColumn(canvas);
+        drawLine(canvas);
     }
 
     /**
@@ -164,57 +166,18 @@ public class LineChart extends View {
      *
      * @param canvas
      */
-    protected void drawColumn(Canvas canvas) {
+    protected void drawLine(Canvas canvas) {
         if (columnList != null && columnColors != null) {
             //根据最大值和高度计算比例
-            float scale = (float) ((height - dip2px(yMarign)) / maxValue);
-            for (int i = 0; i < columnList.size(); i++) {
+            float scale = (float) ((height - dip2px(yMarign)) / (maxValue - minValue));
+            for (int i = 1; i < columnList.size(); i++) {
                 mPaint.setColor(columnColors.get(i));
-                float leftTopY = (float) (originalY - columnList.get(i) * scale);
-                canvas.drawRect(originalX + dip2px(15) *(i + 1) + cellWidth * i ,
-                        leftTopY,
-                        originalX + (cellWidth + dip2px(15)) * (i+1),
-                        originalY - axisLineWidth / 2,
-                        mPaint);
+                float startX = (float) (originalX + dip2px(15) * i  + cellWidth * (i -1) + cellWidth/2);
+                float endX = (float) (originalX + dip2px(15) * (i+1) + cellWidth * i + cellWidth/2);
+                float startY = (float) (originalY - (columnList.get(i - 1) - minValue) * scale);
+                float endY = (float) (originalY - (columnList.get(i) - minValue) * scale);
+                canvas.drawLine(startX , startY, endX , endY, mPaint);
             }
-        }
-    }
-
-    /**
-     * 绘制y轴箭头
-     *
-     * @param canvas
-     */
-    private void drawYAxisArrow(Canvas canvas) {
-        mPaint.setColor(axisTextColor);
-        Path yPath = new Path();
-        yPath.moveTo(originalX, originalY - height - 30);
-        yPath.lineTo(originalX - 10, originalY - height);
-        yPath.lineTo(originalX + 10, originalY - height);
-        yPath.close();
-        canvas.drawPath(yPath, mPaint);
-        //绘制y轴名称
-        if (!TextUtils.isEmpty(yAxisName)) {
-            canvas.drawText(yAxisName, originalX - 50, originalY - height - 35, mPaint);
-        }
-    }
-
-    /**
-     * 绘制x轴箭头
-     *
-     * @param canvas
-     */
-    private void drawXAxisArrow(Canvas canvas) {
-        mPaint.setColor(axisTextColor);
-        Path xPath = new Path();
-        xPath.moveTo(originalX + width + 30, originalY);
-        xPath.lineTo(originalX + width, originalY + 10);
-        xPath.lineTo(originalX + width, originalY - 10);
-        xPath.close();
-        canvas.drawPath(xPath, mPaint);
-        //绘制x轴名称
-        if (!TextUtils.isEmpty(xAxisName)) {
-            canvas.drawText(xAxisName, originalX + width, originalY + 50, mPaint);
         }
     }
 
@@ -228,17 +191,12 @@ public class LineChart extends View {
             mPaint.setColor(axisTextColor);
             mPaint.setTextSize(axisTextSize);
             int cellHeight = (height - dip2px(yMarign)) / axisDivideSizeY;
-            float cellValue = (float) (maxValue / (axisDivideSizeY + 0f));
-            //这里只处理的大于1时的绘制  小于等于1的绘制没有处理
-            int ceil = (int) Math.ceil(cellValue);
-//            DecimalFormat df2 = new DecimalFormat("###.00");
-//            String format = df2.format(ceil);
-//            float result = Float.parseFloat(format);
             for (int i = 0; i < axisDivideSizeY + 1; i++) {
                 if (i == 0) {
                     continue;
                 }
-                String s = ceil * i + "";
+                String s = new Double(minValue + ceil * i).intValue() + "";
+                PLog.e(s + "," + minValue + ceil * i);
                 float v = mPaint.measureText(s);
                 canvas.drawText(s,
                         originalX - v - 10,
@@ -288,39 +246,21 @@ public class LineChart extends View {
         mPaint.setTextSize(axisTextSize);
         mPaint.setFakeBoldText(true);
         float cellWidth = width / (columnList.size() + 2);
-        for (int i = 0; i < columnList.size() + 1; i++) {
+        for (int i = 0; i < xTitles.size() + 1 ; i++) {
             canvas.save();
             if (i == 0) {
                 continue;
             }
-            String txt = i + "管理创新事业部";
+            String txt =xTitles.get(i - 1);
             //测量文字的宽度
             float txtWidth = mPaint.measureText(txt);
             canvas.rotate(-20
-                    , originalX + dip2px(15) * i  + cellWidth * (i -1) + cellWidth/2- txtWidth/2
+                    , originalX + dip2px(15) * i  + cellWidth * (i -1) + cellWidth/2- txtWidth/2- dip2px(10)
                     , originalY + xTxtMargin + txtWidth / 2);
-            canvas.drawText(txt, originalX + dip2px(15) * i  + cellWidth * (i -1) + cellWidth/2 - txtWidth/2,
-                    originalY + xTxtMargin *2,
+            canvas.drawText(txt, originalX + dip2px(15) * i  + cellWidth * (i -1) - dip2px(10),
+                    (float) (originalY + xTxtMargin *2),
                     mPaint);
             canvas.restore();
-        }
-    }
-
-    /**
-     * 绘制x轴刻度
-     *
-     * @param canvas
-     */
-    protected void drawXAxisScale(Canvas canvas) {
-        PLog.e("TAG", columnList.size() + "");
-        mPaint.setColor(axisLineColor);
-        int scaleNum = columnList.size() + 2;
-        float cellWidth = width / scaleNum;
-        for (int i = 0; i < scaleNum - 1; i++) {
-            canvas.drawLine(cellWidth * (i + 1) + originalX,
-                    originalY,
-                    cellWidth * (i + 1) + originalX,
-                    originalY - dip2px(xAxisScaleHeight), mPaint);
         }
     }
 
@@ -379,16 +319,27 @@ public class LineChart extends View {
 
     /**
      * 调用该方法进行图表的设置
+     * @param chartXTitles
      * @param columnList 柱状图的数据
      * @param columnColors  颜色
      * @param axisDivideSizeY y轴显示的等份数
      */
-    public void setColumnInfo(List<Double> columnList, List<Integer> columnColors, int axisDivideSizeY) {
+    public void setColumnInfo(List<String> chartXTitles, List<Double> columnList
+            , List<Integer> columnColors, int axisDivideSizeY) {
         this.columnList = columnList;
         this.columnColors = columnColors;
         this.axisDivideSizeY = axisDivideSizeY;
+        xTitles = chartXTitles ;
         //获取刻度的最大值
         maxValue = Collections.max(columnList);
+        minValue = Collections.min(columnList);
+        cellValue = (float) ((maxValue - minValue)/ (axisDivideSizeY + 0f));
+        //这里只处理的大于1时的绘制  小于等于1的绘制没有处理
+        ceil = (int) Math.ceil(cellValue);
+        minValue = Math.floor(minValue - ceil) > 0 ? Math.floor(minValue - ceil) : 0 ;
+        maxValue = Math.ceil(maxValue + ceil);
+        ceil = (int) Math.ceil((float) ((maxValue - minValue)/ (axisDivideSizeY + 0f)));
+        minValue = maxValue - ceil * axisDivideSizeY ;
         PLog.e("TAG", "maxValue-->" + maxValue);
         invalidate();
     }

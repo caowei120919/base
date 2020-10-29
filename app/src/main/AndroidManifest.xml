@@ -40,6 +40,11 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".activity.TestRealActivity"
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait">
+        </activity>
+
         <activity android:name=".activity.LoginActivity"
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait">

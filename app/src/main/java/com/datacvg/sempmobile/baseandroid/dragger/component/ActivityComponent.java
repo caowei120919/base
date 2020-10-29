@@ -16,6 +16,7 @@ import com.datacvg.sempmobile.activity.ScreenSettingActivity;
 import com.datacvg.sempmobile.activity.SettingActivity;
 import com.datacvg.sempmobile.activity.SettingVpnActivity;
 import com.datacvg.sempmobile.activity.SplashActivity;
+import com.datacvg.sempmobile.activity.TestRealActivity;
 import com.datacvg.sempmobile.baseandroid.dragger.module.ActivityModule;
 import com.datacvg.sempmobile.baseandroid.dragger.scope.ActivityScope;
 
@@ -54,4 +55,6 @@ public interface ActivityComponent {
     void inject(ScreenDetailActivity screenDetailActivity);
 
     void inject(ScreenSettingActivity screenSettingActivity);
+
+    void inject(TestRealActivity testRealActivity);
 }

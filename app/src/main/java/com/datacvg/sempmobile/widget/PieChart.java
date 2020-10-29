@@ -119,6 +119,9 @@ public class PieChart extends View {
      * @param canvas
      */
     private void initPie(Canvas canvas) {
+        if (pieChartBeans == null){
+            return;
+        }
         int anglesSize = pieChartBeans.size();
         if (pieChartBeans != null && anglesSize > 0){
             float pieStart = START_DEGREE;

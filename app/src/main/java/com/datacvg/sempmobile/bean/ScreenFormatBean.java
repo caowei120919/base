@@ -1,5 +1,7 @@
 package com.datacvg.sempmobile.bean;
 
+import android.text.TextUtils;
+
 import androidx.annotation.Keep;
 
 /**
@@ -22,7 +24,7 @@ public class ScreenFormatBean {
     private String size;
     private String width;
     private String height;
-    private String direction;
+    private String direction ;
 
     public String getType() {
         return type;
