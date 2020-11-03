@@ -41,9 +41,14 @@ import com.datacvg.sempmobile.bean.DimensionPositionBean;
 import com.datacvg.sempmobile.bean.DimensionPositionListBean;
 import com.datacvg.sempmobile.bean.DimensionType;
 import com.datacvg.sempmobile.bean.OtherDimensionBean;
+import com.datacvg.sempmobile.event.ChangeIndexEvent;
 import com.datacvg.sempmobile.presenter.DigitalPresenter;
 import com.datacvg.sempmobile.view.DigitalView;
 import com.google.gson.Gson;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -487,6 +492,11 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
                 mFuValue = popDimensionBeans.get(position).getValue();
                 break;
         }
+        getIndexPosition();
+    }
+
+    @Subscribe (threadMode = ThreadMode.MAIN)
+    public void onEvent(ChangeIndexEvent event){
         getIndexPosition();
     }
 }

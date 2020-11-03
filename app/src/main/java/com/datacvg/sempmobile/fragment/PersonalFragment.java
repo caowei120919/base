@@ -59,6 +59,10 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
 
     private List<UserJobsBean> userJobsBeans = new ArrayList<>();
     private IntentIntegrator mIntentIntegrator ;
+    private int pageSize = Constants.MAX_PAGE_SIZE ;
+    private int pageIndex = 1;
+    private String module_id = "" ;
+    private String read_flag = "false" ;
 
     @Override
     protected int getLayoutId() {
@@ -89,6 +93,7 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
                 , new LazyHeaders.Builder().addHeader(Constants.AUTHORIZATION,Constants.token).build());
         Glide.with(mContext).load(imgUrl).into(circleHead);
         getPresenter().getJob(PreferencesHelper.get(Constants.USER_PKID,""));
+        getPresenter().getMessage(pageIndex+ "",pageSize + "",module_id,read_flag);
     }
 
     @OnClick({R.id.rel_setting,R.id.rel_logout,R.id.img_right})

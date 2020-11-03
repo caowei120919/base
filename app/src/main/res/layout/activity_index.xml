@@ -1,9 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/c_FFFFFF">
 
     <include
         android:id="@+id/title"
         layout="@layout/actionbar_title"/>
+
+    <RelativeLayout
+        android:id="@+id/rel_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H80"
+        android:layout_below="@id/title">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/my_indicators"
+            android:layout_marginLeft="@dimen/W24"
+            android:drawableLeft="@mipmap/icon_filter_my"
+            android:drawablePadding="@dimen/W24">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_two_for_one"
+            android:layout_width="@dimen/W100"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@drawable/shape_two_and_one"
+            android:text="2*1"
+            android:gravity="center"
+            android:paddingLeft="@dimen/W10"
+            android:paddingRight="@dimen/W10"
+            android:textColor="@color/c_FFFFFF"
+            android:paddingTop="@dimen/W5"
+            android:paddingBottom="@dimen/W5"
+            android:layout_marginRight="@dimen/W24"
+            android:layout_alignParentRight="true">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_two_for_two"
+            android:layout_toLeftOf="@id/tv_two_for_one"
+            android:layout_width="@dimen/W100"
+            android:background="@drawable/shape_two_and_two"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/W10"
+            android:layout_marginRight="@dimen/W10"
+            android:paddingRight="@dimen/W10"
+            android:gravity="center"
+            android:textColor="@color/c_FFFFFF"
+            android:paddingTop="@dimen/W5"
+            android:paddingBottom="@dimen/W5"
+            android:layout_centerVertical="true"
+            android:text="2*2">
+        </TextView>
+
+        <TextView
+            android:layout_toLeftOf="@id/tv_two_for_two"
+            android:layout_width="@dimen/W100"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/W10"
+            android:textColor="@color/c_FFFFFF"
+            android:background="@drawable/shape_one_and_one"
+            android:layout_marginRight="@dimen/W10"
+            android:paddingRight="@dimen/W10"
+            android:gravity="center"
+            android:paddingTop="@dimen/W5"
+            android:paddingBottom="@dimen/W5"
+            android:layout_centerVertical="true"
+            android:text="1*1">
+        </TextView>
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_index"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H400"
+        android:layout_marginLeft="@dimen/W15"
+        android:layout_below="@id/rel_title">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <net.lucode.hackware.magicindicator.MagicIndicator
+        android:id="@+id/magic_indicator"
+        android:layout_below="@id/recycler_index"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H80" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_otherIndex"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/W15"
+        android:layout_below="@id/magic_indicator">
+    </androidx.recyclerview.widget.RecyclerView>
 </RelativeLayout>

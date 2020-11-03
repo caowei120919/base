@@ -4,14 +4,8 @@ import com.datacvg.sempmobile.baseandroid.config.MobileApi;
 import com.datacvg.sempmobile.baseandroid.retrofit.RxObserver;
 import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.sempmobile.baseandroid.utils.RxUtils;
-import com.datacvg.sempmobile.bean.ModuleBean;
 import com.datacvg.sempmobile.bean.ModuleListBean;
 import com.datacvg.sempmobile.view.MainView;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import javax.inject.Inject;
 
 /**
@@ -27,6 +21,9 @@ public class MainPresenter extends BasePresenter<MainView>{
         this.mobileApi = mobileApi;
     }
 
+    /**
+     * 获取用户拥有权限的模块
+     */
     public void getPermissionModule() {
         mobileApi.getPermissionModule()
                 .compose(RxUtils.applySchedulersLifeCycle(getView()))

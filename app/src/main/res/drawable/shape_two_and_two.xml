@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/c_bf5053" />
+    <item android:name="android:shadowColor">@color/c_15000000</item>
+    <item android:name="android:shadowDx">0</item>
+    <item android:name="android:shadowDy">2</item>
+    <corners android:topLeftRadius="@dimen/W24"
+        android:topRightRadius="@dimen/W24"
+        android:bottomLeftRadius="@dimen/W24"
+        android:bottomRightRadius="@dimen/W24" />
+</shape>

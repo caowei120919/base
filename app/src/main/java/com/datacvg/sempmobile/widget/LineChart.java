@@ -177,6 +177,7 @@ public class LineChart extends View {
                 float startY = (float) (originalY - (columnList.get(i - 1) - minValue) * scale);
                 float endY = (float) (originalY - (columnList.get(i) - minValue) * scale);
                 canvas.drawLine(startX , startY, endX , endY, mPaint);
+                PLog.e("startX == " + startX+" , " + "startY == " + startY+" , " + "endX == " + endX+" , " + "endY == " + endY);
             }
         }
     }
@@ -240,7 +241,7 @@ public class LineChart extends View {
         if (columnList.size() == 0){
             cellWidth = width ;
         }else{
-            cellWidth = width - dip2px(30) * (columnList.size() + 1) ;
+            cellWidth = (width - dip2px(2) * columnList.size())/(columnList.size() + 1)  ;
         }
         mPaint.setColor(axisTextColor);
         mPaint.setTextSize(axisTextSize);

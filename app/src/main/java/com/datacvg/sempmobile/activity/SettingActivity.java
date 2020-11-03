@@ -5,17 +5,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.TextView;
-
 import androidx.appcompat.widget.SwitchCompat;
-
 import com.datacvg.sempmobile.BuildConfig;
 import com.datacvg.sempmobile.R;
 import com.datacvg.sempmobile.baseandroid.utils.CacheUtils;
 import com.datacvg.sempmobile.baseandroid.utils.FingerPrintUtils;
 import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.baseandroid.utils.StatusBarUtil;
+import com.datacvg.sempmobile.event.RebuildTableEvent;
 import com.datacvg.sempmobile.presenter.SettingPresenter;
 import com.datacvg.sempmobile.view.SettingView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -100,5 +102,10 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
                 startActivity(new Intent(mContext,ModuleSettingActivity.class));
                 break;
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(RebuildTableEvent event){
+        PLog.e("caowei");
     }
 }

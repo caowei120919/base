@@ -157,6 +157,13 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (dimensionPositionBean.getChartBean() == null){
             return;
         }
+        holder.tvUnit.setText(dimensionPositionBean.getChartBean().getChart_unit());
+        holder.tvName.setText(LanguageUtils.isZh(mContext)
+                ? dimensionPositionBean.getChartBean().getIndex_clname()
+                : dimensionPositionBean.getChartBean().getIndex_flname());
+        holder.tvDefaultValue.setText(dimensionPositionBean.getChartBean().getIndex_data() + "");
+        holder.tvDefaultValue.setTextColor(Color.parseColor(dimensionPositionBean
+                .getChartBean().getIndex_default_color()));
         List<Object> datas = dimensionPositionBean.getChartBean().getOption().getSeries().get(0).getData();
         for (int i = 0 ; i < datas.size() ; i++){
             chartBeans.add(Double.valueOf((String)(datas.get(i))));
@@ -186,13 +193,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }else{
             holder.imgDescribe.setVisibility(View.GONE);
         }
-        holder.tvUnit.setText(dimensionPositionBean.getChartBean().getChart_unit());
-        holder.tvName.setText(LanguageUtils.isZh(mContext)
-                ? dimensionPositionBean.getChartBean().getIndex_clname()
-                : dimensionPositionBean.getChartBean().getIndex_flname());
-        holder.tvDefaultValue.setText(dimensionPositionBean.getChartBean().getIndex_data() + "");
-        holder.tvDefaultValue.setTextColor(Color.parseColor(dimensionPositionBean
-                .getChartBean().getIndex_default_color()));
         holder.lineChart.setColumnInfo(chartXTitles,chartBeans,colors,6);
     }
 
@@ -209,6 +209,13 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (dimensionPositionBean.getChartBean() == null){
             return;
         }
+        holder.tvUnit.setText(dimensionPositionBean.getChartBean().getChart_unit());
+        holder.tvName.setText(LanguageUtils.isZh(mContext)
+                ? dimensionPositionBean.getChartBean().getIndex_clname()
+                : dimensionPositionBean.getChartBean().getIndex_flname());
+        holder.tvDefaultValue.setText(dimensionPositionBean.getChartBean().getIndex_data() + "");
+        holder.tvDefaultValue.setTextColor(Color.parseColor(dimensionPositionBean
+                .getChartBean().getIndex_default_color()));
         List<Object> datas = dimensionPositionBean.getChartBean().getOption().getSeries().get(0).getData();
         for (int i = 0 ; i < datas.size() ; i++){
             chartBeans.add(Double.valueOf((String)(datas.get(i))));
@@ -238,14 +245,7 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }else{
             holder.imgDescribe.setVisibility(View.GONE);
         }
-        holder.tvUnit.setText(dimensionPositionBean.getChartBean().getChart_unit());
-        holder.tvName.setText(LanguageUtils.isZh(mContext)
-                ? dimensionPositionBean.getChartBean().getIndex_clname()
-                : dimensionPositionBean.getChartBean().getIndex_flname());
-        holder.tvDefaultValue.setText(dimensionPositionBean.getChartBean().getIndex_data() + "");
-        holder.tvDefaultValue.setTextColor(Color.parseColor(dimensionPositionBean
-                .getChartBean().getIndex_default_color()));
-        holder.lineChart.setColumnInfo(chartXTitles,chartBeans,colors,6);
+        holder.barChart.setColumnInfo(chartXTitles,chartBeans,colors,6);
     }
 
     /**
@@ -259,6 +259,13 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (dimensionPositionBean.getChartBean() == null){
             return;
         }
+        holder.tvUnit.setText(dimensionPositionBean.getChartBean().getChart_unit());
+        holder.tvName.setText(LanguageUtils.isZh(mContext)
+                ? dimensionPositionBean.getChartBean().getIndex_clname()
+                : dimensionPositionBean.getChartBean().getIndex_flname());
+        holder.tvDefaultValue.setText((int)(dimensionPositionBean.getChartBean().getIndex_data()) + "");
+        holder.tvDefaultValue.setTextColor(Color.parseColor(dimensionPositionBean
+                .getChartBean().getIndex_default_color()));
         List<Object> datas = dimensionPositionBean.getChartBean().getOption().getSeries().get(0).getData();
         for (int i = 0 ; i < datas.size() ; i++){
             PieChartBean pieChartBean = new PieChartBean();
@@ -289,13 +296,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }else{
             holder.imgDescribe.setVisibility(View.GONE);
         }
-        holder.tvUnit.setText(dimensionPositionBean.getChartBean().getChart_unit());
-        holder.tvName.setText(LanguageUtils.isZh(mContext)
-                ? dimensionPositionBean.getChartBean().getIndex_clname()
-                : dimensionPositionBean.getChartBean().getIndex_flname());
-        holder.tvDefaultValue.setText((int)(dimensionPositionBean.getChartBean().getIndex_data()) + "");
-        holder.tvDefaultValue.setTextColor(Color.parseColor(dimensionPositionBean
-                .getChartBean().getIndex_default_color()));
         holder.pieChart.setDate(pieChartBeans);
     }
 
@@ -309,6 +309,10 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (dimensionPositionBean.getChartBean() == null){
             return;
         }
+        holder.tvUnit.setText(dimensionPositionBean.getChartBean().getChart_unit());
+        holder.tvName.setText(LanguageUtils.isZh(mContext)
+                ? dimensionPositionBean.getChartBean().getIndex_clname()
+                : dimensionPositionBean.getChartBean().getIndex_flname());
         if(!TextUtils.isEmpty(dimensionPositionBean.getExistIndexthreshold())
                 && dimensionPositionBean.getExistIndexthreshold().equals("true")){
             holder.imgIndexForReport.setVisibility(View.VISIBLE);
@@ -332,10 +336,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }else{
             holder.imgDescribe.setVisibility(View.GONE);
         }
-        holder.tvUnit.setText(dimensionPositionBean.getChartBean().getChart_unit());
-        holder.tvName.setText(LanguageUtils.isZh(mContext)
-                ? dimensionPositionBean.getChartBean().getIndex_clname()
-                : dimensionPositionBean.getChartBean().getIndex_flname());
         holder.dashBoardChart.setChartValue(dimensionPositionBean.getChartBean());
     }
 
@@ -508,7 +508,7 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public class BarHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.barChart)
-        BarChart lineChart ;
+        BarChart barChart ;
         @BindView(R.id.tv_defaultValue)
         TextView tvDefaultValue ;
         @BindView(R.id.tv_name)

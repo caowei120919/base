@@ -15,19 +15,6 @@
         android:layout_marginLeft="@dimen/W15">
     </ImageView>
 
-    <TextView
-        android:id="@+id/tv_name"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:layout_toRightOf="@id/img_title"
-        android:layout_marginLeft="@dimen/W30"
-        android:textColor="@color/c_666666"
-        android:textSize="13sp"
-        android:maxWidth="@dimen/W500"
-        android:singleLine="true">
-    </TextView>
-
     <ImageView
         android:id="@+id/img_delete"
         android:layout_width="wrap_content"
@@ -47,6 +34,20 @@
         android:layout_height="match_parent"
         android:src="@mipmap/icon_setting_screen">
     </ImageView>
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:layout_toLeftOf="@id/img_setting"
+        android:layout_toRightOf="@id/img_title"
+        android:layout_marginLeft="@dimen/W30"
+        android:textColor="@color/c_666666"
+        android:textSize="13sp"
+        android:maxWidth="@dimen/W500"
+        android:singleLine="true">
+    </TextView>
 
     <TextView
         android:layout_width="match_parent"

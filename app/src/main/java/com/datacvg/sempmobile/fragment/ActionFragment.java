@@ -1,21 +1,17 @@
 package com.datacvg.sempmobile.fragment;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.datacvg.sempmobile.R;
 import com.datacvg.sempmobile.activity.NewTaskActivity;
 import com.datacvg.sempmobile.adapter.ActionPlanAdapter;
-import com.datacvg.sempmobile.adapter.ModuleAdapter;
 import com.datacvg.sempmobile.baseandroid.config.Constants;
 import com.datacvg.sempmobile.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.sempmobile.baseandroid.utils.StatusBarUtil;

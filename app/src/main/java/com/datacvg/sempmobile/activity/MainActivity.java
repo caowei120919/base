@@ -1,14 +1,17 @@
 package com.datacvg.sempmobile.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import androidx.fragment.app.Fragment;
+
 import com.datacvg.sempmobile.R;
 import com.datacvg.sempmobile.baseandroid.greendao.bean.ModuleInfo;
 import com.datacvg.sempmobile.baseandroid.greendao.controller.DbModuleInfoController;
+import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.baseandroid.utils.StatusBarUtil;
 import com.datacvg.sempmobile.baseandroid.utils.ToastUtils;
 import com.datacvg.sempmobile.bean.ModuleBean;
@@ -62,6 +65,8 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
      */
     private long firstTime = 0;
     private List<ModuleInfo> moduleBeans = new ArrayList<>();
+    private boolean isNeedRebuild = false ;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;
@@ -183,6 +188,14 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                 .tabTextSize(10)
                 .iconSize(20)
                 .tabTextTop(2)
+                .hintPointLeft(-3)
+                .hintPointTop(-3)
+                .hintPointSize(9)
+                .msgPointLeft(-10)
+                .msgPointTop(-10)
+                .msgPointTextSize(6)
+                .msgPointSize(18)
+                .setMsgPointColor(Color.RED)
                 .normalIconItems(normalIcons)
                 .selectIconItems(selectIcons)
                 .scaleType(ImageView.ScaleType.CENTER_INSIDE)
@@ -190,6 +203,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                 .setOnTabClickListener(new EasyNavigationBar.OnTabClickListener() {
                     @Override
                     public boolean onTabSelectEvent(View view, int position) {
+
                         return false;
                     }
 
@@ -204,12 +218,18 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                 .hasPadding(true)
                 .fragmentList(fragments)
                 .fragmentManager(getSupportFragmentManager())
+                .setOnTabLoadListener(new EasyNavigationBar.OnTabLoadListener() {
+                    @Override
+                    public void onTabLoadCompleteEvent() {
+
+                    }
+                })
                 .build();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RebuildTableEvent event){
-
+       PLog.e("模块切换");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

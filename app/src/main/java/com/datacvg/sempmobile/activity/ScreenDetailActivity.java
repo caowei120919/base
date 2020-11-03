@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -88,7 +89,8 @@ public class ScreenDetailActivity extends BaseActivity<ScreenDetailView, ScreenD
                 ,ScreenFormatBean.class);
         tvSize.setText(screenFormatBean.getSize()
                 + mContext.getResources().getString(R.string.inch) + screenFormatBean.getType()
-                + (screenFormatBean.getDirection().equals("horizontal") ?
+                + (TextUtils.isEmpty(screenFormatBean.getDirection()) ? ""
+                : screenFormatBean.getDirection().equals("horizontal") ?
                 mContext.getResources().getString(R.string.landscape) :
                 mContext.getResources().getString(R.string.vertical_screen)));
 

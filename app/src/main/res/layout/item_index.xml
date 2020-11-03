@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/W200"
+    android:layout_height="@dimen/H100">
+
+    <TextView
+        android:id="@+id/tv_index"
+        android:ellipsize="end"
+        android:layout_width="match_parent"
+        android:textColor="@color/c_999999"
+        android:textSize="14sp"
+        android:paddingLeft="@dimen/W15"
+        android:paddingTop="@dimen/H15"
+        android:layout_height="match_parent">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_indexCircle"
+        android:layout_width="@dimen/W8"
+        android:layout_height="@dimen/W8"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/W15"
+        android:layout_marginTop="@dimen/W15">
+    </TextView>
+</RelativeLayout>

@@ -5,6 +5,7 @@ import com.datacvg.sempmobile.bean.ActionPlanListBean;
 import com.datacvg.sempmobile.bean.ChartListBean;
 import com.datacvg.sempmobile.bean.DimensionListBean;
 import com.datacvg.sempmobile.bean.DimensionPositionListBean;
+import com.datacvg.sempmobile.bean.IndexBean;
 import com.datacvg.sempmobile.bean.ModuleListBean;
 import com.datacvg.sempmobile.bean.OtherDimensionBean;
 import com.datacvg.sempmobile.bean.ScreenDetailBean;
@@ -108,13 +109,52 @@ public interface MobileApi {
     @GET("indexpad/other/dimention")
     Observable<BaseBean<OtherDimensionBean>> getOtherDimension();
 
+    /**
+     * 获取图表详细数据
+     * @param map
+     * @return
+     */
     @POST("indexpad/echarts")
     Observable<BaseBean<ChartListBean>> getCharts(@Body Map map);
 
+    /**
+     * 获取任务列表
+     * @param map
+     * @return
+     */
     @POST("actionplan/infotask")
     Observable<BaseBean<ActionPlanListBean>> getActionList(@Body Map map);
 
+    /**
+     * 获取大屏详情
+     * @param screen_id
+     * @return
+     */
     @Headers({"Domain-Name: fis_api"})
     @GET("largescreen/{id}")
     Observable<BaseBean<ScreenDetailBean>> getScreenDetail(@Path("id") String screen_id);
+
+    /**
+     * 获取消息
+     * @param pageIndex
+     * @param pageSize
+     * @param module_id
+     * @param read_flag
+     * @return
+     */
+    @GET("login/message_info")
+    Observable<BaseBean<String>> getMessage(@Query("pageIndex") String pageIndex,
+                                            @Query("pageSize") String pageSize,
+                                            @Query("module_id") String module_id,
+                                            @Query("read_flag") String read_flag);
+
+    /**
+     * 获取指标信息
+     * @return
+     */
+    @GET("indexpad/index/classification")
+    Observable<BaseBean<IndexBean>> getIndex();
+
+    @POST("indexpad/position/change")
+    Observable<BaseBean<String>> changeSelectedIndex(@Query("indexIds") String indexIds);
 }

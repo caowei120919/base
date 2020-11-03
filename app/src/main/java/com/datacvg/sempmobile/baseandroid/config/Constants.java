@@ -102,6 +102,15 @@ public class Constants {
     public static String token = "" ;
 
     /**
+     * 分页最大数量
+     */
+    public static int MAX_PAGE_SIZE = 10000 ;
+    /**
+     * 分页默认每页数量
+     */
+    public static int DEFAULT_PAGE_SIZE = 20 ;
+
+    /**
      *
      * @param user  用户信息实体
      * @param checked   是否选中记住用户密码
