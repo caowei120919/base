@@ -135,13 +135,14 @@
             android:textColor="@color/c_333333">
         </TextView>
 
-        <androidx.appcompat.widget.SwitchCompat
+        <CheckBox
             android:id="@+id/switch_fingerprint"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
+            android:button="@drawable/selector_check_button"
             android:gravity="center">
-        </androidx.appcompat.widget.SwitchCompat>
+        </CheckBox>
     </RelativeLayout>
 
     <View

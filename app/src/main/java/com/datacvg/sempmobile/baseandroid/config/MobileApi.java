@@ -8,6 +8,8 @@ import com.datacvg.sempmobile.bean.DimensionPositionListBean;
 import com.datacvg.sempmobile.bean.IndexBean;
 import com.datacvg.sempmobile.bean.ModuleListBean;
 import com.datacvg.sempmobile.bean.OtherDimensionBean;
+import com.datacvg.sempmobile.bean.ReportBean;
+import com.datacvg.sempmobile.bean.ReportListBean;
 import com.datacvg.sempmobile.bean.ScreenDetailBean;
 import com.datacvg.sempmobile.bean.ScreenListBean;
 import com.datacvg.sempmobile.bean.UserJobsListBean;
@@ -68,8 +70,8 @@ public interface MobileApi {
      */
     @Headers({"Domain-Name: fis_api"})
     @GET("dataexporler/report/folder")
-    Observable<BaseBean<String>> getReport(@Query("type") String reportType,
-                                           @Query("_t") String t);
+    Observable<BaseBean<ReportListBean>> getReport(@Query("type") String reportType,
+                                                   @Query("_t") String t);
 
     /**
      * 获取所有大屏

@@ -263,7 +263,7 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         holder.tvName.setText(LanguageUtils.isZh(mContext)
                 ? dimensionPositionBean.getChartBean().getIndex_clname()
                 : dimensionPositionBean.getChartBean().getIndex_flname());
-        holder.tvDefaultValue.setText((int)(dimensionPositionBean.getChartBean().getIndex_data()) + "");
+        holder.tvDefaultValue.setText(dimensionPositionBean.getChartBean().getIndex_data() + "");
         holder.tvDefaultValue.setTextColor(Color.parseColor(dimensionPositionBean
                 .getChartBean().getIndex_default_color()));
         List<Object> datas = dimensionPositionBean.getChartBean().getOption().getSeries().get(0).getData();
@@ -596,4 +596,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             });
         }
     }
+
+
 }

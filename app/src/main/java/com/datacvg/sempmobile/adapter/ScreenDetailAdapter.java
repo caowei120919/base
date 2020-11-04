@@ -1,21 +1,18 @@
 package com.datacvg.sempmobile.adapter;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.datacvg.sempmobile.R;
 import com.datacvg.sempmobile.bean.ScreenDetailBean;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -49,6 +46,13 @@ public class ScreenDetailAdapter extends RecyclerView.Adapter<ScreenDetailAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.tvName.setText(beans.get(position).getImg_name());
+        if(beans.get(position).getRes_type().equals("img")){
+            holder.imgTitle.setImageBitmap(BitmapFactory
+                    .decodeResource(mContext.getResources(),R.mipmap.icon_img_screen));
+        }else{
+            holder.imgTitle.setImageBitmap(BitmapFactory
+                    .decodeResource(mContext.getResources(),R.mipmap.icon_screen_detail_title));
+        }
         holder.imgDelete.setOnClickListener(view -> {
             click.onDeleteClick(position);
         });
@@ -69,6 +73,8 @@ public class ScreenDetailAdapter extends RecyclerView.Adapter<ScreenDetailAdapte
         ImageView imgDelete ;
         @BindView(R.id.img_setting)
         ImageView imgSetting ;
+        @BindView(R.id.img_title)
+        ImageView imgTitle ;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

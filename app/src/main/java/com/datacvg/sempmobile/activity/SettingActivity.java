@@ -3,6 +3,7 @@ package com.datacvg.sempmobile.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import androidx.appcompat.widget.SwitchCompat;
@@ -39,7 +40,7 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
     TextView tvCache ;
 
     @BindView(R.id.switch_fingerprint)
-    SwitchCompat switchFingerprint ;
+    CheckBox switchFingerprint ;
 
     @Override
     protected int getLayoutId() {

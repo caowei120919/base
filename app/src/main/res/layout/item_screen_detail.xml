@@ -10,7 +10,6 @@
         android:id="@+id/img_title"
         android:layout_width="@dimen/W50"
         android:layout_height="@dimen/H50"
-        android:src="@mipmap/icon_screen_detail_title"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/W15">
     </ImageView>
@@ -45,6 +44,7 @@
         android:layout_marginLeft="@dimen/W30"
         android:textColor="@color/c_666666"
         android:textSize="13sp"
+        android:ellipsize="end"
         android:maxWidth="@dimen/W500"
         android:singleLine="true">
     </TextView>

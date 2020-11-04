@@ -3,7 +3,10 @@ package com.datacvg.sempmobile.presenter;
 import com.datacvg.sempmobile.baseandroid.config.MobileApi;
 import com.datacvg.sempmobile.baseandroid.retrofit.RxObserver;
 import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
+import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.baseandroid.utils.RxUtils;
+import com.datacvg.sempmobile.bean.ReportBean;
+import com.datacvg.sempmobile.bean.ReportListBean;
 import com.datacvg.sempmobile.view.ReportView;
 
 import javax.inject.Inject;
@@ -24,15 +27,15 @@ public class ReportPresenter extends BasePresenter<ReportView>{
     public void getReport(String reportType, String _t) {
         api.getReport(reportType,_t)
                 .compose(RxUtils.applySchedulersLifeCycle(getView()))
-                .subscribe(new RxObserver<BaseBean<String>>(){
+                .subscribe(new RxObserver<BaseBean<ReportListBean>>(){
                     @Override
                     public void onComplete() {
                         super.onComplete();
                     }
 
                     @Override
-                    public void onNext(BaseBean<String> bean) {
-
+                    public void onNext(BaseBean<ReportListBean> bean) {
+                        getView().getReportSuccess(bean.getData());
                     }
 
                     @Override

@@ -104,7 +104,8 @@ public class ScreenDetailActivity extends BaseActivity<ScreenDetailView, ScreenD
         getPresenter().getScreenDetail(bean.getScreen_id());
     }
 
-    @OnClick({R.id.img_left,R.id.img_playOrStop,R.id.img_next,R.id.img_pre,R.id.tv_add})
+    @OnClick({R.id.img_left,R.id.img_playOrStop,R.id.img_next
+            ,R.id.img_pre,R.id.tv_add,R.id.img_right})
     public void OnClick(View view){
         switch (view.getId()){
             case R.id.img_left :

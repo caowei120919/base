@@ -75,7 +75,7 @@ public class ChartBean {
     private String default_value;
     private String chart_top_title;
     private String bgcolor;
-    private double index_data;
+    private String index_data;
     private String name;
     private String bottom_value;
     private String index_threshold_value;
@@ -371,11 +371,11 @@ public class ChartBean {
         this.bgcolor = bgcolor;
     }
 
-    public double getIndex_data() {
+    public String getIndex_data() {
         return index_data;
     }
 
-    public void setIndex_data(double index_data) {
+    public void setIndex_data(String index_data) {
         this.index_data = index_data;
     }
 

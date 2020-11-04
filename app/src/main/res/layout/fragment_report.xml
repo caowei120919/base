@@ -4,6 +4,7 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
+        android:id="@+id/rel_title"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="@color/c_FFFFFF">
@@ -44,7 +45,7 @@
                 android:paddingRight="@dimen/W30"
                 android:singleLine="true"
                 android:layout_toLeftOf="@id/divider"
-                android:textColor="@drawable/selector_report"
+                android:textColor="@drawable/selector_999_000"
                 android:gravity="center">
             </TextView>
 
@@ -59,10 +60,46 @@
                 android:paddingRight="@dimen/W30"
                 android:singleLine="true"
                 android:text="@string/share_the_report"
-                android:textColor="@drawable/selector_report"
+                android:textColor="@drawable/selector_999_000"
                 android:gravity="center">
             </TextView>
         </RelativeLayout>
-
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rel_folder"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H100"
+        android:layout_below="@id/rel_title">
+        <ImageView
+            android:id="@+id/img_folder"
+            android:layout_marginLeft="@dimen/W30"
+            android:layout_width="@dimen/W50"
+            android:layout_height="@dimen/H50"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/report_folder_open">
+        </ImageView>
+
+        <TextView
+            android:id="@+id/tv_folderName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/W50"
+            android:layout_toRightOf="@id/img_folder"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/H20"
+            android:layout_marginBottom="@dimen/H20"
+            android:gravity="center">
+        </TextView>
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_report"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rel_folder"
+        android:layout_marginLeft="@dimen/W20"
+        android:layout_marginBottom="@dimen/H20">
+    </androidx.recyclerview.widget.RecyclerView>
 </RelativeLayout>

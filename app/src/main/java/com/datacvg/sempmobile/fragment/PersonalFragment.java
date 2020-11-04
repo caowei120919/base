@@ -162,4 +162,9 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
             }
         }
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

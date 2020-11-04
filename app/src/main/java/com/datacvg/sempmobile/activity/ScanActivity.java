@@ -26,15 +26,16 @@ import com.google.zxing.FormatException;
 import com.google.zxing.NotFoundException;
 import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Result;
+import com.google.zxing.ResultPoint;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
+import com.journeyapps.barcodescanner.BarcodeCallback;
+import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.CaptureManager;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
-import com.lzy.imagepicker.util.BitmapUtil;
-
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -76,6 +77,17 @@ public class ScanActivity extends BaseActivity<ScanView,ScanPresenter> implement
         captureManager = new CaptureManager(mContext,decoratedBarcodeView);
         captureManager.initializeFromIntent(getIntent(),savedInstanceState);
         captureManager.decode();
+        decoratedBarcodeView.decodeContinuous(new BarcodeCallback() {
+            @Override
+            public void barcodeResult(BarcodeResult result) {
+                PLog.e(result.getText());
+            }
+
+            @Override
+            public void possibleResultPoints(List<ResultPoint> resultPoints) {
+
+            }
+        });
     }
 
     @Override
@@ -137,7 +149,6 @@ public class ScanActivity extends BaseActivity<ScanView,ScanPresenter> implement
                 break;
 
             default:
-
                 break;
         }
     }
@@ -149,7 +160,6 @@ public class ScanActivity extends BaseActivity<ScanView,ScanPresenter> implement
         int picWidth = bitmap.getWidth();
         int picHeight = bitmap.getHeight();
         int[] pix = new int[picWidth * picHeight];
-        //Log.e(TAG, "decodeFromPicture:图片大小： " + bitmap.getByteCount() / 1024 / 1024 + "M");
         bitmap.getPixels(pix, 0, picWidth, 0, 0, picWidth, picHeight);
         //构造LuminanceSource对象
         RGBLuminanceSource rgbLuminanceSource = new RGBLuminanceSource(picWidth
