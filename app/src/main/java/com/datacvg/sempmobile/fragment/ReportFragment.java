@@ -10,10 +10,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.datacvg.sempmobile.R;
-import com.datacvg.sempmobile.adapter.DimensionIndexAdapter;
 import com.datacvg.sempmobile.adapter.ReportAdapter;
 import com.datacvg.sempmobile.baseandroid.config.Constants;
 import com.datacvg.sempmobile.baseandroid.utils.LanguageUtils;
@@ -64,6 +64,9 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
      *
      */
     private List<ReportBean> reportDisPlayBeans = new ArrayList<>();
+    private LinearLayoutManager linearLayoutManager ;
+    private GridLayoutManager gridLayoutManager ;
+    private ReportItemDecoration reportItemDecoration ;
 
     @Override
     protected int getLayoutId() {
@@ -80,16 +83,13 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
         StatusBarUtil.setStatusBarColor(getActivity()
                 ,mContext.getResources().getColor(R.color.c_FFFFFF));
 
+        linearLayoutManager = new LinearLayoutManager(mContext);
+        gridLayoutManager = new GridLayoutManager(mContext,2);
+        reportItemDecoration = new ReportItemDecoration();
+
         adapter = new ReportAdapter(mContext,reportDisPlayBeans,reportType,this);
         recyclerReport.setLayoutManager(new GridLayoutManager(mContext,2));
-        recyclerReport.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view
-                    , @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                super.getItemOffsets(outRect, view, parent, state);
-                outRect.top = (int) resources.getDimension(R.dimen.W20);
-            }
-        });
+        recyclerReport.addItemDecoration(reportItemDecoration);
         recyclerReport.setAdapter(adapter);
     }
 
@@ -112,15 +112,21 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
     public void OnClick(View view){
         switch (view.getId()){
             case R.id.img_left :
+                    reportDisPlayBeans.clear();
                     if(reportDisplayModel.equals(Constants.REPORT_GRID)){
                         imgLeft.setImageBitmap(BitmapFactory
                                 .decodeResource(resources,R.mipmap.report_menu_list));
                         reportDisplayModel = Constants.REPORT_LIST ;
+                        adapter.setDisplayType(reportDisplayModel);
+                        recyclerReport.setLayoutManager(linearLayoutManager);
                     }else{
                         imgLeft.setImageBitmap(BitmapFactory
                                 .decodeResource(resources,R.mipmap.report_menu_grid));
                         reportDisplayModel = Constants.REPORT_GRID ;
+                        adapter.setDisplayType(reportDisplayModel);
+                        recyclerReport.setLayoutManager(gridLayoutManager);
                     }
+                    displayReport();
                 break;
 
             case R.id.tv_reportOfMine :
@@ -180,6 +186,10 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
         reportBeans.clear();
         reportBeans.addAll(data);
         reportDisPlayBeans.clear();
+        displayReport();
+    }
+
+    private void displayReport() {
         String rootId = "" ;
         switch (reportType){
             case Constants.REPORT_MINE :
@@ -229,7 +239,7 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
      * @param reportBean
      */
     @Override
-    public void onFolderClick(ReportBean reportBean) {
+    public void onGridFolderClick(ReportBean reportBean) {
         String rootId = "" ;
         parentLevel = reportBean.getLevel() ;
         reportDisPlayBeans.clear();
@@ -241,6 +251,7 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
                         ? reportBean.getModel_clname() : reportBean.getModel_flname());
                 for (ReportBean bean : reportBeans){
                     if(bean.getParent_id().equals(rootId)){
+                        bean.setLevel(parentLevel + 1);
                         reportDisPlayBeans.add(bean);
                     }
                 }
@@ -253,11 +264,86 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
                         ? reportBean.getShare_clname() : reportBean.getShare_flname());
                 for (ReportBean bean : reportBeans){
                     if(bean.getShare_parentid().equals(rootId)){
+                        bean.setLevel(parentLevel + 1);
                         reportDisPlayBeans.add(bean);
                     }
                 }
                 break;
         }
+        adapter.notifyDataSetChanged();
         relFolder.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onListReportClick(int position,ReportBean reportBean) {
+        String rootId = "" ;
+        parentLevel = reportBean.getLevel() ;
+        List<ReportBean> childReportBeans = new ArrayList<>();
+        if (reportBean.isOpen()){
+            childReportBeans.addAll(reportDisPlayBeans) ;
+        }
+        switch (reportType){
+            case Constants.REPORT_MINE :
+                rootId = reportBean.getModel_id();
+                parentId = reportBean.getParent_id() ;
+                tvFolderName.setText(LanguageUtils.isZh(mContext)
+                        ? reportBean.getModel_clname() : reportBean.getModel_flname());
+                for (ReportBean bean : reportBeans){
+                    if(bean.getParent_id().equals(rootId)){
+                        bean.setLevel(parentLevel + 1);
+                        if(reportBean.isOpen()){
+                            childReportBeans.remove(bean);
+                        }else{
+                            childReportBeans.add(bean);
+                        }
+                    }
+                }
+                break;
+
+            case Constants.REPORT_SHARE :
+                rootId = reportBean.getShare_id();
+                parentId = reportBean.getShare_parentid() ;
+                tvFolderName.setText(LanguageUtils.isZh(mContext)
+                        ? reportBean.getShare_clname() : reportBean.getShare_flname());
+                for (ReportBean bean : reportBeans){
+                    if(bean.getShare_parentid().equals(rootId)){
+                        bean.setLevel(parentLevel + 1);
+                        if(reportBean.isOpen()){
+                            childReportBeans.remove(bean);
+                        }else{
+                            childReportBeans.add(bean);
+                        }
+                    }
+                }
+                break;
+        }
+        if(reportBean.isOpen()){
+            reportDisPlayBeans.clear();
+            reportDisPlayBeans.addAll(childReportBeans);
+        }else{
+            reportDisPlayBeans.addAll(position + 1,childReportBeans);
+        }
+        reportBean.setOpen(!reportBean.isOpen());
+        adapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 区分展示形式而设置间距
+     */
+    private class ReportItemDecoration extends RecyclerView.ItemDecoration{
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view
+                    , @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                super.getItemOffsets(outRect, view, parent, state);
+                switch (reportDisplayModel){
+                    case Constants.REPORT_GRID :
+                        outRect.top = (int) resources.getDimension(R.dimen.W20);
+                        return;
+
+                    default:
+                        outRect.top = (int) resources.getDimension(R.dimen.W2);
+                        return;
+                }
+            }
     }
 }

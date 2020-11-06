@@ -56,6 +56,15 @@ public class ReportBean {
     private String parent_id;
     private String root_id;
     private int level = -1;
+    private boolean isOpen = false ;
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public void setOpen(boolean open) {
+        isOpen = open;
+    }
 
     public String getPkid() {
         return pkid;

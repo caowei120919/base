@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/H100"
+    android:background="@color/c_FFFFFF">
+
+    <ImageView
+        android:id="@+id/img_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/H50"
+        android:layout_centerVertical="true"
+        android:src="@mipmap/icon_report">
+    </ImageView>
+
+    <TextView
+        android:id="@+id/tv_reportName"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/W30"
+        android:layout_toRightOf="@id/img_icon"
+        android:text="@string/confirm"
+        android:singleLine="true"
+        android:layout_marginRight="@dimen/W30"
+        android:textSize="16sp">
+    </TextView>
+</RelativeLayout>
