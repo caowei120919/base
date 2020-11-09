@@ -103,4 +103,5 @@
     <string name="report_playing_mode">报表播放方式</string>
     <string name="set_the_prompt">(ps:当前报表停留时间剩余#1开始，预加载下一张报表，设置最后一张报表时，下张报表默认为第一张)</string>
     <string name="my_indicators">我的指标</string>
+    <string name="search">搜索</string>
 </resources>

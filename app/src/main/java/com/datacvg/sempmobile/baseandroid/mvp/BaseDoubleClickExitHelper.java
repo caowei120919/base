@@ -12,16 +12,16 @@ import com.datacvg.sempmobile.baseandroid.BaseApplication;
 
 /**
  * FileName: BaseDoubleClickExitHelper
- * Author: 曹伟
+ * @Author: 曹伟
  * Date: 2019/9/12 17:22
  * Description:
  */
 
 public class BaseDoubleClickExitHelper {
 
-    private Context mContext;
+    private final Context mContext;
     private boolean misOnKeyBacking;
-    private Handler mHandler;
+    private final Handler mHandler;
     private Toast mBackToast;
 
     public BaseDoubleClickExitHelper(Context context) {
@@ -40,7 +40,6 @@ public class BaseDoubleClickExitHelper {
                 mBackToast.cancel();
             }
             BaseApplication.exitApp();
-            return true;
         } else {
             misOnKeyBacking = true;
             if (mBackToast == null) {
@@ -48,8 +47,8 @@ public class BaseDoubleClickExitHelper {
             }
             mBackToast.show();
             mHandler.postDelayed(onBackTimeRunnable, 2000);
-            return true;
         }
+        return true;
     }
 
     private Runnable onBackTimeRunnable = new Runnable() {

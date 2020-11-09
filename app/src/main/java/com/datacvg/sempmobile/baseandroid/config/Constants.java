@@ -33,6 +33,7 @@ public class Constants {
     public static final String LANG = "LANG";
     public static final String DESC = "desc";
     public static final String ASC = "asc";
+    public static final String TABLE_TYPE = "3";
     public static String BASE_MOBILE_URL = "" ;
     public static String BASE_FIS_URL = "" ;
     public static String BASE_UPLOAD_URL = "" ;

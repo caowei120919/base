@@ -44,6 +44,8 @@ import butterknife.BindView;
  * @Description :主页，
  */
 public class MainActivity extends BaseActivity<MainView, MainPresenter> implements MainView {
+    private final int INTERVAL_TIME = 2000 ;
+
     @BindView(R.id.easy_tab)
     EasyNavigationBar tabModule;
 
@@ -134,7 +136,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             long secondTime = System.currentTimeMillis();
-            if (secondTime - firstTime > 2000) {
+            if (secondTime - firstTime > INTERVAL_TIME) {
                 ToastUtils.showLongToast(mContext.getResources()
                         .getString(R.string.click_again_exit_app));
                 firstTime = secondTime;

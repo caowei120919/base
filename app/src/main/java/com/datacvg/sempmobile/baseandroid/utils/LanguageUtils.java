@@ -81,4 +81,10 @@ public class LanguageUtils {
             return false;
         }
     }
+
+    public static String getLanguage(Context mContext){
+        Locale locale = mContext.getResources().getConfiguration().locale;
+        String language = locale.getLanguage();
+        return language ;
+    }
 }

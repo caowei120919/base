@@ -5,6 +5,7 @@ import android.net.ParseException;
 import com.datacvg.sempmobile.baseandroid.config.Constants;
 import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.sempmobile.baseandroid.utils.ToastUtils;
+import com.datacvg.sempmobile.bean.ImageResBean;
 import com.datacvg.sempmobile.bean.ServiceBean;
 import com.datacvg.sempmobile.event.RefreshTokenEvent;
 import com.google.gson.JsonIOException;
@@ -49,6 +50,8 @@ public class RxObserver<T> implements Observer <T>{
             }else{
                 ToastUtils.showLongToast(((ServiceBean) t).getMessage());
             }
+        }else if(t instanceof ImageResBean){
+            onNext(t);
         }
     }
 

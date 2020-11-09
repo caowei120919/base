@@ -5,6 +5,7 @@ import com.datacvg.sempmobile.bean.ActionPlanListBean;
 import com.datacvg.sempmobile.bean.ChartListBean;
 import com.datacvg.sempmobile.bean.DimensionListBean;
 import com.datacvg.sempmobile.bean.DimensionPositionListBean;
+import com.datacvg.sempmobile.bean.ImageResBean;
 import com.datacvg.sempmobile.bean.IndexBean;
 import com.datacvg.sempmobile.bean.ModuleListBean;
 import com.datacvg.sempmobile.bean.OtherDimensionBean;
@@ -12,6 +13,7 @@ import com.datacvg.sempmobile.bean.ReportBean;
 import com.datacvg.sempmobile.bean.ReportListBean;
 import com.datacvg.sempmobile.bean.ScreenDetailBean;
 import com.datacvg.sempmobile.bean.ScreenListBean;
+import com.datacvg.sempmobile.bean.TableListBean;
 import com.datacvg.sempmobile.bean.UserJobsListBean;
 import com.datacvg.sempmobile.bean.UserLoginBean;
 import java.util.Map;
@@ -157,6 +159,28 @@ public interface MobileApi {
     @GET("indexpad/index/classification")
     Observable<BaseBean<IndexBean>> getIndex();
 
+    /**
+     * 改变选择指标的顺序
+     * @param indexIds  指标id拼接
+     * @return
+     */
     @POST("indexpad/position/change")
     Observable<BaseBean<String>> changeSelectedIndex(@Query("indexIds") String indexIds);
+
+
+    /**
+     * 查询报表列表数据
+     * @param tableType 设备类型 3标识app
+     * @return
+     */
+    @GET("mobilereport/h5/app_showcxtableauinfo")
+    Observable<BaseBean<TableListBean>> getTableList(@Query("deviceType") String tableType);
+
+    /**
+     * 获取图片二进制资源文件
+     * @param res_id
+     * @return
+     */
+    @GET("mobilereport/app_readResImg")
+    Observable<ImageResBean> getImageRes(@Query("res_id") String res_id);
 }
