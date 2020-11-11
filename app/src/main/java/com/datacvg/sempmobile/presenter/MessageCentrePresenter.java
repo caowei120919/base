@@ -1,43 +1,40 @@
 package com.datacvg.sempmobile.presenter;
+
 import com.datacvg.sempmobile.baseandroid.config.MobileApi;
 import com.datacvg.sempmobile.baseandroid.retrofit.RxObserver;
 import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.baseandroid.utils.RxUtils;
-import com.datacvg.sempmobile.bean.ScreenDetailBean;
-import com.datacvg.sempmobile.view.ScreenDetailView;
+import com.datacvg.sempmobile.bean.MessageBean;
+import com.datacvg.sempmobile.view.MessageCentreView;
+
 import javax.inject.Inject;
 
 /**
  * @Author : T-Bag (茶包)
- * @Time : 2020-10-22
+ * @Time : 2020-11-09
  * @Description :
  */
-public class ScreenDetailPresenter extends BasePresenter<ScreenDetailView> {
-
+public class MessageCentrePresenter extends BasePresenter<MessageCentreView>{
     MobileApi api ;
 
     @Inject
-    public ScreenDetailPresenter(MobileApi api) {
+    public MessageCentrePresenter(MobileApi api) {
         this.api = api;
     }
 
-    /**
-     * 获取大屏详细信息
-     * @param screen_id
-     */
-    public void getScreenDetail(String screen_id) {
-        api.getScreenDetail(screen_id)
+    public void getMessage(String pageIndex, String pageSize, String module_id, String read_flag) {
+        api.getMessage(pageIndex,pageSize,module_id,read_flag)
                 .compose(RxUtils.applySchedulersLifeCycle(getView()))
-                .subscribe(new RxObserver<BaseBean<ScreenDetailBean>>(){
+                .subscribe(new RxObserver<BaseBean<MessageBean>>(){
                     @Override
                     public void onComplete() {
                         super.onComplete();
                     }
 
                     @Override
-                    public void onNext(BaseBean<ScreenDetailBean> bean) {
-                        getView().getScreenDetailSuccess(bean.getData());
+                    public void onNext(BaseBean<MessageBean> bean) {
+                        getView().getMessageSuccess(bean.getResdata());
                     }
 
                     @Override

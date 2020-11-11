@@ -122,6 +122,10 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
                     ToastUtils.showLongToast(R.string.please_check_the_network);
                     return;
                 }
+                if (TextUtils.isEmpty(companyCode)){
+                    ToastUtils.showLongToast(resources.getString(R.string.Enter_your_enterprise_id_or_configure_the_semf_service_address));
+                    return;
+                }
                 if(TextUtils.isEmpty(userName)){
                     ToastUtils.showLongToast(mContext.getResources()
                             .getString(R.string.please_enter_the_user_name));

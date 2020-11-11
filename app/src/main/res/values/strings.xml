@@ -89,6 +89,7 @@
     <string name="wit_screen">智慧大屏</string>
     <string name="time_sequence">时间排序</string>
     <string name="task_detail">任务详情</string>
+    <string name="detail">详情</string>
     <string name="screen">大屏</string>
     <string name="creation_time">创建时间</string>
     <string name="by_the_time">截止时间</string>
@@ -104,4 +105,13 @@
     <string name="set_the_prompt">(ps:当前报表停留时间剩余#1开始，预加载下一张报表，设置最后一张报表时，下张报表默认为第一张)</string>
     <string name="my_indicators">我的指标</string>
     <string name="search">搜索</string>
+    <string name="the_action_plan">行动方案</string>
+    <string name="the_warning_message">预警消息</string>
+    <string name="report_comments">报表评论</string>
+    <string name="management_kanban">经营看板</string>
+    <string name="all_the_news">全部消息</string>
+    <string name="unread_message">未读消息</string>
+    <string name="read_the_message">已读消息</string>
+    <string name="assistant">协助人 :</string>
+    <string name="recipient">接收人 :</string>
 </resources>

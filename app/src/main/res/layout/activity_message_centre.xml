@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/c_FFFFFF"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/title"
+        layout="@layout/actionbar_title"/>
+
+    <RelativeLayout
+        android:id="@+id/rel_action"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="@dimen/H110"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginRight="@dimen/W24">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/H110"
+            android:text="@string/the_action_plan"
+            android:gravity="center_vertical"
+            android:textColor="@color/c_333333"
+            android:textSize="14sp"
+            android:drawableLeft="@mipmap/tab_action_normal"
+            android:drawablePadding="@dimen/W40">
+        </TextView>
+
+        <com.datacvg.sempmobile.widget.CircleNumberView
+            android:id="@+id/tv_actionUnReadMessageCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/W16"
+            android:layout_toLeftOf="@id/img_next">
+        </com.datacvg.sempmobile.widget.CircleNumberView>
+
+        <ImageView
+            android:id="@+id/img_next"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/person_next"
+            android:layout_alignParentRight="true">
+        </ImageView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/H2"
+            android:background="@color/c_f2f2f2"
+            android:layout_alignParentBottom="true">
+        </TextView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rel_warning"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H110"
+        android:visibility="gone"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginRight="@dimen/W24">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/H110"
+            android:text="@string/the_warning_message"
+            android:gravity="center_vertical"
+            android:textColor="@color/c_333333"
+            android:textSize="14sp"
+            android:drawableLeft="@mipmap/icon_warn"
+            android:drawablePadding="@dimen/W40">
+        </TextView>
+
+        <com.datacvg.sempmobile.widget.CircleNumberView
+            android:id="@+id/tv_warningUnReadMessageCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/W16"
+            android:layout_toLeftOf="@id/img_nextOfWarning">
+        </com.datacvg.sempmobile.widget.CircleNumberView>
+
+        <ImageView
+            android:id="@+id/img_nextOfWarning"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/person_next"
+            android:layout_alignParentRight="true">
+        </ImageView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/H2"
+            android:background="@color/c_f2f2f2"
+            android:layout_alignParentBottom="true">
+        </TextView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rel_report"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H110"
+        android:visibility="gone"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginRight="@dimen/W24">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/H110"
+            android:text="@string/report_comments"
+            android:gravity="center_vertical"
+            android:textColor="@color/c_333333"
+            android:textSize="14sp"
+            android:drawableLeft="@mipmap/tab_textreport_normal"
+            android:drawablePadding="@dimen/W40">
+        </TextView>
+
+        <com.datacvg.sempmobile.widget.CircleNumberView
+            android:id="@+id/tv_reportUnReadMessageCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/W16"
+            android:layout_toLeftOf="@id/img_nextOfReport">
+        </com.datacvg.sempmobile.widget.CircleNumberView>
+
+        <ImageView
+            android:id="@+id/img_nextOfReport"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/person_next"
+            android:layout_alignParentRight="true">
+        </ImageView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/H2"
+            android:background="@color/c_f2f2f2"
+            android:layout_alignParentBottom="true">
+        </TextView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rel_management"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H110"
+        android:visibility="gone"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginRight="@dimen/W24">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/H110"
+            android:text="@string/management_kanban"
+            android:gravity="center_vertical"
+            android:textColor="@color/c_333333"
+            android:textSize="14sp"
+            android:drawableLeft="@mipmap/tab_index_normal"
+            android:drawablePadding="@dimen/W40">
+        </TextView>
+
+        <com.datacvg.sempmobile.widget.CircleNumberView
+            android:id="@+id/tv_managementUnReadMessageCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/W16"
+            android:layout_toLeftOf="@id/img_nextOfManagement">
+        </com.datacvg.sempmobile.widget.CircleNumberView>
+
+        <ImageView
+            android:id="@+id/img_nextOfManagement"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/person_next"
+            android:layout_alignParentRight="true">
+        </ImageView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/H2"
+            android:background="@color/c_f2f2f2"
+            android:layout_alignParentBottom="true">
+        </TextView>
+    </RelativeLayout>
+</LinearLayout>

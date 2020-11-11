@@ -41,6 +41,7 @@ public class ReportPresenter extends BasePresenter<ReportView>{
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
+                        PLog.e("TAG",e.getMessage());
                     }
                 });
     }

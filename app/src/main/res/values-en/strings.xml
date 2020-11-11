@@ -15,6 +15,7 @@
     <string name="Enter_your_enterprise_id_or_configure_the_semf_service_address">
         Enter your enterprise id or configure the SEMF service address
     </string>
+    <string name="detail">detail</string>
     <string name="to_generate_the_qr_code_you_need_read_and_write_permission_please_authorize_it_and_try_again">
         To generate the QR code, you need read and write permission. Please authorize it and try again
     </string>
@@ -111,4 +112,13 @@
     <string name="set_the_prompt">(PS: The next report will be pre-loaded from the remaining #1 of the current report. When the last report is set, the next report will be the first one by default.)</string>
     <string name="my_indicators">My indicators</string>
     <string name="search">search</string>
+    <string name="the_action_plan">The action plan</string>
+    <string name="the_warning_message">The warning message</string>
+    <string name="report_comments">Report comments</string>
+    <string name="management_kanban">Management kanban</string>
+    <string name="all_the_news">All the news</string>
+    <string name="unread_message">Unread messages</string>
+    <string name="read_the_message">Read the message</string>
+    <string name="assistant">assistant :</string>
+    <string name="recipient">recipient :</string>
 </resources>

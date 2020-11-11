@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:background="@color/c_FFFFFF"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <include layout="@layout/actionbar_title"/>
+    <include
+        android:id="@+id/title"
+        layout="@layout/actionbar_title"/>
 
     <LinearLayout
+        android:id="@+id/lin_top"
         android:layout_width="match_parent"
         android:layout_height="@dimen/H75"
+        android:layout_below="@id/title"
         android:layout_marginLeft="@dimen/W25"
         android:layout_marginRight="@dimen/W25"
         android:layout_marginTop="@dimen/H8"
@@ -23,19 +26,19 @@
             android:gravity="center"
             android:textSize="14sp"
             android:singleLine="true"
-            android:text="@string/all_tasks"
+            android:text="@string/all_the_news"
             android:textColor="@drawable/selector_report"
             android:layout_height="match_parent">
         </TextView>
 
         <TextView
-            android:id="@+id/tv_issued"
+            android:id="@+id/tv_unRead"
             android:layout_width="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
             android:textSize="14sp"
             android:singleLine="true"
-            android:text="@string/has_been_issued"
+            android:text="@string/unread_message"
             android:textColor="@drawable/selector_report"
             android:layout_height="match_parent">
         </TextView>
@@ -47,16 +50,33 @@
             android:singleLine="true"
             android:gravity="center"
             android:textSize="14sp"
-            android:text="@string/have_received"
+            android:text="@string/read_the_message"
             android:textColor="@drawable/selector_report"
             android:layout_height="match_parent">
         </TextView>
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_action"
-        android:layout_marginTop="@dimen/H40"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </androidx.recyclerview.widget.RecyclerView>
-</LinearLayout>
+<!--    <com.scwang.smart.refresh.layout.SmartRefreshLayout-->
+<!--        android:id="@+id/smart_message"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        app:srlEnablePreviewInEditMode="true">-->
+
+<!--        <com.scwang.smart.refresh.header.ClassicsHeader-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content">-->
+<!--        </com.scwang.smart.refresh.header.ClassicsHeader>-->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_message"
+            android:layout_below="@id/lin_top"
+            android:layout_marginTop="@dimen/H40"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </androidx.recyclerview.widget.RecyclerView>
+
+<!--        <com.scwang.smart.refresh.footer.ClassicsFooter-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"/>-->
+<!--    </com.scwang.smart.refresh.layout.SmartRefreshLayout>-->
+</RelativeLayout>

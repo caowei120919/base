@@ -103,6 +103,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
+                        PLog.e("TAG",e.getMessage());
                     }
                 });
     }
@@ -129,6 +130,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
+                        PLog.e("TAG",e.getMessage());
                     }
                 });
     }
@@ -158,6 +160,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
+                        PLog.e("TAG",e.getMessage());
                     }
                 });
     }

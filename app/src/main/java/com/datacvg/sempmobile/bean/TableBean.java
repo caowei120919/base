@@ -2,13 +2,15 @@ package com.datacvg.sempmobile.bean;
 
 import androidx.annotation.Keep;
 
+import java.io.Serializable;
+
 /**
  * @Author : T-Bag (茶包)
  * @Time : 2020-11-09
  * @Description : 报表实体类
  */
 @Keep
-public class TableBean {
+public class TableBean implements Serializable {
 
     /**
      * res_parentid : 0

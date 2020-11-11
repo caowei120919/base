@@ -58,6 +58,7 @@ public class DigitalPresenter extends BasePresenter<DigitalView>{
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
+                        PLog.e("TAG",e.getMessage());
                     }
                 });
     }
@@ -79,6 +80,7 @@ public class DigitalPresenter extends BasePresenter<DigitalView>{
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
+                        PLog.e("TAG",e.getMessage());
                     }
                 });
     }
@@ -100,6 +102,7 @@ public class DigitalPresenter extends BasePresenter<DigitalView>{
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
+                        PLog.e("TAG",e.getMessage());
                     }
                 });
     }
@@ -134,6 +137,7 @@ public class DigitalPresenter extends BasePresenter<DigitalView>{
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
+                        PLog.e("TAG",e.getMessage());
                     }
                 });
     }

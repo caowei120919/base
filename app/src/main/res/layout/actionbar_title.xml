@@ -22,7 +22,6 @@
         android:layout_centerInParent="true"
         android:textSize="18sp"
         android:textColor="@color/c_666666"
-        tools:text="@string/configuration"
         android:gravity="center">
     </TextView>
 

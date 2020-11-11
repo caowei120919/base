@@ -67,4 +67,10 @@
         <attr name="text_title_color" format="color"/>
         <attr name="text_size_value" format="dimension"/>
     </declare-styleable>
+
+    <declare-styleable name="CircleNumberView">
+        <attr name="textSize" format="float" />
+        <attr name="textPadding" format="integer" />
+        <attr name="textNumber" format="string" />
+    </declare-styleable>
 </resources>

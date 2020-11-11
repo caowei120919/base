@@ -5,39 +5,37 @@ import com.datacvg.sempmobile.baseandroid.retrofit.RxObserver;
 import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.baseandroid.utils.RxUtils;
-import com.datacvg.sempmobile.bean.DimensionPositionListBean;
-import com.datacvg.sempmobile.bean.IndexBean;
-import com.datacvg.sempmobile.view.MyIndexView;
+import com.datacvg.sempmobile.bean.MessageBean;
+import com.datacvg.sempmobile.bean.ReadMessageBean;
+import com.datacvg.sempmobile.view.MessageListView;
 
 import javax.inject.Inject;
 
 /**
  * @Author : T-Bag (茶包)
- * @Time : 2020-09-30
+ * @Time : 2020-11-10
  * @Description :
  */
-public class MyIndexPresenter extends BasePresenter<MyIndexView>{
+public class MessageListPresenter extends BasePresenter<MessageListView>{
     MobileApi api ;
+
     @Inject
-    public MyIndexPresenter(MobileApi api) {
-        this.api = api ;
+    public MessageListPresenter(MobileApi api) {
+        this.api = api;
     }
 
-    /**
-     * 获取指标信息
-     */
-    public void getIndex() {
-        api.getIndex()
+    public void getMessage(String pageIndex, String pageSize, String module_id, String read_flag) {
+        api.getMessage(pageIndex,pageSize,module_id,read_flag)
                 .compose(RxUtils.applySchedulersLifeCycle(getView()))
-                .subscribe(new RxObserver<BaseBean<IndexBean>>(){
+                .subscribe(new RxObserver<BaseBean<MessageBean>>(){
                     @Override
                     public void onComplete() {
                         super.onComplete();
                     }
 
                     @Override
-                    public void onNext(BaseBean<IndexBean> bean) {
-                        getView().getIndexSuccess(bean.getResdata());
+                    public void onNext(BaseBean<MessageBean> bean) {
+                        getView().getMessageSuccess(bean.getResdata());
                     }
 
                     @Override
@@ -49,27 +47,30 @@ public class MyIndexPresenter extends BasePresenter<MyIndexView>{
     }
 
     /**
-     * 根据id，修改我的指标排序与指标
-     * @param indexIds
+     * 将消息设置为已读
+     * @param doRead
+     * @param id
+     * @param read
+     * @param module_id
      */
-    public void changeSelectedIndex(String indexIds) {
-        api.changeSelectedIndex(indexIds)
+    public void doReadMessage(String doRead, String id, String read, String module_id) {
+        api.doReadMessage(doRead,id,read,module_id)
                 .compose(RxUtils.applySchedulersLifeCycle(getView()))
-                .subscribe(new RxObserver<BaseBean<String>>(){
+                .subscribe(new RxObserver<BaseBean<ReadMessageBean>>(){
                     @Override
                     public void onComplete() {
                         super.onComplete();
                     }
 
                     @Override
-                    public void onNext(BaseBean<String> bean) {
-                        getView().changeIndexSuccess();
+                    public void onNext(BaseBean<ReadMessageBean> bean) {
+                        getView().getMessageReadSuccess();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
-                        getView().changeIndexFail();
+                        PLog.e("TAG",e.getMessage());
                     }
                 });
     }

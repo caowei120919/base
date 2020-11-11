@@ -109,6 +109,16 @@
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait">
         </activity>
+
+        <activity android:name=".activity.MessageCentreActivity"
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name=".activity.MessageListActivity"
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

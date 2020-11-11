@@ -5,6 +5,7 @@ import com.datacvg.sempmobile.baseandroid.retrofit.RxObserver;
 import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.baseandroid.utils.RxUtils;
+import com.datacvg.sempmobile.bean.MessageBean;
 import com.datacvg.sempmobile.bean.UserJobsListBean;
 import com.datacvg.sempmobile.view.PersonView;
 
@@ -45,6 +46,7 @@ public class PersonPresenter extends BasePresenter<PersonView> {
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
+                        PLog.e("TAG",e.getMessage());
                     }
                 });
     }
@@ -70,6 +72,7 @@ public class PersonPresenter extends BasePresenter<PersonView> {
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
+                        PLog.e("TAG",e.getMessage());
                     }
                 });
     }
@@ -77,20 +80,21 @@ public class PersonPresenter extends BasePresenter<PersonView> {
     public void getMessage(String pageIndex, String pageSize, String module_id, String read_flag) {
         api.getMessage(pageIndex,pageSize,module_id,read_flag)
                 .compose(RxUtils.applySchedulersLifeCycle(getView()))
-                .subscribe(new RxObserver<BaseBean<String>>(){
+                .subscribe(new RxObserver<BaseBean<MessageBean>>(){
                     @Override
                     public void onComplete() {
                         super.onComplete();
                     }
 
                     @Override
-                    public void onNext(BaseBean<String> bean) {
-                        PLog.e(bean.getResdata());
+                    public void onNext(BaseBean<MessageBean> bean) {
+                        getView().getMessageSuccess(bean.getResdata());
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
+                        PLog.e("TAG",e.getMessage());
                     }
                 });
     }

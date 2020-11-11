@@ -4,6 +4,7 @@ import com.datacvg.sempmobile.baseandroid.config.Constants;
 import com.datacvg.sempmobile.baseandroid.config.MobileApi;
 import com.datacvg.sempmobile.baseandroid.retrofit.RxObserver;
 import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
+import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.baseandroid.utils.RxUtils;
 import com.datacvg.sempmobile.bean.ActionPlanListBean;
 import com.datacvg.sempmobile.bean.UserLoginBean;
@@ -47,6 +48,7 @@ public class ActionPresenter extends BasePresenter<ActionView>{
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
+                        PLog.e("TAG",e.getMessage());
                     }
                 });
     }

@@ -7,8 +7,10 @@ import com.datacvg.sempmobile.bean.DimensionListBean;
 import com.datacvg.sempmobile.bean.DimensionPositionListBean;
 import com.datacvg.sempmobile.bean.ImageResBean;
 import com.datacvg.sempmobile.bean.IndexBean;
+import com.datacvg.sempmobile.bean.MessageBean;
 import com.datacvg.sempmobile.bean.ModuleListBean;
 import com.datacvg.sempmobile.bean.OtherDimensionBean;
+import com.datacvg.sempmobile.bean.ReadMessageBean;
 import com.datacvg.sempmobile.bean.ReportBean;
 import com.datacvg.sempmobile.bean.ReportListBean;
 import com.datacvg.sempmobile.bean.ScreenDetailBean;
@@ -147,10 +149,10 @@ public interface MobileApi {
      * @return
      */
     @GET("login/message_info")
-    Observable<BaseBean<String>> getMessage(@Query("pageIndex") String pageIndex,
-                                            @Query("pageSize") String pageSize,
-                                            @Query("module_id") String module_id,
-                                            @Query("read_flag") String read_flag);
+    Observable<BaseBean<MessageBean>> getMessage(@Query("pageIndex") String pageIndex,
+                                                 @Query("pageSize") String pageSize,
+                                                 @Query("module_id") String module_id,
+                                                 @Query("read_flag") String read_flag);
 
     /**
      * 获取指标信息
@@ -183,4 +185,18 @@ public interface MobileApi {
      */
     @GET("mobilereport/app_readResImg")
     Observable<ImageResBean> getImageRes(@Query("res_id") String res_id);
+
+    /**
+     * 将消息设置为已读
+     * @param doRead
+     * @param id
+     * @param read
+     * @param module_id
+     * @return
+     */
+    @GET("login/message_service")
+    Observable<BaseBean<ReadMessageBean>> doReadMessage(@Query("key") String doRead,
+                                                        @Query("message_id") String id,
+                                                        @Query("read") String read,
+                                                        @Query("module_id") String module_id);
 }

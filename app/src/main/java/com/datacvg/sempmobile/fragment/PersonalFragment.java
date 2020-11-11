@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
 import com.datacvg.sempmobile.R;
+import com.datacvg.sempmobile.activity.MessageCentreActivity;
 import com.datacvg.sempmobile.activity.ScanActivity;
 import com.datacvg.sempmobile.activity.SettingActivity;
 import com.datacvg.sempmobile.baseandroid.config.Constants;
@@ -18,11 +19,14 @@ import com.datacvg.sempmobile.baseandroid.retrofit.RxObserver;
 import com.datacvg.sempmobile.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.sempmobile.baseandroid.utils.RxUtils;
 import com.datacvg.sempmobile.baseandroid.utils.StatusBarUtil;
+import com.datacvg.sempmobile.bean.MessageBean;
 import com.datacvg.sempmobile.bean.UserJobsBean;
 import com.datacvg.sempmobile.bean.UserJobsListBean;
+import com.datacvg.sempmobile.event.ChangeUnReadMessageEvent;
 import com.datacvg.sempmobile.event.LoginOutEvent;
 import com.datacvg.sempmobile.presenter.PersonPresenter;
 import com.datacvg.sempmobile.view.PersonView;
+import com.datacvg.sempmobile.widget.CircleNumberView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -56,13 +60,20 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
     TextView tvCompanyName ;
     @BindView(R.id.tv_jobName)
     TextView tvJobName ;
+    @BindView(R.id.tv_unReadMessageCount)
+    CircleNumberView tvUnReadMessageCount ;
 
     private List<UserJobsBean> userJobsBeans = new ArrayList<>();
     private IntentIntegrator mIntentIntegrator ;
     private int pageSize = Constants.MAX_PAGE_SIZE ;
     private int pageIndex = 1;
     private String module_id = "" ;
-    private String read_flag = "false" ;
+    /**
+     * T for true and F for false
+     */
+    private String read_flag = "F" ;
+    private List<String> permissions = new ArrayList<>();
+    private int unReadMessage = 0 ;
 
     @Override
     protected int getLayoutId() {
@@ -96,7 +107,7 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
         getPresenter().getMessage(pageIndex+ "",pageSize + "",module_id,read_flag);
     }
 
-    @OnClick({R.id.rel_setting,R.id.rel_logout,R.id.img_right})
+    @OnClick({R.id.rel_setting,R.id.rel_logout,R.id.img_right,R.id.rel_message})
     public void OnClick(View view){
         switch (view.getId()){
             /**
@@ -129,6 +140,13 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
                             }
                         });
                 break;
+
+            /**
+             * 消息中心
+             */
+            case R.id.rel_message :
+                    mContext.startActivity(new Intent(mContext, MessageCentreActivity.class));
+                break;
         }
     }
 
@@ -160,6 +178,26 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
             if (bean.getUser_pkid().equals(PreferencesHelper.get(Constants.USER_PKID,""))){
                 tvJobName.setText(bean.getPost_clname());
             }
+        }
+    }
+
+    @Override
+    public void getMessageSuccess(MessageBean resdata) {
+        if (resdata == null){
+            return;
+        }
+        if(resdata.getPermissions() == null || resdata.getPermissions().size() == 0){
+            return;
+        }
+        permissions.addAll(resdata.getPermissions());
+        for (MessageBean.ResultBean bean : resdata.getResult()){
+            if(permissions.contains(bean.getModule_id())){
+                unReadMessage ++ ;
+            }
+        }
+        if(unReadMessage > 0){
+            tvUnReadMessageCount.setNumber(unReadMessage+ "");
+            EventBus.getDefault().post(new ChangeUnReadMessageEvent(unReadMessage));
         }
     }
 

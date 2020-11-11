@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.sempmobile.R;
 import com.datacvg.sempmobile.activity.TableFolderActivity;
 import com.datacvg.sempmobile.adapter.TableAdapter;
+import com.datacvg.sempmobile.baseandroid.config.Api;
 import com.datacvg.sempmobile.baseandroid.config.Constants;
 import com.datacvg.sempmobile.baseandroid.utils.Base64Utils;
 import com.datacvg.sempmobile.baseandroid.utils.PLog;
@@ -142,6 +143,7 @@ public class TableFragment extends BaseFragment<TableView, TablePresenter> imple
         switch (tableBean.getRes_showtype()){
             case "FOLDER" :
                     Intent intent = new Intent(mContext, TableFolderActivity.class);
+                    intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,tableBean);
                     mContext.startActivity(intent);
                 break;
 

@@ -1,6 +1,7 @@
 package com.datacvg.sempmobile.view;
 
 import com.datacvg.sempmobile.baseandroid.mvp.MvpView;
+import com.datacvg.sempmobile.bean.MessageBean;
 import com.datacvg.sempmobile.bean.UserJobsListBean;
 
 /**
@@ -20,4 +21,10 @@ public interface PersonView extends MvpView {
      * @param resdata
      */
     void getUseJobsSuccess(UserJobsListBean resdata);
+
+    /**
+     * 获取消息成功
+     * @param resdata
+     */
+    void getMessageSuccess(MessageBean resdata);
 }

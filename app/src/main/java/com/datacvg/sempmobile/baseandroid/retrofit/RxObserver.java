@@ -1,7 +1,6 @@
 package com.datacvg.sempmobile.baseandroid.retrofit;
 
 import android.net.ParseException;
-
 import com.datacvg.sempmobile.baseandroid.config.Constants;
 import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.sempmobile.baseandroid.utils.ToastUtils;
@@ -10,14 +9,11 @@ import com.datacvg.sempmobile.bean.ServiceBean;
 import com.datacvg.sempmobile.event.RefreshTokenEvent;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonParseException;
-
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
-
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import retrofit2.HttpException;

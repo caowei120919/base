@@ -16,6 +16,7 @@ import com.datacvg.sempmobile.baseandroid.utils.StatusBarUtil;
 import com.datacvg.sempmobile.baseandroid.utils.ToastUtils;
 import com.datacvg.sempmobile.bean.ModuleBean;
 import com.datacvg.sempmobile.bean.ModuleListBean;
+import com.datacvg.sempmobile.event.ChangeUnReadMessageEvent;
 import com.datacvg.sempmobile.event.LoginOutEvent;
 import com.datacvg.sempmobile.event.RebuildTableEvent;
 import com.datacvg.sempmobile.fragment.ActionFragment;
@@ -45,6 +46,7 @@ import butterknife.BindView;
  */
 public class MainActivity extends BaseActivity<MainView, MainPresenter> implements MainView {
     private final int INTERVAL_TIME = 2000 ;
+    private int UNREAD_MESSAGE = 0 ;
 
     @BindView(R.id.easy_tab)
     EasyNavigationBar tabModule;
@@ -193,10 +195,10 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                 .hintPointLeft(-3)
                 .hintPointTop(-3)
                 .hintPointSize(9)
-                .msgPointLeft(-10)
-                .msgPointTop(-10)
-                .msgPointTextSize(6)
-                .msgPointSize(18)
+                .msgPointLeft(-15)
+                .msgPointTop(-5)
+                .msgPointTextSize(8)
+                .msgPointSize(12)
                 .setMsgPointColor(Color.RED)
                 .normalIconItems(normalIcons)
                 .selectIconItems(selectIcons)
@@ -238,5 +240,10 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     public void onEvent(LoginOutEvent event){
         mContext.startActivity(new Intent(mContext, LoginActivity.class));
         finish();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ChangeUnReadMessageEvent event){
+        tabModule.setMsgPointCount(titles.length - 1,event.getTotal());
     }
 }

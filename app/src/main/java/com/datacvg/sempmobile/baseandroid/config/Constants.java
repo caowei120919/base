@@ -60,6 +60,27 @@ public class Constants {
     public static final String REPORT_SHARE = "SHARE";
 
     /**
+     * 消息权限类型
+     */
+    /**
+     * 行动方案消息
+     */
+    public final static String MSG_ACTION = "1" ;
+    /**
+     * 警告消息
+     */
+    public final static String MSG_WARN = "2" ;
+    /**
+     * 经营看板消息
+     */
+    public final static String MSG_DASHBOARD = "5" ;
+    /**
+     * 报表评论消息
+     */
+    public final static String MSG_REPORTCOMMENT = "3" ;
+
+    public final static String DO_READ = "do_read";
+    /**
      * vpn模式
      */
     public final static String VPN_MODEL_EASY = "easyapp" ;
