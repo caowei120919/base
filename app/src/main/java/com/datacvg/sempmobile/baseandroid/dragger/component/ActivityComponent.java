@@ -12,6 +12,7 @@ import com.datacvg.sempmobile.activity.ModuleSettingActivity;
 import com.datacvg.sempmobile.activity.MyIndexActivity;
 import com.datacvg.sempmobile.activity.NewTaskActivity;
 import com.datacvg.sempmobile.activity.QRCodeActivity;
+import com.datacvg.sempmobile.activity.ReportDetailActivity;
 import com.datacvg.sempmobile.activity.ScanActivity;
 import com.datacvg.sempmobile.activity.ScreenDetailActivity;
 import com.datacvg.sempmobile.activity.ScreenSettingActivity;
@@ -66,4 +67,6 @@ public interface ActivityComponent {
     void inject(MessageCentreActivity messageCentreActivity);
 
     void inject(MessageListActivity messageListActivity);
+
+    void inject(ReportDetailActivity reportDetailActivity);
 }

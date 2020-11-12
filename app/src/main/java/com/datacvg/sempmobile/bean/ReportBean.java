@@ -2,13 +2,17 @@ package com.datacvg.sempmobile.bean;
 
 import androidx.annotation.Keep;
 
+import com.datacvg.sempmobile.baseandroid.config.Constants;
+
+import java.io.Serializable;
+
 /**
  * @Author : T-Bag (茶包)
  * @Time : 2020-11-03
  * @Description : 报告实体对象
  */
 @Keep
-public class ReportBean {
+public class ReportBean implements Serializable {
 
     /**
      * pkid : 908323600084178474662
@@ -57,6 +61,15 @@ public class ReportBean {
     private String root_id;
     private int level = -1;
     private boolean isOpen = false ;
+    private String report_type = Constants.REPORT_MINE ;
+
+    public String getReport_type() {
+        return report_type;
+    }
+
+    public void setReport_type(String report_type) {
+        this.report_type = report_type;
+    }
 
     public boolean isOpen() {
         return isOpen;

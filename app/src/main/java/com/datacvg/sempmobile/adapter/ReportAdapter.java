@@ -119,7 +119,7 @@ public class ReportAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             .decodeResource(mContext.getResources(),R.mipmap.icon_report));
                     holder.itemView.setOnClickListener(view -> {
                         listener.onReportClick(bean);
-                        PLog.e("报告被打开，跳转");
+                        PLog.e("报告被打开，跳转" + bean.getModel_id());
                     });
                 }
                 holder.tvTitle.setText(LanguageUtils.isZh(mContext)
@@ -144,7 +144,7 @@ public class ReportAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             .decodeResource(mContext.getResources(),R.mipmap.icon_report));
                     holder.itemView.setOnClickListener(view -> {
                         listener.onReportClick(bean);
-                        PLog.e("报告被打开，跳转");
+                        PLog.e("报告被打开，跳转" + bean.getShare_id());
                     });
                 }
                 holder.tvTitle.setText(LanguageUtils.isZh(mContext)
@@ -171,7 +171,7 @@ public class ReportAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             .decodeResource(mContext.getResources(),R.mipmap.icon_report));
                     holder.itemView.setOnClickListener(view -> {
                         listener.onReportClick(bean);
-                        PLog.e("报告被打开，跳转");
+                        PLog.e("报告被打开，跳转" + bean.getModel_id());
                     });
                 }
                 holder.tvTitle.setText(LanguageUtils.isZh(mContext)
@@ -191,7 +191,7 @@ public class ReportAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             .decodeResource(mContext.getResources(),R.mipmap.icon_report));
                     holder.itemView.setOnClickListener(view -> {
                         listener.onReportClick(bean);
-                        PLog.e("报告被打开，跳转");
+                        PLog.e("报告被打开，跳转" + bean.getShare_id());
                     });
                 }
                 holder.tvTitle.setText(LanguageUtils.isZh(mContext)

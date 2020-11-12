@@ -1,5 +1,6 @@
 package com.datacvg.sempmobile.fragment;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.datacvg.sempmobile.R;
+import com.datacvg.sempmobile.activity.ReportDetailActivity;
 import com.datacvg.sempmobile.adapter.ReportAdapter;
 import com.datacvg.sempmobile.baseandroid.config.Constants;
 import com.datacvg.sempmobile.baseandroid.utils.LanguageUtils;
@@ -119,6 +121,7 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
                         reportDisplayModel = Constants.REPORT_LIST ;
                         adapter.setDisplayType(reportDisplayModel);
                         recyclerReport.setLayoutManager(linearLayoutManager);
+                        relFolder.setVisibility(View.GONE);
                     }else{
                         imgLeft.setImageBitmap(BitmapFactory
                                 .decodeResource(resources,R.mipmap.report_menu_grid));
@@ -231,7 +234,10 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
      */
     @Override
     public void onReportClick(ReportBean reportBean) {
-
+        reportBean.setReport_type(reportType);
+        Intent intent = new Intent(mContext, ReportDetailActivity.class);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportBean);
+        mContext.startActivity(intent);
     }
 
     /**

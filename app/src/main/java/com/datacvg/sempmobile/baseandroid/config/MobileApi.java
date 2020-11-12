@@ -13,6 +13,7 @@ import com.datacvg.sempmobile.bean.OtherDimensionBean;
 import com.datacvg.sempmobile.bean.ReadMessageBean;
 import com.datacvg.sempmobile.bean.ReportBean;
 import com.datacvg.sempmobile.bean.ReportListBean;
+import com.datacvg.sempmobile.bean.ReportParamsBean;
 import com.datacvg.sempmobile.bean.ScreenDetailBean;
 import com.datacvg.sempmobile.bean.ScreenListBean;
 import com.datacvg.sempmobile.bean.TableListBean;
@@ -199,4 +200,12 @@ public interface MobileApi {
                                                         @Query("message_id") String id,
                                                         @Query("read") String read,
                                                         @Query("module_id") String module_id);
+
+    /**
+     * 获取管理画布参数
+     * @param reportId
+     * @return
+     */
+    @GET("usermodel/getreportparameters")
+    Observable<BaseBean<ReportParamsBean>> getReportParameters(@Query("model_id") String reportId);
 }

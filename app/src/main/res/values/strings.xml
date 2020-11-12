@@ -114,4 +114,5 @@
     <string name="read_the_message">已读消息</string>
     <string name="assistant">协助人 :</string>
     <string name="recipient">接收人 :</string>
+    <string name="the_current_report_has_no_optional_parameters">当前报告无参数可选</string>
 </resources>
