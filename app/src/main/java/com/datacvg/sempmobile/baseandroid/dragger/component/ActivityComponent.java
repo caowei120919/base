@@ -5,6 +5,7 @@ import android.app.Activity;
 
 import com.datacvg.sempmobile.activity.LanguageSettingActivity;
 import com.datacvg.sempmobile.activity.LoginActivity;
+import com.datacvg.sempmobile.activity.LoginWebActivity;
 import com.datacvg.sempmobile.activity.MainActivity;
 import com.datacvg.sempmobile.activity.MessageCentreActivity;
 import com.datacvg.sempmobile.activity.MessageListActivity;
@@ -69,4 +70,6 @@ public interface ActivityComponent {
     void inject(MessageListActivity messageListActivity);
 
     void inject(ReportDetailActivity reportDetailActivity);
+
+    void inject(LoginWebActivity loginWebActivity);
 }

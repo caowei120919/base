@@ -73,6 +73,10 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
     }
 
     public interface ChangeLanguageClick{
+        /**
+         * 切换语言点击监听
+         * @param position
+         */
        void changeLanguageClick(int position);
     }
 }

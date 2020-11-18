@@ -22,6 +22,9 @@ public class BulletView extends View {
      * 虚线(计划)颜色、粗条状图(同期)颜色、细条状图(实际)颜色
      */
     private int mPlanColor = 0 ;
+    private int mPeriod = 0 ;
+    private int mActual = 0 ;
+
 
 
     public BulletView(Context context) {

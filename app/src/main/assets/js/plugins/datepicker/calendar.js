@@ -497,7 +497,11 @@ My97DP.prototype = {
             fp = isR ? "r" + p: p;
         if (isR) $dt.attr("M", 1);
         bak = $dt[p];
-        s.a("<table cellspacing=0 cellpadding=3 border=0");
+        if ($dp.isShowQs) {
+            s.a("<table cellspacing=0 cellpadding=0 border=0 style='width:60px;text-align:center;'>");
+        } else {
+            s.a("<table cellspacing=0 cellpadding=3 border=0>");
+        }
         for (var i = 0; i < r; i++) {
             s.a("<tr nowrap=\"nowrap\">");
             for (var j = 0; j < c; j++) {
@@ -509,7 +513,8 @@ My97DP.prototype = {
                     s.a("hide($d." + p + "D);$d." + fp + "I.value=" + $dt[p] + ";$d." + fp + "I.blur();\"")
                 } else s.a("class='invalidMenu'");
                 s.a(">");
-                if ($dt[p] <= max) s.a(p == "M" ? $lang.aMonStr[$dt[p] - 1] : $dt[p]);
+                if ($dp.isShowQs) s.a(p == "M" ? $lang.aSqStr[$dt[p] - 1] : $dt[p]);
+                else if($dt[p] <= max) s.a(p == "M" ? $lang.aMonStr[$dt[p] - 1] : $dt[p]);
                 s.a("</td>")
             }
             s.a("</tr>")
@@ -960,7 +965,7 @@ function sv(_, $) {
     if ("yHms".indexOf(_) >= 0) $d[_ + "I"].value = $;
     if (_ == "M") {
         $d.MI["realValue"] = $;
-        $d.MI.value = $lang.aMonStr[$ - 1]
+        $d.MI.value = $dp.isShowQs ? $lang.aSqStr[$ - 1] : $lang.aMonStr[$ - 1]
     }
 }
 function makeInRange(_, $, A) {
@@ -1125,7 +1130,7 @@ function _blur(showDiv) {
             if (oldv == 12) $dt.y += 1;
             $dt.attr("M", -1)
         }
-        if ($sdt.M == $dt.M) this.value = mStr || $lang.aMonStr[$dt[p] - 1];
+        if ($sdt.M == $dt.M) this.value = $dp.isShowQs ? $lang.aSqStr[$dt[p] - 1] : (mStr || $lang.aMonStr[$dt[p] - 1]);
         if (($sdt.y != $dt.y)) c("y", $dt.y)
     }
     eval("c(\"" + p + "\"," + $dt[p] + ")");

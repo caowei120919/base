@@ -29,6 +29,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 /**
  * @Author : T-Bag (茶包)
@@ -208,4 +209,12 @@ public interface MobileApi {
      */
     @GET("usermodel/getreportparameters")
     Observable<BaseBean<ReportParamsBean>> getReportParameters(@Query("model_id") String reportId);
+
+    /**
+     * 扫码登录
+     * @param params
+     * @return
+     */
+    @POST("login/mobsrv/scancode")
+    Observable<BaseBean<String>> webLogin(@QueryMap Map<String, String> params);
 }

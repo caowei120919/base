@@ -14,6 +14,7 @@ import com.datacvg.sempmobile.activity.NewTaskActivity;
 import com.datacvg.sempmobile.adapter.ActionPlanAdapter;
 import com.datacvg.sempmobile.baseandroid.config.Constants;
 import com.datacvg.sempmobile.baseandroid.retrofit.helper.PreferencesHelper;
+import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.baseandroid.utils.StatusBarUtil;
 import com.datacvg.sempmobile.bean.ActionPlanBean;
 import com.datacvg.sempmobile.bean.ActionPlanListBean;
@@ -34,7 +35,7 @@ import butterknife.OnClick;
  * @Description : 行动方案
  */
 public class ActionFragment extends BaseFragment<ActionView, ActionPresenter>
-        implements ActionView {
+        implements ActionView, ActionPlanAdapter.ToActionClick {
     @BindView(R.id.img_left)
     ImageView imgLeft ;
     @BindView(R.id.tv_title)
@@ -85,7 +86,7 @@ public class ActionFragment extends BaseFragment<ActionView, ActionPresenter>
         tag = tvAll.getId() ;
         restoreTitleStyle();
 
-        adapter = new ActionPlanAdapter(mContext,actionPlanBeans);
+        adapter = new ActionPlanAdapter(mContext,actionPlanBeans,this);
         LinearLayoutManager manager = new LinearLayoutManager(mContext);
         manager.setOrientation(RecyclerView.VERTICAL);
         manager.setAutoMeasureEnabled(true);
@@ -192,5 +193,14 @@ public class ActionFragment extends BaseFragment<ActionView, ActionPresenter>
                 break;
         }
         adapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 查看行动方案详情
+     * @param position
+     */
+    @Override
+    public void goActionDetailClick(int position) {
+        PLog.e("查看行动方案详情");
     }
 }

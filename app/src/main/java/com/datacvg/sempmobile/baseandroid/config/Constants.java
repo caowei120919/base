@@ -14,6 +14,12 @@ import com.datacvg.sempmobile.bean.UserLoginBean;
 public class Constants {
 
     public static final String EXTRA_DATA_FOR_BEAN = "EXTRA_DATA_FOR_BEAN" ;
+    public static final String EXTRA_DATA_FOR_ALBUM = "EXTRA_DATA_FOR_ALBUM";
+    public static final String EXTRA_DATA_FOR_SCAN = "EXTRA_DATA_FOR_SCAN";
+
+    public static final int SCAN_FOR_VPN = 0x00001027 ;
+    public static final int SCAN_FOR_SCREEN = 0x00001026 ;
+    public static final int SCAN_FOR_LOGIN = 0x00001025 ;
 
     public static final int REQUEST_TAKE_PHOTO = 0x00001024 ;
     public static final int REQUEST_OPEN_CAMERA = 0x00001023 ;

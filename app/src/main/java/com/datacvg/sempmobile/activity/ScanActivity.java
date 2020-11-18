@@ -54,6 +54,8 @@ public class ScanActivity extends BaseActivity<ScanView,ScanPresenter> implement
     DecoratedBarcodeView decoratedBarcodeView ;
 
     private CaptureManager captureManager ;
+    private boolean hasAlbum = true ;
+    private int scanTag = 0 ;
 
     @Override
     protected int getLayoutId() {
@@ -68,8 +70,11 @@ public class ScanActivity extends BaseActivity<ScanView,ScanPresenter> implement
     @Override
     protected void setupView() {
         StatusBarUtil.setStatusBarColor(mContext,resources.getColor(R.color.c_FFFFFF));
+        hasAlbum = getIntent().getBooleanExtra(Constants.EXTRA_DATA_FOR_ALBUM,true);
+        scanTag = getIntent().getIntExtra(Constants.EXTRA_DATA_FOR_SCAN,0);
         tvTitle.setText(resources.getString(R.string.scan_the_qr_code));
         tvRight.setText(resources.getString(R.string.album));
+        tvRight.setVisibility(hasAlbum ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -80,6 +85,45 @@ public class ScanActivity extends BaseActivity<ScanView,ScanPresenter> implement
         decoratedBarcodeView.decodeContinuous(new BarcodeCallback() {
             @Override
             public void barcodeResult(BarcodeResult result) {
+                switch (scanTag){
+                    /**
+                     * VPN设置扫描
+                     */
+                    case Constants.SCAN_FOR_VPN :
+                        VPNConfigBean bean
+                                = new Gson().fromJson(result.getText(),VPNConfigBean.class);
+                        if(bean == null){
+                            ToastUtils.showShortToast(resources
+                                    .getString(R.string.this_qr_code_is_not_supported));
+                        }else{
+                            Intent intent = new Intent();
+                            intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,bean);
+                            setResult(Constants.RESULT_SCAN_RESULT,intent);
+                            finish();
+                        }
+                        break;
+
+                    /**
+                     * 扫码登录
+                     */
+                    case Constants.SCAN_FOR_LOGIN:
+                            Intent loginIntent = new Intent(mContext,LoginWebActivity.class);
+                            loginIntent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,result.getText());
+                            mContext.startActivity(loginIntent);
+                            finish();
+                         break;
+
+                    /**
+                     * 大屏投放扫码
+                     */
+                    case Constants.SCAN_FOR_SCREEN:
+
+                         break;
+
+                    default:
+
+                        break;
+                }
                 PLog.e(result.getText());
             }
 

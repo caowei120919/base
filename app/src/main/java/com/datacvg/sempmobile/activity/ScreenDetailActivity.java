@@ -122,6 +122,8 @@ public class ScreenDetailActivity extends BaseActivity<ScreenDetailView, ScreenD
                             public void onNext(Boolean aBoolean) {
                                 if (aBoolean) {      //授权通过拍摄照片
                                     mIntentIntegrator = new IntentIntegrator(mContext);
+                                    mIntentIntegrator.addExtra(Constants.EXTRA_DATA_FOR_ALBUM,false) ;
+                                    mIntentIntegrator.addExtra(Constants.EXTRA_DATA_FOR_SCAN,Constants.SCAN_FOR_SCREEN) ;
                                     mIntentIntegrator.setCaptureActivity(ScanActivity.class);
                                     mIntentIntegrator.initiateScan();
                                 }

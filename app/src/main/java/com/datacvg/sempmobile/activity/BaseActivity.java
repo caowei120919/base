@@ -37,7 +37,7 @@ import butterknife.Unbinder;
  */
 public abstract class BaseActivity<V extends MvpView,P extends MvpBasePresenter<V>>
         extends MvpBaseActivity<V,P> implements MvpView{
-    private final String TAG = this.getClass().getSimpleName() ;
+    protected final String TAG = this.getClass().getSimpleName() ;
     private Unbinder mUnbinder;
     public static BaseDoubleClickExitHelper mDoubleClickExitHelper;
     private ActivityComponent mActivityComponent;

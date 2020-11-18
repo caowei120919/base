@@ -32,11 +32,14 @@ public class ActionPlanAdapter extends RecyclerView.Adapter<ActionPlanAdapter.Vi
     private Context mContext ;
     private LayoutInflater inflater ;
     private List<ActionPlanBean> actionPlanBeans = new ArrayList<>() ;
+    private ToActionClick click ;
 
-    public ActionPlanAdapter(Context mContext, List<ActionPlanBean> actionPlanBeans) {
+    public ActionPlanAdapter(Context mContext, List<ActionPlanBean> actionPlanBeans
+            ,ToActionClick click) {
         this.mContext = mContext;
         inflater = LayoutInflater.from(mContext);
         this.actionPlanBeans = actionPlanBeans;
+        this.click = click ;
     }
 
     @NonNull
@@ -106,6 +109,7 @@ public class ActionPlanAdapter extends RecyclerView.Adapter<ActionPlanAdapter.Vi
         });
         holder.tvDetails.setOnClickListener(view -> {
             PLog.e("查看详情");
+            click.goActionDetailClick(position);
         });
     }
 
@@ -142,5 +146,13 @@ public class ActionPlanAdapter extends RecyclerView.Adapter<ActionPlanAdapter.Vi
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+    }
+
+    public interface ToActionClick{
+        /**
+         * 查看行动方案详情
+         * @param position
+         */
+        void goActionDetailClick(int position);
     }
 }

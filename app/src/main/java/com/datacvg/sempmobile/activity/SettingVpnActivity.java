@@ -134,6 +134,8 @@ public class SettingVpnActivity extends BaseActivity<SettingVpnView, SettingVpnP
                                 if (aBoolean) {      //授权通过拍摄照片
                                     mIntentIntegrator = new IntentIntegrator(mContext);
                                     mIntentIntegrator.setCaptureActivity(ScanActivity.class);
+                                    mIntentIntegrator.addExtra(Constants.EXTRA_DATA_FOR_SCAN
+                                            ,Constants.SCAN_FOR_VPN);
                                     mIntentIntegrator.initiateScan();
                                 }
                             }

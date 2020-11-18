@@ -41,6 +41,17 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
     @BindView(R.id.tv_date)
     TextView tvDate ;
 
+    @BindView(R.id.tv_actionTypeCommon)
+    TextView tvActionTypeCommon ;
+    @BindView(R.id.tv_actionTypeSpecial)
+    TextView tvActionTypeSpecial ;
+    @BindView(R.id.tv_priorityHigh)
+    TextView tvPriorityHigh ;
+    @BindView(R.id.tv_priorityMiddle)
+    TextView tvPriorityMiddle ;
+    @BindView(R.id.tv_priorityLow)
+    TextView tvPriorityLow ;
+
     /**
      * 时间选择器
      */
@@ -76,6 +87,8 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
         tvRight.setText(resources.getString(R.string.create));
         tvDate.setText(tvDate.getText().toString().replace("#1"
                 , TimeUtils.getCurDateStr(TimeUtils.FORMAT_YMD)));
+        tvActionTypeCommon.setSelected(true);
+        tvPriorityHigh.setSelected(true);
         initCustomPickView();
     }
 
@@ -92,9 +105,8 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
         pvCustomTime = new TimePickerBuilder(mContext, new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
-                tvDate.setText(resources.getString(R.string.expiration_date).replace("#1"
-                        , TimeUtils.date2Str(date,TimeUtils.FORMAT_YMD)));
                 taskDate = TimeUtils.date2Str(date,TimeUtils.FORMAT_YMD);
+                tvDate.setText(resources.getString(R.string.expiration_date).replace("#1", taskDate));
             }
         })
                 .setType(new boolean[]{true, true, true, false, false, false})
@@ -142,7 +154,9 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
         taskTitle = editable.toString().trim();
     }
 
-    @OnClick({R.id.img_left,R.id.tv_date})
+    @OnClick({R.id.img_left,R.id.tv_date,R.id.tv_actionTypeCommon
+            ,R.id.tv_actionTypeSpecial,R.id.tv_priorityHigh,R.id.tv_priorityMiddle
+            ,R.id.tv_priorityLow})
     public void OnClick(View view){
         switch (view.getId()){
             case R.id.img_left :
@@ -151,6 +165,34 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
 
             case R.id.tv_date :
                     pvCustomTime.show();
+                break;
+
+            case R.id.tv_actionTypeCommon :
+                tvActionTypeCommon.setSelected(true);
+                tvActionTypeSpecial.setSelected(false);
+                break;
+
+            case R.id.tv_actionTypeSpecial :
+                tvActionTypeCommon.setSelected(false);
+                tvActionTypeSpecial.setSelected(true);
+                break;
+
+            case R.id.tv_priorityHigh :
+                tvPriorityHigh.setSelected(true);
+                tvPriorityMiddle.setSelected(false);
+                tvPriorityLow.setSelected(false);
+                break;
+
+            case R.id.tv_priorityMiddle :
+                tvPriorityHigh.setSelected(false);
+                tvPriorityMiddle.setSelected(true);
+                tvPriorityLow.setSelected(false);
+                break;
+
+            case R.id.tv_priorityLow :
+                tvPriorityHigh.setSelected(false);
+                tvPriorityMiddle.setSelected(false);
+                tvPriorityLow.setSelected(true);
                 break;
         }
     }

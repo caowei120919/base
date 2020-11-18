@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c_FFFFFF">
+
+    <RelativeLayout
+        android:id="@+id/rel_title"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize">
+        <ImageView
+            android:id="@+id/img_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/img_back"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/W30"
+            android:paddingRight="@dimen/W30">
+        </ImageView>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/img_left"
+            android:textSize="18sp"
+            android:text="@string/sweep_the_login_code"
+            android:textColor="@color/c_666666"
+            android:gravity="center">
+        </TextView>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/img_center"
+        android:layout_width="@dimen/W130"
+        android:layout_height="@dimen/H130"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/rel_title"
+        android:scaleType="fitCenter"
+        android:layout_marginTop="@dimen/H300"
+        android:src="@mipmap/icon_computer">
+    </ImageView>
+
+    <TextView
+        android:id="@+id/tv_prompt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login_prompt"
+        android:lineSpacingMultiplier="1.5"
+        android:layout_below="@id/img_center"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/H15"
+        android:textColor="@color/c_000000"
+        android:textSize="18sp">
+    </TextView>
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/H80"
+        android:layout_below="@id/tv_prompt"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/shape_round_8_da3a16"
+        android:text="@string/login"
+        android:textColor="@color/c_FFFFFF"
+        android:textSize="15sp"
+        android:layout_marginTop="@dimen/H124">
+    </Button>
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/H80"
+        android:layout_below="@id/btn_login"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/shape_round_8_f8f8fa"
+        android:text="@string/cancel"
+        android:textColor="@color/c_da3a16"
+        android:textSize="15sp"
+        android:layout_marginTop="@dimen/H24">
+    </Button>
+</RelativeLayout>

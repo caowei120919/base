@@ -166,7 +166,7 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 .getChartBean().getIndex_default_color()));
         List<Object> datas = dimensionPositionBean.getChartBean().getOption().getSeries().get(0).getData();
         for (int i = 0 ; i < datas.size() ; i++){
-            chartBeans.add(Double.valueOf((String)(datas.get(i))));
+            chartBeans.add(Double.valueOf(datas.get(i) + ""));
             colors.add(Color.parseColor(dimensionPositionBean.getChartBean().getIndex_default_color()));
         }
         chartXTitles.addAll(dimensionPositionBean.getChartBean().getOption().getXAxis().get(0).getData());
@@ -218,7 +218,7 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 .getChartBean().getIndex_default_color()));
         List<Object> datas = dimensionPositionBean.getChartBean().getOption().getSeries().get(0).getData();
         for (int i = 0 ; i < datas.size() ; i++){
-            chartBeans.add(Double.valueOf((String)(datas.get(i))));
+            chartBeans.add(Double.valueOf(datas.get(i) + ""));
             colors.add(Color.parseColor(dimensionPositionBean.getChartBean().getIndex_default_color()));
         }
         chartXTitles.addAll(dimensionPositionBean.getChartBean().getOption().getXAxis().get(0).getData());

@@ -6,7 +6,7 @@
     <string name="enterprise_id_code">企业标识码</string>
     <string name="remember_userinfo">记住用户信息</string>
     <string name="use_vpn">使用VPN</string>
-    <string name="login">登 录</string>
+    <string name="login">登录</string>
     <string name="setting_up">配置</string>
     <string name="please_check_the_network">请检查网络</string>
     <string name="please_enter_the_user_name">请输入用户名</string>
@@ -115,4 +115,14 @@
     <string name="assistant">协助人 :</string>
     <string name="recipient">接收人 :</string>
     <string name="the_current_report_has_no_optional_parameters">当前报告无参数可选</string>
+    <string name="common">普通</string>
+    <string name="task_type">任务类型</string>
+    <string name="special">专项</string>
+    <string name="low">低</string>
+    <string name="middle">中</string>
+    <string name="high">高</string>
+    <string name="priority">优先级</string>
+    <string name="head">负责人</string>
+    <string name="sweep_the_login_code">扫码登录</string>
+    <string name="login_prompt">您正在授权另一设备/网站登录此账号\n如果非您本人操作，建议取消</string>
 </resources>

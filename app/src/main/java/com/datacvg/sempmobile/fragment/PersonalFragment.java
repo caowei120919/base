@@ -135,6 +135,9 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
                                 if (aBoolean) {      //授权通过拍摄照片
                                     mIntentIntegrator = new IntentIntegrator(getActivity());
                                     mIntentIntegrator.setCaptureActivity(ScanActivity.class);
+                                    mIntentIntegrator.addExtra(Constants.EXTRA_DATA_FOR_SCAN
+                                            ,Constants.SCAN_FOR_LOGIN);
+                                    mIntentIntegrator.addExtra(Constants.EXTRA_DATA_FOR_ALBUM,false);
                                     mIntentIntegrator.initiateScan();
                                 }
                             }

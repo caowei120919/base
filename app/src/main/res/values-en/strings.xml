@@ -122,4 +122,14 @@
     <string name="assistant">assistant :</string>
     <string name="recipient">recipient :</string>
     <string name="the_current_report_has_no_optional_parameters">The current report has no optional parameters</string>
+    <string name="common">common</string>
+    <string name="task_type">Task type</string>
+    <string name="special">special</string>
+    <string name="low">low</string>
+    <string name="middle">middle</string>
+    <string name="high">high</string>
+    <string name="priority">priority</string>
+    <string name="head">head</string>
+    <string name="sweep_the_login_code">Sweep the login code</string>
+    <string name="login_prompt">You are authorizing another device/website to log into this account.\n If you do not operate this account yourself, it is recommended to cancel</string>
 </resources>
