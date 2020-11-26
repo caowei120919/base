@@ -1,21 +1,37 @@
 package com.datacvg.sempmobile.activity;
 
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+
+import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.listener.CustomListener;
+import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.view.TimePickerView;
+import com.contrarywind.view.WheelView;
 import com.datacvg.sempmobile.R;
 import com.datacvg.sempmobile.baseandroid.config.Constants;
+import com.datacvg.sempmobile.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.sempmobile.baseandroid.utils.AndroidUtils;
 import com.datacvg.sempmobile.baseandroid.utils.LanguageUtils;
 import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.baseandroid.utils.StatusBarUtil;
+import com.datacvg.sempmobile.baseandroid.utils.TimeUtils;
 import com.datacvg.sempmobile.baseandroid.utils.ToastUtils;
+import com.datacvg.sempmobile.baseandroid.widget.dialog.BaseWindowDialog;
+import com.datacvg.sempmobile.baseandroid.widget.dialog.DialogViewHolder;
 import com.datacvg.sempmobile.bean.ReportBean;
 import com.datacvg.sempmobile.bean.ReportParamsBean;
 import com.datacvg.sempmobile.presenter.ReportDetailPresenter;
@@ -25,6 +41,8 @@ import com.google.gson.Gson;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -49,10 +67,28 @@ public class ReportDetailActivity extends BaseActivity<ReportDetailView, ReportD
     @BindView(R.id.img_other)
     ImageView imgOther ;
 
+    /**
+     * 时间选择器
+     */
+    private TimePickerView pvCustomTime ;
+    private BaseWindowDialog selectParamsView ;
+
     private ReportBean bean ;
     private String reportId = "" ;
     private ReportParamsBean.ParamsResultBean paramsResultBean ;
     private String serviceUrl = Constants.BASE_FIS_URL;
+    /**
+     * 时间点的时间参数
+     */
+    private String reportTime ;
+    /**
+     * 时间段的开始时间参数
+     */
+    private String beginTime ;
+    /**
+     * 时间段的结束时间参数
+     */
+    private String endTime ;
 
     @Override
     protected int getLayoutId() {
@@ -165,23 +201,10 @@ public class ReportDetailActivity extends BaseActivity<ReportDetailView, ReportD
                         ToastUtils.showLongToast(resources
                                 .getString(R.string.the_current_report_has_no_optional_parameters));
                     }else{
-                        checkParams();
+//                        dealWithParams();
+                        initSelectParamsView();
                     }
                 break;
-        }
-    }
-
-    /**
-     * 校验参数
-     */
-    private void checkParams() {
-        /**
-         * 时间点
-         */
-        if(paramsResultBean.getTimeFormat().equals(TIME_OF_POINT)){
-
-        }else{
-
         }
     }
 
@@ -189,17 +212,321 @@ public class ReportDetailActivity extends BaseActivity<ReportDetailView, ReportD
      * 获取报告参数成功
      * @param resdata
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void getParamsSuccess(ReportParamsBean resdata) {
         String paramsString = resdata.getParams()
                 .replace("[","").replace("]","");
         paramsResultBean
                 = new Gson().fromJson(paramsString, ReportParamsBean.ParamsResultBean.class);
-//        if (paramsResultBean == null){
-            String url = "file:///android_asset/mobile.html?lang=" + LanguageUtils.getLanguage(mContext)
+        if (paramsResultBean == null){
+            loadWebUrl();
+        }else{
+            dealWithParams();
+        }
+    }
+
+    /**
+     * 参数处理
+     *      初始化报表相关参数，配置参数选择控件相关参数
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void dealWithParams() {
+        switch (paramsResultBean.getUnit()){
+            /**
+             * 日
+             */
+            case "day" :
+                    initCustomPickView(true,true,true);
+                    if(paramsResultBean.getTimeShow().equals(TIME_OF_POINT)){
+                        if(!TextUtils.isEmpty(paramsResultBean.getEndTime())){
+                            reportTime = TimeUtils.getNewStrDateForStr(TimeUtils
+                                            .date2Str(TimeUtils.addDay(new Date()
+                                    ,- Integer.valueOf(paramsResultBean.getEndTime())))
+                                    ,TimeUtils.FORMAT_YMD_CN
+                                    ,paramsResultBean.getTimeFormat().replace("YYYY"
+                                            ,"yyyy")
+                                            .replace("DD","dd"));
+                        }
+                    }else{
+                        if(!TextUtils.isEmpty(paramsResultBean.getStartTime())){
+                            beginTime = TimeUtils.getNewStrDateForStr(TimeUtils.date2Str(TimeUtils.addDay(new Date()
+                                    ,- Integer.valueOf(paramsResultBean.getStartTime()))),TimeUtils.FORMAT_YMD_CN
+                                    ,paramsResultBean.getTimeFormat().replace("YYYY"
+                                            ,"yyyy").replace("DD","dd"));
+                        }
+                        if(!TextUtils.isEmpty(paramsResultBean.getEndTime())){
+                            endTime = TimeUtils.getNewStrDateForStr(TimeUtils.date2Str(TimeUtils.addDay(new Date()
+                                    ,- Integer.valueOf(paramsResultBean.getEndTime()))),TimeUtils.FORMAT_YMD_CN
+                                    ,paramsResultBean.getTimeFormat().replace("YYYY"
+                                            ,"yyyy").replace("DD","dd"));
+                        }
+                    }
+                break;
+
+            /**
+             *
+             */
+            case "week" :
+                initCustomPickView(true,true,true);
+                if(paramsResultBean.getTimeShow().equals(TIME_OF_POINT)){
+                    if(!TextUtils.isEmpty(paramsResultBean.getEndTime())){
+                        reportTime = TimeUtils.getNewStrDateInWeekForStr(
+                                TimeUtils.date2Str(TimeUtils.addWeek(new Date()
+                                ,- Integer.valueOf(paramsResultBean.getEndTime())))
+                                ,TimeUtils.FORMAT_YMD_CN);
+                    }
+                }else{
+                    if(!TextUtils.isEmpty(paramsResultBean.getStartTime())){
+                        beginTime = TimeUtils.getNewStrDateInWeekForStr(TimeUtils
+                                        .date2Str(TimeUtils.addWeek(new Date()
+                                ,- Integer.valueOf(paramsResultBean.getStartTime())))
+                                ,TimeUtils.FORMAT_YMD_CN);
+                    }
+                    if(!TextUtils.isEmpty(paramsResultBean.getEndTime())){
+                        endTime = TimeUtils.getNewStrDateInWeekForStr(TimeUtils
+                                .date2Str(TimeUtils.addWeek(new Date()
+                                ,- Integer.valueOf(paramsResultBean.getEndTime())))
+                                ,TimeUtils.FORMAT_YMD_CN);
+                    }
+                }
+                break;
+
+            /**
+             * 月
+             */
+            case "month" :
+                initCustomPickView(true,true,false);
+                if(paramsResultBean.getTimeShow().equals(TIME_OF_POINT)){
+                    if(!TextUtils.isEmpty(paramsResultBean.getEndTime())){
+                        reportTime = TimeUtils.getNewStrDateForStr(TimeUtils
+                                        .date2Str(TimeUtils.addMonth(new Date()
+                                ,- Integer.valueOf(paramsResultBean.getEndTime())))
+                                ,TimeUtils.FORMAT_YMD_CN
+                                ,TimeUtils.FORMAT_YM);
+                    }
+                }else{
+                    if(!TextUtils.isEmpty(paramsResultBean.getStartTime())){
+                        beginTime = TimeUtils.getNewStrDateForStr(TimeUtils
+                                        .date2Str(TimeUtils.addMonth(new Date()
+                                ,- Integer.valueOf(paramsResultBean.getStartTime())))
+                                ,TimeUtils.FORMAT_YMD_CN
+                                ,TimeUtils.FORMAT_YM);
+                    }
+                    if(!TextUtils.isEmpty(paramsResultBean.getEndTime())){
+                        endTime = TimeUtils.getNewStrDateForStr(TimeUtils
+                                        .date2Str(TimeUtils.addMonth(new Date()
+                                ,- Integer.valueOf(paramsResultBean.getEndTime())))
+                                ,TimeUtils.FORMAT_YMD_CN
+                                ,TimeUtils.FORMAT_YM);
+                    }
+                }
+                break;
+
+            /**
+             * 季度
+             */
+            case "quarterly" :
+                initCustomPickView(true,true,true);
+                 if(paramsResultBean.getTimeShow().equals(TIME_OF_POINT)){
+                    if(!TextUtils.isEmpty(paramsResultBean.getEndTime())){
+                        reportTime = TimeUtils.getNewStrDateInQuarterForStr(TimeUtils
+                                .date2Str(TimeUtils.addQuarter(new Date()
+                                ,- Integer.valueOf(paramsResultBean.getEndTime())))
+                                ,TimeUtils.FORMAT_YMD_CN);
+                    }
+                }else{
+                    if(!TextUtils.isEmpty(paramsResultBean.getStartTime())){
+                        beginTime = TimeUtils.getNewStrDateInQuarterForStr(TimeUtils
+                                .date2Str(TimeUtils.addQuarter(new Date()
+                                ,- Integer.valueOf(paramsResultBean.getStartTime())))
+                                ,TimeUtils.FORMAT_YMD_CN);
+                    }
+                    if(!TextUtils.isEmpty(paramsResultBean.getEndTime())){
+                        endTime = TimeUtils.getNewStrDateInQuarterForStr(TimeUtils
+                                .date2Str(TimeUtils.addQuarter(new Date()
+                                ,- Integer.valueOf(paramsResultBean.getEndTime())))
+                                ,TimeUtils.FORMAT_YMD_CN);
+                    }
+                }
+                break;
+        }
+        loadWebUrl();
+    }
+
+
+    /**
+     * 加载网页url参数整理
+     */
+    private void loadWebUrl() {
+        String url = "" ;
+        if(paramsResultBean == null){
+             url = "file:///android_asset/mobile.html?lang=" + LanguageUtils.getLanguage(mContext)
                     + "#/" + serviceUrl + "/"  + reportId + "/" +Constants.token + "?themeName=dap";
             webView.loadUrl(url);
             PLog.e(url);
-//        }
+            return;
+        }
+        switch (paramsResultBean.getTimeShow()){
+            case TIME_OF_POINT :
+                url = "file:///android_asset/mobile.html?lang=" + LanguageUtils.getLanguage(mContext)
+                        + "#/" + serviceUrl + "/"  + reportId + "/" +Constants.token + "?reportTime = "
+                        + reportTime +  "?themeName=dap";
+                break;
+
+            case TIME_OF_PERIOD :
+                url = "file:///android_asset/mobile.html?lang=" + LanguageUtils.getLanguage(mContext)
+                        + "#/" + serviceUrl + "/"  + reportId + "/" +Constants.token + "?beginTime="
+                        + beginTime + "&endTime="
+                        + endTime +  "?themeName=dap";
+                break;
+        }
+        webView.loadUrl(url);
+        PLog.e(url);
+    }
+
+    /**
+     *  初始化选择器
+     */
+    private void initSelectParamsView(){
+        if(selectParamsView != null){
+            selectParamsView.showDialog();
+        }else{
+            selectParamsView = new BaseWindowDialog(mContext, R.layout.alertdialog_dismiss_okcancel) {
+                @Override
+                public void convert(DialogViewHolder holder) {
+                    holder.getConvertView().setBackground(new BitmapDrawable());
+                    TextView tvSure = holder.getView(R.id.tv_sure);
+                    ImageView imgDismiss = holder.getView(R.id.img_dismiss);
+                    TextView tvStartTime = holder.getView(R.id.tv_startTime);
+                    TextView tvEndTimeTitle = holder.getView(R.id.tv_endTimeTitle);
+                    TextView tvEndTime = holder.getView(R.id.tv_endTime);
+                    if(paramsResultBean.getTimeShow().equals(TIME_OF_POINT)){
+                        tvEndTimeTitle.setVisibility(View.GONE);
+                        tvEndTime.setVisibility(View.GONE);
+                    }
+                    tvStartTime.setOnClickListener(view -> {
+                        if (pvCustomTime != null){
+                            pvCustomTime.show();
+                            pvCustomTime.getDialogContainerLayout().setTag(tvStartTime);
+                        }
+                    });
+                    tvEndTime.setOnClickListener(view -> {
+                        if(pvCustomTime != null){
+                            pvCustomTime.show();
+                            pvCustomTime.getDialogContainerLayout().setTag(tvEndTime);
+                        }
+                    });
+                    tvSure.setOnClickListener(view -> {
+                        if (paramsResultBean != null){
+                            switch (paramsResultBean.getTimeShow()){
+                                case TIME_OF_POINT :
+                                        reportTime = tvStartTime.getText().toString() ;
+                                    break;
+
+                                default:
+                                        beginTime = tvStartTime.getText().toString() ;
+                                        endTime = tvEndTime.getText().toString() ;
+                                    break;
+                            }
+                            loadWebUrl();
+                        }
+                        if (selectParamsView != null){
+                            selectParamsView.cancelDialog();
+                        }
+                    });
+                    imgDismiss.setOnClickListener(view -> {
+                        if (selectParamsView != null){
+                            selectParamsView.cancelDialog();
+                        }
+                    });
+                }
+            }.backgroundLight(0.2)
+                    .fromBottomToMiddle()
+                    .showDialog()
+                    .setWidthAndHeight((int) resources.getDimension(R.dimen.W600)
+                            , (int) resources.getDimension(R.dimen.H500))
+                    .setCancelAble(true)
+                    .setCanceledOnTouchOutside(false);
+        }
+    }
+
+    /**
+     * 初始化时间选择器
+     * @param yearVisibility
+     * @param monthVisibility
+     * @param dayVisibility
+     */
+    private void initCustomPickView(boolean yearVisibility, boolean monthVisibility
+            , boolean dayVisibility) {
+        Calendar selectedDate = Calendar.getInstance();
+        selectedDate.setTime(new Date());
+        Calendar startDate = Calendar.getInstance();
+        Calendar endDate = Calendar.getInstance();
+        startDate.set(2000,0,0);
+        endDate.set(selectedDate.get(Calendar.YEAR) + 2, 11
+                , 30);
+        pvCustomTime = new TimePickerBuilder(mContext, new OnTimeSelectListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onTimeSelect(Date date, View v) {
+                if (paramsResultBean!= null){
+                    switch (paramsResultBean.getUnit()){
+                        case "day" :
+                            ((TextView)pvCustomTime.getDialogContainerLayout().getTag())
+                                    .setText(TimeUtils.date2Str(date,TimeUtils.FORMAT_YMD_EN));
+                            break;
+
+                        case "month" :
+                            ((TextView)pvCustomTime.getDialogContainerLayout().getTag())
+                                    .setText(TimeUtils.date2Str(date,TimeUtils.FORMAT_YM));
+                            break;
+
+                        case "week" :
+                            ((TextView)pvCustomTime.getDialogContainerLayout().getTag())
+                                    .setText(TimeUtils.getNewStrDateInWeekForStr(TimeUtils.date2Str(date)
+                                            ,TimeUtils.FORMAT_YMD_CN));
+                            break;
+
+                        default:
+                            ((TextView)pvCustomTime.getDialogContainerLayout().getTag())
+                                    .setText(TimeUtils.getNewStrDateInQuarterForStr(TimeUtils.date2Str(date)
+                                            ,TimeUtils.FORMAT_YMD_CN));
+                            break;
+                    }
+                }
+            }
+        })
+                .setType(new boolean[]{yearVisibility, monthVisibility, dayVisibility, false, false, false})
+                .setLayoutRes(R.layout.pickerview_report_time, new CustomListener() {
+                    @Override
+                    public void customLayout(View v) {
+                        final TextView tvSubmit = v.findViewById(R.id.tv_finish);
+                        TextView ivCancel = v.findViewById(R.id.iv_cancel);
+                        tvSubmit.setOnClickListener(view -> {
+                            pvCustomTime.returnData();
+                            pvCustomTime.dismiss();
+                        });
+
+                        ivCancel.setOnClickListener(view -> {
+                            pvCustomTime.dismiss();
+                        });
+                    }
+                })
+                .setContentTextSize(18)
+                .setTitleSize(20)
+                .setTitleText("")
+                .setOutSideCancelable(false)
+                .isCyclic(true)
+                .setDate(selectedDate)
+                .setRangDate(startDate,endDate)
+                .isCenterLabel(false)
+                .isDialog(true)
+                .build();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

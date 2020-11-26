@@ -1,55 +1,25 @@
 package com.datacvg.sempmobile.presenter;
+
 import com.datacvg.sempmobile.baseandroid.config.MobileApi;
 import com.datacvg.sempmobile.baseandroid.retrofit.RxObserver;
 import com.datacvg.sempmobile.baseandroid.retrofit.bean.BaseBean;
-import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.baseandroid.utils.RxUtils;
-import com.datacvg.sempmobile.bean.ScreenDetailBean;
-import com.datacvg.sempmobile.view.ScreenDetailView;
-
+import com.datacvg.sempmobile.view.ConfirmInfoView;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.inject.Inject;
 
 /**
  * @Author : T-Bag (茶包)
- * @Time : 2020-10-22
+ * @Time : 2020-11-18
  * @Description :
  */
-public class ScreenDetailPresenter extends BasePresenter<ScreenDetailView> {
-
+public class ConfirmInfoPresenter extends BasePresenter<ConfirmInfoView>{
     MobileApi api ;
 
     @Inject
-    public ScreenDetailPresenter(MobileApi api) {
+    public ConfirmInfoPresenter(MobileApi api) {
         this.api = api;
-    }
-
-    /**
-     * 获取大屏详细信息
-     * @param screen_id
-     */
-    public void getScreenDetail(String screen_id) {
-        api.getScreenDetail(screen_id)
-                .compose(RxUtils.applySchedulersLifeCycle(getView()))
-                .subscribe(new RxObserver<BaseBean<ScreenDetailBean>>(){
-                    @Override
-                    public void onComplete() {
-                        super.onComplete();
-                    }
-
-                    @Override
-                    public void onNext(BaseBean<ScreenDetailBean> bean) {
-                        getView().getScreenDetailSuccess(bean.getData());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        PLog.e("TAG",e.getMessage());
-                    }
-                });
     }
 
     /**
@@ -85,12 +55,18 @@ public class ScreenDetailPresenter extends BasePresenter<ScreenDetailView> {
                     @Override
                     public void onNext(BaseBean<String> bean) {
                         switch (bean.getStatus()){
+                            /**
+                             * 投屏失败
+                             */
                             case -1 :
-                                getView().forScreenFailed(scPlayStatus);
+                                    getView().forScreenFailed();
                                 break;
 
-                            default :
-                                getView().forScreenSuccess(scPlayStatus);
+                            /**
+                             * 投屏成功
+                             */
+                            case 2000 :
+                                getView().forScreenSuccess();
                                 break;
                         }
                     }

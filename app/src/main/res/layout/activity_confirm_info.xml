@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c_f8f8fa">
+
+    <include
+        android:id="@+id/title"
+        layout="@layout/actionbar_title"/>
+
+    <RelativeLayout
+        android:id="@+id/rel_head"
+        android:layout_width="@dimen/W550"
+        android:layout_height="@dimen/H550"
+        android:layout_below="@id/title"
+        android:layout_marginTop="@dimen/H80"
+        android:layout_centerHorizontal="true"
+        android:background="@mipmap/icon_screen_confirm_bg">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circle_head"
+            android:layout_width="@dimen/W180"
+            android:layout_height="@dimen/H180"
+            android:layout_marginLeft="@dimen/W80"
+            android:layout_marginTop="@dimen/H80"
+            android:src="@mipmap/img_default">
+        </de.hdodenhof.circleimageview.CircleImageView>
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/c_000000"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_toRightOf="@id/circle_head"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H120">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_companyName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/c_000000"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:singleLine="true"
+            android:maxLength="7"
+            android:ellipsize="end"
+            android:layout_toRightOf="@id/circle_head"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_below="@id/tv_name"
+            android:layout_marginTop="@dimen/H20">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/H4"
+            android:layout_below="@id/circle_head"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginRight="@dimen/W40"
+            android:background="@color/c_f2f2f2"
+            android:layout_marginTop="@dimen/H80">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_prompt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/W50"
+            android:layout_marginRight="@dimen/W50"
+            android:gravity="center"
+            android:layout_below="@id/tv_line"
+            android:textSize="15sp"
+            android:textColor="@color/c_000000">
+        </TextView>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rel_head"
+        android:layout_marginTop="@dimen/H95"
+        android:layout_marginLeft="@dimen/W100"
+        android:drawableLeft="@mipmap/tab_screen_normal"
+        android:textSize="16sp"
+        android:textColor="@color/c_999999"
+        android:drawablePadding="@dimen/W24"
+        android:gravity="center"
+        android:text="@string/put_in_the_time">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_hours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hours"
+        android:textColor="@color/c_000000"
+        android:textSize="16sp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/rel_head"
+        android:layout_marginTop="@dimen/H95"
+        android:layout_marginRight="@dimen/W100">
+    </TextView>
+
+    <EditText
+        android:id="@+id/ed_hour"
+        android:layout_width="@dimen/W130"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/tv_hours"
+        android:inputType="number"
+        android:text="1"
+        android:textColor="@color/c_000000"
+        android:gravity="center"
+        android:background="@drawable/shape_b5b5b5"
+        android:layout_marginRight="@dimen/W16"
+        android:layout_alignTop="@id/tv_hours">
+    </EditText>
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H90"
+        android:layout_below="@id/ed_hour"
+        android:background="@drawable/shape_round_8_da3a16"
+        android:layout_marginLeft="@dimen/W100"
+        android:layout_marginRight="@dimen/W100"
+        android:text="@string/confirm"
+        android:textColor="@color/c_FFFFFF"
+        android:textSize="15sp"
+        android:layout_marginTop="@dimen/H124">
+    </Button>
+</RelativeLayout>

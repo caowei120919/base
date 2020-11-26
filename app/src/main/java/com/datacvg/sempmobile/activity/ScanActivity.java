@@ -15,6 +15,7 @@ import com.datacvg.sempmobile.baseandroid.utils.BitMapUtil;
 import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.baseandroid.utils.StatusBarUtil;
 import com.datacvg.sempmobile.baseandroid.utils.ToastUtils;
+import com.datacvg.sempmobile.bean.ScreenBean;
 import com.datacvg.sempmobile.bean.VPNConfigBean;
 import com.datacvg.sempmobile.presenter.ScanPresenter;
 import com.datacvg.sempmobile.view.ScanView;
@@ -117,7 +118,12 @@ public class ScanActivity extends BaseActivity<ScanView,ScanPresenter> implement
                      * 大屏投放扫码
                      */
                     case Constants.SCAN_FOR_SCREEN:
-
+                            Intent screenIntent = new Intent(mContext,ConfirmInfoActivity.class);
+                            screenIntent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,result.getText());
+                            screenIntent.putExtra("title",getIntent()
+                                    .getStringExtra("title"));
+                            mContext.startActivity(screenIntent);
+                            finish();
                          break;
 
                     default:

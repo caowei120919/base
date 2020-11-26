@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/W600"
+    android:layout_height="@dimen/H800"
+    android:gravity="center"
+    android:background="@drawable/shape_ffffff">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/filtrate"
+        android:textColor="@color/c_000000"
+        android:textSize="14sp"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginTop="@dimen/H20">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_sure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_ffffff_f2f2f2"
+        android:text="@string/confirm"
+        android:textColor="@color/c_000000"
+        android:gravity="center"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/H10"
+        android:layout_marginRight="@dimen/W40"
+        android:paddingLeft="@dimen/W20"
+        android:paddingRight="@dimen/W20"
+        android:textSize="14sp"
+        android:paddingTop="@dimen/H10"
+        android:paddingBottom="@dimen/H10">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_startTimeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_sure"
+        android:layout_marginTop="@dimen/H40"
+        android:layout_marginLeft="@dimen/W40"
+        android:text="@string/the_start_time"
+        android:textColor="@color/c_000000"
+        android:textSize="14sp">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_startTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_sure"
+        android:layout_marginTop="@dimen/H20"
+        android:layout_marginLeft="@dimen/W150"
+        android:paddingBottom="@dimen/H20"
+        android:paddingTop="@dimen/H20"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:textColor="@color/c_000000"
+        android:background="@drawable/shape_ffffff_f2f2f2"
+        android:layout_toRightOf="@id/tv_startTimeTitle"
+        android:layout_marginRight="@dimen/W40">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_endTimeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_startTime"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/H40"
+        android:layout_marginLeft="@dimen/W40"
+        android:text="@string/the_end_of_time"
+        android:textColor="@color/c_000000"
+        android:textSize="14sp">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_endTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_startTime"
+        android:layout_marginTop="@dimen/H20"
+        android:layout_marginLeft="@dimen/W150"
+        android:paddingBottom="@dimen/H20"
+        android:paddingTop="@dimen/H20"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:textColor="@color/c_000000"
+        android:background="@drawable/shape_ffffff_f2f2f2"
+        android:layout_toRightOf="@id/tv_startTimeTitle"
+        android:layout_marginRight="@dimen/W40">
+    </TextView>
+
+    <ImageView
+        android:id="@+id/img_dismiss"
+        android:layout_width="@dimen/W90"
+        android:layout_height="@dimen/H90"
+        android:src="@mipmap/icon_delete"
+        android:padding="@dimen/W20"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true">
+    </ImageView>
+</RelativeLayout>

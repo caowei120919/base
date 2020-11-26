@@ -129,6 +129,15 @@
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait">
         </activity>
+
+        <activity android:name=".activity.ConfirmInfoActivity"
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".activity.ScreenResultActivity"
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

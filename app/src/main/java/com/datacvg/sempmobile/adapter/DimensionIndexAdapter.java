@@ -46,11 +46,14 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private Context mContext ;
     private LayoutInflater inflater ;
     private List<DimensionPositionBean> chartBeans = new ArrayList<>();
+    private IndexClickListener listener ;
 
-    public DimensionIndexAdapter(Context mContext, List<DimensionPositionBean> chartBeans) {
+    public DimensionIndexAdapter(Context mContext, List<DimensionPositionBean> chartBeans
+            ,IndexClickListener listener) {
         this.mContext = mContext;
         this.inflater = LayoutInflater.from(mContext);
         this.chartBeans = chartBeans;
+        this.listener = listener ;
     }
 
 
@@ -124,9 +127,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        holder.itemView.setOnClickListener(view -> {
-            PLog.e("点击");
-        });
         if(holder instanceof TextHolder){
             onBindViewTextHolder((TextHolder) holder,position);
         }else if(holder instanceof LongTextHolder){
@@ -157,6 +157,10 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (dimensionPositionBean.getChartBean() == null){
             return;
         }
+        holder.itemView.setOnClickListener(view -> {
+            PLog.e("点击");
+            listener.OnItemClick(dimensionPositionBean);
+        });
         holder.tvUnit.setText(dimensionPositionBean.getChartBean().getChart_unit());
         holder.tvName.setText(LanguageUtils.isZh(mContext)
                 ? dimensionPositionBean.getChartBean().getIndex_clname()
@@ -209,6 +213,10 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (dimensionPositionBean.getChartBean() == null){
             return;
         }
+        holder.itemView.setOnClickListener(view -> {
+            PLog.e("点击");
+            listener.OnItemClick(dimensionPositionBean);
+        });
         holder.tvUnit.setText(dimensionPositionBean.getChartBean().getChart_unit());
         holder.tvName.setText(LanguageUtils.isZh(mContext)
                 ? dimensionPositionBean.getChartBean().getIndex_clname()
@@ -259,6 +267,10 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (dimensionPositionBean.getChartBean() == null){
             return;
         }
+        holder.itemView.setOnClickListener(view -> {
+            PLog.e("点击");
+            listener.OnItemClick(dimensionPositionBean);
+        });
         holder.tvUnit.setText(dimensionPositionBean.getChartBean().getChart_unit());
         holder.tvName.setText(LanguageUtils.isZh(mContext)
                 ? dimensionPositionBean.getChartBean().getIndex_clname()
@@ -309,6 +321,10 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (dimensionPositionBean.getChartBean() == null){
             return;
         }
+        holder.itemView.setOnClickListener(view -> {
+            PLog.e("点击");
+            listener.OnItemClick(dimensionPositionBean);
+        });
         holder.tvUnit.setText(dimensionPositionBean.getChartBean().getChart_unit());
         holder.tvName.setText(LanguageUtils.isZh(mContext)
                 ? dimensionPositionBean.getChartBean().getIndex_clname()
@@ -359,6 +375,10 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if(bean == null){
             return;
         }
+        holder.itemView.setOnClickListener(view -> {
+            PLog.e("点击");
+            listener.OnItemClick(chartBeans.get(position));
+        });
         holder.tvName.setText(LanguageUtils.isZh(mContext)
                 ? bean.getIndex_clname() : bean.getIndex_flname());
         String bottomValue = TextUtils.isEmpty(bean.getChart_bottom_title())
@@ -405,6 +425,10 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if(bean == null){
             return;
         }
+        holder.itemView.setOnClickListener(view -> {
+            PLog.e("点击");
+            listener.OnItemClick(chartBeans.get(position));
+        });
         holder.tvName.setText(LanguageUtils.isZh(mContext)
                 ? bean.getIndex_clname() : bean.getIndex_flname());
         String bottomValue = TextUtils.isEmpty(bean.getChart_bottom_title())
@@ -597,5 +621,8 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
-
+    public interface IndexClickListener{
+        void OnTitleClick(DimensionPositionBean bean);
+        void OnItemClick(DimensionPositionBean bean);
+    }
 }

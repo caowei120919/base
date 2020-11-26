@@ -2,6 +2,8 @@ package com.datacvg.sempmobile.bean;
 
 import androidx.annotation.Keep;
 
+import com.datacvg.sempmobile.baseandroid.config.Api;
+
 import java.util.ArrayList;
 
 /**

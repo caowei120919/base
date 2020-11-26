@@ -86,7 +86,16 @@ public class ScreenDetailAdapter extends RecyclerView.Adapter<ScreenDetailAdapte
      * 详情单个相关操作监听
      */
     public interface OnScreenDetailClick{
+        /**
+         * 删除
+         * @param position
+         */
         void onDeleteClick(int position);
+
+        /**
+         * 设置
+         * @param position
+         */
         void onSettingClick(int position);
     }
 }

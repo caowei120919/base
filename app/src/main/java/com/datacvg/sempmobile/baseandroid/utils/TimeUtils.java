@@ -1,5 +1,9 @@
 package com.datacvg.sempmobile.baseandroid.utils;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -20,6 +24,11 @@ public class TimeUtils {
      * 英文简写如：2010
      */
     public static String FORMAT_YM = "yyyyMM";
+
+    /**
+     *
+     */
+    public static String FORMAT_YMD_EN = "yyyyMMdd";
 
     /**
      * 英文简写如：12:01
@@ -154,7 +163,7 @@ public class TimeUtils {
             return null;
         }
         if (format == null || format.length() == 0) {
-            format = FORMAT;
+            format = FORMAT_YMD_CN;
         }
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         String s = sdf.format(d);
@@ -180,7 +189,6 @@ public class TimeUtils {
     public static String getCurDateStr(String format) {
         Calendar c = Calendar.getInstance();
         return date2Str(c, format);
-
     }
 
 
@@ -221,6 +229,18 @@ public class TimeUtils {
 
     }
 
+    /**
+     * 在日期上增加数个整月
+     * @param date 日期
+     * @param n 要增加的月数
+     * @return   增加数个整月
+     */
+    public static Date addQuarter(Date date, int n) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.MONTH, n * 3);
+        return cal.getTime();
+    }
 
     /**
      * 在日期上增加数个整月
@@ -233,7 +253,19 @@ public class TimeUtils {
         cal.setTime(date);
         cal.add(Calendar.MONTH, n);
         return cal.getTime();
+    }
 
+    /**
+     *  在日期上增加整个周
+     * @param date
+     * @param n
+     * @return
+     */
+    public static Date addWeek(Date date,int n){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.WEEK_OF_YEAR,n);
+        return calendar.getTime() ;
     }
 
 
@@ -248,7 +280,6 @@ public class TimeUtils {
         cal.setTime(date);
         cal.add(Calendar.DATE, n);
         return cal.getTime();
-
     }
 
 
@@ -370,6 +401,50 @@ public class TimeUtils {
         return parse(strDate, getDatePattern());
     }
 
+    public static String getNewStrDateForStr(String date2Str, String formatYmd, String replace) {
+        Date date = parse(date2Str,formatYmd);
+        String newDate = date2Str(date,replace);
+        return newDate;
+    }
+
+    /**
+     * 日期在当年属于第几周
+     * @param date2Str
+     * @param formatYmd
+     * @return
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static String getNewStrDateInWeekForStr(String date2Str, String formatYmd) {
+        Calendar calendar = Calendar.getInstance();
+        Date date = parse(date2Str,formatYmd);
+        calendar.setTime(date);
+        int weeks = calendar.get(Calendar.WEEK_OF_YEAR);
+        return calendar.getWeekYear() + "" + weeks;
+    }
+
+    /**
+     * 日期在当年第几季度
+     * @param date2Str
+     * @param formatYmd
+     * @return
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static String getNewStrDateInQuarterForStr(String date2Str, String formatYmd) {
+        Calendar calendar = Calendar.getInstance();
+        Date date = parse(date2Str,formatYmd);
+        calendar.setTime(date);
+        int quarter = calendar.get(Calendar.MONTH);
+        if(quarter >= 1 && quarter <= 3){
+            return  calendar.getWeekYear() + "01";
+        }else if (quarter > 3 && quarter <= 6){
+            return calendar.getWeekYear() + "02";
+        }else if(quarter > 6 && quarter <= 9){
+            return calendar.getWeekYear() + "03";
+        }else{
+            return calendar.getWeekYear() + "04";
+        }
+    }
+
     public static String getNewStrDateForStr(String oldDate,String pattern){
         Date date = parse(oldDate);
         String newDate = date2Str(date,pattern);
@@ -389,7 +464,6 @@ public class TimeUtils {
         return calendar.getTimeInMillis();
     }
 
-
     /**
      * 按默认格式的字符串距离今天的天数
      *
@@ -402,7 +476,6 @@ public class TimeUtils {
         c.setTime(parse(date));
         long t1 = c.getTime().getTime();
         return (int) (t / 1000 - t1 / 1000) / 3600 / 24;
-
     }
 
 

@@ -132,4 +132,18 @@
     <string name="head">head</string>
     <string name="sweep_the_login_code">Sweep the login code</string>
     <string name="login_prompt">You are authorizing another device/website to log into this account.\n If you do not operate this account yourself, it is recommended to cancel</string>
+    <string name="whether_to_confirm_authorization">Are you sure to authorize #1 to post all reports for #2</string>
+    <string name="confirm_the_information">Confirm the information</string>
+    <string name="put_in_the_time">Put in the time</string>
+    <string name="hours">hours</string>
+    <string name="please_enter_duration">Please enter duration</string>
+    <string name="for_screen_success">For screen success</string>
+    <string name="cast_screen_failure">Cast screen failure</string>
+    <string name="recall">recall</string>
+    <string name="back_on">Back on</string>
+    <string name="screen_projection_failed_please_check_the_device">Screen projection failed, please check the device</string>
+    <string name="sure_to_exit_the_projection_screen">Sure to exit the projection screen?</string>
+    <string name="filtrate">filtrate</string>
+    <string name="the_start_time">The start time</string>
+    <string name="the_end_of_time">The end of time</string>
 </resources>

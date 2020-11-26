@@ -125,4 +125,18 @@
     <string name="head">负责人</string>
     <string name="sweep_the_login_code">扫码登录</string>
     <string name="login_prompt">您正在授权另一设备/网站登录此账号\n如果非您本人操作，建议取消</string>
+    <string name="whether_to_confirm_authorization">是否确认授权#1投放#2的所有报表</string>
+    <string name="confirm_the_information">确认信息</string>
+    <string name="put_in_the_time">投放时长</string>
+    <string name="hours">小时</string>
+    <string name="please_enter_duration">请输入时长</string>
+    <string name="for_screen_success">投屏成功</string>
+    <string name="cast_screen_failure">投屏失败</string>
+    <string name="recall">撤回</string>
+    <string name="back_on">重投</string>
+    <string name="screen_projection_failed_please_check_the_device">投屏失败，请检查设备</string>
+    <string name="sure_to_exit_the_projection_screen">确定退出投屏？</string>
+    <string name="filtrate">筛选</string>
+    <string name="the_start_time">开始时间</string>
+    <string name="the_end_of_time">结束时间</string>
 </resources>

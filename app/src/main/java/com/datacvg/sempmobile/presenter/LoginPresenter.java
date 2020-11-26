@@ -115,8 +115,10 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
     public void login(String userName, String password) {
         Map<String,String> params = new HashMap<>();
-        params.put("loginname",userName);
-        params.put("password",password);
+        params.put("login_name",userName);
+        params.put("user_password",password);
+        params.put("deviceToken","");
+        params.put("deviceType","android");
         mobileApi.login(params)
                 .compose(RxUtils.applySchedulersLifeCycle(getView()))
                 .subscribe(new RxObserver<BaseBean<UserLoginBean>>(){

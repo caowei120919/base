@@ -3,6 +3,7 @@ package com.datacvg.sempmobile.baseandroid.dragger.component;
 import android.app.Activity;
 
 
+import com.datacvg.sempmobile.activity.ConfirmInfoActivity;
 import com.datacvg.sempmobile.activity.LanguageSettingActivity;
 import com.datacvg.sempmobile.activity.LoginActivity;
 import com.datacvg.sempmobile.activity.LoginWebActivity;
@@ -16,6 +17,7 @@ import com.datacvg.sempmobile.activity.QRCodeActivity;
 import com.datacvg.sempmobile.activity.ReportDetailActivity;
 import com.datacvg.sempmobile.activity.ScanActivity;
 import com.datacvg.sempmobile.activity.ScreenDetailActivity;
+import com.datacvg.sempmobile.activity.ScreenResultActivity;
 import com.datacvg.sempmobile.activity.ScreenSettingActivity;
 import com.datacvg.sempmobile.activity.SettingActivity;
 import com.datacvg.sempmobile.activity.SettingVpnActivity;
@@ -72,4 +74,8 @@ public interface ActivityComponent {
     void inject(ReportDetailActivity reportDetailActivity);
 
     void inject(LoginWebActivity loginWebActivity);
+
+    void inject(ConfirmInfoActivity confirmInfoActivity);
+
+    void inject(ScreenResultActivity screenResultActivity);
 }

@@ -96,7 +96,6 @@ public interface MobileApi {
      * @param mPDimension
      * @return
      */
-    @Headers({"Domain-Name: local_api"})
     @GET("indexpad/index/position")
     Observable<BaseBean<DimensionPositionListBean>> getIndexPosition(@Query("timeval") String mTimeValue,
                                                                      @Query("orgDimension") String mOrgDimension,
@@ -217,4 +216,13 @@ public interface MobileApi {
      */
     @POST("login/mobsrv/scancode")
     Observable<BaseBean<String>> webLogin(@QueryMap Map<String, String> params);
+
+    /**
+     * 大屏投放
+     * @param params
+     * @return
+     */
+    @Headers({"Domain-Name: fis_api"})
+    @POST("largescreen/websocket")
+    Observable<BaseBean<String>> confirmOnTheScreen(@Body Map<String, String> params);
 }

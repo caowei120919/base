@@ -3,7 +3,12 @@ package com.datacvg.sempmobile.baseandroid.config;
 import androidx.annotation.Keep;
 
 import com.datacvg.sempmobile.baseandroid.retrofit.helper.PreferencesHelper;
+import com.datacvg.sempmobile.bean.ScreenBean;
 import com.datacvg.sempmobile.bean.UserLoginBean;
+import com.datacvg.sempmobile.bean.WebSocketLinkBean;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author : T-Bag (茶包)
@@ -48,6 +53,59 @@ public class Constants {
     public final static int SERVICE_CODE_SUCCESS_MOBILE = 1 ;
     public final static int SERVICE_CODE_SUCCESS_FIS = 2000 ;
     public final static int SERVICE_CODE_FAIL_FOR_TOKEN = 401 ;
+
+    /**
+     * 大屏投放
+     */
+    /**
+     *启动
+     */
+    public static final String SCREEN_BOOT = "boot";
+    /**
+     *退出
+     */
+    public static final String SCREEN_CLOSE = "close";
+    /**
+     *询问
+     */
+    public static final String SCREEN_REQUEST = "request";
+    /**
+     *播放
+     */
+    public static final String SCREEN_START = "start";
+    /**
+     * 暂停
+     */
+    public static final String SCREEN_PAUSE = "pause";
+    /**
+     * 下一张
+     */
+    public static final String SCREEN_NEXT = "next";
+    /**
+     *上一张
+     */
+    public static final String SCREEN_UPPER = "upper";
+    /**
+     * 默认播放位置
+     */
+    public static final String DEFAULT_POSITION = "0";
+    /**
+     * 正常操作
+     */
+    public static final String COMMON_CODE = "2000" ;
+
+    /**
+     * 实时删除
+     */
+    public static final String DELETE_CODE = "2004" ;
+    /**
+     * 实时添加
+     */
+    public static final String ADD_CODE = "2004" ;
+    /**
+     * 当前大屏页信息
+     */
+    public static ScreenBean screenBean ;
 
     /**
      * 应用语言
@@ -159,4 +217,9 @@ public class Constants {
         }
         PreferencesHelper.put(USER_CHECK_REMEMBER,checked);
     }
+
+    /**
+     * 暂存链接websocket的大屏信息
+     */
+    public static List<WebSocketLinkBean> linkBeans = new ArrayList<>();
 }

@@ -65,7 +65,7 @@ import butterknife.OnClick;
  * @Description : 数字神经
  */
 public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
-        implements DigitalView ,DimensionPopAdapter.DimensionCheckListener{
+        implements DigitalView, DimensionPopAdapter.DimensionCheckListener, DimensionIndexAdapter.IndexClickListener {
 
     @BindView(R.id.img_left)
     ImageView imgLeft ;
@@ -139,7 +139,7 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
         tvTitle.setCompoundDrawables(null,null,drawable,null);
         tvTitle.setCompoundDrawablePadding(40);
 
-        dimensionIndexAdapter = new DimensionIndexAdapter(mContext,dimensionPositionBeans);
+        dimensionIndexAdapter = new DimensionIndexAdapter(mContext,dimensionPositionBeans,this);
         recyclerChart.setLayoutManager(new GridLayoutManager(mContext,2));
         recyclerChart.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
@@ -498,5 +498,23 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
     @Subscribe (threadMode = ThreadMode.MAIN)
     public void onEvent(ChangeIndexEvent event){
         getIndexPosition();
+    }
+
+    /**
+     * 指标标题被点击
+     * @param bean
+     */
+    @Override
+    public void OnTitleClick(DimensionPositionBean bean) {
+
+    }
+
+    /**
+     * 指标item被点击
+     * @param bean
+     */
+    @Override
+    public void OnItemClick(DimensionPositionBean bean) {
+
     }
 }

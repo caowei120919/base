@@ -14,4 +14,15 @@ public interface ScreenDetailView extends MvpView {
      * @param bean
      */
     void getScreenDetailSuccess(ScreenDetailBean bean);
+
+    /**
+     * 大屏消息发松失败
+     */
+    void forScreenFailed(String scIndexStatus);
+
+    /**
+     * 大屏消息成功
+     * @param scIndexStatus
+     */
+    void forScreenSuccess(String scIndexStatus);
 }
