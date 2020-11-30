@@ -73,6 +73,8 @@
     <string name="personal_center">Personal center</string>
     <string name="year">years</string>
     <string name="month">month</string>
+    <string name="week">week</string>
+    <string name="quarter">quarter</string>
     <string name="day">day</string>
     <string name="hour">hour</string>
     <string name="minute">minute</string>
@@ -146,4 +148,7 @@
     <string name="filtrate">filtrate</string>
     <string name="the_start_time">The start time</string>
     <string name="the_end_of_time">The end of time</string>
+    <string name="the_current_version_is_not_supported">The current version is not supported</string>
+    <string name="report_parameters">Report parameters</string>
+    <string name="to_choose_time">To choose time</string>
 </resources>

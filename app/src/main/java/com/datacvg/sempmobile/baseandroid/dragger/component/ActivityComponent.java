@@ -19,9 +19,11 @@ import com.datacvg.sempmobile.activity.ScanActivity;
 import com.datacvg.sempmobile.activity.ScreenDetailActivity;
 import com.datacvg.sempmobile.activity.ScreenResultActivity;
 import com.datacvg.sempmobile.activity.ScreenSettingActivity;
+import com.datacvg.sempmobile.activity.SelectTableParamActivity;
 import com.datacvg.sempmobile.activity.SettingActivity;
 import com.datacvg.sempmobile.activity.SettingVpnActivity;
 import com.datacvg.sempmobile.activity.SplashActivity;
+import com.datacvg.sempmobile.activity.TableDetailActivity;
 import com.datacvg.sempmobile.activity.TableFolderActivity;
 import com.datacvg.sempmobile.activity.TestRealActivity;
 import com.datacvg.sempmobile.baseandroid.dragger.module.ActivityModule;
@@ -78,4 +80,8 @@ public interface ActivityComponent {
     void inject(ConfirmInfoActivity confirmInfoActivity);
 
     void inject(ScreenResultActivity screenResultActivity);
+
+    void inject(TableDetailActivity tableDetailActivity);
+
+    void inject(SelectTableParamActivity selectTableParamActivity);
 }

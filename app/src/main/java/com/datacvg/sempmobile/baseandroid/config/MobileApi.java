@@ -16,7 +16,10 @@ import com.datacvg.sempmobile.bean.ReportListBean;
 import com.datacvg.sempmobile.bean.ReportParamsBean;
 import com.datacvg.sempmobile.bean.ScreenDetailBean;
 import com.datacvg.sempmobile.bean.ScreenListBean;
+import com.datacvg.sempmobile.bean.TableInfoBean;
 import com.datacvg.sempmobile.bean.TableListBean;
+import com.datacvg.sempmobile.bean.TableParamInfoBean;
+import com.datacvg.sempmobile.bean.TableParamInfoListBean;
 import com.datacvg.sempmobile.bean.UserJobsListBean;
 import com.datacvg.sempmobile.bean.UserLoginBean;
 import java.util.Map;
@@ -225,4 +228,20 @@ public interface MobileApi {
     @Headers({"Domain-Name: fis_api"})
     @POST("largescreen/websocket")
     Observable<BaseBean<String>> confirmOnTheScreen(@Body Map<String, String> params);
+
+    /**
+     * 获取报表参数
+     * @param res_id
+     * @return
+     */
+    @GET("mobilereport/app_getresparaminfobyresid")
+    Observable<BaseBean<TableParamInfoListBean>> getResParamInfo(@Query("resId") String res_id);
+
+    /**
+     * 查询报表配置
+     * @param params
+     * @return
+     */
+    @POST("mobilereport/h5/app_show_report")
+    Observable<BaseBean<TableInfoBean>> getTableUrl(@Body Map<String, String> params);
 }

@@ -18,6 +18,7 @@ import com.datacvg.sempmobile.baseandroid.utils.LanguageUtils;
 import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.baseandroid.utils.StatusBarUtil;
 import com.datacvg.sempmobile.baseandroid.utils.ToastUtils;
+import com.datacvg.sempmobile.bean.ReportBean;
 import com.datacvg.sempmobile.bean.TableBean;
 import com.datacvg.sempmobile.bean.TableListBean;
 import com.datacvg.sempmobile.presenter.TableFolderPresenter;
@@ -137,41 +138,38 @@ public class TableFolderActivity extends BaseActivity<TableFolderView, TableFold
                 intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,tableBean);
                 mContext.startActivity(intent);
                 break;
-
             case "CUSTOMJUMP" :
-
-                break;
-
-            case "MODEL" :
-
-                break;
-
             case "CUSTOMRPT" :
-
-                break;
-
             case "powerbi" :
-
-                break;
-
             case "powerbi_install" :
-
-                break;
-
             case "TABLEAU" :
-
+            case "BO_DASHBOARD" :
+                Intent tableIntent = new Intent(mContext, TableDetailActivity.class);
+                tableIntent.putExtra(Constants
+                        .EXTRA_DATA_FOR_BEAN,tableBean);
+                mContext.startActivity(tableIntent);
                 break;
 
             case "CX" :
-
+                PLog.e("jump to CX");
                 break;
 
-            case "BO_DASHBOARD" :
-
+            case "MODEL" :
+                    ReportBean reportBean = new ReportBean();
+                    reportBean.setReport_type(Constants.REPORT_MINE );
+                    reportBean.setModel_clname(tableBean.getRes_clname());
+                    reportBean.setModel_flname(tableBean.getRes_flname());
+                    reportBean.setModel_id(tableBean.getRes_id());
+                    reportBean.setPkid(tableBean.getRes_pkid());
+                    reportBean.setParent_id(tableBean.getRes_parentid());
+                    Intent modelIntent = new Intent(mContext, ReportDetailActivity.class);
+                    modelIntent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportBean);
+                    mContext.startActivity(modelIntent);
                 break;
 
             default:
-                ToastUtils.showLongToast("当前不支持此类型报表，请更新后重试");
+                ToastUtils.showLongToast(resources
+                        .getString(R.string.the_current_version_is_not_supported));
                 break;
         }
     }

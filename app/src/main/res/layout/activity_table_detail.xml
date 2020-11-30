@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/c_FFFFFF">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/img_back"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/W30"
+            android:paddingRight="@dimen/W30">
+        </ImageView>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:textSize="18sp"
+            android:maxWidth="@dimen/W500"
+            android:textColor="@color/c_666666"
+            android:gravity="center">
+        </TextView>
+
+        <ImageView
+            android:id="@+id/imgOne"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="@dimen/W10"
+            android:paddingRight="@dimen/W20">
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/imgTwo"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/imgOne"
+            android:paddingLeft="@dimen/W10"
+            android:paddingRight="@dimen/W10">
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/imgThree"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/imgTwo"
+            android:paddingLeft="@dimen/W20"
+            android:paddingRight="@dimen/W10">
+        </ImageView>
+    </RelativeLayout>
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title">
+    </WebView>
+</RelativeLayout>

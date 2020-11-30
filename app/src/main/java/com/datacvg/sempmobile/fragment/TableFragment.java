@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.sempmobile.R;
+import com.datacvg.sempmobile.activity.ReportDetailActivity;
+import com.datacvg.sempmobile.activity.TableDetailActivity;
 import com.datacvg.sempmobile.activity.TableFolderActivity;
 import com.datacvg.sempmobile.adapter.TableAdapter;
 import com.datacvg.sempmobile.baseandroid.config.Api;
@@ -20,6 +22,7 @@ import com.datacvg.sempmobile.baseandroid.utils.PLog;
 import com.datacvg.sempmobile.baseandroid.utils.StatusBarUtil;
 import com.datacvg.sempmobile.baseandroid.utils.ToastUtils;
 import com.datacvg.sempmobile.bean.ImageResBean;
+import com.datacvg.sempmobile.bean.ReportBean;
 import com.datacvg.sempmobile.bean.TableBean;
 import com.datacvg.sempmobile.bean.TableListBean;
 import com.datacvg.sempmobile.presenter.TablePresenter;
@@ -142,45 +145,50 @@ public class TableFragment extends BaseFragment<TableView, TablePresenter> imple
     public void onItemClick(TableBean tableBean) {
         switch (tableBean.getRes_showtype()){
             case "FOLDER" :
-                    Intent intent = new Intent(mContext, TableFolderActivity.class);
-                    intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,tableBean);
-                    mContext.startActivity(intent);
-                break;
-
-            case "CUSTOMJUMP" :
-
+                    Intent folderIntent = new Intent(mContext, TableFolderActivity.class);
+                    folderIntent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,tableBean);
+                    mContext.startActivity(folderIntent);
                 break;
 
             case "MODEL" :
-
+                    PLog.e("jump to model");
+                    ReportBean reportBean = new ReportBean();
+                    reportBean.setReport_type(Constants.REPORT_MINE );
+                    reportBean.setModel_clname(tableBean.getRes_clname());
+                    reportBean.setModel_flname(tableBean.getRes_flname());
+                    reportBean.setModel_id(tableBean.getRes_id());
+                    reportBean.setPkid(tableBean.getRes_pkid());
+                    reportBean.setParent_id(tableBean.getRes_parentid());
+                    Intent modelIntent = new Intent(mContext, ReportDetailActivity.class);
+                    modelIntent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportBean);
+                    mContext.startActivity(modelIntent);
                 break;
 
+            case "CUSTOMJUMP" :
+                PLog.e("jump to customJump");
             case "CUSTOMRPT" :
-
-                break;
-
+                PLog.e("jump to customRpt");
             case "powerbi" :
-
-                break;
-
+                PLog.e("jump to powerbi");
             case "powerbi_install" :
-
-                break;
-
+                PLog.e("jump to powerbi_install");
             case "TABLEAU" :
-
+                PLog.e("jump to TABLEAU");
+            case "BO_DASHBOARD" :
+                PLog.e("jump to BO_DASHBOARD");
+                Intent tableIntent = new Intent(mContext, TableDetailActivity.class);
+                tableIntent.putExtra(Constants
+                        .EXTRA_DATA_FOR_BEAN,tableBean);
+                mContext.startActivity(tableIntent);
                 break;
 
             case "CX" :
-
-                break;
-
-            case "BO_DASHBOARD" :
-
+                PLog.e("jump to CX");
                 break;
 
             default:
-                    ToastUtils.showLongToast("当前不支持此类型报表，请更新后重试");
+                    ToastUtils.showLongToast(resources
+                            .getString(R.string.the_current_version_is_not_supported));
                 break;
         }
     }

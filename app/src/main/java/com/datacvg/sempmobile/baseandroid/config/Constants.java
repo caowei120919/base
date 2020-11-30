@@ -116,6 +116,16 @@ public class Constants {
     public final static String LANGUAGE_AUTO = "auto" ;
 
     /**
+     * 报表参数选择类型
+     *      DIMENSION 维度选择
+     *      CUSTOM  级联选择
+     *      TIME  时间选择
+     */
+    public final static String REPORT_PARAMS_TIME = "TIME" ;
+    public final static String REPORT_PARAMS_CUSTOM = "CUSTOM" ;
+    public final static String REPORT_PARAMS_DIMENSION = "DIMENSION" ;
+
+    /**
      * 报告展示形式
      */
     public final static String REPORT_GRID = "REPORT_GRID" ;
