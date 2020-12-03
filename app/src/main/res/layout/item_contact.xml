@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/H107"
+    android:gravity="center_vertical">
+
+    <CheckBox
+        android:id="@+id/cb_contact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/W24"
+        android:button="@drawable/selector_select">
+    </CheckBox>
+
+    <ImageView
+        android:id="@+id/img_avatar"
+        android:layout_width="@dimen/W68"
+        android:layout_height="@dimen/H68"
+        android:layout_marginLeft="@dimen/W24"/>
+
+    <TextView
+        android:id="@+id/contact_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/W24"
+        android:textColor="@color/c_666666"
+        android:textSize="14sp" />
+
+</LinearLayout>

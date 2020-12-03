@@ -78,14 +78,14 @@
             android:drawablePadding="@dimen/W40">
         </TextView>
 
-        <com.datacvg.sempmobile.widget.CircleNumberView
+        <com.datacvg.dimp.widget.CircleNumberView
             android:id="@+id/tv_unReadMessageCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/W16"
             android:layout_toLeftOf="@id/img_next">
-        </com.datacvg.sempmobile.widget.CircleNumberView>
+        </com.datacvg.dimp.widget.CircleNumberView>
 
         <ImageView
             android:id="@+id/img_next"

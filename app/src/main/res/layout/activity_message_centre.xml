@@ -29,14 +29,14 @@
             android:drawablePadding="@dimen/W40">
         </TextView>
 
-        <com.datacvg.sempmobile.widget.CircleNumberView
+        <com.datacvg.dimp.widget.CircleNumberView
             android:id="@+id/tv_actionUnReadMessageCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/W16"
             android:layout_toLeftOf="@id/img_next">
-        </com.datacvg.sempmobile.widget.CircleNumberView>
+        </com.datacvg.dimp.widget.CircleNumberView>
 
         <ImageView
             android:id="@+id/img_next"
@@ -73,14 +73,14 @@
             android:drawablePadding="@dimen/W40">
         </TextView>
 
-        <com.datacvg.sempmobile.widget.CircleNumberView
+        <com.datacvg.dimp.widget.CircleNumberView
             android:id="@+id/tv_warningUnReadMessageCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/W16"
             android:layout_toLeftOf="@id/img_nextOfWarning">
-        </com.datacvg.sempmobile.widget.CircleNumberView>
+        </com.datacvg.dimp.widget.CircleNumberView>
 
         <ImageView
             android:id="@+id/img_nextOfWarning"
@@ -117,14 +117,14 @@
             android:drawablePadding="@dimen/W40">
         </TextView>
 
-        <com.datacvg.sempmobile.widget.CircleNumberView
+        <com.datacvg.dimp.widget.CircleNumberView
             android:id="@+id/tv_reportUnReadMessageCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/W16"
             android:layout_toLeftOf="@id/img_nextOfReport">
-        </com.datacvg.sempmobile.widget.CircleNumberView>
+        </com.datacvg.dimp.widget.CircleNumberView>
 
         <ImageView
             android:id="@+id/img_nextOfReport"
@@ -161,14 +161,14 @@
             android:drawablePadding="@dimen/W40">
         </TextView>
 
-        <com.datacvg.sempmobile.widget.CircleNumberView
+        <com.datacvg.dimp.widget.CircleNumberView
             android:id="@+id/tv_managementUnReadMessageCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/W16"
             android:layout_toLeftOf="@id/img_nextOfManagement">
-        </com.datacvg.sempmobile.widget.CircleNumberView>
+        </com.datacvg.dimp.widget.CircleNumberView>
 
         <ImageView
             android:id="@+id/img_nextOfManagement"

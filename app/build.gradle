@@ -7,7 +7,7 @@ android {
     flavorDimensions rootProject.ext.versionName
 
     defaultConfig {
-        applicationId "com.datacvg.sempmobile"
+        applicationId "com.datacvg.dimp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode rootProject.ext.versionCode
@@ -68,7 +68,7 @@ android {
 
     productFlavors {
         Test {
-            applicationId "com.datacvg.sempmobile"
+            applicationId "com.datacvg.dimp"
             buildConfigField("boolean","APP_STAND","false")   //标准版改为true
             buildConfigField("int", "APP_ENV", "1")
             manifestPlaceholders = [
@@ -82,7 +82,7 @@ android {
         }
 
         Prod {
-            applicationId "com.datacvg.sempmobile"
+            applicationId "com.datacvg.dimp"
             buildConfigField("boolean","APP_STAND","false")   //标准版改为true
             buildConfigField("int", "APP_ENV", "2")
             manifestPlaceholders = [

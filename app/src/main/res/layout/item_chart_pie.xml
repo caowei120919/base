@@ -65,12 +65,12 @@
                 android:layout_marginRight="@dimen/W16">
             </ImageView>
 
-            <com.datacvg.sempmobile.widget.PieChart
+            <com.datacvg.dimp.widget.PieChart
                 android:id="@+id/pieChart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true">
-            </com.datacvg.sempmobile.widget.PieChart>
+            </com.datacvg.dimp.widget.PieChart>
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

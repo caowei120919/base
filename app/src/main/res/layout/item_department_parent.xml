@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/c_FFFFFF"
+    android:layout_height="@dimen/H107">
+
+    <CheckBox
+        android:id="@+id/cb_expend"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:paddingLeft="@dimen/W12"
+        android:paddingRight="@dimen/W12"
+        android:gravity="center"
+        android:layout_marginLeft="@dimen/W24"
+        android:button="@drawable/shape_check_department_expend">
+    </CheckBox>
+
+    <CheckBox
+        android:layout_toRightOf="@id/cb_expend"
+        android:id="@+id/cb_department"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/W24"
+        android:button="@drawable/selector_select">
+    </CheckBox>
+
+    <ImageView
+        android:id="@+id/img_department"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/icon_department"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/cb_department"
+        android:layout_marginLeft="@dimen/W24">
+    </ImageView>
+
+    <TextView
+        android:id="@+id/tv_departmentName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:textSize="14sp"
+        android:textColor="@color/c_666666"
+        android:layout_toRightOf="@id/img_department"
+        android:layout_marginLeft="@dimen/W24">
+    </TextView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H1"
+        android:layout_alignParentBottom="true"
+        android:background="@color/c_e6e6e6"
+        android:layout_toRightOf="@id/img_department"
+        android:layout_marginLeft="@dimen/W24">
+    </TextView>
+</RelativeLayout>

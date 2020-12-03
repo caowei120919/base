@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.datacvg.sempmobile">
+    package="com.datacvg.dimp">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -21,7 +21,7 @@
     <uses-permission android:name="android.permission.READ_SMS" />
 
     <application
-        android:name=".MyApplication"
+        android:name="com.datacvg.dimp.MyApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:theme="@style/AppBaseTheme"
@@ -143,6 +143,14 @@
             android:screenOrientation="portrait">
         </activity>
         <activity android:name=".activity.SelectTableParamActivity"
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".activity.ContactActivity"
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".activity.DepartmentActivity"
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait">
         </activity>

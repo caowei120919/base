@@ -151,4 +151,12 @@
     <string name="the_current_version_is_not_supported">The current version is not supported</string>
     <string name="report_parameters">Report parameters</string>
     <string name="to_choose_time">To choose time</string>
+    <string name="the_contact">The contact</string>
+    <string name="department">department</string>
+    <string name="nearest_contact">Nearest contact</string>
+    <string name="index_of_correlation">index of correlation</string>
+    <string name="the_dimension">The dimension</string>
+    <string name="task_details">Task details</string>
+    <string name="action_plan_snapshot_comparison">Action plan/snapshot comparison</string>
+    <string name="organization_dimension">Organization dimension</string>
 </resources>

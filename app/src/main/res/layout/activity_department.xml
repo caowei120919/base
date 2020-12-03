@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c_FFFFFF"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/actionbar_title" />
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H106"
+        layout="@layout/view_search"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H50"
+        android:text="@string/department"
+        android:textColor="@color/c_5b7c7c"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/W24"
+        android:textSize="12sp"
+        android:background="@color/c_e6e6e6">
+    </TextView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_department"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H1"
+        android:layout_weight="1">
+    </androidx.recyclerview.widget.RecyclerView>
+</LinearLayout>

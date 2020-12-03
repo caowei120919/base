@@ -114,8 +114,8 @@
     <string name="all_the_news">全部消息</string>
     <string name="unread_message">未读消息</string>
     <string name="read_the_message">已读消息</string>
-    <string name="assistant">协助人 :</string>
-    <string name="recipient">接收人 :</string>
+    <string name="assistant">协助人  </string>
+    <string name="recipient">接收人  </string>
     <string name="the_current_report_has_no_optional_parameters">当前报告无参数可选</string>
     <string name="common">普通</string>
     <string name="task_type">任务类型</string>
@@ -144,4 +144,12 @@
     <string name="the_current_version_is_not_supported">当前不支持此类型报表，请更新后重试</string>
     <string name="report_parameters">报表参数</string>
     <string name="to_choose_time">选择时间</string>
+    <string name="the_contact">联系人</string>
+    <string name="department">部门</string>
+    <string name="nearest_contact">最近联系人</string>
+    <string name="index_of_correlation">相关指标</string>
+    <string name="the_dimension">维度</string>
+    <string name="task_details">任务详情</string>
+    <string name="action_plan_snapshot_comparison">行动方案/快照对比</string>
+    <string name="organization_dimension">组织维度</string>
 </resources>
