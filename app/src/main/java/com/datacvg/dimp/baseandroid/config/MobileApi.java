@@ -1,6 +1,7 @@
 package com.datacvg.dimp.baseandroid.config;
 
 import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
+import com.datacvg.dimp.bean.ActionPlanIndexListBean;
 import com.datacvg.dimp.bean.ActionPlanListBean;
 import com.datacvg.dimp.bean.ChartListBean;
 import com.datacvg.dimp.bean.DefaultUserListBean;
@@ -250,4 +251,7 @@ public interface MobileApi {
      */
     @GET("actionplan/getdefaultuser")
     Observable<BaseBean<DefaultUserListBean>> getDefaultUser();
+
+    @GET("actionplan/infoindex")
+    Observable<BaseBean<ActionPlanIndexListBean>> getActionPlanIndex();
 }

@@ -37,14 +37,44 @@ public class ContactBean{
 
     private String name;
 
-    @Generated(hash = 2006844727)
+    /**
+     * 是否为负责人选中(只适用于行动方案创建任务)
+     */
+    private boolean isHeadChecked = false ;
+
+    public boolean isHeadChecked() {
+        return isHeadChecked;
+    }
+
+    public void setHeadChecked(boolean headChecked) {
+        isHeadChecked = headChecked;
+    }
+
+    public boolean isAssistantChecked() {
+        return isAssistantChecked;
+    }
+
+    public void setAssistantChecked(boolean assistantChecked) {
+        isAssistantChecked = assistantChecked;
+    }
+
+    /**
+     * 是否为协助人选中(只适用于行动方案)
+     */
+    private boolean isAssistantChecked = false ;
+
+
+    @Generated(hash = 943245095)
     public ContactBean(Long contact_id, String id, String department_id,
-                       String user_id, String name) {
+            String user_id, String name, boolean isHeadChecked,
+            boolean isAssistantChecked) {
         this.contact_id = contact_id;
         this.id = id;
         this.department_id = department_id;
         this.user_id = user_id;
         this.name = name;
+        this.isHeadChecked = isHeadChecked;
+        this.isAssistantChecked = isAssistantChecked;
     }
 
     @Generated(hash = 1283900925)
@@ -89,5 +119,22 @@ public class ContactBean{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+
+    public boolean getIsHeadChecked() {
+        return this.isHeadChecked;
+    }
+
+    public void setIsHeadChecked(boolean isHeadChecked) {
+        this.isHeadChecked = isHeadChecked;
+    }
+
+    public boolean getIsAssistantChecked() {
+        return this.isAssistantChecked;
+    }
+
+    public void setIsAssistantChecked(boolean isAssistantChecked) {
+        this.isAssistantChecked = isAssistantChecked;
     }
 }

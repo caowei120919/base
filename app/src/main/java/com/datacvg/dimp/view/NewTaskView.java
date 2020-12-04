@@ -1,6 +1,9 @@
 package com.datacvg.dimp.view;
 
 import com.datacvg.dimp.baseandroid.mvp.MvpView;
+import com.datacvg.dimp.bean.ActionPlanIndexListBean;
+import com.datacvg.dimp.bean.DefaultUserListBean;
+import com.datacvg.dimp.bean.IndexBean;
 
 /**
  * @Author : T-Bag (茶包)
@@ -8,4 +11,9 @@ import com.datacvg.dimp.baseandroid.mvp.MvpView;
  * @Description :
  */
 public interface NewTaskView extends MvpView {
+    /**
+     * 获取指标成功
+     * @param resdata
+     */
+    void getIndexSuccess(ActionPlanIndexListBean resdata);
 }

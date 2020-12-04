@@ -27,7 +27,9 @@
             android:layout_width="@dimen/W250"
             android:layout_marginRight="@dimen/W20"
             android:background="@drawable/shape_round16_ffffff_f2f2f2"
-            android:layout_height="@dimen/H80"
+            android:layout_height="@dimen/H50"
+            android:paddingLeft="@dimen/W25"
+            android:paddingRight="@dimen/W25"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true">
         </EditText>
@@ -41,7 +43,7 @@
         android:layout_marginRight="@dimen/W25"
         android:layout_marginTop="@dimen/H20"
         android:gravity="center"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:textColor="@color/c_303030"
         android:paddingTop="@dimen/H10"
         android:paddingBottom="@dimen/H10"

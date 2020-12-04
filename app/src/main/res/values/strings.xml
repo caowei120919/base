@@ -148,6 +148,7 @@
     <string name="department">部门</string>
     <string name="nearest_contact">最近联系人</string>
     <string name="index_of_correlation">相关指标</string>
+    <string name="index">指标</string>
     <string name="the_dimension">维度</string>
     <string name="task_details">任务详情</string>
     <string name="action_plan_snapshot_comparison">行动方案/快照对比</string>

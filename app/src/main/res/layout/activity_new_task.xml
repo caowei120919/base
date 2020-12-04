@@ -204,6 +204,8 @@
                     android:id="@+id/tv_headUser"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/H50"
+                    android:paddingLeft="@dimen/W10"
+                    android:paddingRight="@dimen/W10"
                     android:layout_marginLeft="@dimen/W45"
                     android:visibility="gone"
                     android:minWidth="@dimen/W120"
@@ -355,6 +357,7 @@
                 android:id="@+id/rel_dimension"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginTop="@dimen/H40"
                 android:layout_marginLeft="@dimen/W25"
                 android:layout_below="@id/rel_indexType">
@@ -380,6 +383,7 @@
                 android:id="@+id/rel_dimensionType"
                 android:layout_width="match_parent"
                 android:layout_below="@id/rel_dimension"
+                android:visibility="gone"
                 android:layout_height="@dimen/H115">
 
                 <ImageView

@@ -139,7 +139,7 @@ public class DbContactController {
         DaoSession daoSession = daoMaster.newSession();
         ContactBeanDao userDao = daoSession.getContactBeanDao();
         QueryBuilder<ContactBean> qb = userDao.queryBuilder();
-        qb.where(ContactBeanDao.Properties.Department_id.gt(department_id))
+        qb.where(ContactBeanDao.Properties.Department_id.eq(department_id))
                 .orderAsc(ContactBeanDao.Properties.Department_id);
         List<ContactBean> list = qb.list();
         return list;

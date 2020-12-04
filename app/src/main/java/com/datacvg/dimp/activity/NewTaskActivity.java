@@ -3,27 +3,37 @@ package com.datacvg.dimp.activity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.datacvg.dimp.R;
-import com.datacvg.dimp.adapter.ChooseContactOrIndexAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.baseandroid.utils.TimeUtils;
-import com.datacvg.dimp.baseandroid.widget.dialog.BaseWindowDialog;
-import com.datacvg.dimp.baseandroid.widget.dialog.DialogViewHolder;
+import com.datacvg.dimp.baseandroid.widget.dialog.ChooseContactWindowDialog;
+import com.datacvg.dimp.baseandroid.widget.dialog.ChooseIndexWindowDialog;
+import com.datacvg.dimp.bean.ActionPlanIndexBean;
+import com.datacvg.dimp.bean.ActionPlanIndexListBean;
+import com.datacvg.dimp.bean.Contact;
+import com.datacvg.dimp.bean.DefaultUserBean;
+import com.datacvg.dimp.bean.DefaultUserListBean;
+import com.datacvg.dimp.event.HeadOrAssistantEvent;
 import com.datacvg.dimp.presenter.NewTaskPresenter;
 import com.datacvg.dimp.view.NewTaskView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
@@ -54,6 +64,8 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
     TextView tvPriorityLow ;
     @BindView(R.id.tv_headUser)
     TextView tvHeadUser ;
+    @BindView(R.id.img_addIndex)
+    ImageView imgAddIndex ;
 
     /**
      * 时间选择器
@@ -63,8 +75,20 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
      * 任务标题
      */
     private String taskTitle ;
-    private BaseWindowDialog selectParamsView;
+    private ChooseContactWindowDialog contactWindowDialog;
+    private ChooseIndexWindowDialog indexWindowDialog ;
     private boolean fromActionFragment = true ;
+    private List<ActionPlanIndexBean> actionPlanIndexBeans = new ArrayList<>();
+    /**
+     * 负责人
+     */
+    private Contact headContact ;
+
+    /**
+     * 协助人
+     */
+    private List<Contact> assistantBeans = new ArrayList<>() ;
+
     /**
      * 任务截止日期
      */
@@ -97,6 +121,7 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
         tvActionTypeCommon.setSelected(true);
         tvPriorityHigh.setSelected(true);
         initCustomPickView();
+        getPresenter().getActionPlanIndex();
     }
 
     /**
@@ -163,7 +188,7 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
 
     @OnClick({R.id.img_left,R.id.tv_date,R.id.tv_actionTypeCommon
             ,R.id.tv_actionTypeSpecial,R.id.tv_priorityHigh,R.id.tv_priorityMiddle
-            ,R.id.tv_priorityLow,R.id.img_addHead})
+            ,R.id.tv_priorityLow,R.id.img_addHead,R.id.img_addAssistant,R.id.img_addIndex})
     public void OnClick(View view){
         switch (view.getId()){
             case R.id.img_left :
@@ -203,35 +228,93 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
                 break;
 
             case R.id.img_addHead :
-                initSelectParamsView(resources.getString(R.string.head),resources.getString(R.string.organization_dimension));
+                initSelectParamsView(Constants.CHOOSE_TYPE_HEAD);
                 break;
+
+            case R.id.img_addAssistant :
+                initSelectParamsView(Constants.CHOOSE_TYPE_ASSISTANT);
+                break;
+
+            case R.id.img_addIndex :
+                    createIndexWindowDialog();
+                break;
+        }
+    }
+
+
+    private void createIndexWindowDialog() {
+        if(indexWindowDialog != null){
+            indexWindowDialog.showDialog();
+        }else{
+            indexWindowDialog = new ChooseIndexWindowDialog(mContext,actionPlanIndexBeans)
+                    .backgroundLight(0.2)
+                    .fromTopToMiddle()
+                    .showDialog()
+                    .setCancelAble(true)
+                    .setWidthAndHeight((int)resources.getDimension(R.dimen.W500)
+                            ,(int)resources.getDimension(R.dimen.H800))
+                    .setCanceledOnTouchOutside(true);
         }
     }
 
     /**
      *  初始化选择器
+     * @param chooseTypeHead
      */
-    private void initSelectParamsView(String typeName,String headTypeName){
-        if(selectParamsView != null){
-            ((TextView)selectParamsView.getChildView(R.id.tv_typeName)).setText(typeName);
-            ((TextView)selectParamsView.getChildView(R.id.tv_headTypeName)).setText(headTypeName);
-            selectParamsView.showDialog();
+    private void initSelectParamsView(int chooseTypeHead){
+        if(contactWindowDialog != null){
+            contactWindowDialog.setChooseType(chooseTypeHead);
+            contactWindowDialog.showDialog();
         }else{
-            selectParamsView = new BaseWindowDialog(mContext, R.layout.dialog_choose_department_contact) {
-                @Override
-                public void convert(DialogViewHolder holder) {
-                    TextView tvTypeName = holder.getConvertView().findViewById(R.id.tv_typeName);
-                    tvTypeName.setText(typeName);
-                    TextView tvHeadTypeName = holder.getConvertView().findViewById(R.id.tv_headTypeName);
-                    tvHeadTypeName.setText(headTypeName);
-                    RecyclerView recycleChoose = holder.getConvertView().findViewById(R.id.recycle_choose);
-                    ChooseContactOrIndexAdapter adapter = new ChooseContactOrIndexAdapter(mContext,);
-                }
-            }.backgroundLight(0.2)
+            contactWindowDialog = new ChooseContactWindowDialog(mContext,chooseTypeHead)
+                    .backgroundLight(0.2)
                     .fromTopToMiddle()
                     .showDialog()
                     .setCancelAble(true)
+                    .setWidthAndHeight((int)resources.getDimension(R.dimen.W500),(int)resources.getDimension(R.dimen.H800))
                     .setCanceledOnTouchOutside(true);
+        }
+    }
+
+    @Override
+    public void getIndexSuccess(ActionPlanIndexListBean resdata) {
+        actionPlanIndexBeans.addAll(resdata);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void OnEvent(ActionPlanIndexBean bean){
+        PLog.e(bean.getName() + "---" + bean.isChecked());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void OnEvent(HeadOrAssistantEvent event){
+        /**
+         * 选择负责人
+         */
+        if(event.getChooseType() == Constants.CHOOSE_TYPE_HEAD){
+            if (event.isChecked()){
+                headContact = event.getContact();
+                tvHeadUser.setVisibility(View.VISIBLE);
+                tvHeadUser.setText(event.getContact().getBean().getName());
+            }else{
+                tvHeadUser.setVisibility(View.GONE);
+                headContact = null ;
+            }
+        }else{
+            if(event.isChecked()){
+                assistantBeans.add(event.getContact());
+            }else{
+                Contact removeContact = null;
+                for (Contact contact : assistantBeans){
+                    if(contact.getBean().getId().equals(event.getContact().getBean().getId())){
+                        removeContact = contact ;
+                        break;
+                    }
+                }
+                if(removeContact != null){
+                    assistantBeans.remove(removeContact);
+                }
+            }
         }
     }
 }

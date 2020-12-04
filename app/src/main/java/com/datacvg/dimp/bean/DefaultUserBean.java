@@ -116,6 +116,15 @@ public class DefaultUserBean {
         private String user_id;
         private String name;
         private String id;
+        private boolean checked = false ;
+
+        public boolean isChecked() {
+            return checked;
+        }
+
+        public void setChecked(boolean checked) {
+            this.checked = checked;
+        }
 
         public String getUser_id() {
             return user_id;

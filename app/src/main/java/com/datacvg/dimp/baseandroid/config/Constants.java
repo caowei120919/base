@@ -22,6 +22,12 @@ public class Constants {
     public static final String EXTRA_DATA_FOR_ALBUM = "EXTRA_DATA_FOR_ALBUM";
     public static final String EXTRA_DATA_FOR_SCAN = "EXTRA_DATA_FOR_SCAN";
 
+    /**
+     * 选择联系人类型
+     */
+    public static int CHOOSE_TYPE_HEAD = 0x00001029 ;
+    public static int CHOOSE_TYPE_ASSISTANT = 0x00001028 ;
+
     public static final int SCAN_FOR_VPN = 0x00001027 ;
     public static final int SCAN_FOR_SCREEN = 0x00001026 ;
     public static final int SCAN_FOR_LOGIN = 0x00001025 ;
@@ -205,6 +211,7 @@ public class Constants {
      * 分页默认每页数量
      */
     public static int DEFAULT_PAGE_SIZE = 20 ;
+
 
     /**
      *

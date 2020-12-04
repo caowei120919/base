@@ -15,6 +15,32 @@ public class Contact {
     private ContactBean bean ;
     private String name ;
 
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
+    /**
+     * 是否展开,目标为维度
+     */
+    private boolean isExpend = false ;
+
+    /**
+     * 是否被选中,目标为人员
+     */
+    private boolean isChecked = false ;
+
+    public boolean isExpend() {
+        return isExpend;
+    }
+
+    public void setExpend(boolean expend) {
+        isExpend = expend;
+    }
+
     public Contact() {
     }
 
@@ -57,5 +83,15 @@ public class Contact {
 
     public int getmType() {
         return mType;
+    }
+
+    private String departmentId ;
+
+    public String getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(String departmentId) {
+        this.departmentId = departmentId;
     }
 }
