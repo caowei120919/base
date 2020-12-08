@@ -5,6 +5,7 @@ import com.datacvg.dimp.bean.ActionPlanIndexListBean;
 import com.datacvg.dimp.bean.ActionPlanListBean;
 import com.datacvg.dimp.bean.ChartListBean;
 import com.datacvg.dimp.bean.DefaultUserListBean;
+import com.datacvg.dimp.bean.DimensionBean;
 import com.datacvg.dimp.bean.DimensionListBean;
 import com.datacvg.dimp.bean.DimensionPositionListBean;
 import com.datacvg.dimp.bean.ImageResBean;
@@ -26,10 +27,13 @@ import java.util.Map;
 import java.util.function.DoubleUnaryOperator;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -109,15 +113,17 @@ public interface MobileApi {
      * 获取组织维度
      * @return
      */
-    @GET("indexpad/dimention")
-    Observable<BaseBean<DimensionListBean>> getDimension();
+    @Headers({"Domain-Name: ddb_api"})
+    @GET("indexpad/dimension/get")
+    Observable<BaseBean<DimensionListBean>> getDimension(@Query("timeVal") String timeVal);
 
     /**
      * 获取其他维度
      * @return
      */
-    @GET("indexpad/other/dimention")
-    Observable<BaseBean<OtherDimensionBean>> getOtherDimension();
+    @Headers({"Domain-Name: ddb_api"})
+    @POST("indexpad/other/dimension/get")
+    Observable<BaseBean<DimensionListBean>> getOtherDimension(@Body Map map);
 
     /**
      * 获取图表详细数据
@@ -252,6 +258,23 @@ public interface MobileApi {
     @GET("actionplan/getdefaultuser")
     Observable<BaseBean<DefaultUserListBean>> getDefaultUser();
 
+    /**
+     * 查询指标
+     * @return
+     */
     @GET("actionplan/infoindex")
     Observable<BaseBean<ActionPlanIndexListBean>> getActionPlanIndex();
+
+    @Headers({"Domain-Name: upload_file"})
+    @Multipart
+    @POST("/upload")
+    Observable<BaseBean> uploadFile(@PartMap Map<String, RequestBody> partMap);
+
+    /**
+     * 查询报表相关评论
+     * @param map
+     * @return
+     */
+    @POST("mobilereport/getCommentInfoList")
+    Observable<BaseBean<String>> getTableComment(@Body Map map);
 }

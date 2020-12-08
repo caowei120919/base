@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_gravity="bottom"
+    android:background="@color/c_FFFFFF"
+    android:layout_height="@dimen/H850">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/H15"
+        android:textSize="16sp"
+        android:textColor="@color/c_666666"
+        android:text="条评论">
+    </TextView>
+
+    <ImageView
+        android:id="@+id/img_closeComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/icon_comment_close"
+        android:layout_alignParentRight="true"
+        android:padding="@dimen/H15">
+    </ImageView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_comment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/img_closeComment">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_picture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H100"
+        android:layout_above="@id/recycle_picture">
+
+        <ImageView
+            android:id="@+id/img_send"
+            android:layout_width="@dimen/W70"
+            android:paddingLeft="@dimen/W15"
+            android:paddingRight="@dimen/W15"
+            android:layout_alignParentRight="true"
+            android:layout_height="match_parent"
+            android:src="@mipmap/icon_comment_send">
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/img_addPicture"
+            android:layout_width="@dimen/W70"
+            android:paddingLeft="@dimen/W15"
+            android:paddingRight="@dimen/W15"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/img_send"
+            android:src="@mipmap/icon_add">
+        </ImageView>
+        <EditText
+            android:id="@+id/ed_comment"
+            android:layout_toLeftOf="@id/img_addPicture"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/H100"
+            android:layout_marginRight="@dimen/W50"
+            android:textSize="14sp"
+            android:padding="@dimen/H10"
+            android:textColor="@color/c_cc000000"
+            android:imeOptions="actionSend"
+            android:hint="发表评论"
+            android:singleLine="true"
+            android:drawablePadding="@dimen/W40"
+            android:textColorHint="@color/c_b5b5b5">
+        </EditText>
+    </RelativeLayout>
+</RelativeLayout>

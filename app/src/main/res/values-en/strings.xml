@@ -160,4 +160,11 @@
     <string name="task_details">Task details</string>
     <string name="action_plan_snapshot_comparison">Action plan/snapshot comparison</string>
     <string name="organization_dimension">Organization dimension</string>
+    <string name="please_fill_in_the_title">Please fill in the title</string>
+    <string name="please_select_the_person_in_charge">Please select the person in charge</string>
+    <string name="please_fill_in_the_task_details">Please fill in the task details</string>
+    <string name="dont_allow_permissions">Permission is not granted</string>
+    <string name="select_picture">Choose picture</string>
+    <string name="taking_pictures">Taking pictures</string>
+    <string name="photo_album">Photo album</string>
 </resources>

@@ -9,10 +9,10 @@ import com.datacvg.dimp.baseandroid.config.UploadApi;
 import com.datacvg.dimp.baseandroid.dragger.qualifier.FisUrl;
 import com.datacvg.dimp.baseandroid.dragger.qualifier.LoginUrl;
 import com.datacvg.dimp.baseandroid.dragger.qualifier.MobileUrl;
+import com.datacvg.dimp.baseandroid.dragger.qualifier.UploadUrl;
 import com.datacvg.dimp.baseandroid.dragger.scope.MyAppScope;
 import com.datacvg.dimp.baseandroid.retrofit.helper.RetrofitHelper;
 import com.datacvg.dimp.baseandroid.utils.StringUtils;
-import com.datacvg.dimp.dragger.qualifier.UploadUrl;
 import com.datacvg.dimp.baseandroid.retrofit.helper.MyOkhttpHelper;
 import dagger.Module;
 import dagger.Provides;
@@ -70,7 +70,7 @@ public class MyAppModule {
     @Provides
     @UploadUrl
     Retrofit provideUploadUrlRetrofit(MyOkhttpHelper okhttpHelper, RetrofitHelper retrofitHelper) {
-        return createUploadApiRetrofit(okhttpHelper, retrofitHelper,  Constants.BASE_URL);
+        return createUploadApiRetrofit(okhttpHelper, retrofitHelper,  "http://dimp.dev.datacvg.com"/*Constants.BASE_URL*/);
     }
 
 

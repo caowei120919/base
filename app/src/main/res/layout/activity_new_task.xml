@@ -253,8 +253,9 @@
             <RelativeLayout
                 android:id="@+id/rel_assistantType"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/rel_assistant"
-                android:layout_height="@dimen/H115">
+                android:minHeight="@dimen/H115">
 
                 <ImageView
                     android:id="@+id/img_addAssistant"
@@ -266,18 +267,14 @@
                     android:padding="@dimen/W20">
                 </ImageView>
 
-                <TextView
-                    android:id="@+id/tv_assistantUser"
+                <com.datacvg.dimp.widget.FlowLayout
+                    android:id="@+id/flow_assistant"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/H50"
                     android:layout_marginLeft="@dimen/W45"
-                    android:visibility="gone"
-                    android:minWidth="@dimen/W120"
-                    android:gravity="center"
-                    android:textColor="@color/c_303030"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/shape_ffffff_f2f2f2">
-                </TextView>
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/H10"
+                    android:layout_toLeftOf="@id/img_addAssistant">
+                </com.datacvg.dimp.widget.FlowLayout>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -318,7 +315,8 @@
                 android:id="@+id/rel_indexType"
                 android:layout_width="match_parent"
                 android:layout_below="@id/rel_index"
-                android:layout_height="@dimen/H115">
+                android:minHeight="@dimen/H115"
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/img_addIndex"
@@ -330,18 +328,14 @@
                     android:padding="@dimen/W20">
                 </ImageView>
 
-                <TextView
-                    android:id="@+id/tv_indexUser"
+                <com.datacvg.dimp.widget.FlowLayout
+                    android:id="@+id/flow_index"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/H50"
                     android:layout_marginLeft="@dimen/W45"
-                    android:visibility="gone"
-                    android:minWidth="@dimen/W120"
-                    android:gravity="center"
-                    android:textColor="@color/c_303030"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/shape_ffffff_f2f2f2">
-                </TextView>
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/H10"
+                    android:layout_toLeftOf="@id/img_addIndex">
+                </com.datacvg.dimp.widget.FlowLayout>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -454,7 +448,8 @@
             <EditText
                 android:id="@+id/ed_taskDetails"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/H108"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/H110"
                 android:layout_below="@id/rel_detail"
                 android:layout_marginTop="@dimen/H32"
                 android:background="@drawable/shape_task"
@@ -468,7 +463,6 @@
                 android:id="@+id/rel_actionPlan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:layout_marginTop="@dimen/H30"
                 android:layout_below="@id/ed_taskDetails">
 

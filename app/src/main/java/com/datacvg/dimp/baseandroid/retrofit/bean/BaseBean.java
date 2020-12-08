@@ -18,6 +18,7 @@ public class BaseBean<T> {
     private String message ;
     private String user_token ;
     private int status ;
+    private boolean success ;
     private T resdata ;
     private T data ;
 

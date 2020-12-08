@@ -9,6 +9,7 @@ import com.datacvg.dimp.bean.WebSocketLinkBean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author : T-Bag (茶包)
@@ -21,6 +22,9 @@ public class Constants {
     public static final String EXTRA_DATA_FOR_BEAN = "EXTRA_DATA_FOR_BEAN" ;
     public static final String EXTRA_DATA_FOR_ALBUM = "EXTRA_DATA_FOR_ALBUM";
     public static final String EXTRA_DATA_FOR_SCAN = "EXTRA_DATA_FOR_SCAN";
+    public static final String DIMENSION_FIRST = "DIMENSION_FIRST";
+    public static final String DIMENSION_SECOND = "DIMENSION_SECOND";
+    public static final String DIMENSION_THIRD = "DIMENSION_THIRD";
 
     /**
      * 选择联系人类型
@@ -54,6 +58,7 @@ public class Constants {
     public static String BASE_MOBILE_URL = "" ;
     public static String BASE_FIS_URL = "" ;
     public static String BASE_UPLOAD_URL = "" ;
+    public static String BASE_DDB_URL = "" ;
     public static String HEAD_IMG_URL = "/login/readheadimg?userPkid=" ;
 
     public final static int SERVICE_CODE_SUCCESS_MOBILE = 1 ;

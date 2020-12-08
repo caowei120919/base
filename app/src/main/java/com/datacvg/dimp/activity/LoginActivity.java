@@ -21,6 +21,8 @@ import com.datacvg.dimp.baseandroid.widget.CVGOKCancelWithTitle;
 import com.datacvg.dimp.bean.UserLoginBean;
 import com.datacvg.dimp.presenter.LoginPresenter;
 import com.datacvg.dimp.view.LoginView;
+import com.squareup.haha.perflib.Main;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
@@ -97,7 +99,7 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
     protected void setupData(Bundle savedInstanceState) {
         cbRememberUser.setChecked(PreferencesHelper
                 .get(Constants.USER_CHECK_REMEMBER,false));
-        companyCode = PreferencesHelper.get(Constants.USER_COMPANY_CODE,BuildConfig.DEBUG ? "test" : "");
+        companyCode = PreferencesHelper.get(Constants.USER_COMPANY_CODE,BuildConfig.DEBUG ? "dev" : "");
         userName = PreferencesHelper.get(Constants.USER_ID,BuildConfig.DEBUG ? "barry.chen" : "");
         password = PreferencesHelper.get(Constants.USER_PWD,BuildConfig.DEBUG ? "123456" : "");
 
@@ -171,7 +173,7 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
     @Override
     public void loginSuccess(BaseBean<UserLoginBean> baseBean) {
         Constants.saveUser(baseBean.getResdata(),cbRememberUser.isChecked(),password,companyCode);
-        mContext.startActivity(new Intent(mContext,MainActivity.class));
+        mContext.startActivity(new Intent(mContext, MainActivity.class));
         finish();
     }
 }

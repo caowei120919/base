@@ -164,7 +164,7 @@ public class SelectTableParamActivity extends BaseActivity<SelectTableParamView,
                     dealWithTimeType(tableParamInfoBean);
                 }
                 /**
-                 * 地区维度
+                 * 维度
                  */
                 if(tableParamInfoBean.getParam_type().equals(Constants.REPORT_PARAMS_DIMENSION)){
                     dealWithDimensionType();

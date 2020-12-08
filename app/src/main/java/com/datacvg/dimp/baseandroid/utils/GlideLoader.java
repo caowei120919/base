@@ -1,13 +1,12 @@
 package com.datacvg.dimp.baseandroid.utils;
 
-import android.app.Activity;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.request.RequestOptions;
-import com.lzy.imagepicker.loader.ImageLoader;
-
+import com.datacvg.dimp.R;
+import com.lcw.library.imagepicker.utils.ImageLoader;
 
 /**
  * FileName: GlideLoader
@@ -19,21 +18,25 @@ import com.lzy.imagepicker.loader.ImageLoader;
 public class GlideLoader implements ImageLoader {
     private RequestOptions mOptions = new RequestOptions()
             .centerCrop()
-            .format(DecodeFormat.PREFER_RGB_565);
+            .format(DecodeFormat.PREFER_RGB_565)
+            .placeholder(R.mipmap.icon_image_default)
+            .error(R.mipmap.img_default);
 
     private RequestOptions mPreOptions = new RequestOptions()
-            .skipMemoryCache(true);
+            .skipMemoryCache(false)
+            .error(R.mipmap.img_default);
 
     @Override
-    public void displayImage(Activity activity, String path, ImageView imageView, int width, int height) {
+    public void loadImage(ImageView imageView, String imagePath) {
         //小图加载
-        Glide.with(imageView.getContext()).load(path).apply(mOptions).into(imageView);
+        Glide.with(imageView.getContext()).load(imagePath).apply(mOptions).into(imageView);
     }
 
     @Override
-    public void displayImagePreview(Activity activity, String path, ImageView imageView, int width, int height) {
+    public void loadPreImage(ImageView imageView, String imagePath) {
         //大图加载
-        Glide.with(imageView.getContext()).load(path).apply(mPreOptions).into(imageView);
+        Glide.with(imageView.getContext()).load(imagePath).apply(mPreOptions).into(imageView);
+
     }
 
     @Override

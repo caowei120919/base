@@ -150,18 +150,6 @@ public class TableFragment extends BaseFragment<TableView, TablePresenter> imple
 
             case "MODEL" :
                     PLog.e("jump to model");
-                    ReportBean reportBean = new ReportBean();
-                    reportBean.setReport_type(Constants.REPORT_MINE );
-                    reportBean.setModel_clname(tableBean.getRes_clname());
-                    reportBean.setModel_flname(tableBean.getRes_flname());
-                    reportBean.setModel_id(tableBean.getRes_id());
-                    reportBean.setPkid(tableBean.getRes_pkid());
-                    reportBean.setParent_id(tableBean.getRes_parentid());
-                    Intent modelIntent = new Intent(mContext, ReportDetailActivity.class);
-                    modelIntent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportBean);
-                    mContext.startActivity(modelIntent);
-                break;
-
             case "CUSTOMJUMP" :
                 PLog.e("jump to customJump");
             case "CUSTOMRPT" :

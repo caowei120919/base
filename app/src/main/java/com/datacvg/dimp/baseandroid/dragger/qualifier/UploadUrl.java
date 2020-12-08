@@ -1,4 +1,4 @@
-package com.datacvg.dimp.dragger.qualifier;
+package com.datacvg.dimp.baseandroid.dragger.qualifier;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

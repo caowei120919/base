@@ -61,14 +61,7 @@ public class DimensionPopAdapter extends RecyclerView.Adapter<DimensionPopAdapte
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b){
                     if(dimensionBeans.get(position).getNodes() != null){
-                        for (int i = 0 ; i < dimensionBeans.get(position).getNodes().size() ; i ++) {
-                            if(dimensionBeans.get(position).getNodes().get(i) != null){
-                                dimensionBeans.get(position).getNodes().get(i)
-                                        .setLevel(dimensionBeans.get(position).getLevel() + 1);
-                                dimensionBeans.add(position + i + 1
-                                        ,dimensionBeans.get(position).getNodes().get(i));
-                            }
-                        }
+                        dimensionBeans.addAll(dimensionBeans.get(position).getNodes());
                     }
                 }else{
                     dimensionBeans.removeAll(dimensionBeans.get(position).getNodes());

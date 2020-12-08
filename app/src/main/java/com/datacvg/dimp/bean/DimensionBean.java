@@ -11,89 +11,80 @@ import java.util.List;
  */
 @Keep
 public class DimensionBean {
-    private int level = 0 ;
-    private boolean isOpen = false ;
+        private String id;
+        private String text;
+        private String flname;
+        private String pid;
+        private String rid;
+        private String value;
+        private String defaultkey;
+        private int res_level;
+        private int res_level_sort;
+        private List<DimensionBean> nodes;
 
-    public int getLevel() {
-        return level;
-    }
+        public String getId() {
+            return id;
+        }
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
+        public void setId(String id) {
+            this.id = id;
+        }
 
-    public boolean isOpen() {
-        return isOpen;
-    }
+        public String getText() {
+            return text;
+        }
 
-    public void setOpen(boolean open) {
-        isOpen = open;
-    }
+        public void setText(String text) {
+            this.text = text;
+        }
 
-    private String user_pkid;
-    private String flname;
-    private String pid;
-    private String id;
-    private String text;
-    private String rid;
-    private String value;
-    private List<DimensionBean> nodes;
+        public String getFlname() {
+            return flname;
+        }
 
-    public String getUser_pkid() {
-        return user_pkid;
-    }
+        public void setFlname(String flname) {
+            this.flname = flname;
+        }
 
-    public void setUser_pkid(String user_pkid) {
-        this.user_pkid = user_pkid;
-    }
+        public String getPid() {
+            return pid;
+        }
 
-    public String getFlname() {
-        return flname;
-    }
+        public void setPid(String pid) {
+            this.pid = pid;
+        }
 
-    public void setFlname(String flname) {
-        this.flname = flname;
-    }
+        public String getRid() {
+            return rid;
+        }
 
-    public String getPid() {
-        return pid;
-    }
+        public void setRid(String rid) {
+            this.rid = rid;
+        }
 
-    public void setPid(String pid) {
-        this.pid = pid;
-    }
+        public String getValue() {
+            return value;
+        }
 
-    public String getId() {
-        return id;
-    }
+        public void setValue(String value) {
+            this.value = value;
+        }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+        public String getDefaultkey() {
+            return defaultkey;
+        }
 
-    public String getText() {
-        return text;
-    }
+        public void setDefaultkey(String defaultkey) {
+            this.defaultkey = defaultkey;
+        }
 
-    public void setText(String text) {
-        this.text = text;
-    }
+        public int getRes_level() {
+            return res_level;
+        }
 
-    public String getRid() {
-        return rid;
-    }
-
-    public void setRid(String rid) {
-        this.rid = rid;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
+        public void setRes_level(int res_level) {
+            this.res_level = res_level;
+        }
 
     public List<DimensionBean> getNodes() {
         return nodes;
@@ -102,4 +93,12 @@ public class DimensionBean {
     public void setNodes(List<DimensionBean> nodes) {
         this.nodes = nodes;
     }
+
+    public int getRes_level_sort() {
+            return res_level_sort;
+        }
+
+        public void setRes_level_sort(int res_level_sort) {
+            this.res_level_sort = res_level_sort;
+        }
 }

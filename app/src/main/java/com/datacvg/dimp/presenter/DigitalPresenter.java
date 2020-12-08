@@ -62,8 +62,8 @@ public class DigitalPresenter extends BasePresenter<DigitalView>{
                 });
     }
 
-    public void getDimension() {
-        api.getDimension()
+    public void getDimension(String timeVal) {
+        api.getDimension(timeVal)
                 .compose(RxUtils.applySchedulersLifeCycle(getView()))
                 .subscribe(new RxObserver<BaseBean<DimensionListBean>>(){
                     @Override
@@ -73,7 +73,7 @@ public class DigitalPresenter extends BasePresenter<DigitalView>{
 
                     @Override
                     public void onNext(BaseBean<DimensionListBean> bean) {
-                        getView().getDimensionSuccess(bean.getResdata());
+                        getView().getDimensionSuccess(bean.getData());
                     }
 
                     @Override
@@ -84,18 +84,23 @@ public class DigitalPresenter extends BasePresenter<DigitalView>{
                 });
     }
 
-    public void getOtherDimension() {
-        api.getOtherDimension()
+    /**
+     *
+     * @param type 传参类型(标记第二维度还是第三维度)
+     * @param map 传参封装的map
+     */
+    public void getOtherDimension(String type,Map map) {
+        api.getOtherDimension(map)
                 .compose(RxUtils.applySchedulersLifeCycle(getView()))
-                .subscribe(new RxObserver<BaseBean<OtherDimensionBean>>(){
+                .subscribe(new RxObserver<BaseBean<DimensionListBean>>(){
                     @Override
                     public void onComplete() {
                         super.onComplete();
                     }
 
                     @Override
-                    public void onNext(BaseBean<OtherDimensionBean> bean) {
-                        getView().getOtherDimensionSuccess(bean.getResdata());
+                    public void onNext(BaseBean<DimensionListBean> bean) {
+                        getView().getOtherDimensionSuccess(type,bean.getData());
                     }
 
                     @Override

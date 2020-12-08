@@ -40,7 +40,6 @@ public class TablePresenter extends BasePresenter<TableView>{
 
                     @Override
                     public void onNext(BaseBean<TableListBean> bean) {
-                        PLog.e("getTableList ==== " + bean.getResdata().size());
                         getView().getTableSuccess(bean.getResdata());
                     }
 

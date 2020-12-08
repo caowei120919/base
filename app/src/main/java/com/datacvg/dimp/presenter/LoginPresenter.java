@@ -84,6 +84,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                             }
                             PLog.e(Constants.BASE_FIS_URL);
                             Constants.BASE_MOBILE_URL = bean.getHttpServer() ;
+                            Constants.BASE_DDB_URL = Constants.BASE_MOBILE_URL.replace("mobile","ddb") + "/";
                             Constants.BASE_UPLOAD_URL = bean.getUpdateURL() ;
 
                             RetrofitUrlManager.getInstance().setRun(true);
@@ -95,10 +96,15 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                                     .putDomain("fis_api",Constants.BASE_FIS_URL);
                             RetrofitUrlManager.getInstance()
                                     .putDomain("local_api",Constants.BASE_LOCAL_URL);
+                            RetrofitUrlManager.getInstance()
+                                    .putDomain("upload_file","http://dimp.dev.datacvg.com/api/file");
+                            RetrofitUrlManager.getInstance()
+                                    .putDomain("ddb_api",Constants.BASE_DDB_URL);
 
                             if(bean.getAppVersion().compareTo(BuildConfig.VERSION_NAME) > 0){
                                 getView().onUpdateVersion(bean.getUpdateURL());
                             }else{
+                                PLog.e("upload_file  ===== > " + RetrofitUrlManager.getInstance().fetchDomain("upload_file"));
                                 login(userName,password);
                             }
                         }

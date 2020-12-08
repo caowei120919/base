@@ -2,6 +2,7 @@ package com.datacvg.dimp.view;
 
 import com.datacvg.dimp.baseandroid.mvp.MvpView;
 import com.datacvg.dimp.bean.ChartListBean;
+import com.datacvg.dimp.bean.DimensionBean;
 import com.datacvg.dimp.bean.DimensionListBean;
 import com.datacvg.dimp.bean.DimensionPositionListBean;
 import com.datacvg.dimp.bean.OtherDimensionBean;
@@ -19,12 +20,6 @@ public interface DigitalView extends MvpView {
     void getDimensionSuccess(DimensionListBean dimensions);
 
     /**
-     * 获取其他维度成功
-     * @param dimensions
-     */
-    void getOtherDimensionSuccess(OtherDimensionBean dimensions);
-
-    /**
      * 获取指标列表成功
      * @param dimensionPositionBeans
      */
@@ -35,4 +30,11 @@ public interface DigitalView extends MvpView {
      * @param chartBeans
      */
     void getChartSuccess(ChartListBean chartBeans);
+
+    /**
+     * 获取其他维度成功
+     * @param type
+     * @param data
+     */
+    void getOtherDimensionSuccess(String type, DimensionListBean data);
 }

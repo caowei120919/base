@@ -51,6 +51,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import butterknife.BindView;
@@ -148,22 +149,32 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
         recyclerChart.setAdapter(dimensionIndexAdapter);
         mLang = LanguageUtils.isZh(mContext) ? "zh" : "en" ;
         initCustomPickView();
-        getDimension();
-        getOtherDimension();
+        getDimension(TimeUtils.getNewStrDateForStr(mTimeValue,TimeUtils.FORMAT_YM));
     }
 
     /**
      * 获取维度数据
      */
-    private void getDimension() {
-        getPresenter().getDimension();
+    private void getDimension(String timeVal) {
+        getPresenter().getDimension(timeVal);
     }
 
     /**
-     * 获取其他维度
+     * 获取第二维度维度
      */
-    private void getOtherDimension() {
-        getPresenter().getOtherDimension();
+    private void getSecondDimension(String orgDimension,String timeVal) {
+        Map map = new HashMap() ;
+        map.put("orgValue",orgDimension);
+        map.put("timeVal",timeVal);
+        getPresenter().getOtherDimension(Constants.DIMENSION_SECOND,map);
+    }
+
+    private void getThirdDimension(String orgDimension,String fuDimension,String timeVal){
+        Map map = new HashMap() ;
+        map.put("orgValue",orgDimension);
+        map.put("fuValue",fuDimension);
+        map.put("timeVal",timeVal);
+        getPresenter().getOtherDimension(Constants.DIMENSION_THIRD,map);
     }
 
     /**
@@ -329,54 +340,59 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
     @Override
     public void getDimensionSuccess(DimensionListBean dimensions) {
         orgDimensionBeans.clear();
-        if(dimensions != null && dimensions.size() > 0){
+        if(dimensions != null && dimensions.getSelectDimension().size() > 0){
             tvOrgDimension.setVisibility(View.VISIBLE);
-            tvOrgDimension.setText(dimensions.get(0).getText());
-            mOrgValue = dimensions.get(0).getValue();
-            mOrgDimension = dimensions.get(0).getId();
-            orgDimensionBeans.addAll(dimensions);
+            tvOrgDimension.setText(dimensions.getSelectDimension().get(0).getText());
+            mOrgValue = dimensions.getSelectDimension().get(0).getValue();
+            mOrgDimension = dimensions.getSelectDimension().get(0).getId();
+            orgDimensionBeans.addAll(dimensions.getSelectDimension());
+            getSecondDimension(mOrgDimension
+                    ,TimeUtils.getNewStrDateForStr(mTimeValue,TimeUtils.FORMAT_YM));
         }else{
             tvOrgDimension.setVisibility(View.INVISIBLE);
-        }
-        mOrgIsCreate = true ;
-        if(mOrgIsCreate && mProIsCreate && mAreaIsCreate){
             getIndexPosition();
         }
     }
 
     @Override
-    public void getOtherDimensionSuccess(OtherDimensionBean dimensions) {
-        areaDimensionBeans.clear();
-        proDimensionBeans.clear();
-        if(dimensions != null){
-            if(dimensions.get_$0() != null && dimensions.get_$0().size() > 0){
-                tvAreaDimension.setVisibility(View.VISIBLE);
-                tvAreaDimension.setText(dimensions.get_$0().get(0).getText());
-                mFuValue = dimensions.get_$0().get(0).getValue() ;
-                mFuDimension = dimensions.get_$0().get(0).getId() ;
-                areaDimensionBeans.addAll(dimensions.get_$0());
-            }else{
-                tvAreaDimension.setVisibility(View.INVISIBLE);
-            }
+    public void getOtherDimensionSuccess(String type ,DimensionListBean dimensions) {
+        switch (type){
+            case Constants.DIMENSION_SECOND :
+                    areaDimensionBeans.clear();
+                    if (dimensions != null && dimensions.getSelectOtherDimension() != null
+                            && dimensions.getSelectOtherDimension().size() > 0){
+                        tvAreaDimension.setVisibility(View.VISIBLE);
+                        tvAreaDimension.setText(LanguageUtils.isZh(mContext)
+                                ? dimensions.getSelectOtherDimension().get(0).getText()
+                                : dimensions.getSelectOtherDimension().get(0).getFlname()) ;
+                        mFuValue = dimensions.getSelectOtherDimension().get(0).getValue() ;
+                        mFuDimension = dimensions.getSelectOtherDimension().get(0).getId() ;
+                        areaDimensionBeans.addAll(dimensions.getSelectOtherDimension());
+                        getThirdDimension(mOrgDimension,mFuDimension
+                                ,TimeUtils.getNewStrDateForStr(mTimeValue,TimeUtils.FORMAT_YM));
+                    }else{
+                       getIndexPosition();
+                       tvAreaDimension.setVisibility(View.INVISIBLE);
+                       tvProDimension.setVisibility(View.INVISIBLE);
+                    }
+                break;
 
-            if(dimensions.get_$1() != null && dimensions.get_$1().size() > 0){
-                tvProDimension.setVisibility(View.VISIBLE);
-                tvProDimension.setText(dimensions.get_$1().get(0).getText());
-                mPValue = dimensions.get_$1().get(0).getValue() ;
-                mPDimension = dimensions.get_$1().get(0).getId() ;
-                proDimensionBeans.addAll(dimensions.get_$1());
-            }else{
-                tvProDimension.setVisibility(View.INVISIBLE);
-            }
-        }else{
-            tvAreaDimension.setVisibility(View.INVISIBLE);
-            tvProDimension.setVisibility(View.INVISIBLE);
-        }
-
-        mProIsCreate = true ;
-        mAreaIsCreate = true ;
-        if(mOrgIsCreate && mProIsCreate && mAreaIsCreate){
-            getIndexPosition();
+            case Constants.DIMENSION_THIRD :
+                    proDimensionBeans.clear();
+                if (dimensions != null && dimensions.getSelectOtherDimension() != null
+                        && dimensions.getSelectOtherDimension().size() > 0){
+                    tvProDimension.setVisibility(View.VISIBLE);
+                    tvProDimension.setText(LanguageUtils.isZh(mContext)
+                            ? dimensions.getSelectOtherDimension().get(0).getText()
+                            : dimensions.getSelectOtherDimension().get(0).getFlname());
+                    mPValue = dimensions.getSelectOtherDimension().get(0).getValue() ;
+                    mPDimension = dimensions.getSelectOtherDimension().get(0).getId() ;
+                    proDimensionBeans.addAll(dimensions.getSelectOtherDimension());
+                }else{
+                    tvProDimension.setVisibility(View.INVISIBLE);
+                }
+                getIndexPosition();
+                break;
         }
     }
 
@@ -475,21 +491,25 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
                 tvOrgDimension.setText(popDimensionBeans.get(position).getText());
                 mOrgDimension = popDimensionBeans.get(position).getId();
                 mOrgValue = popDimensionBeans.get(position).getValue();
+                getSecondDimension(mOrgDimension
+                        ,TimeUtils.getNewStrDateForStr(mTimeValue,TimeUtils.FORMAT_YM));
                 break;
 
             case PRO:
                 tvProDimension.setText(popDimensionBeans.get(position).getText());
                 mPDimension = popDimensionBeans.get(position).getId();
                 mPValue = popDimensionBeans.get(position).getValue();
+                getThirdDimension(mOrgDimension,mFuDimension
+                        ,TimeUtils.getNewStrDateForStr(mTimeValue,TimeUtils.FORMAT_YM));
                 break;
 
             case AREA:
                 tvAreaDimension.setText(popDimensionBeans.get(position).getText());
                 mFuDimension = popDimensionBeans.get(position).getId();
                 mFuValue = popDimensionBeans.get(position).getValue();
+                getIndexPosition();
                 break;
         }
-        getIndexPosition();
     }
 
     @Subscribe (threadMode = ThreadMode.MAIN)
@@ -512,6 +532,11 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
      */
     @Override
     public void OnItemClick(DimensionPositionBean bean) {
+
+    }
+
+    @Override
+    public void onFragmentVisibilityChanged(boolean visible) {
 
     }
 }

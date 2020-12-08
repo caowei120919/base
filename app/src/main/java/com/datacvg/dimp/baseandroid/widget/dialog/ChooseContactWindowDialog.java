@@ -51,6 +51,9 @@ public  class ChooseContactWindowDialog {
             return;
         }
         this.chooseType = chooseType ;
+        tvTypeName.setText(chooseType == Constants.CHOOSE_TYPE_HEAD ? mContext.getResources().getString(R.string.head)
+                : mContext.getResources().getString(R.string.assistant));
+        tvHeadTypeName.setText(mContext.getResources().getString(R.string.organization_dimension));
         adapter.setChooseType(chooseType);
     }
 
@@ -71,8 +74,10 @@ public  class ChooseContactWindowDialog {
 
     private void convert(DialogViewHolder dialogVh) {
         tvTypeName = dialogVh.getConvertView().findViewById(R.id.tv_typeName);
-        tvTypeName.setText(chooseType == Constants.CHOOSE_TYPE_HEAD ? mContext.getResources().getString(R.string.head) : mContext.getResources().getString(R.string.organization_dimension));
+        tvTypeName.setText(chooseType == Constants.CHOOSE_TYPE_HEAD ? mContext.getResources().getString(R.string.head)
+                : mContext.getResources().getString(R.string.assistant));
         tvHeadTypeName = dialogVh.getConvertView().findViewById(R.id.tv_headTypeName);
+        tvHeadTypeName.setText(mContext.getResources().getString(R.string.organization_dimension));
         recycleChoose = dialogVh.getConvertView().findViewById(R.id.recycle_choose);
 
         layoutManager = new LinearLayoutManager(mContext);

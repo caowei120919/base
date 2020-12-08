@@ -1,7 +1,10 @@
 package com.datacvg.dimp.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,16 +18,19 @@ import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.baseandroid.utils.TimeUtils;
+import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.baseandroid.widget.dialog.ChooseContactWindowDialog;
 import com.datacvg.dimp.baseandroid.widget.dialog.ChooseIndexWindowDialog;
 import com.datacvg.dimp.bean.ActionPlanIndexBean;
 import com.datacvg.dimp.bean.ActionPlanIndexListBean;
+import com.datacvg.dimp.bean.ActionPlanInfoDTO;
 import com.datacvg.dimp.bean.Contact;
 import com.datacvg.dimp.bean.DefaultUserBean;
 import com.datacvg.dimp.bean.DefaultUserListBean;
 import com.datacvg.dimp.event.HeadOrAssistantEvent;
 import com.datacvg.dimp.presenter.NewTaskPresenter;
 import com.datacvg.dimp.view.NewTaskView;
+import com.datacvg.dimp.widget.FlowLayout;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -35,6 +41,7 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
@@ -66,6 +73,10 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
     TextView tvHeadUser ;
     @BindView(R.id.img_addIndex)
     ImageView imgAddIndex ;
+    @BindView(R.id.flow_assistant)
+    FlowLayout flowAssistant ;
+    @BindView(R.id.flow_index)
+    FlowLayout flowIndex ;
 
     /**
      * 时间选择器
@@ -79,6 +90,7 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
     private ChooseIndexWindowDialog indexWindowDialog ;
     private boolean fromActionFragment = true ;
     private List<ActionPlanIndexBean> actionPlanIndexBeans = new ArrayList<>();
+    private List<ActionPlanIndexBean> taskIndexBeans = new ArrayList<>();
     /**
      * 负责人
      */
@@ -93,6 +105,8 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
      * 任务截止日期
      */
     private String taskDate ;
+    private String taskDetail;
+    private ActionPlanInfoDTO actionPlanInfoDTO ;
 
     @Override
     protected int getLayoutId() {
@@ -120,6 +134,7 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
                 ,true);
         tvActionTypeCommon.setSelected(true);
         tvPriorityHigh.setSelected(true);
+        actionPlanInfoDTO = new ActionPlanInfoDTO();
         initCustomPickView();
         getPresenter().getActionPlanIndex();
     }
@@ -139,6 +154,7 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
             public void onTimeSelect(Date date, View v) {
                 taskDate = TimeUtils.date2Str(date,TimeUtils.FORMAT_YMD);
                 tvDate.setText(resources.getString(R.string.expiration_date).replace("#1", taskDate));
+                actionPlanInfoDTO.setTask_deadline(taskDate);
             }
         })
                 .setType(new boolean[]{true, true, true, false, false, false})
@@ -179,16 +195,37 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
     }
 
     /**
-     * 密码输入监听
+     * 标题
      */
     @OnTextChanged(value = R.id.ed_title,callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onTitleTextChange(Editable editable){
         taskTitle = editable.toString().trim();
     }
 
+    @OnTextChanged(value = R.id.ed_taskDetails,callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void onDetailTextChange(Editable editable){
+        taskDetail = editable.toString().trim() ;
+    }
+
+    @OnTextChanged(value = R.id.ed_taskDetails,callback = OnTextChanged.Callback.TEXT_CHANGED)
+    public void onDetailTextChange(final CharSequence s, int start, int before, int count){
+        PLog.e("s == " + s + ", start == " + start + ",before == " + before + ",count == " + count);
+//        if(s.charAt(s.length() - 1) == AT){
+//            PLog.e("这里是@被输入");
+//            mContext.startActivity(new Intent(mContext,ContactActivity.class));
+//        }
+    }
+
+    @OnCheckedChanged(R.id.switch_task)
+    public void onCheckChanged(boolean checked){
+        PLog.e("测试 ====" + checked);
+        actionPlanInfoDTO.setPlanFlg(checked ? "T" : "F");
+    }
+
     @OnClick({R.id.img_left,R.id.tv_date,R.id.tv_actionTypeCommon
             ,R.id.tv_actionTypeSpecial,R.id.tv_priorityHigh,R.id.tv_priorityMiddle
-            ,R.id.tv_priorityLow,R.id.img_addHead,R.id.img_addAssistant,R.id.img_addIndex})
+            ,R.id.tv_priorityLow,R.id.img_addHead,R.id.img_addAssistant,R.id.img_addIndex
+            ,R.id.tv_right})
     public void OnClick(View view){
         switch (view.getId()){
             case R.id.img_left :
@@ -202,11 +239,13 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
             case R.id.tv_actionTypeCommon :
                 tvActionTypeCommon.setSelected(true);
                 tvActionTypeSpecial.setSelected(false);
+                actionPlanInfoDTO.setTask_type("N");
                 break;
 
             case R.id.tv_actionTypeSpecial :
                 tvActionTypeCommon.setSelected(false);
                 tvActionTypeSpecial.setSelected(true);
+                actionPlanInfoDTO.setTask_type("S");
                 break;
 
             case R.id.tv_priorityHigh :
@@ -237,6 +276,41 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
 
             case R.id.img_addIndex :
                     createIndexWindowDialog();
+                break;
+
+            case R.id.tv_right :
+                    if(TextUtils.isEmpty(taskTitle)){
+                        ToastUtils.showLongToast(resources
+                                .getString(R.string.please_fill_in_the_title));
+                        return;
+                    }
+                    if(headContact == null){
+                        ToastUtils.showLongToast(resources.getString(R.string.please_select_the_person_in_charge));
+                        return;
+                    }
+                    if(TextUtils.isEmpty(taskDetail)){
+                        ToastUtils.showLongToast(resources.getString(R.string.please_fill_in_the_task_details));
+                        return;
+                    }
+                    actionPlanInfoDTO.setTask_title(taskTitle);
+                    actionPlanInfoDTO.setTaskText(taskDetail);
+                    List<ActionPlanInfoDTO.TaskUser> taskUsers = new ArrayList<>();
+                    ActionPlanInfoDTO.TaskUser taskUser = new ActionPlanInfoDTO.TaskUser();
+                    taskUser.setChecked(true);
+                    taskUser.setId(headContact.getBean().getUser_id());
+                    taskUser.setName(headContact.getBean().getName());
+                    taskUser.setType("2");
+                    taskUsers.add(taskUser);
+                    for (Contact contact : assistantBeans){
+                        ActionPlanInfoDTO.TaskUser taskAssistant = new ActionPlanInfoDTO.TaskUser();
+                        taskAssistant.setType("3");
+                        taskAssistant.setName(contact.getBean().getName());
+                        taskAssistant.setId(contact.getBean().getUser_id());
+                        taskAssistant.setChecked(true);
+                        taskUsers.add(taskAssistant);
+                    }
+                    actionPlanInfoDTO.setUserMsg(taskUsers);
+                    actionPlanInfoDTO.setIndex(taskIndexBeans);
                 break;
         }
     }
@@ -284,6 +358,35 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void OnEvent(ActionPlanIndexBean bean){
         PLog.e(bean.getName() + "---" + bean.isChecked());
+        if(bean.isChecked()){
+            taskIndexBeans.add(bean);
+        }else{
+            taskIndexBeans.remove(bean);
+        }
+        buildIndexFlow(bean);
+        PLog.e("测试:指标选择" + taskIndexBeans.size() + "");
+    }
+
+    /**
+     *
+     * @param bean
+     */
+    private void buildIndexFlow(ActionPlanIndexBean bean) {
+       if(bean.isChecked()){
+           View view = LayoutInflater.from(mContext).inflate(R.layout.item_selected_user,null);
+           TextView tv_group = view.findViewById(R.id.tv_user);
+           tv_group.setText(bean.getName());
+           view.setTag(bean.getIndex_id());
+           flowIndex.addView(view);
+       }else{
+           for (int i = 0 ; i < flowIndex.getChildCount() ; i++){
+               View view = flowIndex.getChildAt(i);
+               if(view.getTag().equals(bean.getIndex_id())){
+                   flowIndex.removeView(view);
+                   break;
+               }
+           }
+       }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -303,6 +406,7 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
         }else{
             if(event.isChecked()){
                 assistantBeans.add(event.getContact());
+                buildAssistantFlow(event.getContact(),true);
             }else{
                 Contact removeContact = null;
                 for (Contact contact : assistantBeans){
@@ -312,7 +416,29 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
                     }
                 }
                 if(removeContact != null){
+                    buildAssistantFlow(event.getContact(),false);
                     assistantBeans.remove(removeContact);
+                }
+            }
+        }
+    }
+
+    /**
+     * 构建协助人视图
+     */
+    public void buildAssistantFlow(Contact contact ,boolean isAddView){
+        if(isAddView){
+            View view = LayoutInflater.from(mContext).inflate(R.layout.item_selected_user,null);
+            TextView tv_group = view.findViewById(R.id.tv_user);
+            tv_group.setText(contact.getBean().getName());
+            view.setTag(contact.getBean().getId());
+            flowAssistant.addView(view);
+        }else{
+            for (int i = 0 ; i < flowAssistant.getChildCount() ; i++){
+                View view = flowAssistant.getChildAt(i);
+                if(view.getTag().equals(contact.getBean().getId())){
+                    flowAssistant.removeView(view);
+                    break;
                 }
             }
         }

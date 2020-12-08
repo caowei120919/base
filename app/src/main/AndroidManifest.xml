@@ -26,9 +26,21 @@
         android:icon="@mipmap/ic_launcher"
         android:theme="@style/AppBaseTheme"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:usesCleartextTraffic="true"
         android:supportsRtl="true">
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.datacvg.dimp.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
         <activity android:name=".activity.SplashActivity"
             android:theme="@style/ThemeSplash"
             android:fitsSystemWindows="true"

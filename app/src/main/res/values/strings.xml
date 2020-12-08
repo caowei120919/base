@@ -153,4 +153,11 @@
     <string name="task_details">任务详情</string>
     <string name="action_plan_snapshot_comparison">行动方案/快照对比</string>
     <string name="organization_dimension">组织维度</string>
+    <string name="please_fill_in_the_title">请填写标题</string>
+    <string name="please_select_the_person_in_charge">请选择负责人</string>
+    <string name="please_fill_in_the_task_details">请填写任务详情</string>
+    <string name="dont_allow_permissions">权限未被允许</string>
+    <string name="select_picture">选择图片</string>
+    <string name="taking_pictures">拍照</string>
+    <string name="photo_album">相册</string>
 </resources>
