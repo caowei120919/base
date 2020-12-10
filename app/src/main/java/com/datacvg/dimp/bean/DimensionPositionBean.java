@@ -2,13 +2,16 @@ package com.datacvg.dimp.bean;
 
 import androidx.annotation.Keep;
 
+import java.io.Serializable;
+
+
 /**
  * @Author : T-Bag (茶包)
  * @Time : 2020-10-13
  * @Description : 指标实体
  */
 @Keep
-public class DimensionPositionBean {
+public class DimensionPositionBean implements Serializable {
 
     /**
      * existIndexthreshold : true

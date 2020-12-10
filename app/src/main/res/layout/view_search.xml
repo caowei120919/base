@@ -2,16 +2,21 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/H100">
+    android:layout_height="@dimen/H60"
+    android:background="@color/c_FFFFFF">
 
     <EditText
         android:paddingLeft="@dimen/W35"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:hint="@string/search"
-        android:textColorHint="@color/c_666666"
-        android:drawableLeft="@android:drawable/ic_menu_search"
-        android:imeOptions="actionSearch"
-        android:background="@null">
+        android:layout_marginLeft="@dimen/W20"
+        android:layout_marginRight="@dimen/W20"
+        android:textSize="12sp"
+        android:background="@drawable/shape_search"
+        android:textColorHint="@color/c_b5b5b5"
+        android:drawableLeft="@mipmap/icon_search"
+        android:drawablePadding="@dimen/W32"
+        android:imeOptions="actionSearch">
     </EditText>
 </RelativeLayout>

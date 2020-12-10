@@ -24,7 +24,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.ChooseIndexAdapter;
+import com.datacvg.dimp.adapter.CommentListAdapter;
 import com.datacvg.dimp.adapter.CommentPictureAdapter;
+import com.datacvg.dimp.bean.CommentBean;
 import com.datacvg.dimp.event.DeleteCommentEvent;
 import com.datacvg.dimp.widget.DividerItemDecoration;
 
@@ -41,7 +43,7 @@ import java.util.List;
  * Description:
  */
 
-public class CommentWindowDialog {
+public class CommentWindowDialog implements TextWatcher {
     private Dialog mDialog;
     private Window mDialogWindow;
     private DialogViewHolder dialogVh;
@@ -52,9 +54,15 @@ public class CommentWindowDialog {
     private CommentViewClick commentViewClick ;
     private GridLayoutManager layoutManager;
     private CommentPictureAdapter adapter ;
+    private CommentListAdapter commentListAdapter ;
     private String mComments = "" ;
+    private EditText edComment ;
+    private List<CommentBean> mCommentBeans = new ArrayList<>() ;
+    private RecyclerView recycleComment ;
 
-    public CommentWindowDialog(Context context, List<String> imagePaths ,CommentViewClick commentViewClick) {
+    public CommentWindowDialog(Context context, List<String> imagePaths
+            ,CommentViewClick commentViewClick,List<CommentBean> mCommentBeans) {
+        this.mCommentBeans = mCommentBeans ;
         this.imagePaths = imagePaths ;
         this.commentViewClick = commentViewClick ;
         mContext = context ;
@@ -84,22 +92,8 @@ public class CommentWindowDialog {
         holder.getConvertView().findViewById(R.id.img_send).setOnClickListener(view -> {
             commentViewClick.sendComments(mComments,imagePaths);
         });
-        ((EditText)holder.getConvertView().findViewById(R.id.ed_comment)).addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                mComments = editable.toString().trim();
-            }
-        });
+        edComment = holder.getConvertView().findViewById(R.id.ed_comment);
+        edComment.addTextChangedListener(this);
         RecyclerView recyclePicture = holder.getConvertView().findViewById(R.id.recycle_picture);
 
         layoutManager = new GridLayoutManager(mContext,3);
@@ -114,6 +108,12 @@ public class CommentWindowDialog {
             }
         });
         recyclePicture.setAdapter(adapter);
+
+        RecyclerView recycleComment = holder.getConvertView().findViewById(R.id.recycle_comment);
+        commentListAdapter = new CommentListAdapter(mContext,mCommentBeans);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+        recycleComment.setLayoutManager(linearLayoutManager);
+        recycleComment.setAdapter(commentListAdapter);
     }
 
     private void showPhotoOrCamera() {
@@ -150,6 +150,43 @@ public class CommentWindowDialog {
                 }
             });
         }
+    }
+
+    /**
+     * 评论成功.清除所有数据.
+     */
+    public void submitSuccess() {
+        imagePaths.clear();
+        adapter.notifyDataSetChanged();
+        edComment.removeTextChangedListener(this);
+        edComment.setText("");
+        edComment.clearFocus();
+        edComment.addTextChangedListener(this);
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        mComments = editable.toString().trim();
+    }
+
+    /**
+     * 刷新报表评论
+     * @param commentBeans
+     */
+    public void refreshComment(List<CommentBean> commentBeans) {
+        mCommentBeans.clear();
+        mCommentBeans.addAll(commentBeans);
+        commentListAdapter.setCommentBeans(mCommentBeans);
     }
 
     public interface CommentViewClick{

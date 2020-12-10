@@ -84,7 +84,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                             }
                             PLog.e(Constants.BASE_FIS_URL);
                             Constants.BASE_MOBILE_URL = bean.getHttpServer() ;
-                            Constants.BASE_DDB_URL = Constants.BASE_MOBILE_URL.replace("mobile","ddb") + "/";
+                            Constants.BASE_DDB_URL = Constants.BASE_MOBILE_URL.replace("mobile","");
                             Constants.BASE_UPLOAD_URL = bean.getUpdateURL() ;
 
                             RetrofitUrlManager.getInstance().setRun(true);

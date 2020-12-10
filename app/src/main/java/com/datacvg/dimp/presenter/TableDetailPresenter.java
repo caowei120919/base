@@ -1,11 +1,13 @@
 package com.datacvg.dimp.presenter;
 
+import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.config.MobileApi;
 import com.datacvg.dimp.baseandroid.config.UploadApi;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
+import com.datacvg.dimp.bean.CommentListBean;
 import com.datacvg.dimp.bean.TableInfoBean;
 import com.datacvg.dimp.bean.TableParamInfoListBean;
 import com.datacvg.dimp.view.TableDetailView;
@@ -99,26 +101,39 @@ public class TableDetailPresenter extends BasePresenter<TableDetailView>{
 
     /**
      * 获取报表相关评论
-     * @param map
+     * @param
      */
-    public void getTableComment(Map map) {
-        api.getTableComment(map)
+    public void getTableComment(String resId,String params) {
+        api.getTableComment(resId,params)
                 .compose(RxUtils.applySchedulersLifeCycle(getView()))
-                .subscribe(new RxObserver<BaseBean<String>>(){
+                .subscribe(new RxObserver<BaseBean<CommentListBean>>(){
                     @Override
                     public void onComplete() {
                         super.onComplete();
                     }
 
                     @Override
-                    public void onNext(BaseBean<String> bean) {
-
+                    public void onNext(BaseBean<CommentListBean> bean) {
+                        getView().getCommentsSuccess(bean.getData());
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
                         PLog.e("TAG",e.getMessage());
+                    }
+                });
+    }
+
+    public void submitComments(Map<String, RequestBody> requestBodyMap) {
+        api.submitComments(requestBodyMap)
+                .compose(RxUtils.applySchedulersLifeCycle(getView()))
+                .subscribe(new RxObserver<BaseBean>(){
+                    @Override
+                    public void onNext(BaseBean baseBean) {
+                        if (baseBean.getStatus() == Constants.SERVICE_CODE_SUCCESS_FIS) {
+                            getView().submitCommentsSuccess();
+                        }
                     }
                 });
     }

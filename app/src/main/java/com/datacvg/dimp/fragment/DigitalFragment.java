@@ -21,6 +21,7 @@ import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.contrarywind.view.WheelView;
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.activity.IndexDetailActivity;
 import com.datacvg.dimp.activity.MyIndexActivity;
 import com.datacvg.dimp.adapter.DimensionIndexAdapter;
 import com.datacvg.dimp.adapter.DimensionPopAdapter;
@@ -41,6 +42,7 @@ import com.datacvg.dimp.bean.DimensionPositionListBean;
 import com.datacvg.dimp.bean.DimensionType;
 import com.datacvg.dimp.bean.OtherDimensionBean;
 import com.datacvg.dimp.event.ChangeIndexEvent;
+import com.datacvg.dimp.event.ChangeTimeValEvent;
 import com.datacvg.dimp.presenter.DigitalPresenter;
 import com.datacvg.dimp.view.DigitalView;
 import com.google.gson.Gson;
@@ -200,6 +202,8 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
             @Override
             public void onTimeSelect(Date date, View v) {
                 tvTitle.setText(TimeUtils.date2Str(date,TimeUtils.FORMAT_YM_CN));
+                mTimeValue = TimeUtils.date2Str(date,TimeUtils.FORMAT_YM);
+                getIndexPosition();
             }
         })
                 .setType(new boolean[]{true, true, true, false, false, false})
@@ -523,7 +527,25 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
      */
     @Override
     public void OnTitleClick(DimensionPositionBean bean) {
-
+        ChatTypeRequestBean chatTypeRequestBean = new ChatTypeRequestBean();
+        chatTypeRequestBean.setFuValue(mFuValue);
+        chatTypeRequestBean.setOrgValue(mOrgValue);
+        chatTypeRequestBean.setPValue(mPValue);
+        chatTypeRequestBean.setOrgDimension(mOrgDimension);
+        chatTypeRequestBean.setFuDimension(mFuDimension);
+        chatTypeRequestBean.setPDimension(mPDimension);
+        chatTypeRequestBean.setLang(mLang);
+        chatTypeRequestBean.setTimeValue(mTimeValue);
+        List<ChatTypeRequestBean.ChartTypeBean> beans = new ArrayList<>();
+        ChatTypeRequestBean.ChartTypeBean chartTypeBean = new ChatTypeRequestBean.ChartTypeBean();
+        chartTypeBean.setAnalysisDim(bean.getAnalysis_dimension());
+        chartTypeBean.setDataType(bean.getChart_type());
+        chartTypeBean.setIndexId(bean.getId());
+        beans.add(chartTypeBean);
+        chatTypeRequestBean.setChartType(beans);
+        Intent intent = new Intent(mContext, IndexDetailActivity.class);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,chatTypeRequestBean);
+        mContext.startActivity(intent);
     }
 
     /**
@@ -538,5 +560,13 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
     @Override
     public void onFragmentVisibilityChanged(boolean visible) {
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void OnEvent(ChangeTimeValEvent event){
+        mTimeValue = event.getmTimeValue();
+        tvTitle.setText(TimeUtils.getNewStrDateForStr(mTimeValue
+                ,TimeUtils.FORMAT_YM,TimeUtils.FORMAT_YM_CN));
+        getIndexPosition();
     }
 }

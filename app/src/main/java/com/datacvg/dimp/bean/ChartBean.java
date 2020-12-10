@@ -2,6 +2,7 @@ package com.datacvg.dimp.bean;
 
 import androidx.annotation.Keep;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  * @Description : 图表数据实体
  */
 @Keep
-public class ChartBean {
+public class ChartBean implements Serializable {
 
     /**
      * chart_range : 5
@@ -435,7 +436,7 @@ public class ChartBean {
         this.index_threshold_value = index_threshold_value;
     }
 
-    public static class OptionBean {
+    public static class OptionBean implements Serializable{
         /**
          * backgroundColor : #22C5A6
          * calculable : false
@@ -510,7 +511,7 @@ public class ChartBean {
             this.series = series;
         }
 
-        public static class TitleBean {
+        public static class TitleBean implements Serializable{
             /**
              * text : 商品收入
              * textStyle : {"fontSize":22,"fontFamily":"微软雅黑, Arial, Verdana, sans-serif"}
@@ -535,7 +536,7 @@ public class ChartBean {
                 this.textStyle = textStyle;
             }
 
-            public static class TextStyleBean {
+            public static class TextStyleBean implements Serializable{
                 /**
                  * fontSize : 22
                  * fontFamily : 微软雅黑, Arial, Verdana, sans-serif
@@ -562,7 +563,7 @@ public class ChartBean {
             }
         }
 
-        public static class TooltipBean {
+        public static class TooltipBean implements Serializable{
             /**
              * trigger : axis
              * formatter : {b} : {c} 万元
@@ -588,7 +589,7 @@ public class ChartBean {
             }
         }
 
-        public static class XAxisBean {
+        public static class XAxisBean implements Serializable{
             /**
              * type : category
              * data : ["201911","201912","202001","202002","202003","202004"]
@@ -614,7 +615,7 @@ public class ChartBean {
             }
         }
 
-        public static class YAxisBean {
+        public static class YAxisBean implements Serializable{
             /**
              * scale : true
              * type : value
@@ -659,7 +660,7 @@ public class ChartBean {
                 this.axisLabel = axisLabel;
             }
 
-            public static class AxisLineBean {
+            public static class AxisLineBean implements Serializable{
                 /**
                  * show : true
                  */
@@ -675,7 +676,7 @@ public class ChartBean {
                 }
             }
 
-            public static class AxisLabelBean {
+            public static class AxisLabelBean implements Serializable{
                 /**
                  * formatter : {value}
                  */
@@ -692,7 +693,7 @@ public class ChartBean {
             }
         }
 
-        public static class SeriesBean {
+        public static class SeriesBean implements Serializable{
             /**
              * barCategoryGap : 50%
              * type : bar
@@ -747,7 +748,7 @@ public class ChartBean {
                 this.data = data;
             }
 
-            public static class DataBean {
+            public static class DataBean implements Serializable{
                 /**
                  * value : 42
                  * name : 大数据事业部
@@ -775,7 +776,7 @@ public class ChartBean {
         }
     }
 
-    public class ThresholdArrBean {
+    public class ThresholdArrBean implements Serializable{
         private String type ;
         private String threshold_value ;
         private String scaleStart ;

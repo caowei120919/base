@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/W30"
+    android:layout_marginRight="@dimen/W30">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H60">
+
+        <TextView
+            android:id="@+id/tv_commentName"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="16sp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_commentTime"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:layout_alignParentRight="true">
+        </TextView>
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_commentPicture"
+        android:layout_marginTop="@dimen/H10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/tv_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="@dimen/H10"
+        android:text="csjifdjsifdfgjdsjghdjsghdhsjghds">
+    </TextView>
+</LinearLayout>

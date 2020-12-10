@@ -22,6 +22,7 @@ import androidx.core.content.FileProvider;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
+import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.AndroidUtils;
 import com.datacvg.dimp.baseandroid.utils.FileUtils;
 import com.datacvg.dimp.baseandroid.utils.GlideLoader;
@@ -31,9 +32,9 @@ import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
-import com.datacvg.dimp.baseandroid.widget.dialog.BaseWindowDialog;
 import com.datacvg.dimp.baseandroid.widget.dialog.CommentWindowDialog;
-import com.datacvg.dimp.baseandroid.widget.dialog.DialogViewHolder;
+import com.datacvg.dimp.bean.CommentBean;
+import com.datacvg.dimp.bean.CommentListBean;
 import com.datacvg.dimp.bean.TableBean;
 import com.datacvg.dimp.bean.TableInfoBean;
 import com.datacvg.dimp.bean.TableParamInfoListBean;
@@ -86,6 +87,7 @@ public class TableDetailActivity extends BaseActivity<TableDetailView, TableDeta
     private Uri imageUri ;
     private File mTmpFile ;
     private List<String> imagePaths = new ArrayList<>();
+    private List<CommentBean> commentBeans = new ArrayList<>();
     /**
      * 报表参数选择筛选条件拼接
      */
@@ -130,10 +132,7 @@ public class TableDetailActivity extends BaseActivity<TableDetailView, TableDeta
      * 获取报表评论
      */
     private void getTableComments() {
-        Map map = new HashMap();
-        map.put("resId",tableBean.getRes_id());
-        map.put("params",Uri.encode(params));
-        getPresenter().getTableComment(map);
+        getPresenter().getTableComment(tableBean.getRes_id(),Uri.encode(params));
     }
 
     /**
@@ -252,7 +251,7 @@ public class TableDetailActivity extends BaseActivity<TableDetailView, TableDeta
         if(commentDialog != null){
             commentDialog.showDialog() ;
         }else{
-            commentDialog = new CommentWindowDialog(mContext,imagePaths,this)
+            commentDialog = new CommentWindowDialog(mContext,imagePaths,this,commentBeans)
                     .backgroundLight(0.2)
                     .fromBottom()
                     .showDialog()
@@ -281,20 +280,27 @@ public class TableDetailActivity extends BaseActivity<TableDetailView, TableDeta
 
     @Override
     public void sendComments(String mComments, List<String> imagePaths) {
-//        try {
-//            List<File> imgFiles = new ArrayList<>();
-//            for (int i =0;i < imagePaths.size() ; i++){
-//                imgFiles.add(Luban.with(mContext).load(imagePaths).get().get(i).getAbsoluteFile());
-//            }
-//            Map params = new HashMap();
-//            params.put("fileType","comment");
-//            params.put("compression",false);
-//            final  Map<String, RequestBody> requestBodyMap = MultipartUtil.getRequestBodyMap(params,"files",imgFiles);
+        try {
+            List<File> imgFiles = new ArrayList<>();
+            for (int i =0;i < imagePaths.size() ; i++){
+                imgFiles.add(Luban.with(mContext).load(imagePaths).get().get(i).getAbsoluteFile());
+            }
+            Map params = new HashMap();
+            params.put("commentPkid","");
+            params.put("commentUserId",PreferencesHelper.get(Constants.USER_ID,""));
+            params.put("resId",tableBean.getRes_id());
+            params.put("parentId","0");
+            params.put("resClname", tableBean.getRes_clname());
+            params.put("text",mComments);
+            params.put("remindedUsers","");
+            params.put("params","{}");
+            params.put("content",mComments);
+            final  Map<String, RequestBody> requestBodyMap = MultipartUtil.getRequestBodyMap(params,"files",imgFiles);
 //            getPresenter().upload(requestBodyMap);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        getPresenter().submitComments(mComments);
+            getPresenter().submitComments(requestBodyMap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -360,6 +366,29 @@ public class TableDetailActivity extends BaseActivity<TableDetailView, TableDeta
     public void getTableInfoSuccess(TableInfoBean resdata) {
         if(resdata != null && !TextUtils.isEmpty(resdata.getShowUrl())){
             webView.loadUrl(resdata.getShowUrl());
+        }
+    }
+
+    /**
+     * 评论成功回调
+     */
+    @Override
+    public void submitCommentsSuccess() {
+        getTableComments();
+        imagePaths.clear();
+        commentDialog.submitSuccess();
+    }
+
+    /**
+     * 获取报表评论成功
+     * @param resdata
+     */
+    @Override
+    public void getCommentsSuccess(CommentListBean resdata) {
+        commentBeans.clear();
+        commentBeans.addAll(resdata.getCommentInfoList());
+        if(commentDialog != null){
+            commentDialog.refreshComment(commentBeans);
         }
     }
 

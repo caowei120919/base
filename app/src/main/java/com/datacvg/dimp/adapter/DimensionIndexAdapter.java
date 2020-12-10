@@ -165,6 +165,10 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         holder.tvName.setText(LanguageUtils.isZh(mContext)
                 ? dimensionPositionBean.getChartBean().getIndex_clname()
                 : dimensionPositionBean.getChartBean().getIndex_flname());
+        holder.tvName.setOnClickListener(view -> {
+            PLog.e("标题被点击");
+            listener.OnTitleClick(dimensionPositionBean);
+        });
         holder.tvDefaultValue.setText(dimensionPositionBean.getChartBean().getIndex_data() + "");
         holder.tvDefaultValue.setTextColor(Color.parseColor(dimensionPositionBean
                 .getChartBean().getIndex_default_color()));
@@ -221,6 +225,10 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         holder.tvName.setText(LanguageUtils.isZh(mContext)
                 ? dimensionPositionBean.getChartBean().getIndex_clname()
                 : dimensionPositionBean.getChartBean().getIndex_flname());
+        holder.tvName.setOnClickListener(view -> {
+            PLog.e("标题被点击");
+            listener.OnTitleClick(dimensionPositionBean);
+        });
         holder.tvDefaultValue.setText(dimensionPositionBean.getChartBean().getIndex_data() + "");
         holder.tvDefaultValue.setTextColor(Color.parseColor(dimensionPositionBean
                 .getChartBean().getIndex_default_color()));
@@ -275,6 +283,10 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         holder.tvName.setText(LanguageUtils.isZh(mContext)
                 ? dimensionPositionBean.getChartBean().getIndex_clname()
                 : dimensionPositionBean.getChartBean().getIndex_flname());
+        holder.tvName.setOnClickListener(view -> {
+            PLog.e("标题被点击");
+            listener.OnTitleClick(dimensionPositionBean);
+        });
         holder.tvDefaultValue.setText(dimensionPositionBean.getChartBean().getIndex_data() + "");
         holder.tvDefaultValue.setTextColor(Color.parseColor(dimensionPositionBean
                 .getChartBean().getIndex_default_color()));
@@ -329,6 +341,10 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         holder.tvName.setText(LanguageUtils.isZh(mContext)
                 ? dimensionPositionBean.getChartBean().getIndex_clname()
                 : dimensionPositionBean.getChartBean().getIndex_flname());
+        holder.tvName.setOnClickListener(view -> {
+            PLog.e("标题被点击");
+            listener.OnTitleClick(dimensionPositionBean);
+        });
         if(!TextUtils.isEmpty(dimensionPositionBean.getExistIndexthreshold())
                 && dimensionPositionBean.getExistIndexthreshold().equals("true")){
             holder.imgIndexForReport.setVisibility(View.VISIBLE);
@@ -381,6 +397,10 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         });
         holder.tvName.setText(LanguageUtils.isZh(mContext)
                 ? bean.getIndex_clname() : bean.getIndex_flname());
+        holder.tvName.setOnClickListener(view -> {
+            PLog.e("标题被点击");
+            listener.OnTitleClick(dimensionPositionBean);
+        });
         String bottomValue = TextUtils.isEmpty(bean.getChart_bottom_title())
                 ? "" : bean.getChart_bottom_title()
                 + ((TextUtils.isEmpty(bean.getBottom_value()))
@@ -431,6 +451,10 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         });
         holder.tvName.setText(LanguageUtils.isZh(mContext)
                 ? bean.getIndex_clname() : bean.getIndex_flname());
+        holder.tvName.setOnClickListener(view -> {
+            PLog.e("标题被点击");
+            listener.OnTitleClick(dimensionPositionBean);
+        });
         String bottomValue = TextUtils.isEmpty(bean.getChart_bottom_title())
                 ? "" : bean.getChart_bottom_title()
                 + ((TextUtils.isEmpty(bean.getBottom_value()))

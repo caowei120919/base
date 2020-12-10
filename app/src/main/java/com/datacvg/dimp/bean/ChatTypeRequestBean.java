@@ -2,6 +2,7 @@ package com.datacvg.dimp.bean;
 
 import androidx.annotation.Keep;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  * @Description : 图标请求实体
  */
 @Keep
-public class ChatTypeRequestBean {
+public class ChatTypeRequestBean implements Serializable {
 
     /**
      * fuValue : region
@@ -115,7 +116,7 @@ public class ChatTypeRequestBean {
         this.chartType = chartType;
     }
 
-    public static class ChartTypeBean {
+    public static class ChartTypeBean implements Serializable{
         /**
          * indexId : IBI-rent
          * dataType : text

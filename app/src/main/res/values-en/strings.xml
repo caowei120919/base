@@ -167,4 +167,8 @@
     <string name="select_picture">Choose picture</string>
     <string name="taking_pictures">Taking pictures</string>
     <string name="photo_album">Photo album</string>
+    <string name="target">target</string>
+    <string name="challenge">challenge</string>
+    <string name="annotation">annotation</string>
+    <string name="guaranteed">guaranteed</string>
 </resources>

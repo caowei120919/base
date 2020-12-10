@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.datacvg.dimp">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -163,6 +164,10 @@
             android:screenOrientation="portrait">
         </activity>
         <activity android:name=".activity.DepartmentActivity"
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".activity.IndexDetailActivity"
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait">
         </activity>

@@ -65,7 +65,7 @@ public class MultipartUtil {
                 }
             }
         }
-        if (fileMaps != null) {
+        if (fileMaps != null && !fileMaps.isEmpty()) {
             for (Map.Entry<String, List<File>> entry : fileMaps.entrySet()) {
                 final List<File> files = entry.getValue();
                 if (files != null) {

@@ -1,6 +1,7 @@
 package com.datacvg.dimp.view;
 
 import com.datacvg.dimp.baseandroid.mvp.MvpView;
+import com.datacvg.dimp.bean.CommentListBean;
 import com.datacvg.dimp.bean.TableInfoBean;
 import com.datacvg.dimp.bean.TableParamInfoListBean;
 
@@ -21,4 +22,15 @@ public interface TableDetailView extends MvpView {
      * @param resdata
      */
     void getTableInfoSuccess(TableInfoBean resdata);
+
+    /**
+     * 评论成功
+     */
+    void submitCommentsSuccess();
+
+    /**
+     * 获取报表评论成功
+     * @param resdata
+     */
+    void getCommentsSuccess(CommentListBean resdata);
 }

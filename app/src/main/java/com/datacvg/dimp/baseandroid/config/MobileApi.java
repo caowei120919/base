@@ -4,15 +4,14 @@ import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.dimp.bean.ActionPlanIndexListBean;
 import com.datacvg.dimp.bean.ActionPlanListBean;
 import com.datacvg.dimp.bean.ChartListBean;
+import com.datacvg.dimp.bean.CommentListBean;
 import com.datacvg.dimp.bean.DefaultUserListBean;
-import com.datacvg.dimp.bean.DimensionBean;
 import com.datacvg.dimp.bean.DimensionListBean;
 import com.datacvg.dimp.bean.DimensionPositionListBean;
 import com.datacvg.dimp.bean.ImageResBean;
 import com.datacvg.dimp.bean.IndexBean;
 import com.datacvg.dimp.bean.MessageBean;
 import com.datacvg.dimp.bean.ModuleListBean;
-import com.datacvg.dimp.bean.OtherDimensionBean;
 import com.datacvg.dimp.bean.ReadMessageBean;
 import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.bean.ReportParamsBean;
@@ -114,7 +113,7 @@ public interface MobileApi {
      * @return
      */
     @Headers({"Domain-Name: ddb_api"})
-    @GET("indexpad/dimension/get")
+    @GET("ddb/indexpad/dimension/get")
     Observable<BaseBean<DimensionListBean>> getDimension(@Query("timeVal") String timeVal);
 
     /**
@@ -122,7 +121,7 @@ public interface MobileApi {
      * @return
      */
     @Headers({"Domain-Name: ddb_api"})
-    @POST("indexpad/other/dimension/get")
+    @POST("ddb/indexpad/other/dimension/get")
     Observable<BaseBean<DimensionListBean>> getOtherDimension(@Body Map map);
 
     /**
@@ -272,9 +271,21 @@ public interface MobileApi {
 
     /**
      * 查询报表相关评论
-     * @param map
      * @return
      */
-    @POST("mobilereport/getCommentInfoList")
-    Observable<BaseBean<String>> getTableComment(@Body Map map);
+    @Headers({"Domain-Name: ddb_api"})
+    @GET("report/comments/info/list")
+    Observable<BaseBean<CommentListBean>> getTableComment(@Query("resId") String resId,
+                                                          @Query("param") String param);
+
+    /**
+     * 提交评论
+     * @param requestBodyMap
+     * @return
+     */
+    @Headers({"Domain-Name: ddb_api"})
+    @Multipart
+    @POST("report/comments/submit/comments/reply ")
+    Observable<BaseBean> submitComments(@PartMap Map<String, RequestBody> requestBodyMap);
+
 }

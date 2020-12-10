@@ -6,6 +6,7 @@ import android.app.Activity;
 import com.datacvg.dimp.activity.ConfirmInfoActivity;
 import com.datacvg.dimp.activity.ContactActivity;
 import com.datacvg.dimp.activity.DepartmentActivity;
+import com.datacvg.dimp.activity.IndexDetailActivity;
 import com.datacvg.dimp.activity.LanguageSettingActivity;
 import com.datacvg.dimp.activity.LoginActivity;
 import com.datacvg.dimp.activity.LoginWebActivity;
@@ -90,4 +91,6 @@ public interface ActivityComponent {
     void inject(ContactActivity contactActivity);
 
     void inject(DepartmentActivity departmentActivity);
+
+    void inject(IndexDetailActivity indexDetailActivity);
 }

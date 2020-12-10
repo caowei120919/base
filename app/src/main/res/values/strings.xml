@@ -160,4 +160,8 @@
     <string name="select_picture">选择图片</string>
     <string name="taking_pictures">拍照</string>
     <string name="photo_album">相册</string>
+    <string name="target">目标</string>
+    <string name="challenge">挑战</string>
+    <string name="annotation">注释</string>
+    <string name="guaranteed">保底</string>
 </resources>
