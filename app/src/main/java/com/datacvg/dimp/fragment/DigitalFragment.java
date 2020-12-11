@@ -22,6 +22,7 @@ import com.bigkoo.pickerview.view.TimePickerView;
 import com.contrarywind.view.WheelView;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.activity.IndexDetailActivity;
+import com.datacvg.dimp.activity.IndexTreeActivity;
 import com.datacvg.dimp.activity.MyIndexActivity;
 import com.datacvg.dimp.adapter.DimensionIndexAdapter;
 import com.datacvg.dimp.adapter.DimensionPopAdapter;
@@ -40,6 +41,7 @@ import com.datacvg.dimp.bean.DimensionListBean;
 import com.datacvg.dimp.bean.DimensionPositionBean;
 import com.datacvg.dimp.bean.DimensionPositionListBean;
 import com.datacvg.dimp.bean.DimensionType;
+import com.datacvg.dimp.bean.IndexTreeNeedBean;
 import com.datacvg.dimp.bean.OtherDimensionBean;
 import com.datacvg.dimp.event.ChangeIndexEvent;
 import com.datacvg.dimp.event.ChangeTimeValEvent;
@@ -554,7 +556,26 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
      */
     @Override
     public void OnItemClick(DimensionPositionBean bean) {
-
+        IndexTreeNeedBean indexTreeNeedBean = new IndexTreeNeedBean() ;
+        indexTreeNeedBean.setOrgDimension(mOrgDimension);
+        indexTreeNeedBean.setOrgName(tvOrgDimension.getText().toString());
+        indexTreeNeedBean.setOrgValue(mOrgValue);
+        indexTreeNeedBean.setpDimension(mPDimension);
+        indexTreeNeedBean.setpValue(mPValue);
+        indexTreeNeedBean.setpName(tvProDimension.getText().toString());
+        indexTreeNeedBean.setFuDimension(mFuDimension);
+        indexTreeNeedBean.setFuValue(mFuValue);
+        indexTreeNeedBean.setFuName(tvAreaDimension.getText().toString());
+        indexTreeNeedBean.setAnalysisDimension(bean.getAnalysis_dimension());
+        indexTreeNeedBean.setIndexId(bean.getId());
+        indexTreeNeedBean.setState("");
+        indexTreeNeedBean.setType("4");
+        indexTreeNeedBean.setTimeVal(mTimeValue);
+        indexTreeNeedBean.setDimension_clName(bean.getChartBean().getIndex_clname());
+        indexTreeNeedBean.setDimension_flName(bean.getChartBean().getIndex_flname());
+        Intent intent = new Intent(mContext, IndexTreeActivity.class);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,indexTreeNeedBean);
+        mContext.startActivity(intent);
     }
 
     @Override

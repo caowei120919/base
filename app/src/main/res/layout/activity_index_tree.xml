@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/title"
+        layout="@layout/actionbar_index_title"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H80"
+        android:orientation="horizontal"
+        android:background="@color/c_FFFFFF"
+        android:layout_below="@id/title">
+
+        <net.lucode.hackware.magicindicator.MagicIndicator
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+        </net.lucode.hackware.magicindicator.MagicIndicator>
+
+        <TextView
+            android:id="@+id/tv_smallSize"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/H60"
+            android:gravity="center"
+            android:background="@drawable/shape_index_size_common"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="@dimen/W20"
+            android:paddingRight="@dimen/W20"
+            android:text="小">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_middleSize"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/H60"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/W20"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/shape_index_size_selected"
+            android:paddingLeft="@dimen/W20"
+            android:paddingRight="@dimen/W20"
+            android:text="中">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_bigSize"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/H60"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/W20"
+            android:background="@drawable/shape_index_size_selected"
+            android:layout_marginRight="@dimen/W20"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="@dimen/W20"
+            android:paddingRight="@dimen/W20"
+            android:text="大">
+        </TextView>
+    </LinearLayout>
+</RelativeLayout>

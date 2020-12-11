@@ -171,6 +171,10 @@
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".activity.IndexTreeActivity"
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>
