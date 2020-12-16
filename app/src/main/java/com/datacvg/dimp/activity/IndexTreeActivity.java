@@ -3,6 +3,7 @@ package com.datacvg.dimp.activity;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,10 +11,23 @@ import android.widget.TextView;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
+import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
+import com.datacvg.dimp.bean.IndexTreeBean;
+import com.datacvg.dimp.bean.IndexTreeListBean;
 import com.datacvg.dimp.bean.IndexTreeNeedBean;
 import com.datacvg.dimp.presenter.IndexTreePresenter;
 import com.datacvg.dimp.view.IndexTreeView;
+import com.datacvg.dimp.widget.IndexTreeViewFlower;
+import com.datacvg.dimp.widget.TitleNavigator;
+import com.google.gson.Gson;
+
+import net.lucode.hackware.magicindicator.FragmentContainerHelper;
+import net.lucode.hackware.magicindicator.MagicIndicator;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -24,7 +38,7 @@ import butterknife.OnClick;
  * @Description : 指标树页面
  */
 public class IndexTreeActivity extends BaseActivity<IndexTreeView, IndexTreePresenter>
-        implements IndexTreeView {
+        implements IndexTreeView, TitleNavigator.OnTabSelectedListener {
     @BindView(R.id.img_create)
     ImageView imgCreate ;
     @BindView(R.id.img_edit)
@@ -39,9 +53,18 @@ public class IndexTreeActivity extends BaseActivity<IndexTreeView, IndexTreePres
     TextView tvBigSize ;
     @BindView(R.id.tv_title)
     TextView tvTitle ;
+    @BindView(R.id.magic_indicator)
+    MagicIndicator magicIndicator ;
+    @BindView(R.id.indexTreeView)
+    IndexTreeViewFlower indexTreeView ;
 
+    private List<String> titles = new ArrayList<>();
+    private TitleNavigator titleNavigator ;
     private boolean isEditStatus = false ;
     private IndexTreeNeedBean indexTreeNeedBean ;
+    private FragmentContainerHelper mFragmentContainerHelper ;
+    private int otherIndex = 0 ;
+    private IndexTreeListBean indexTreeBean ;
 
     @Override
     protected int getLayoutId() {
@@ -73,6 +96,23 @@ public class IndexTreeActivity extends BaseActivity<IndexTreeView, IndexTreePres
         }
         tvTitle.setText(LanguageUtils.isZh(mContext) ? indexTreeNeedBean.getDimension_clName()
                 : indexTreeNeedBean.getDimension_flName());
+        titles.add(resources.getString(R.string.index));
+        if (!TextUtils.isEmpty(indexTreeNeedBean.getOrgName())){
+            titles.add(indexTreeNeedBean.getOrgName());
+        }
+        if (!TextUtils.isEmpty(indexTreeNeedBean.getFuName())){
+            titles.add(indexTreeNeedBean.getFuName());
+        }
+        if (!TextUtils.isEmpty(indexTreeNeedBean.getpName())){
+            titles.add(indexTreeNeedBean.getpName());
+        }
+        titleNavigator = new TitleNavigator(mContext,titles);
+        titleNavigator.setOnTabSelectedListener(this);
+        magicIndicator.setNavigator(titleNavigator);
+        mFragmentContainerHelper = new FragmentContainerHelper();
+        mFragmentContainerHelper.attachMagicIndicator(magicIndicator);
+        mFragmentContainerHelper.handlePageSelected(otherIndex);
+        getIndexTreeData() ;
     }
 
     @OnClick({R.id.back,R.id.img_share,R.id.img_edit,R.id.img_create,R.id.tv_smallSize
@@ -116,6 +156,7 @@ public class IndexTreeActivity extends BaseActivity<IndexTreeView, IndexTreePres
                 tvSmallSize.setTypeface(Typeface.DEFAULT_BOLD);
                 tvMiddleSize.setTextColor(resources.getColor(R.color.c_999999));
                 tvBigSize.setTextColor(resources.getColor(R.color.c_999999));
+                indexTreeView.drawIndexTree(indexTreeBean,3);
                 break;
 
             case R.id.tv_middleSize :
@@ -123,6 +164,7 @@ public class IndexTreeActivity extends BaseActivity<IndexTreeView, IndexTreePres
                 tvMiddleSize.setTypeface(Typeface.DEFAULT_BOLD);
                 tvSmallSize.setTextColor(resources.getColor(R.color.c_999999));
                 tvBigSize.setTextColor(resources.getColor(R.color.c_999999));
+                indexTreeView.drawIndexTree(indexTreeBean,2);
                 break;
 
             case R.id.tv_bigSize :
@@ -130,7 +172,36 @@ public class IndexTreeActivity extends BaseActivity<IndexTreeView, IndexTreePres
                 tvBigSize.setTypeface(Typeface.DEFAULT_BOLD);
                 tvSmallSize.setTextColor(resources.getColor(R.color.c_999999));
                 tvMiddleSize.setTextColor(resources.getColor(R.color.c_999999));
+                indexTreeView.drawIndexTree(indexTreeBean,1);
                 break;
         }
+    }
+
+    @Override
+    public void onTabSelected(int position) {
+        mFragmentContainerHelper.handlePageSelected(position);
+        indexTreeNeedBean.setType(position == 0 ? "4" : position + "");
+        getIndexTreeData() ;
+    }
+
+    /**
+     * 获取指标树数据
+     */
+    private void getIndexTreeData() {
+        Map map = new Gson().fromJson(new Gson().toJson(indexTreeNeedBean),Map.class);
+        getPresenter().getIndexTree(map);
+    }
+
+    /**
+     * 获取指标树数据成功
+     * @param resdata
+     */
+    @Override
+    public void getIndexTreeSuccess(IndexTreeListBean resdata) {
+        indexTreeBean = resdata ;
+        if(resdata != null){
+            indexTreeView.drawIndexTree(resdata,1);
+        }
+        PLog.e(indexTreeView.getChildCount() + "");
     }
 }

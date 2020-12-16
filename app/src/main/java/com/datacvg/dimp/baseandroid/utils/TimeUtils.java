@@ -405,7 +405,7 @@ public class TimeUtils {
      * @return 提取字符串的日期
      */
     public static Date parse(String strDate) {
-        return parse(strDate, getDatePattern());
+        return parse(strDate, strDate.length() == 4 ? FORMAT_Y : getDatePattern());
     }
 
     public static String getNewStrDateForStr(String date2Str, String formatYmd, String replace) {

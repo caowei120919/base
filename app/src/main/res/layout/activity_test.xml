@@ -2,57 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-        <LinearLayout
+        <com.datacvg.dimp.widget.IndexTreeViewFlower
+            android:id="@+id/flow_indexTree"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/H75"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="数字神经">
-            </TextView>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="管理画布">
-            </TextView>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="主题报表">
-            </TextView>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="行动方案">
-            </TextView>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="大屏投放">
-            </TextView>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="个人中心">
-            </TextView>
-        </LinearLayout>
+            android:layout_height="match_parent">
+        </com.datacvg.dimp.widget.IndexTreeViewFlower>
 </RelativeLayout>

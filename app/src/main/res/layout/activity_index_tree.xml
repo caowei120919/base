@@ -8,6 +8,7 @@
         layout="@layout/actionbar_index_title"/>
 
     <LinearLayout
+        android:id="@+id/lin_magic"
         android:layout_width="match_parent"
         android:layout_height="@dimen/H80"
         android:orientation="horizontal"
@@ -15,10 +16,11 @@
         android:layout_below="@id/title">
 
         <net.lucode.hackware.magicindicator.MagicIndicator
+            android:id="@+id/magic_indicator"
+            android:layout_below="@id/recycler_index"
             android:layout_width="wrap_content"
             android:layout_weight="1"
-            android:layout_height="match_parent">
-        </net.lucode.hackware.magicindicator.MagicIndicator>
+            android:layout_height="@dimen/H80" />
 
         <TextView
             android:id="@+id/tv_smallSize"
@@ -59,4 +61,11 @@
             android:text="大">
         </TextView>
     </LinearLayout>
+
+    <com.datacvg.dimp.widget.IndexTreeViewFlower
+        android:id="@+id/indexTreeView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/lin_magic">
+    </com.datacvg.dimp.widget.IndexTreeViewFlower>
 </RelativeLayout>

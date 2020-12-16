@@ -10,6 +10,8 @@ import com.datacvg.dimp.bean.DimensionListBean;
 import com.datacvg.dimp.bean.DimensionPositionListBean;
 import com.datacvg.dimp.bean.ImageResBean;
 import com.datacvg.dimp.bean.IndexBean;
+import com.datacvg.dimp.bean.IndexTreeBean;
+import com.datacvg.dimp.bean.IndexTreeListBean;
 import com.datacvg.dimp.bean.MessageBean;
 import com.datacvg.dimp.bean.ModuleListBean;
 import com.datacvg.dimp.bean.ReadMessageBean;
@@ -288,4 +290,6 @@ public interface MobileApi {
     @POST("report/comments/submit/comments/reply ")
     Observable<BaseBean> submitComments(@PartMap Map<String, RequestBody> requestBodyMap);
 
+    @POST("indexpad/list")
+    Observable<BaseBean<IndexTreeListBean>> getIndexTree(@Body Map map);
 }
