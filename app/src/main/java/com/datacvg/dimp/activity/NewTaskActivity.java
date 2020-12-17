@@ -1,6 +1,5 @@
 package com.datacvg.dimp.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -8,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.CustomListener;
@@ -15,6 +15,7 @@ import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
+import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.baseandroid.utils.TimeUtils;
@@ -23,23 +24,24 @@ import com.datacvg.dimp.baseandroid.widget.dialog.ChooseContactWindowDialog;
 import com.datacvg.dimp.baseandroid.widget.dialog.ChooseIndexWindowDialog;
 import com.datacvg.dimp.bean.ActionPlanIndexBean;
 import com.datacvg.dimp.bean.ActionPlanIndexListBean;
-import com.datacvg.dimp.bean.ActionPlanInfoDTO;
+import com.datacvg.dimp.bean.CreateTaskBean;
 import com.datacvg.dimp.bean.Contact;
-import com.datacvg.dimp.bean.DefaultUserBean;
-import com.datacvg.dimp.bean.DefaultUserListBean;
+import com.datacvg.dimp.bean.IndexTreeBean;
+import com.datacvg.dimp.bean.IndexTreeNeedBean;
+import com.datacvg.dimp.event.CreateTaskEvent;
 import com.datacvg.dimp.event.HeadOrAssistantEvent;
 import com.datacvg.dimp.presenter.NewTaskPresenter;
 import com.datacvg.dimp.view.NewTaskView;
 import com.datacvg.dimp.widget.FlowLayout;
+import com.google.gson.Gson;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
@@ -58,7 +60,6 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
     TextView tvRight ;
     @BindView(R.id.tv_date)
     TextView tvDate ;
-
     @BindView(R.id.tv_actionTypeCommon)
     TextView tvActionTypeCommon ;
     @BindView(R.id.tv_actionTypeSpecial)
@@ -77,6 +78,14 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
     FlowLayout flowAssistant ;
     @BindView(R.id.flow_index)
     FlowLayout flowIndex ;
+    @BindView(R.id.rel_actionPlan)
+    RelativeLayout relActionPlan ;
+    @BindView(R.id.rel_dimensionName)
+    RelativeLayout relDimensionName ;
+    @BindView(R.id.rel_dimension)
+    RelativeLayout relDimension ;
+    @BindView(R.id.flow_dimension)
+    FlowLayout flowDimension ;
 
     /**
      * 时间选择器
@@ -89,8 +98,12 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
     private ChooseContactWindowDialog contactWindowDialog;
     private ChooseIndexWindowDialog indexWindowDialog ;
     private boolean fromActionFragment = true ;
+    private String actionType = "1";
+    private IndexTreeNeedBean indexTreeNeedBean ;
     private List<ActionPlanIndexBean> actionPlanIndexBeans = new ArrayList<>();
     private List<ActionPlanIndexBean> taskIndexBeans = new ArrayList<>();
+    private List<IndexTreeBean> indexTreeBeans = new ArrayList<>();
+    private List<IndexTreeBean> showDimensionIndex = new ArrayList<>() ;
     /**
      * 负责人
      */
@@ -106,7 +119,8 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
      */
     private String taskDate ;
     private String taskDetail;
-    private ActionPlanInfoDTO actionPlanInfoDTO ;
+    private CreateTaskBean createTaskBean;
+    private CreateTaskBean.ActionPlanInfoDTO actionPlanInfoDTO ;
 
     @Override
     protected int getLayoutId() {
@@ -130,11 +144,30 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
         tvRight.setText(resources.getString(R.string.create));
         tvDate.setText(tvDate.getText().toString().replace("#1"
                 , TimeUtils.getCurDateStr(TimeUtils.FORMAT_YMD)));
+        taskDate = TimeUtils.getCurDateStr(TimeUtils.FORMAT_YMD) ;
         fromActionFragment = getIntent().getBooleanExtra(Constants.EXTRA_DATA_FOR_SCAN
                 ,true);
+        if(!fromActionFragment){
+            indexTreeBeans = (List<IndexTreeBean>) getIntent()
+                    .getSerializableExtra(Constants.EXTRA_DATA_FOR_BEAN);
+            indexTreeNeedBean = (IndexTreeNeedBean) getIntent()
+                    .getSerializableExtra(Constants.EXTRA_DATA_FOR_ALBUM);
+            actionType = indexTreeNeedBean.getType();
+            relDimensionName.setVisibility(TextUtils.isEmpty(actionType) ? View.GONE : (actionType.equals("4") ? View.GONE : View.VISIBLE));
+            relDimension.setVisibility(TextUtils.isEmpty(actionType) ? View.GONE : (actionType.equals("4") ? View.GONE : View.VISIBLE));
+            if(indexTreeBeans == null || indexTreeBeans.size() <= 0){
+                finish();
+                return;
+            }
+            buildIndexFlow(indexTreeBeans);
+        }
+        imgAddIndex.setVisibility(fromActionFragment ? View.VISIBLE : View.GONE);
+        relActionPlan.setVisibility(fromActionFragment ? View.GONE : View.VISIBLE);
         tvActionTypeCommon.setSelected(true);
         tvPriorityHigh.setSelected(true);
-        actionPlanInfoDTO = new ActionPlanInfoDTO();
+        createTaskBean = new CreateTaskBean();
+        actionPlanInfoDTO = new CreateTaskBean.ActionPlanInfoDTO();
+        actionPlanInfoDTO.setTask_priority("1");
         initCustomPickView();
         getPresenter().getActionPlanIndex();
     }
@@ -219,7 +252,7 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
     @OnCheckedChanged(R.id.switch_task)
     public void onCheckChanged(boolean checked){
         PLog.e("测试 ====" + checked);
-        actionPlanInfoDTO.setPlanFlg(checked ? "T" : "F");
+        createTaskBean.setPlanFlg(checked ? "T" : "F");
     }
 
     @OnClick({R.id.img_left,R.id.tv_date,R.id.tv_actionTypeCommon
@@ -249,18 +282,21 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
                 break;
 
             case R.id.tv_priorityHigh :
+                actionPlanInfoDTO.setTask_priority("1");
                 tvPriorityHigh.setSelected(true);
                 tvPriorityMiddle.setSelected(false);
                 tvPriorityLow.setSelected(false);
                 break;
 
             case R.id.tv_priorityMiddle :
+                actionPlanInfoDTO.setTask_priority("2");
                 tvPriorityHigh.setSelected(false);
                 tvPriorityMiddle.setSelected(true);
                 tvPriorityLow.setSelected(false);
                 break;
 
             case R.id.tv_priorityLow :
+                actionPlanInfoDTO.setTask_priority("3");
                 tvPriorityHigh.setSelected(false);
                 tvPriorityMiddle.setSelected(false);
                 tvPriorityLow.setSelected(true);
@@ -293,24 +329,39 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
                         return;
                     }
                     actionPlanInfoDTO.setTask_title(taskTitle);
-                    actionPlanInfoDTO.setTaskText(taskDetail);
-                    List<ActionPlanInfoDTO.TaskUser> taskUsers = new ArrayList<>();
-                    ActionPlanInfoDTO.TaskUser taskUser = new ActionPlanInfoDTO.TaskUser();
+                    createTaskBean.setTaskText(taskDetail);
+                    List<CreateTaskBean.TaskUser> taskUsers = new ArrayList<>();
+                    CreateTaskBean.TaskUser taskUser = new CreateTaskBean.TaskUser();
                     taskUser.setChecked(true);
                     taskUser.setId(headContact.getBean().getUser_id());
                     taskUser.setName(headContact.getBean().getName());
                     taskUser.setType("2");
                     taskUsers.add(taskUser);
                     for (Contact contact : assistantBeans){
-                        ActionPlanInfoDTO.TaskUser taskAssistant = new ActionPlanInfoDTO.TaskUser();
+                        CreateTaskBean.TaskUser taskAssistant = new CreateTaskBean.TaskUser();
                         taskAssistant.setType("3");
                         taskAssistant.setName(contact.getBean().getName());
                         taskAssistant.setId(contact.getBean().getUser_id());
                         taskAssistant.setChecked(true);
                         taskUsers.add(taskAssistant);
                     }
-                    actionPlanInfoDTO.setUserMsg(taskUsers);
-                    actionPlanInfoDTO.setIndex(taskIndexBeans);
+                    actionPlanInfoDTO.setTask_deadline(taskDate);
+                    actionPlanInfoDTO.setTask_parent_id("0");
+                    createTaskBean.setLang(LanguageUtils.isZh(mContext) ? "zh" : "en");
+                    if(!fromActionFragment){
+                        createTaskBean.setFuDimension(indexTreeNeedBean.getFuDimension());
+                        createTaskBean.setpDimension(indexTreeNeedBean.getpDimension());
+                        createTaskBean.setOrgDimension(indexTreeNeedBean.getOrgDimension());
+                        createTaskBean.setAllDeimension(indexTreeNeedBean.getOrgName() + ","
+                                + indexTreeNeedBean.getFuName()
+                                + "," + indexTreeNeedBean.getpName());
+                    }
+                    createTaskBean.setIndexList(new Gson().toJson(indexTreeBeans));
+                    createTaskBean.setUserMsg(new Gson().toJson(taskUsers));
+                    createTaskBean.setIndex(new Gson().toJson(taskIndexBeans));
+                    createTaskBean.setActionType(actionType);
+                    createTaskBean.setActionPlanInfoDTO(actionPlanInfoDTO);
+                    getPresenter().createTask(createTaskBean);
                 break;
         }
     }
@@ -355,6 +406,18 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
         actionPlanIndexBeans.addAll(resdata);
     }
 
+    @Override
+    public void createTaskSuccess() {
+        EventBus.getDefault().post(new CreateTaskEvent());
+        ToastUtils.showLongToast(resources.getString(R.string.action_plan_created_successfully));
+        finish();
+    }
+
+    @Override
+    public void createTaskFailed(String message) {
+        ToastUtils.showLongToast(message);
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void OnEvent(ActionPlanIndexBean bean){
         PLog.e(bean.getName() + "---" + bean.isChecked());
@@ -368,7 +431,7 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
     }
 
     /**
-     *
+     * 添加选择指标
      * @param bean
      */
     private void buildIndexFlow(ActionPlanIndexBean bean) {
@@ -387,6 +450,61 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
                }
            }
        }
+    }
+
+    /**
+     * 指标树下发指标
+     * @param
+     */
+    private void buildIndexFlow(List<IndexTreeBean> indexTreeBeans) {
+        if (!actionType.equals("4")){
+            for (IndexTreeBean bean : indexTreeBeans){
+                View view = LayoutInflater.from(mContext).inflate(R.layout.item_selected_user,null);
+                TextView tv_group = view.findViewById(R.id.tv_user);
+                tv_group.setText(bean.getName());
+                view.setTag(bean.getIndex_id());
+                flowDimension.addView(view);
+                if(!checkIndex(bean)){
+                    showDimensionIndex.add(bean);
+                }
+            }
+
+            if(showDimensionIndex.size() > 0){
+                for (IndexTreeBean bean : showDimensionIndex){
+                    View view = LayoutInflater.from(mContext).inflate(R.layout.item_selected_user,null);
+                    TextView tv_group = view.findViewById(R.id.tv_user);
+                    tv_group.setText(bean.getIndex_clname());
+                    view.setTag(bean.getIndex_id());
+                    flowIndex.addView(view);
+                }
+            }
+        }else{
+            for (IndexTreeBean bean : indexTreeBeans){
+                View view = LayoutInflater.from(mContext).inflate(R.layout.item_selected_user,null);
+                TextView tv_group = view.findViewById(R.id.tv_user);
+                tv_group.setText(bean.getName());
+                view.setTag(bean.getIndex_id());
+                flowIndex.addView(view);
+            }
+        }
+    }
+
+    /**
+     * 去除不同维度下同一指标
+     * @param bean
+     * @return
+     */
+    private boolean checkIndex(IndexTreeBean bean) {
+        if(showDimensionIndex.size() > 0){
+            for (IndexTreeBean indexTreeBean : showDimensionIndex){
+                if(indexTreeBean.getIndex_id().equals(bean.getIndex_id())){
+                    return true ;
+                }
+            }
+            return false ;
+        }else{
+            return false;
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

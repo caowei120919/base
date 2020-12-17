@@ -292,4 +292,7 @@ public interface MobileApi {
 
     @POST("indexpad/list")
     Observable<BaseBean<IndexTreeListBean>> getIndexTree(@Body Map map);
+
+    @POST("actionplan/creattask")
+    Observable<BaseBean> createTask(@Body Map map);
 }

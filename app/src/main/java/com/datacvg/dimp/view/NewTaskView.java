@@ -16,4 +16,15 @@ public interface NewTaskView extends MvpView {
      * @param resdata
      */
     void getIndexSuccess(ActionPlanIndexListBean resdata);
+
+    /**
+     * 心动方案创建成功
+     */
+    void createTaskSuccess();
+
+    /**
+     * 行动方案创建失败
+     * @param message
+     */
+    void createTaskFailed(String message);
 }

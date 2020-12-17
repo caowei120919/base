@@ -3,6 +3,7 @@ package com.datacvg.dimp.baseandroid.retrofit;
 import android.net.ParseException;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
+import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.ImageResBean;
 import com.datacvg.dimp.bean.ServiceBean;
@@ -90,6 +91,5 @@ public class RxObserver<T> implements Observer <T>{
 
     @Override
     public void onComplete() {
-
     }
 }

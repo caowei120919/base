@@ -5,10 +5,9 @@
     android:layout_height="wrap_content">
     <TextView
         android:id="@+id/tv_indexName"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/W250"
         android:layout_height="wrap_content"
         android:textSize="14sp"
-        android:maxWidth="@dimen/W250"
         android:textColor="@color/c_999999"
         android:layout_marginTop="@dimen/H12"
         android:layout_marginLeft="@dimen/W20"
@@ -17,11 +16,11 @@
 
     <CheckBox
         android:id="@+id/cb_select"
-        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:button="@null"
-        android:layout_alignParentRight="true"
+        android:visibility="gone"
+        android:layout_toRightOf="@id/tv_indexName"
         android:background="@null"
         android:padding="@dimen/W10"
         android:drawableLeft="@drawable/selector_check"

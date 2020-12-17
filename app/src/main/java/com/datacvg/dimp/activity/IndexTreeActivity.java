@@ -1,5 +1,6 @@
 package com.datacvg.dimp.activity;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
+import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.IndexTreeBean;
 import com.datacvg.dimp.bean.IndexTreeListBean;
 import com.datacvg.dimp.bean.IndexTreeNeedBean;
@@ -38,7 +40,7 @@ import butterknife.OnClick;
  * @Description : 指标树页面
  */
 public class IndexTreeActivity extends BaseActivity<IndexTreeView, IndexTreePresenter>
-        implements IndexTreeView, TitleNavigator.OnTabSelectedListener {
+        implements IndexTreeView, TitleNavigator.OnTabSelectedListener, IndexTreeViewFlower.OnClickChangeListener {
     @BindView(R.id.img_create)
     ImageView imgCreate ;
     @BindView(R.id.img_edit)
@@ -65,6 +67,7 @@ public class IndexTreeActivity extends BaseActivity<IndexTreeView, IndexTreePres
     private FragmentContainerHelper mFragmentContainerHelper ;
     private int otherIndex = 0 ;
     private IndexTreeListBean indexTreeBean ;
+    private IndexTreeListBean selectedIndexBeans = new IndexTreeListBean();
 
     @Override
     protected int getLayoutId() {
@@ -112,6 +115,7 @@ public class IndexTreeActivity extends BaseActivity<IndexTreeView, IndexTreePres
         mFragmentContainerHelper = new FragmentContainerHelper();
         mFragmentContainerHelper.attachMagicIndicator(magicIndicator);
         mFragmentContainerHelper.handlePageSelected(otherIndex);
+        indexTreeView.setClickChangeListener(this);
         getIndexTreeData() ;
     }
 
@@ -143,15 +147,30 @@ public class IndexTreeActivity extends BaseActivity<IndexTreeView, IndexTreePres
                             ,R.mipmap.icon_task_common));
                 }
                 isEditStatus = !isEditStatus ;
+                indexTreeView.setEditStatus(isEditStatus);
                 break;
 
             case R.id.img_create :
                 if(!isEditStatus){
                     return;
                 }
+                if(selectedIndexBeans != null && selectedIndexBeans.size() > 0){
+                    Intent intent = new Intent(mContext,NewTaskActivity.class);
+                    intent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,false);
+                    intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,selectedIndexBeans);
+                    intent.putExtra(Constants.EXTRA_DATA_FOR_ALBUM
+                            ,indexTreeNeedBean);
+                    mContext.startActivity(intent);
+                }else{
+                    ToastUtils.showLongToast(resources
+                            .getString(R.string.at_least_one_indicator_can_be_selected_before_an_action_plan_can_be_issued));
+                }
                 break;
 
             case R.id.tv_smallSize :
+                if(isEditStatus){
+                    return;
+                }
                 tvSmallSize.setTextColor(resources.getColor(R.color.c_000000));
                 tvSmallSize.setTypeface(Typeface.DEFAULT_BOLD);
                 tvMiddleSize.setTextColor(resources.getColor(R.color.c_999999));
@@ -160,6 +179,9 @@ public class IndexTreeActivity extends BaseActivity<IndexTreeView, IndexTreePres
                 break;
 
             case R.id.tv_middleSize :
+                if(isEditStatus){
+                    return;
+                }
                 tvMiddleSize.setTextColor(resources.getColor(R.color.c_000000));
                 tvMiddleSize.setTypeface(Typeface.DEFAULT_BOLD);
                 tvSmallSize.setTextColor(resources.getColor(R.color.c_999999));
@@ -168,6 +190,9 @@ public class IndexTreeActivity extends BaseActivity<IndexTreeView, IndexTreePres
                 break;
 
             case R.id.tv_bigSize :
+                if(isEditStatus){
+                    return;
+                }
                 tvBigSize.setTextColor(resources.getColor(R.color.c_000000));
                 tvBigSize.setTypeface(Typeface.DEFAULT_BOLD);
                 tvSmallSize.setTextColor(resources.getColor(R.color.c_999999));
@@ -179,6 +204,10 @@ public class IndexTreeActivity extends BaseActivity<IndexTreeView, IndexTreePres
 
     @Override
     public void onTabSelected(int position) {
+        if(isEditStatus){
+            return;
+        }
+        selectedIndexBeans.clear();
         mFragmentContainerHelper.handlePageSelected(position);
         indexTreeNeedBean.setType(position == 0 ? "4" : position + "");
         getIndexTreeData() ;
@@ -203,5 +232,19 @@ public class IndexTreeActivity extends BaseActivity<IndexTreeView, IndexTreePres
             indexTreeView.drawIndexTree(resdata,1);
         }
         PLog.e(indexTreeView.getChildCount() + "");
+    }
+
+    /**
+     * 下发选中状态切换
+     * @param isClick
+     * @param bean
+     */
+    @Override
+    public void OnClickChange(boolean isClick, IndexTreeBean bean) {
+        if(isClick){
+            selectedIndexBeans.add(bean);
+        }else{
+            selectedIndexBeans.remove(bean);
+        }
     }
 }

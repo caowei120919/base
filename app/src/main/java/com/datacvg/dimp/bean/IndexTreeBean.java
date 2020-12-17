@@ -2,6 +2,7 @@ package com.datacvg.dimp.bean;
 
 import androidx.annotation.Keep;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  * @Description :
  */
 @Keep
-public class IndexTreeBean {
+public class IndexTreeBean implements Serializable {
     /**
      * res_level_sort : 275
      * i_res_parentid : 0
@@ -90,7 +91,7 @@ public class IndexTreeBean {
     private List<IndexTreeBean> nodes;
 
     @Keep
-    public static class ValsBean {
+    public static class ValsBean implements Serializable{
         /**
          * index_data : 241.43
          * value_unit : 万元

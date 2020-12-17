@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.utils.DisplayUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
+import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.IndexTreeBean;
 import com.datacvg.dimp.bean.IndexTreeListBean;
 
@@ -94,6 +95,10 @@ public class IndexTreeViewFlower extends ViewGroup {
 
     public void setEditStatus(boolean editStatus) {
         isEditStatus = editStatus;
+        for (IndexTreeBean indexTreeBean : childBeans){
+            initData(indexTreeBean,type.value);
+        }
+        invalidate();
     }
 
     /**
@@ -125,13 +130,13 @@ public class IndexTreeViewFlower extends ViewGroup {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        measureChildren(widthMeasureSpec, heightMeasureSpec);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         final int childCount = getChildCount() ;
         for (int i = 0 ; i < childCount ; i++){
             View childView = getChildAt(i);
             childView.measure(widthMeasureSpec,heightMeasureSpec);
         }
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        measureChildren(widthMeasureSpec, heightMeasureSpec);
     }
 
     @Override
@@ -215,6 +220,7 @@ public class IndexTreeViewFlower extends ViewGroup {
      * @param type  展示类型,大 1 中 2 小 3
      */
     public void drawIndexTree(IndexTreeListBean bean, int type ){
+        this.type = IndexTreeType.of(type);
         recycleAllView() ;
         sortIndexTreeBean(bean);
         initDefaultValue(type) ;
@@ -297,17 +303,17 @@ public class IndexTreeViewFlower extends ViewGroup {
         mPaddingLeft = (int) getContext().getResources().getDimension(R.dimen.H30);
         switch (IndexTreeType.of(type)){
             case INDEX_LARGE:
-                mItemWithPx = (int) getContext().getResources().getDimension(R.dimen.W360);
+                mItemWithPx = (int) getContext().getResources().getDimension(R.dimen.W320);
                 mItemHeightPx = (int) getContext().getResources().getDimension(R.dimen.H260);
                 break;
 
             case INDEX_MIDDLE:
-                mItemWithPx = (int) getContext().getResources().getDimension(R.dimen.W360);
+                mItemWithPx = (int) getContext().getResources().getDimension(R.dimen.W320);
                 mItemHeightPx = (int) getContext().getResources().getDimension(R.dimen.H130);
                 break;
 
             case INDEX_SMALL:
-                mItemWithPx = (int) getContext().getResources().getDimension(R.dimen.W360);
+                mItemWithPx = (int) getContext().getResources().getDimension(R.dimen.W320);
                 mItemHeightPx = (int) getContext().getResources().getDimension(R.dimen.H60);
                 break;
         }
@@ -353,7 +359,7 @@ public class IndexTreeViewFlower extends ViewGroup {
      */
     private View createSmallViewAndBindValues(IndexTreeBean bean) {
         View smallView = LayoutInflater.from(getContext())
-                .inflate(R.layout.item_index_tree_small,this,false);
+                .inflate(R.layout.item_index_tree_small,null,false);
         TextView tvTitle = smallView.findViewById(R.id.tv_indexName);
         tvTitle.setText(bean.getName());
         CheckBox cbSelect = smallView.findViewById(R.id.cb_select);
@@ -361,7 +367,9 @@ public class IndexTreeViewFlower extends ViewGroup {
         cbSelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                clickChangeListener.OnClickChange(b,bean);
+                if(clickChangeListener != null){
+                    clickChangeListener.OnClickChange(b,bean);
+                }
             }
         });
         this.addView(smallView);
@@ -374,7 +382,7 @@ public class IndexTreeViewFlower extends ViewGroup {
      */
     private View createMiddleViewAndBindValues(IndexTreeBean bean) {
         View midView = LayoutInflater.from(getContext())
-                .inflate(R.layout.item_index_tree_mid,this,false);
+                .inflate(R.layout.item_index_tree_mid,null,false);
         TextView tvTitle = midView.findViewById(R.id.tv_indexName);
         tvTitle.setText(bean.getName());
         TextView tvValueName = midView.findViewById(R.id.tv_valueName);
@@ -390,7 +398,9 @@ public class IndexTreeViewFlower extends ViewGroup {
         cbSelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                clickChangeListener.OnClickChange(b,bean);
+                if(clickChangeListener != null){
+                    clickChangeListener.OnClickChange(b,bean);
+                }
             }
         });
         this.addView(midView);
@@ -403,7 +413,7 @@ public class IndexTreeViewFlower extends ViewGroup {
      */
     private View createLargeViewAndBindValues(IndexTreeBean bean) {
         View largeView = LayoutInflater.from(getContext())
-                .inflate(R.layout.item_index_tree_big,this,false);
+                .inflate(R.layout.item_index_tree_big,null,false);
         TextView tvTitle = largeView.findViewById(R.id.tv_indexName);
         tvTitle.setText(bean.getName());
         TextView tvValueName = largeView.findViewById(R.id.tv_valueName);
@@ -435,7 +445,9 @@ public class IndexTreeViewFlower extends ViewGroup {
         cbSelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                clickChangeListener.OnClickChange(b,bean);
+                if(clickChangeListener != null){
+                    clickChangeListener.OnClickChange(b,bean);
+                }
             }
         });
         this.addView(largeView);

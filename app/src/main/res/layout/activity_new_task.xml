@@ -348,10 +348,10 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/rel_dimension"
+                android:id="@+id/rel_dimensionName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:visibility="gone"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/H40"
                 android:layout_marginLeft="@dimen/W25"
                 android:layout_below="@id/rel_indexType">
@@ -370,6 +370,32 @@
                     android:gravity="center"
                     android:layout_height="match_parent"
                     android:text="@string/the_dimension">
+                </TextView>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rel_dimension"
+                android:layout_width="match_parent"
+                android:layout_below="@id/rel_dimensionName"
+                android:minHeight="@dimen/H115"
+                android:visibility="gone"
+                android:layout_height="wrap_content">
+
+                <com.datacvg.dimp.widget.FlowLayout
+                    android:id="@+id/flow_dimension"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="@dimen/W45"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/H10">
+                </com.datacvg.dimp.widget.FlowLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/H2"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/c_e6e6e6"
+                    android:layout_marginLeft="@dimen/W25"
+                    android:layout_marginRight="@dimen/W25">
                 </TextView>
             </RelativeLayout>
 
@@ -461,6 +487,7 @@
 
             <RelativeLayout
                 android:id="@+id/rel_actionPlan"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/H30"

@@ -171,4 +171,6 @@
     <string name="challenge">challenge</string>
     <string name="annotation">annotation</string>
     <string name="guaranteed">guaranteed</string>
+    <string name="at_least_one_indicator_can_be_selected_before_an_action_plan_can_be_issued">At least one indicator can be selected before an action plan can be issued</string>
+    <string name="action_plan_created_successfully">Action plan created successfully</string>
 </resources>

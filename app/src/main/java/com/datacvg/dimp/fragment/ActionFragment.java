@@ -18,8 +18,12 @@ import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.bean.ActionPlanBean;
 import com.datacvg.dimp.bean.ActionPlanListBean;
+import com.datacvg.dimp.event.CreateTaskEvent;
 import com.datacvg.dimp.presenter.ActionPresenter;
 import com.datacvg.dimp.view.ActionView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -112,7 +116,7 @@ public class ActionFragment extends BaseFragment<ActionView, ActionPresenter>
         switch (view.getId()){
             case R.id.img_right :
                     Intent newTaskIntent = new Intent(mContext, NewTaskActivity.class);
-                    newTaskIntent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,false);
+                    newTaskIntent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,true);
                     mContext.startActivity(newTaskIntent);
                 break;
 
@@ -204,5 +208,11 @@ public class ActionFragment extends BaseFragment<ActionView, ActionPresenter>
     @Override
     public void goActionDetailClick(int position) {
         PLog.e("查看行动方案详情");
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(CreateTaskEvent event){
+        pageNo = 0 ;
+        getActionList();
     }
 }
