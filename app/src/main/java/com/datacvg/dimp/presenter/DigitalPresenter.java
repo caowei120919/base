@@ -123,18 +123,8 @@ public class DigitalPresenter extends BasePresenter<DigitalView>{
                     @Override
                     public void onNext(BaseBean<ChartListBean> bean) {
                         PLog.e(new Gson().toJson(bean));
-                        getView().getChartSuccess(bean.getResdata());
-                        List<String> stringName = new ArrayList<>();
-                        List<Float> floatValue = new ArrayList<>();
-                        for (ChartBean chartBean : bean.getResdata()) {
-                            if(chartBean.getChart_type().equals("pie_chart")){
-                                List<Object> datas = chartBean.getOption().getSeries().get(0).getData();
-                                for (int i = 0 ; i < datas.size() ; i++){
-                                    stringName.add((String) ((LinkedTreeMap)datas.get(i)).get("name"));
-                                    floatValue.add(Float.valueOf((String) ((LinkedTreeMap)datas.get(i)).get("value")));
-                                    PLog.e(((LinkedTreeMap)datas.get(i)).get("name") + "----" + ((LinkedTreeMap)datas.get(i)).get("value"));
-                                }
-                            }
+                        if(bean != null && bean.getResdata() != null){
+                            getView().getChartSuccess(bean.getResdata());
                         }
                     }
 

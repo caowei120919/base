@@ -92,6 +92,7 @@
     <string name="vertical_screen">Vertical screen</string>
     <string name="landscape">Landscape</string>
     <string name="expiration_date">expiration date：#1</string>
+    <string name="create_date">create date: #1</string>
     <string name="the_theme_report">The theme report</string>
     <string name="select_a_date">Select a date</string>
     <string name="click_edit_task_Title">Click edit task Title (16 words only)</string>

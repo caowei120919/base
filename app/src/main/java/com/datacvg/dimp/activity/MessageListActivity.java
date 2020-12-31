@@ -194,6 +194,7 @@ public class MessageListActivity extends BaseActivity<MessageListView, MessageLi
         bean.setRead_flag(true);
         List<MessageIdBean> messageIdBeans = new ArrayList<>();
         messageIdBeans.add(new MessageIdBean(bean.getId()));
+        adapter.notifyDataSetChanged();
         getPresenter().doReadMessage(Constants.DO_READ,new Gson().toJson(messageIdBeans),"1",bean.getModule_id());
     }
 }

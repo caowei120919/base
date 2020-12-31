@@ -10,7 +10,6 @@ import com.datacvg.dimp.bean.DimensionListBean;
 import com.datacvg.dimp.bean.DimensionPositionListBean;
 import com.datacvg.dimp.bean.ImageResBean;
 import com.datacvg.dimp.bean.IndexBean;
-import com.datacvg.dimp.bean.IndexTreeBean;
 import com.datacvg.dimp.bean.IndexTreeListBean;
 import com.datacvg.dimp.bean.MessageBean;
 import com.datacvg.dimp.bean.ModuleListBean;
@@ -22,15 +21,15 @@ import com.datacvg.dimp.bean.ScreenListBean;
 import com.datacvg.dimp.bean.TableInfoBean;
 import com.datacvg.dimp.bean.TableListBean;
 import com.datacvg.dimp.bean.TableParamInfoListBean;
+import com.datacvg.dimp.bean.TaskInfoBean;
 import com.datacvg.dimp.bean.UserJobsListBean;
 import com.datacvg.dimp.bean.UserLoginBean;
 import java.util.Map;
-import java.util.function.DoubleUnaryOperator;
-
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -295,4 +294,13 @@ public interface MobileApi {
 
     @POST("actionplan/creattask")
     Observable<BaseBean> createTask(@Body Map map);
+
+    @GET("actionplan/infodetail")
+    Observable<BaseBean<TaskInfoBean>> getTaskInfo(@Query("taskId") String taskId,
+                                                   @Query("userType") int user_type,
+                                                   @Query("userId") String userId,
+                                                   @Query("language") String language);
+
+    @GET("https://api.powerbi.cn/powerbi/globalservice/v201606/clusterdetails")
+    Observable<String> getPowerBiInfo(@Header("authorization") String token);
 }

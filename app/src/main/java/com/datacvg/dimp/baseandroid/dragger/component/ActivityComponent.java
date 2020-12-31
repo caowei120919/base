@@ -29,6 +29,7 @@ import com.datacvg.dimp.activity.SettingVpnActivity;
 import com.datacvg.dimp.activity.SplashActivity;
 import com.datacvg.dimp.activity.TableDetailActivity;
 import com.datacvg.dimp.activity.TableFolderActivity;
+import com.datacvg.dimp.activity.TaskDetailActivity;
 import com.datacvg.dimp.activity.TestRealActivity;
 import com.datacvg.dimp.baseandroid.dragger.module.ActivityModule;
 import com.datacvg.dimp.baseandroid.dragger.scope.ActivityScope;
@@ -96,4 +97,6 @@ public interface ActivityComponent {
     void inject(IndexDetailActivity indexDetailActivity);
 
     void inject(IndexTreeActivity indexTreeActivity);
+
+    void inject(TaskDetailActivity taskDetailActivity);
 }

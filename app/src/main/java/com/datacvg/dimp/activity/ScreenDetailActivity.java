@@ -169,7 +169,6 @@ public class ScreenDetailActivity extends BaseActivity<ScreenDetailView, ScreenD
              * 暂停 自动播放
              */
             case R.id.img_playOrStop :
-                PLog.e("开始，暂停");
                 if(linkBean != null){
                     getPresenter().confirmOnTheScreen("app",Constants.token,linkBean.getScreenTime()
                             ,new Gson().toJson(bean),isStart ? Constants.SCREEN_PAUSE : Constants.SCREEN_START

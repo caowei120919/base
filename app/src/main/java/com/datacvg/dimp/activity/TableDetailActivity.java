@@ -96,6 +96,7 @@ public class TableDetailActivity extends BaseActivity<TableDetailView, TableDeta
      * 报表评论参数拼接
      */
     private String params = "{}" ;
+    private String powerBiToken = "" ;
 
     @Override
     protected int getLayoutId() {
@@ -194,6 +195,28 @@ public class TableDetailActivity extends BaseActivity<TableDetailView, TableDeta
                     view.loadUrl("about:blank");
                 }
 
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Nullable
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+                if (!TextUtils.isEmpty(powerBiToken)){
+                    request.getRequestHeaders().put("authorization",powerBiToken);
+                }
+                return super.shouldInterceptRequest(view, request);
+            }
+
+            @Nullable
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+                return super.shouldInterceptRequest(view, url);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                PLog.e(url);
+                super.onPageFinished(view, url);
             }
         });
     }
@@ -365,7 +388,20 @@ public class TableDetailActivity extends BaseActivity<TableDetailView, TableDeta
     @Override
     public void getTableInfoSuccess(TableInfoBean resdata) {
         if(resdata != null && !TextUtils.isEmpty(resdata.getShowUrl())){
-            webView.loadUrl(resdata.getShowUrl());
+            switch (resdata.getReportType()){
+                case "powerbi" :
+                    Map<String,String> map = new HashMap<>();
+                    map.put("authorization",resdata.getData().getToken());
+                    powerBiToken = resdata.getData().getToken() ;
+//                    getPresenter().getPowerBiInfo(powerBiToken);
+                    String url = "file:///android_asset/powerbi/index.html";
+                    webView.loadUrl(/*resdata.getShowUrl(),map*/url);
+                    break;
+
+                default:
+                    webView.loadUrl(resdata.getShowUrl());
+                    break;
+            }
         }
     }
 

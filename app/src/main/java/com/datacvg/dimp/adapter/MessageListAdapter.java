@@ -90,7 +90,6 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
         holder.tvToDetail.setOnClickListener(view -> {
             click.toDetailClick(bean);
-            PLog.e("查看详情");
         });
         holder.itemView.setOnClickListener(view -> {
             click.onReadClick(bean);

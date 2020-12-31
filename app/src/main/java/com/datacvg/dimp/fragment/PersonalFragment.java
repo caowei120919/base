@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -183,8 +184,12 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
     public void getUseJobsSuccess(UserJobsListBean resdata) {
         userJobsBeans = resdata ;
         for (UserJobsBean bean: resdata) {
-            if (bean.getUser_pkid().equals(PreferencesHelper.get(Constants.USER_PKID,""))){
-                tvJobName.setText(bean.getPost_clname());
+            if(TextUtils.isEmpty(bean.getUser_pkid())){
+                continue;
+            }else{
+                if (bean.getUser_pkid().equals(PreferencesHelper.get(Constants.USER_PKID,""))){
+                    tvJobName.setText(bean.getPost_clname());
+                }
             }
         }
     }

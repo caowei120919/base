@@ -6,7 +6,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.datacvg.dimp.R;
 
 /**

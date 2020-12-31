@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H100"
+        android:background="@color/c_f8f8fa"
+        android:drawableLeft="@mipmap/task_date"
+        android:drawablePadding="@dimen/W70"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/W90"
+        android:text="@string/expiration_date"
+        android:textColor="@color/c_303030"
+        android:textSize="14sp"></TextView>
+
+    <RelativeLayout
+        android:id="@+id/rel_actionType"
+        android:layout_below="@id/tv_date"
+        android:layout_marginTop="@dimen/H30"
+        android:layout_marginLeft="@dimen/W25"
+        android:layout_marginRight="@dimen/W25"
+        android:layout_height="@dimen/H50"
+        android:layout_width="match_parent">
+
+        <TextView
+            android:id="@+id/tv_actionTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/task_type"
+            android:textSize="14sp"
+            android:layout_centerVertical="true">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_actionTypeCommon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/common"
+            android:layout_toRightOf="@id/tv_actionTitle"
+            android:layout_marginLeft="@dimen/W25"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:paddingLeft="@dimen/W15"
+            android:paddingRight="@dimen/W15"
+            android:textColor="@drawable/selector_fff_000"
+            android:background="@drawable/selector_f2f2f2_da3a16">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_actionTypeSpecial"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/special"
+            android:layout_toRightOf="@id/tv_actionTypeCommon"
+            android:layout_marginLeft="@dimen/W10"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:paddingLeft="@dimen/W15"
+            android:paddingRight="@dimen/W15"
+            android:textColor="@drawable/selector_fff_000"
+            android:background="@drawable/selector_f2f2f2_da3a16">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_priorityLow"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/low"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="@dimen/W15"
+            android:paddingRight="@dimen/W15"
+            android:textColor="@drawable/selector_fff_000"
+            android:background="@drawable/selector_f2f2f2_da3a16">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_priorityMiddle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/middle"
+            android:layout_toLeftOf="@id/tv_priorityLow"
+            android:layout_marginRight="@dimen/W10"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:paddingLeft="@dimen/W15"
+            android:paddingRight="@dimen/W15"
+            android:textColor="@drawable/selector_fff_000"
+            android:background="@drawable/selector_f2f2f2_da3a16">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_priorityHigh"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/high"
+            android:layout_toLeftOf="@id/tv_priorityMiddle"
+            android:layout_marginRight="@dimen/W10"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:paddingLeft="@dimen/W15"
+            android:paddingRight="@dimen/W15"
+            android:textColor="@drawable/selector_fff_000"
+            android:background="@drawable/selector_f2f2f2_da3a16">
+        </TextView>
+
+        <TextView
+            android:layout_toLeftOf="@id/tv_priorityHigh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/priority"
+            android:layout_marginRight="@dimen/W10"
+            android:textSize="14sp"
+            android:layout_centerVertical="true">
+        </TextView>
+    </RelativeLayout>
+</RelativeLayout>

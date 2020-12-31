@@ -2,6 +2,7 @@ package com.datacvg.dimp.bean;
 
 import androidx.annotation.Keep;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  * @Description : 行动方案
  */
 @Keep
-public class ActionPlanBean {
+public class ActionPlanBean implements Serializable {
 
     /**
      * create_time : 2020-10-16 15:27:51
@@ -186,7 +187,7 @@ public class ActionPlanBean {
         this.user = user;
     }
 
-    public static class UserBean {
+    public static class UserBean implements Serializable{
         /**
          * id : barry.chen
          * type : 1

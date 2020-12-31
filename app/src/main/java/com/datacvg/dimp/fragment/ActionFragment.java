@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.activity.NewTaskActivity;
+import com.datacvg.dimp.activity.TaskDetailActivity;
 import com.datacvg.dimp.adapter.ActionPlanAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
@@ -207,7 +208,9 @@ public class ActionFragment extends BaseFragment<ActionView, ActionPresenter>
      */
     @Override
     public void goActionDetailClick(int position) {
-        PLog.e("查看行动方案详情");
+        Intent intent = new Intent(mContext, TaskDetailActivity.class);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,actionPlanBeans.get(position));
+        mContext.startActivity(intent);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

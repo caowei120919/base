@@ -103,11 +103,7 @@ public class ActionPlanAdapter extends RecyclerView.Adapter<ActionPlanAdapter.Vi
         holder.tvEndTime.setText(mContext.getResources().getString(R.string.by_the_time)
                 + ":" +bean.getDeadline());
         holder.tvContent.setText(bean.getText());
-        holder.itemView.setOnClickListener(view ->{
-            holder.relContent.setVisibility(holder.relContent.getVisibility()
-                    == View.VISIBLE ? View.GONE : View.VISIBLE);
-        });
-        holder.tvDetails.setOnClickListener(view -> {
+        holder.itemView.setOnClickListener(view -> {
             PLog.e("查看详情");
             click.goActionDetailClick(position);
         });

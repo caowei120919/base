@@ -47,6 +47,7 @@ public class TestRealActivity extends BaseActivity<TestRealView, TestRealPresent
 
     @Override
     protected void setupData(Bundle savedInstanceState) {
+        
     }
 
     @Override

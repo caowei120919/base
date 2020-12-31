@@ -137,4 +137,15 @@ public class TableDetailPresenter extends BasePresenter<TableDetailView>{
                     }
                 });
     }
+
+    public void getPowerBiInfo( String token) {
+        api.getPowerBiInfo(token)
+                .compose(RxUtils.applySchedulersLifeCycle(getView()))
+                .subscribe(new RxObserver<String>(){
+                    @Override
+                    public void onNext(String baseBean) {
+                        PLog.e(baseBean);
+                    }
+                });
+    }
 }
