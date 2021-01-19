@@ -27,6 +27,7 @@ import com.datacvg.dimp.activity.SelectTableParamActivity;
 import com.datacvg.dimp.activity.SettingActivity;
 import com.datacvg.dimp.activity.SettingVpnActivity;
 import com.datacvg.dimp.activity.SplashActivity;
+import com.datacvg.dimp.activity.TableCommentActivity;
 import com.datacvg.dimp.activity.TableDetailActivity;
 import com.datacvg.dimp.activity.TableFolderActivity;
 import com.datacvg.dimp.activity.TaskDetailActivity;
@@ -99,4 +100,6 @@ public interface ActivityComponent {
     void inject(IndexTreeActivity indexTreeActivity);
 
     void inject(TaskDetailActivity taskDetailActivity);
+
+    void inject(TableCommentActivity tableCommentActivity);
 }

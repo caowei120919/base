@@ -775,7 +775,7 @@ My97DP.prototype = {
         var _ = parent.document.getElementsByTagName("iframe");
         for (var C = 0; C < _.length; C++) {
             var $ = $d.style.height;
-            $d.style.height = "100%";
+            $d.style.height = "";
             var A = $d.offsetHeight;
             if (_[C].contentWindow == window && A) {
                 _[C].style.width = $d.offsetWidth + "px";

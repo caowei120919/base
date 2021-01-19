@@ -245,6 +245,8 @@ public class TableDetailActivity extends BaseActivity<TableDetailView, TableDeta
                         intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,tableBean);
                         mContext.startActivity(intent);
                     }else{
+//                        Intent intent = new Intent(mContext,TableCommentActivity.class);
+//                        mContext.startActivity(intent);
                         showCommentDistPlay();
                     }
                 break;
@@ -255,6 +257,8 @@ public class TableDetailActivity extends BaseActivity<TableDetailView, TableDeta
                  *      无参数选择   默认报表
                  */
                 if (hasParamInfo){
+//                    Intent intent = new Intent(mContext,TableCommentActivity.class);
+//                    mContext.startActivity(intent);
                     showCommentDistPlay();
                 }else{
                     PLog.e("默认报表");

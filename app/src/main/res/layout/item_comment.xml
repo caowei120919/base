@@ -22,10 +22,9 @@
             android:id="@+id/tv_commentTime"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
             android:gravity="center"
-            android:textSize="16sp"
-            android:layout_alignParentRight="true">
-        </TextView>
+            android:textSize="16sp"></TextView>
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -41,7 +40,6 @@
         android:layout_height="wrap_content"
         android:textSize="14sp"
         android:gravity="center_vertical"
-        android:layout_marginTop="@dimen/H10"
-        android:text="csjifdjsifdfgjdsjghdjsghdhsjghds">
+        android:layout_marginTop="@dimen/H10">
     </TextView>
 </LinearLayout>

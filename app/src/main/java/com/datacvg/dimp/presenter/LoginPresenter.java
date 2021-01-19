@@ -127,22 +127,32 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         params.put("deviceType","android");
         mobileApi.login(params)
                 .compose(RxUtils.applySchedulersLifeCycle(getView()))
-                .subscribe(new RxObserver<BaseBean<UserLoginBean>>(){
+                .subscribe(new RxObserver<BaseBean>(){
                     @Override
                     public void onComplete() {
                         super.onComplete();
                     }
 
                     @Override
-                    public void onNext(BaseBean<UserLoginBean> baseBean) {
-                        Constants.token = baseBean.getUser_token();
-                        getView().loginSuccess(baseBean);
+                    public void onNext(BaseBean baseBean) {
+                        if(RxObserver.checkJsonCode(baseBean)){
+                            Constants.token = baseBean.getUser_token();
+                            getView().loginSuccess(baseBean);
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
                         PLog.e("TAG",e.getMessage());
+                        Constants.BASE_FIS_URL = "" ;
+                        Constants.BASE_MOBILE_URL = "" ;
+                        Constants.BASE_UPLOAD_URL = "" ;
+
+                        Constants.token = "" ;
+                        RetrofitUrlManager.getInstance()
+                                .setGlobalDomain(Constants.BASE_URL);
+                        RetrofitUrlManager.getInstance().setRun(false);
                     }
                 });
     }

@@ -2,26 +2,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_gravity="bottom"
-    android:background="@color/c_FFFFFF"
+    android:layout_marginLeft="@dimen/W24"
+    android:layout_marginRight="@dimen/W24"
+    android:background="@drawable/shape_comment"
     android:layout_height="@dimen/H850">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/H15"
-        android:textSize="16sp"
-        android:textColor="@color/c_666666"
-        android:text="条评论">
-    </TextView>
 
     <ImageView
         android:id="@+id/img_closeComment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/W40"
+        android:layout_height="@dimen/H40"
+        android:layout_marginTop="@dimen/H15"
+        android:layout_marginRight="@dimen/W15"
+        android:scaleType="centerCrop"
         android:src="@mipmap/icon_comment_close"
         android:layout_alignParentRight="true"
-        android:padding="@dimen/H15">
+        android:padding="@dimen/H8">
     </ImageView>
 
     <androidx.recyclerview.widget.RecyclerView

@@ -22,14 +22,12 @@ import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.baseandroid.utils.TimeUtils;
 import com.datacvg.dimp.bean.ActionPlanBean;
-import com.datacvg.dimp.bean.Contact;
 import com.datacvg.dimp.bean.CreateTaskBean;
 import com.datacvg.dimp.bean.TaskInfoBean;
 import com.datacvg.dimp.presenter.TaskDetailPresenter;
 import com.datacvg.dimp.view.TaskDetailView;
 import com.datacvg.dimp.widget.FlowLayout;
 import com.enlogy.statusview.StatusRelativeLayout;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;

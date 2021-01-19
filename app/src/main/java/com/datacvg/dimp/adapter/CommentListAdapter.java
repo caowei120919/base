@@ -1,6 +1,7 @@
 package com.datacvg.dimp.adapter;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +50,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
             for (String arg : commentBean.getTexts()){
                 comment = comment + arg ;
             }
-            holder.tvComment.setText(comment);
+            holder.tvComment.setText(Html.fromHtml(comment));
             holder.tvCommentName.setText(commentBean.getComment_username());
             holder.tvCommentTime.setText(commentBean.getUpdate_time());
             /**

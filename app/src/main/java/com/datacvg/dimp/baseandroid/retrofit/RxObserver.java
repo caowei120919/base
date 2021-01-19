@@ -32,24 +32,7 @@ public class RxObserver<T> implements Observer <T>{
 
     @Override
     public void onNext(T t) {
-        if(t instanceof BaseBean){
-            if(((BaseBean) t).getStatus() == Constants.SERVICE_CODE_SUCCESS_MOBILE
-                    || ((BaseBean) t).getStatus() == Constants.SERVICE_CODE_SUCCESS_FIS){
-                onNext(t);
-            }else if(((BaseBean) t).getStatus() == Constants.SERVICE_CODE_FAIL_FOR_TOKEN){
-                EventBus.getDefault().post(new RefreshTokenEvent());
-            }else {
-                ToastUtils.showLongToast(((BaseBean) t).getMessage());
-            }
-        }else if(t instanceof ServiceBean){
-            if(((ServiceBean) t).getStatus() == 1){
-                onNext(t);
-            }else{
-                ToastUtils.showLongToast(((ServiceBean) t).getMessage());
-            }
-        }else if(t instanceof ImageResBean){
-            onNext(t);
-        }
+
     }
 
     @Override
@@ -92,4 +75,29 @@ public class RxObserver<T> implements Observer <T>{
     @Override
     public void onComplete() {
     }
+
+    /**
+     * 校验接口返回数据
+     * @param t
+     * @param <T>
+     * @return  数据接口请求成功返回true  否则返回false
+     */
+    public static <T> boolean checkJsonCode(T t) {
+        if (t == null) {
+            return false;
+        }
+        if(t instanceof BaseBean){
+            if (((BaseBean) t).getStatus() == Constants.SERVICE_CODE_SUCCESS_FIS
+                    || ((BaseBean) t).getStatus() == Constants.SERVICE_CODE_SUCCESS_MOBILE) {
+                return true ;
+            }else if(((BaseBean) t).getStatus() == Constants.SERVICE_CODE_FAIL_FOR_TOKEN){
+                EventBus.getDefault().post(new RefreshTokenEvent());
+                return false ;
+            }
+            ToastUtils.showLongToast(((BaseBean) t).getMessage());
+            return false ;
+        }
+        return false ;
+    }
+
 }
