@@ -402,6 +402,10 @@ public class TableDetailActivity extends BaseActivity<TableDetailView, TableDeta
                     webView.loadUrl(/*resdata.getShowUrl(),map*/url);
                     break;
 
+                case "MODEL" :
+
+                    break;
+
                 default:
                     webView.loadUrl(resdata.getShowUrl());
                     break;

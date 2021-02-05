@@ -27,7 +27,7 @@ allprojects {
 ext {
     compileSdkVersion = 30
     buildToolsVersion = "30.0.1"
-    minSdkVersion = 19
+    minSdkVersion = 21
     targetSdkVersion = 30
     versionCode = getVersionCode()
     versionName = getVersionName()

@@ -6,4 +6,5 @@ package com.datacvg.dimp;
  * @Description : 常量定义
  */
 public class Definition {
+
 }

@@ -46,6 +46,7 @@ public abstract class MvpFragment<V extends MvpView, P extends MvpPresenter<V>> 
      * Creates a new presenter instance,This method will be
      * called from {@link #onViewCreated(View, Bundle)}
      */
+    @Override
     public abstract P createPresenter();
 
     @NonNull
