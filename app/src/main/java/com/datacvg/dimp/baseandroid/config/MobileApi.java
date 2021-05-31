@@ -1,11 +1,11 @@
 package com.datacvg.dimp.baseandroid.config;
-
 import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.dimp.bean.ActionPlanIndexListBean;
 import com.datacvg.dimp.bean.ActionPlanListBean;
 import com.datacvg.dimp.bean.ChartListBean;
 import com.datacvg.dimp.bean.CommentListBean;
 import com.datacvg.dimp.bean.DefaultUserListBean;
+import com.datacvg.dimp.bean.DigitalPageBean;
 import com.datacvg.dimp.bean.DimensionListBean;
 import com.datacvg.dimp.bean.DimensionPositionListBean;
 import com.datacvg.dimp.bean.ImageResBean;
@@ -22,9 +22,12 @@ import com.datacvg.dimp.bean.TableInfoBean;
 import com.datacvg.dimp.bean.TableListBean;
 import com.datacvg.dimp.bean.TableParamInfoListBean;
 import com.datacvg.dimp.bean.TaskInfoBean;
+import com.datacvg.dimp.bean.TimeValueBean;
 import com.datacvg.dimp.bean.UserJobsListBean;
 import com.datacvg.dimp.bean.UserLoginBean;
 import java.util.Map;
+import java.util.function.DoubleUnaryOperator;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
@@ -50,21 +53,21 @@ public interface MobileApi {
      * @param params    登录请求封装的数据集
      * @return
      */
-    @POST("login/userlogin")
+    @POST("api/mobile/login/userlogin")
     Observable<BaseBean<UserLoginBean>> login(@Body Map<String, String> params);
 
     /**
      * 获取用户模块
      * @return
      */
-    @GET("usermodel/usermodellist")
+    @GET("api/mobile/usermodel/usermodellist")
     Observable<BaseBean<ModuleListBean>> getPermissionModule();
 
     /**
      * 登出
      * @return
      */
-    @GET("login/userloginout")
+    @GET("api/mobile/login/userloginout")
     Observable<BaseBean> loginOut();
 
     /**
@@ -72,7 +75,7 @@ public interface MobileApi {
      * @param userPkid  用户标识id
      * @return
      */
-    @GET("login/userposition")
+    @GET("api/mobile/login/userposition")
     Observable<BaseBean<UserJobsListBean>> getJob(@Query("userPkid") String userPkid);
 
     /**
@@ -81,8 +84,7 @@ public interface MobileApi {
      * @param t
      * @return
      */
-    @Headers({"Domain-Name: fis_api"})
-    @GET("dataexporler/report/folder")
+    @GET("api/dataengine/dataexporler/report/folder")
     Observable<BaseBean<ReportListBean>> getReport(@Query("type") String reportType,
                                                    @Query("_t") String t);
 
@@ -91,8 +93,7 @@ public interface MobileApi {
      * @param screenType
      * @return
      */
-    @Headers({"Domain-Name: fis_api"})
-    @GET("largescreen/list")
+    @GET("api/dataengine/largescreen/list")
     Observable<ScreenListBean> getScreenList(@Query("sortVal") String screenType);
 
     /**
@@ -113,16 +114,14 @@ public interface MobileApi {
      * 获取组织维度
      * @return
      */
-    @Headers({"Domain-Name: ddb_api"})
-    @GET("ddb/indexpad/dimension/get")
+    @GET("api/ddb/indexpad/dimension/get")
     Observable<BaseBean<DimensionListBean>> getDimension(@Query("timeVal") String timeVal);
 
     /**
      * 获取其他维度
      * @return
      */
-    @Headers({"Domain-Name: ddb_api"})
-    @POST("ddb/indexpad/other/dimension/get")
+    @POST("api/ddb/indexpad/other/dimension/get")
     Observable<BaseBean<DimensionListBean>> getOtherDimension(@Body Map map);
 
     /**
@@ -130,7 +129,7 @@ public interface MobileApi {
      * @param map
      * @return
      */
-    @POST("indexpad/echarts")
+    @POST("api/mobile/indexpad/echarts")
     Observable<BaseBean<ChartListBean>> getCharts(@Body Map map);
 
     /**
@@ -138,7 +137,7 @@ public interface MobileApi {
      * @param map
      * @return
      */
-    @POST("actionplan/infotask")
+    @POST("api/mobile/actionplan/infotask")
     Observable<BaseBean<ActionPlanListBean>> getActionList(@Body Map map);
 
     /**
@@ -158,7 +157,7 @@ public interface MobileApi {
      * @param read_flag
      * @return
      */
-    @GET("login/message_info")
+    @GET("api/mobile/login/message_info")
     Observable<BaseBean<MessageBean>> getMessage(@Query("pageIndex") String pageIndex,
                                                  @Query("pageSize") String pageSize,
                                                  @Query("module_id") String module_id,
@@ -168,7 +167,7 @@ public interface MobileApi {
      * 获取指标信息
      * @return
      */
-    @GET("indexpad/index/classification")
+    @GET("api/mobile/indexpad/index/classification")
     Observable<BaseBean<IndexBean>> getIndex();
 
     /**
@@ -176,7 +175,7 @@ public interface MobileApi {
      * @param indexIds  指标id拼接
      * @return
      */
-    @POST("indexpad/position/change")
+    @POST("api/mobile/indexpad/position/change")
     Observable<BaseBean<String>> changeSelectedIndex(@Query("indexIds") String indexIds);
 
 
@@ -185,7 +184,7 @@ public interface MobileApi {
      * @param tableType 设备类型 3标识app
      * @return
      */
-    @GET("mobilereport/h5/app_showcxtableauinfo")
+    @GET("api/mobile/mobilereport/h5/app_showcxtableauinfo")
     Observable<BaseBean<TableListBean>> getTableList(@Query("deviceType") String tableType);
 
     /**
@@ -193,7 +192,7 @@ public interface MobileApi {
      * @param res_id
      * @return
      */
-    @GET("mobilereport/app_readResImg")
+    @GET("api/mobile/mobilereport/app_readResImg")
     Observable<ImageResBean> getImageRes(@Query("res_id") String res_id);
 
     /**
@@ -204,7 +203,7 @@ public interface MobileApi {
      * @param module_id
      * @return
      */
-    @GET("login/message_service")
+    @GET("api/mobile/login/message_service")
     Observable<BaseBean<ReadMessageBean>> doReadMessage(@Query("key") String doRead,
                                                         @Query("message_id") String id,
                                                         @Query("read") String read,
@@ -215,7 +214,7 @@ public interface MobileApi {
      * @param reportId
      * @return
      */
-    @GET("usermodel/getreportparameters")
+    @GET("api/mobile/usermodel/getreportparameters")
     Observable<BaseBean<ReportParamsBean>> getReportParameters(@Query("model_id") String reportId);
 
     /**
@@ -223,7 +222,7 @@ public interface MobileApi {
      * @param params
      * @return
      */
-    @POST("login/mobsrv/scancode")
+    @POST("api/mobile/login/mobsrv/scancode")
     Observable<BaseBean<String>> webLogin(@QueryMap Map<String, String> params);
 
     /**
@@ -240,7 +239,7 @@ public interface MobileApi {
      * @param res_id
      * @return
      */
-    @GET("mobilereport/app_getresparaminfobyresid")
+    @GET("api/mobile/mobilereport/app_getresparaminfobyresid")
     Observable<BaseBean<TableParamInfoListBean>> getResParamInfo(@Query("resId") String res_id);
 
     /**
@@ -248,21 +247,21 @@ public interface MobileApi {
      * @param params
      * @return
      */
-    @POST("mobilereport/h5/app_show_report")
+    @POST("api/mobile/mobilereport/h5/app_show_report")
     Observable<BaseBean<TableInfoBean>> getTableUrl(@Body Map<String, String> params);
 
     /**
      * 查询所有维度下人员信息
      * @return
      */
-    @GET("actionplan/getdefaultuser")
+    @GET("api/mobile/actionplan/getdefaultuser")
     Observable<BaseBean<DefaultUserListBean>> getDefaultUser();
 
     /**
      * 查询指标
      * @return
      */
-    @GET("actionplan/infoindex")
+    @GET("api/mobile/actionplan/infoindex")
     Observable<BaseBean<ActionPlanIndexListBean>> getActionPlanIndex();
 
     @Headers({"Domain-Name: upload_file"})
@@ -286,16 +285,16 @@ public interface MobileApi {
      */
     @Headers({"Domain-Name: ddb_api"})
     @Multipart
-    @POST("report/comments/submit/comments/reply ")
+    @POST("report/comments/submit/comments/reply")
     Observable<BaseBean> submitComments(@PartMap Map<String, RequestBody> requestBodyMap);
 
-    @POST("indexpad/list")
+    @POST("api/mobile/indexpad/list")
     Observable<BaseBean<IndexTreeListBean>> getIndexTree(@Body Map map);
 
-    @POST("actionplan/creattask")
+    @POST("api/mobile/actionplan/creattask")
     Observable<BaseBean> createTask(@Body Map map);
 
-    @GET("actionplan/infodetail")
+    @GET("api/mobile/actionplan/infodetail")
     Observable<BaseBean<TaskInfoBean>> getTaskInfo(@Query("taskId") String taskId,
                                                    @Query("userType") int user_type,
                                                    @Query("userId") String userId,
@@ -303,4 +302,18 @@ public interface MobileApi {
 
     @GET("https://api.powerbi.cn/powerbi/globalservice/v201606/clusterdetails")
     Observable<String> getPowerBiInfo(@Header("authorization") String token);
+
+    /**
+     * 获取数字神经多页数据
+     * @return
+     */
+    @GET("api/ddb/indexpad/position/page")
+    Observable<BaseBean<DigitalPageBean>> getDigitalPage();
+
+    /**
+     * 获取默认时间权限
+     * @return
+     */
+    @GET("api/ddb/indexpad/time/default/rule")
+    Observable<BaseBean<TimeValueBean>> getTimeVal();
 }

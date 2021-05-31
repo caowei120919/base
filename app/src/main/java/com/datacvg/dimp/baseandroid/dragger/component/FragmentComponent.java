@@ -5,6 +5,7 @@ import android.app.Activity;
 import com.datacvg.dimp.dragger.module.FragmentModule;
 import com.datacvg.dimp.dragger.scope.FragmentScope;
 import com.datacvg.dimp.fragment.ActionFragment;
+import com.datacvg.dimp.fragment.BoardPagerFragment;
 import com.datacvg.dimp.fragment.DigitalFragment;
 import com.datacvg.dimp.fragment.PersonalFragment;
 import com.datacvg.dimp.fragment.ReportFragment;
@@ -29,4 +30,6 @@ public interface FragmentComponent {
     void inject(TableFragment tableFragment);
 
     void inject(ActionFragment actionFragment);
+
+    void inject(BoardPagerFragment boardPagerFragment);
 }

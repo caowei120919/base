@@ -8,14 +8,17 @@ import com.datacvg.dimp.baseandroid.config.LoginApi;
 import com.datacvg.dimp.baseandroid.config.MobileApi;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
+import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.AndroidUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.baseandroid.utils.StringUtils;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
-import com.datacvg.dimp.bean.ServiceBean;
+import com.datacvg.dimp.bean.TimeValueBean;
 import com.datacvg.dimp.bean.UserLoginBean;
 import com.datacvg.dimp.view.LoginView;
+import com.google.gson.Gson;
+
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
@@ -46,7 +49,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         if(TextUtils.isEmpty(companyCode)){
             if(StringUtils.equals(Constants.BASE_URL,Constants.DATA_CVG_BASE_URL)){
                 ToastUtils.showLongToast(AndroidUtils.getContext().getResources()
-                        .getString(R.string.Enter_your_enterprise_id_or_configure_the_semf_service_address));
+                        .getString(R.string.please_enter_merchant));
                 return;
             }
         }else{
@@ -62,60 +65,12 @@ public class LoginPresenter extends BasePresenter<LoginView> {
      * @param password      密码
      */
     private void getServiceUrl(String companyCode, String userName, String password) {
-        String url = String.format(Constants.GET_SERVER_URL
-                ,(TextUtils.isEmpty(companyCode) ? "" : companyCode) + "_");
-        loginApi.getServiceUrl(url)
-                .compose(RxUtils.applySchedulersLifeCycle(getView()))
-                .subscribe(new RxObserver<ServiceBean>(){
-                    @Override
-                    public void onComplete() {
-                        super.onComplete();
-                    }
-
-                    @Override
-                    public void onNext(ServiceBean serviceBean) {
-                        if(serviceBean != null && serviceBean.getAndroidresdata() != null){
-                            ServiceBean.AndroidresdataBean bean = serviceBean.getAndroidresdata();
-
-                            if(TextUtils.isEmpty(bean.getFisServer())){
-                                Constants.BASE_FIS_URL = bean.getHttpServer() + "/" ;
-                            }else{
-                                Constants.BASE_FIS_URL = bean.getFisServer() + "/";
-                            }
-                            PLog.e(Constants.BASE_FIS_URL);
-                            Constants.BASE_MOBILE_URL = bean.getHttpServer() ;
-                            Constants.BASE_DDB_URL = Constants.BASE_MOBILE_URL.replace("mobile","");
-                            Constants.BASE_UPLOAD_URL = bean.getUpdateURL() ;
-
-                            RetrofitUrlManager.getInstance().setRun(true);
-                            RetrofitUrlManager.getInstance()
-                                    .setGlobalDomain(Constants.BASE_MOBILE_URL);
-                            RetrofitUrlManager.getInstance()
-                                    .putDomain("upload_apk",Constants.BASE_UPLOAD_URL);
-                            RetrofitUrlManager.getInstance()
-                                    .putDomain("fis_api",Constants.BASE_FIS_URL);
-                            RetrofitUrlManager.getInstance()
-                                    .putDomain("local_api",Constants.BASE_LOCAL_URL);
-                            RetrofitUrlManager.getInstance()
-                                    .putDomain("upload_file","http://dimp.dev.datacvg.com/api/file");
-                            RetrofitUrlManager.getInstance()
-                                    .putDomain("ddb_api",Constants.BASE_DDB_URL);
-
-                            if(bean.getAppVersion().compareTo(BuildConfig.VERSION_NAME) > 0){
-                                getView().onUpdateVersion(bean.getUpdateURL());
-                            }else{
-                                PLog.e("upload_file  ===== > " + RetrofitUrlManager.getInstance().fetchDomain("upload_file"));
-                                login(userName,password);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        PLog.e("TAG",e.getMessage());
-                    }
-                });
+        String url = String.format(Constants.BASE_MERCHANT,companyCode);
+        Constants.BASE_MOBILE_URL = url ;
+        RetrofitUrlManager.getInstance().setRun(true);
+        RetrofitUrlManager.getInstance()
+                .setGlobalDomain(url);
+        login(userName,password);
     }
 
 
@@ -137,6 +92,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                     public void onNext(BaseBean baseBean) {
                         if(RxObserver.checkJsonCode(baseBean)){
                             Constants.token = baseBean.getUser_token();
+                            getTimeValue() ;
                             getView().loginSuccess(baseBean);
                         }
                     }
@@ -148,11 +104,39 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                         Constants.BASE_FIS_URL = "" ;
                         Constants.BASE_MOBILE_URL = "" ;
                         Constants.BASE_UPLOAD_URL = "" ;
-
                         Constants.token = "" ;
                         RetrofitUrlManager.getInstance()
                                 .setGlobalDomain(Constants.BASE_URL);
                         RetrofitUrlManager.getInstance().setRun(false);
+                    }
+                });
+    }
+
+    /**
+     * 获取时间信息
+     */
+    private void getTimeValue() {
+        mobileApi.getTimeVal()
+                .compose(RxUtils.applySchedulersLifeCycle(getView()))
+                .subscribe(new RxObserver<BaseBean<TimeValueBean>>(){
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                    }
+
+                    @Override
+                    public void onNext(BaseBean<TimeValueBean> timeValueBeanBaseBean) {
+                        PreferencesHelper.put(Constants.USER_DEFAULT_MONTH
+                                ,timeValueBeanBaseBean.getData().getDefaultTime().getMonth());
+                        PreferencesHelper.put(Constants.USER_DEFAULT_YEAR
+                                ,timeValueBeanBaseBean.getData().getDefaultTime().getYear());
+                        PreferencesHelper.put(Constants.USER_DEFAULT_DAY
+                                ,timeValueBeanBaseBean.getData().getDefaultTime().getDay());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
                     }
                 });
     }
@@ -182,7 +166,6 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
-                        PLog.e("TAG",e.getMessage());
                     }
                 });
     }

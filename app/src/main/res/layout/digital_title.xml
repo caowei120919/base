@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?actionBarSize"
+    android:background="@color/c_FFFFFF">
+
+    <TextView
+        android:id="@+id/tv_manage"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="@string/management"
+        android:gravity="center"
+        android:textColor="@color/c_303030"
+        android:textSize="14sp"
+        android:layout_centerVertical="true"
+        android:paddingLeft="@dimen/W30"
+        android:paddingRight="@dimen/W30">
+    </TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        >
+    </TextView>
+
+    <net.lucode.hackware.magicindicator.MagicIndicator
+        android:id="@+id/magic_title"
+        android:layout_width="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true">
+    </net.lucode.hackware.magicindicator.MagicIndicator>
+
+    <ImageView
+        android:id="@+id/img_share"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/H40"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:src="@mipmap/icon_digital_share"
+        android:paddingLeft="@dimen/W15"
+        android:paddingRight="@dimen/W30">
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/img_select"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/H40"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/img_share"
+        android:src="@mipmap/icon_filter_index"
+        android:paddingLeft="@dimen/W30"
+        android:paddingRight="@dimen/W15">
+    </ImageView>
+</RelativeLayout>

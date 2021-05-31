@@ -36,6 +36,11 @@
         <item>英语</item>
     </string-array>
 
+    <string-array name="digital_title">
+        <item>看板</item>
+        <item>绩效</item>
+    </string-array>
+
     <string-array name="language_value">
         <item>auto</item>
         <item>zh</item>

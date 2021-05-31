@@ -40,13 +40,16 @@ public class Constants {
     public static final int REQUEST_OPEN_CAMERA = 0x00001023 ;
     public static final int RESULT_SCAN_RESULT = 0x00001022 ;
 
-    public static final String DATA_CVG_BASE_URL = "http://datacvg.com/" ;
+    public static final String DATA_CVG_BASE_URL = "http://%s/datacvg.com/" ;
     public static final String USER_TOKEN = "USER_TOKEN";
     public static final String USER_PKID = "USER_PKID";
     public static final String USER_PWD = "USER_PWD";
     public static final String USER_ORG_NAME = "USER_ORG_NAME";
     public static final String USER_NAME = "USER_NAME";
     public static final String USER_DEFAULT_TIME = "USER_DEFAULT_TIME";
+    public static final String USER_DEFAULT_MONTH = "USER_DEFAULT_MONTH";
+    public static final String USER_DEFAULT_DAY = "USER_DEFAULT_DAY";
+    public static final String USER_DEFAULT_YEAR = "USER_DEFAULT_YEAR";
     public static final String USER_ORG_EN_NAME = "USER_ORG_EN_NAME";
     public static final String USER_ID = "USER_ID";
     public static final String USER_COMPANY_CODE = "USER_COMPANY_CODE";
@@ -59,7 +62,7 @@ public class Constants {
     public static String BASE_FIS_URL = "" ;
     public static String BASE_UPLOAD_URL = "" ;
     public static String BASE_DDB_URL = "" ;
-    public static String HEAD_IMG_URL = "/login/readheadimg?userPkid=" ;
+    public static String HEAD_IMG_URL = "api/mobile/login/readheadimg?userPkid=" ;
 
     public final static int SERVICE_CODE_SUCCESS_MOBILE = 1 ;
     public final static int SERVICE_CODE_SUCCESS_FIS = 2000 ;
@@ -180,12 +183,6 @@ public class Constants {
 
     public static final String BASE_LOCAL_URL = "http://dimp.dev.datacvg.com/api/mobile";
     /**
-     * 用于获取接口服务器地址的url
-     */
-    public static final String GET_SERVER_URL
-            = "http://semp.datacvg.com/mobile/" + "%s" + "appinfo.json" ;
-
-    /**
      * 河狸项目code地址
      */
     public static final String CUSTOM_CODE_URL = "http://semp.datacvg.com/mobile/%s-license.json" ;
@@ -199,7 +196,9 @@ public class Constants {
     /**
      * 项目baseUrl,登录时获取api服务器地址使用,获取到api地址的时候使用新的替换掉
      */
-    public static String BASE_URL = "http://datacvg.com/" ;
+    public static String BASE_URL = "https://datacvg.datacvg.com/" ;
+
+    public static String BASE_MERCHANT = "https://"+ "%s" +".datacvg.com/";
 
     /**
      * 大屏展示链接服务器的url，登录获取api服务器地址的时候,使用返回值代替

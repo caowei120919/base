@@ -20,8 +20,10 @@ import com.datacvg.dimp.bean.DefaultUserListBean;
 import com.datacvg.dimp.bean.ModuleBean;
 import com.datacvg.dimp.bean.ModuleListBean;
 import com.datacvg.dimp.event.ChangeUnReadMessageEvent;
+import com.datacvg.dimp.event.HideNavigationEvent;
 import com.datacvg.dimp.event.LoginOutEvent;
 import com.datacvg.dimp.event.RebuildTableEvent;
+import com.datacvg.dimp.event.TabShowOrHideEvent;
 import com.datacvg.dimp.fragment.ActionFragment;
 import com.datacvg.dimp.fragment.DigitalFragment;
 import com.datacvg.dimp.fragment.PersonalFragment;
@@ -98,7 +100,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     protected void setupData(Bundle savedInstanceState) {
         buildFragment();
         getPresenter().getPermissionModule();
-        getPresenter().getDepartmentAndContact();
     }
 
     /**
@@ -168,42 +169,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
      */
     @Override
     public void getModuleSuccess(ModuleListBean resdata) {
-        DbModuleInfoController controller = DbModuleInfoController.getInstance(mContext);
-        for (ModuleBean bean : resdata){
-            ModuleInfo moduleInfo = controller.getModule(bean.getRes_pkid());
-            moduleInfo.setModule_permission(true);
-            DbModuleInfoController.getInstance(mContext).updateModuleInfo(moduleInfo);
-        }
         buildTab();
-    }
-
-    /**
-     * 获取维度下所有联系人成功
-     * @param resdata
-     */
-    @Override
-    public void getDepartmentAndContactSuccess(DefaultUserListBean resdata) {
-        DbDepartmentController departmentController = DbDepartmentController.getInstance(mContext);
-        DbContactController contactController = DbContactController.getInstance(mContext);
-        for (DefaultUserBean bean : resdata) {
-            DepartmentBean departmentBean = new DepartmentBean();
-            departmentBean.setD_res_clname(bean.getD_res_clname());
-            departmentBean.setD_res_flname(bean.getD_res_flname());
-            departmentBean.setD_res_id(bean.getD_res_id());
-            departmentBean.setD_res_parentid(bean.getD_res_parentid());
-            departmentBean.setD_res_pkid(bean.getD_res_pkid());
-            departmentBean.setD_res_rootid(bean.getD_res_rootid());
-            departmentController.insertOrUpdateDepartment(departmentBean);
-            for (DefaultUserBean.UserBean contact : bean.getUser()){
-                ContactBean contactBean = new ContactBean();
-                contactBean.setDepartment_id(bean.getD_res_pkid());
-                contactBean.setId(contact.getId());
-                contactBean.setUser_id(contact.getUser_id());
-                contactBean.setName(contact.getName());
-                contactController.insertOrUpdateContact(contactBean);
-            }
-        }
-        PLog.e(DbContactController.getInstance(mContext).queryContactList().size() + "");
     }
 
     /**
@@ -283,5 +249,10 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ChangeUnReadMessageEvent event){
         tabModule.setMsgPointCount(titles.length - 1,event.getTotal());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(HideNavigationEvent event){
+        tabModule.getNavigationLayout().setVisibility(event.getHide() ? View.VISIBLE : View.GONE);
     }
 }

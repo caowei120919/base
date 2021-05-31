@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "precache-manifest.135ce90b7f02e4fb3dc42cd6cc973d08.js"
+  "precache-manifest.46a2a8b09ea83cb81c69842091000dcd.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "dataexporler"});

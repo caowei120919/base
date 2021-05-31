@@ -99,9 +99,9 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
     protected void setupData(Bundle savedInstanceState) {
         cbRememberUser.setChecked(PreferencesHelper
                 .get(Constants.USER_CHECK_REMEMBER,false));
-        companyCode = PreferencesHelper.get(Constants.USER_COMPANY_CODE,BuildConfig.DEBUG ? "test" : "");
-        userName = PreferencesHelper.get(Constants.USER_ID,BuildConfig.DEBUG ? "Po" : "");
-        password = PreferencesHelper.get(Constants.USER_PWD,BuildConfig.DEBUG ? "123456" : "");
+        companyCode = PreferencesHelper.get(Constants.USER_COMPANY_CODE,BuildConfig.DEBUG ? "datacvg" : "");
+        userName = PreferencesHelper.get(Constants.USER_ID,BuildConfig.DEBUG ? "windy" : "");
+        password = PreferencesHelper.get(Constants.USER_PWD,BuildConfig.DEBUG ? "111111" : "");
 
         if(!StringUtils.isEmpty(companyCode)){
             edCode.setText(companyCode);
@@ -123,7 +123,7 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
                     return;
                 }
                 if (TextUtils.isEmpty(companyCode)){
-                    ToastUtils.showLongToast(resources.getString(R.string.Enter_your_enterprise_id_or_configure_the_semf_service_address));
+                    ToastUtils.showLongToast(resources.getString(R.string.please_enter_merchant));
                     return;
                 }
                 if(TextUtils.isEmpty(userName)){
@@ -148,31 +148,13 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
     }
 
     /**
-     * 更新应用
-     * @param updateUrl 下载链接
-     */
-    @Override
-    public void onUpdateVersion(String updateUrl) {
-        CVGOKCancelWithTitle dialogOKCancel = new CVGOKCancelWithTitle(mContext);
-        dialogOKCancel.setMessage(mContext.getResources()
-                .getString(R.string.a_new_version_of_the_application_has_been_detected_is_it_updated));
-        dialogOKCancel.getPositiveButton().setText(mContext.getResources().getString(R.string.confirm));
-        dialogOKCancel.setOnClickPositiveButtonListener(view -> {
-            ToastUtils.showLongToast(mContext.getResources().getString(R.string.confirm));
-        });
-        dialogOKCancel.setOnClickListenerNegativeBtn(view -> {
-            getPresenter().login(userName,password);
-        });
-        dialogOKCancel.show();
-    }
-
-    /**
      * 登录成功回调
      * @param baseBean
      */
     @Override
     public void loginSuccess(BaseBean<UserLoginBean> baseBean) {
-        Constants.saveUser(baseBean.getResdata(),cbRememberUser.isChecked(),password,companyCode);
+        Constants.saveUser(baseBean.getResdata()
+                ,cbRememberUser.isChecked(),password,companyCode);
         mContext.startActivity(new Intent(mContext, MainActivity.class));
         finish();
     }

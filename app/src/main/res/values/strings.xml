@@ -167,4 +167,11 @@
     <string name="guaranteed">保底</string>
     <string name="at_least_one_indicator_can_be_selected_before_an_action_plan_can_be_issued">至少选择一个指标才可以下发行动方案</string>
     <string name="action_plan_created_successfully">行动方案创建成功</string>
+    <string name="merchants">租户</string>
+    <string name="please_enter_merchant">请输入租户</string>
+    <string name="management">管理</string>
+    <string name="complete">完成</string>
+    <string name="board">看板</string>
+    <string name="the_current_page">当前页面:</string>
+    <string name="the_page_is">第%s页呀</string>
 </resources>

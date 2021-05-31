@@ -69,7 +69,7 @@ public class ReportDetailActivity extends BaseActivity<ReportDetailView, ReportD
     private ReportBean bean ;
     private String reportId = "" ;
     private ReportParamsBean.ParamsResultBean paramsResultBean ;
-    private String serviceUrl = Constants.BASE_FIS_URL;
+    private String serviceUrl = Constants.BASE_URL;
     /**
      * 时间点的时间参数
      */
@@ -120,7 +120,7 @@ public class ReportDetailActivity extends BaseActivity<ReportDetailView, ReportD
                 reportId = bean.getShare_id() ;
                 break;
         }
-        serviceUrl = serviceUrl + "/dataexporler" ;
+        serviceUrl = serviceUrl + "api/dataengine/dataexporler" ;
         try {
             serviceUrl = URLEncoder.encode(serviceUrl,"UTF-8");
         } catch (UnsupportedEncodingException e) {

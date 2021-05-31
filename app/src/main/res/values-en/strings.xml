@@ -174,4 +174,11 @@
     <string name="guaranteed">guaranteed</string>
     <string name="at_least_one_indicator_can_be_selected_before_an_action_plan_can_be_issued">At least one indicator can be selected before an action plan can be issued</string>
     <string name="action_plan_created_successfully">Action plan created successfully</string>
+    <string name="merchants">merchants</string>
+    <string name="please_enter_merchant">Please enter Merchant</string>
+    <string name="management">management</string>
+    <string name="complete">complete</string>
+    <string name="board">board</string>
+    <string name="the_current_page">The current page :</string>
+    <string name="the_page_is">The %s page!</string>
 </resources>

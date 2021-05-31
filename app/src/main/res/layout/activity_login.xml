@@ -19,7 +19,7 @@
         android:textSize="14sp"
         android:textColor="@color/c_cc000000"
         android:imeOptions="actionNext"
-        android:hint="@string/enterprise_id_code"
+        android:hint="@string/merchants"
         android:singleLine="true"
         android:layout_marginLeft="@dimen/W100"
         android:layout_marginRight="@dimen/W100"

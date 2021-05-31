@@ -36,6 +36,11 @@
         <item>English</item>
     </string-array>
 
+    <string-array name="digital_title">
+        <item>board</item>
+        <item>performance</item>
+    </string-array>
+
     <string-array name="language_value">
         <item>auto</item>
         <item>zh</item>

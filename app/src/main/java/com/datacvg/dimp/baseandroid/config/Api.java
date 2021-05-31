@@ -7,9 +7,13 @@ public class Api {
      * 接口地址
      */
     public static String BASE_URL = "";
-    //测试
+    /**
+     * 测试
+     */
     public static final String BASE_URL_TEST = "http://testapp.wobianmall.com";
-    //正式
+    /**
+     * 正式
+     */
     public static final String BASE_URL_PRODUCT = "http://app.wobianmall.com";
 
 
@@ -106,8 +110,8 @@ public class Api {
          * 官方版app传1 广告版app传2
          */
         public static final String HEADER_APP_CHANNEL = "appChannel";
-        public static final String APPCHANNEL_OFFICIAL = "1";//官方版app传1
-        public static final String APPCHANNEL_AD = "2";     //广告版app传2
+        public static final String APPCHANNEL_OFFICIAL = "1";
+        public static final String APPCHANNEL_AD = "2";
 
 
         /**
