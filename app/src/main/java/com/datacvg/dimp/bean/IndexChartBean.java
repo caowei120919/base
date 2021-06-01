@@ -97,6 +97,88 @@ public class IndexChartBean {
     private List<String> colorArr;
     private List<ThresholdArrBean> thresholdArr;
 
+    private String index_clname;
+    private String page_chart_type;
+    private String index_type;
+    private String tflag;
+    private String index_flname ;
+    private String threshold_flag;
+    private String analysis_dimension;
+    private String index_classification_name;
+    private Boolean isSelected = false ;
+
+    public String getIndex_clname() {
+        return index_clname;
+    }
+
+    public void setIndex_clname(String index_clname) {
+        this.index_clname = index_clname;
+    }
+
+    public String getPage_chart_type() {
+        return page_chart_type;
+    }
+
+    public void setPage_chart_type(String page_chart_type) {
+        this.page_chart_type = page_chart_type;
+    }
+
+    public String getIndex_type() {
+        return index_type;
+    }
+
+    public void setIndex_type(String index_type) {
+        this.index_type = index_type;
+    }
+
+    public String getTflag() {
+        return tflag;
+    }
+
+    public void setTflag(String tflag) {
+        this.tflag = tflag;
+    }
+
+    public String getIndex_flname() {
+        return index_flname;
+    }
+
+    public void setIndex_flname(String index_flname) {
+        this.index_flname = index_flname;
+    }
+
+    public String getThreshold_flag() {
+        return threshold_flag;
+    }
+
+    public void setThreshold_flag(String threshold_flag) {
+        this.threshold_flag = threshold_flag;
+    }
+
+    public String getAnalysis_dimension() {
+        return analysis_dimension;
+    }
+
+    public void setAnalysis_dimension(String analysis_dimension) {
+        this.analysis_dimension = analysis_dimension;
+    }
+
+    public String getIndex_classification_name() {
+        return index_classification_name;
+    }
+
+    public void setIndex_classification_name(String index_classification_name) {
+        this.index_classification_name = index_classification_name;
+    }
+
+    public Boolean getSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(Boolean selected) {
+        isSelected = selected;
+    }
+
     public static class ThresholdArrBean {
         /**
          * threshold_value : 30.34

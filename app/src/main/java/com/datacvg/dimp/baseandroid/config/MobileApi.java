@@ -7,11 +7,13 @@ import com.datacvg.dimp.bean.CommentListBean;
 import com.datacvg.dimp.bean.DefaultUserListBean;
 import com.datacvg.dimp.bean.DeletePageBean;
 import com.datacvg.dimp.bean.DigitalPageBean;
+import com.datacvg.dimp.bean.DimensionForTimeBean;
 import com.datacvg.dimp.bean.DimensionListBean;
 import com.datacvg.dimp.bean.DimensionPositionBean;
 import com.datacvg.dimp.bean.EChartListBean;
 import com.datacvg.dimp.bean.ImageResBean;
 import com.datacvg.dimp.bean.IndexBean;
+import com.datacvg.dimp.bean.IndexChartInfoBean;
 import com.datacvg.dimp.bean.IndexTreeListBean;
 import com.datacvg.dimp.bean.MessageBean;
 import com.datacvg.dimp.bean.ModuleListBean;
@@ -330,6 +332,30 @@ public interface MobileApi {
     @GET("api/ddb/indexpad/page/delete/{id}")
     Observable<BaseBean<DeletePageBean>> deletePageRequest(@Path("id") String page);
 
+    /**
+     * 保存页码指标信息
+     * @param params
+     * @return
+     */
     @POST("api/ddb/indexpad/position/change")
     Observable<BaseBean> changeChart(@Body Map params);
+
+    /**
+     * 根据时间维度获取指标信息
+     * @param timeVal
+     * @return
+     */
+    @GET("api/ddb/indexpad/indexPageDimension")
+    Observable<BaseBean<DimensionForTimeBean>> getIndexPageDimension(@Query("timeVal") String timeVal);
+
+    /**
+     * 添加页面信息
+     * @param params
+     * @return
+     */
+    @POST("api/ddb/indexpad/indexPageRelation")
+    Observable<BaseBean> addPageRequest(@Body Map params);
+
+    @POST("api/ddb/indexpad/indexChart/info")
+    Observable<BaseBean<IndexChartInfoBean>> getIndexForDimension(@Body Map params);
 }

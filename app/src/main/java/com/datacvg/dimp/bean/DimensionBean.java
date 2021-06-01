@@ -40,6 +40,15 @@ public class DimensionBean {
     private Integer res_level_sort;
     private String orgFlag;
     private List<DimensionBean> nodes;
+    private Boolean isOpen = false ;
+
+    public Boolean getOpen() {
+        return isOpen;
+    }
+
+    public void setOpen(Boolean open) {
+        isOpen = open;
+    }
 
     public String getId() {
         return id;

@@ -191,4 +191,16 @@
     <string name="are_you_sure_to_delete_all_data_on_this_page_and_current_page">Are you sure to delete all data on this page and current page?</string>
     <string name="delete_the_success">Delete the success</string>
     <string name="this_page_is_empty_after_deleting_the_data_and_will_be_deleted_here">This page is empty after deleting the data and will be deleted here</string>
+    <string name="setup_board">setup board</string>
+    <string name="custom_page_name">Custom page name</string>
+    <string name="time_to_type">Time to type</string>
+    <string name="custom_dimension">Custom dimension</string>
+    <string name="personalized_board">Personalized board</string>
+    <string name="add_all_metrics">Add all metrics</string>
+    <string name="cancel_adding_all_metrics">Cancel adding all metrics</string>
+    <string name="select_all">select all</string>
+    <string name="please_enter_a_page_name">Please enter a page name</string>
+    <string name="please_select_dimension">Please select dimension</string>
+    <string name="please_select_at_least_one_metric">Please select at least one metric</string>
+    <string name="add_success">Add a success</string>
 </resources>

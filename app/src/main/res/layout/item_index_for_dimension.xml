@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/H108">
+
+    <TextView
+        android:id="@+id/tv_widthAndHigh"
+        android:layout_width="@dimen/W120"
+        android:layout_height="@dimen/H60"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/W24"
+        android:text="2 * 2"
+        android:paddingLeft="@dimen/W10"
+        android:paddingRight="@dimen/W10"
+        android:gravity="center"
+        android:textColor="@color/c_FFFFFF"
+        android:background="@drawable/shape_two_and_two">
+    </TextView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/W24"
+        android:layout_toRightOf="@id/tv_widthAndHigh">
+
+        <TextView
+            android:id="@+id/tv_typeIndex"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/H3"
+            android:layout_alignParentBottom="true"
+            android:background="@color/c_f2f2f2">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_indexName"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:textColor="@color/c_000000"
+            android:textStyle="bold">
+        </TextView>
+
+        <TextView
+            android:id="@+id/check_index"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
+            android:background="@null"
+            android:drawablePadding="@dimen/W15"
+            android:drawableLeft="@drawable/selector_select"
+            android:paddingRight="@dimen/W30"
+            android:paddingLeft="@dimen/W30">
+        </TextView>
+    </RelativeLayout>
+</RelativeLayout>

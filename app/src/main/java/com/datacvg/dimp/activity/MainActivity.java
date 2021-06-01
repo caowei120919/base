@@ -28,6 +28,7 @@ import com.datacvg.dimp.event.HideNavigationEvent;
 import com.datacvg.dimp.event.LoginOutEvent;
 import com.datacvg.dimp.event.RebuildTableEvent;
 import com.datacvg.dimp.event.TabShowOrHideEvent;
+import com.datacvg.dimp.event.ToAddPageEvent;
 import com.datacvg.dimp.fragment.ActionFragment;
 import com.datacvg.dimp.fragment.DigitalFragment;
 import com.datacvg.dimp.fragment.PersonalFragment;
@@ -251,7 +252,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                 break;
 
             case R.id.lin_addPage :
-
+                EventBus.getDefault().post(new ToAddPageEvent());
                 break;
         }
     }

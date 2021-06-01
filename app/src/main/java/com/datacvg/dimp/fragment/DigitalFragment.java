@@ -1,5 +1,6 @@
 package com.datacvg.dimp.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.activity.AddIndexPageActivity;
 import com.datacvg.dimp.adapter.BoardPagerAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
@@ -19,10 +21,12 @@ import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.baseandroid.widget.CVGOKCancelWithTitle;
 import com.datacvg.dimp.bean.PageItemBean;
 import com.datacvg.dimp.bean.PageItemListBean;
+import com.datacvg.dimp.event.AddPageEvent;
 import com.datacvg.dimp.event.ChangePageChartEvent;
 import com.datacvg.dimp.event.DeletePageEvent;
 import com.datacvg.dimp.event.HideNavigationEvent;
 import com.datacvg.dimp.event.ShakeEvent;
+import com.datacvg.dimp.event.ToAddPageEvent;
 import com.datacvg.dimp.presenter.DigitalPresenter;
 import com.datacvg.dimp.view.DigitalView;
 import com.datacvg.dimp.widget.TitleNavigator;
@@ -75,6 +79,7 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
     private List<PageItemBean> pageItemBeans = new ArrayList<>() ;
     private BoardPagerAdapter adapter ;
     private List<Fragment> fragments = new ArrayList<>() ;
+    private boolean isShake = false ;
 
 
 
@@ -98,6 +103,7 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
             for (PageItemBean bean : pageItemBeans){
                 bean.setShake(false);
             }
+            isShake = false ;
             EventBus.getDefault().post(new ChangePageChartEvent());
             EventBus.getDefault().post(new HideNavigationEvent(true));
             EventBus.getDefault().post(new ShakeEvent(false));
@@ -193,6 +199,7 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
         this.pageItemBeans.addAll(pageItemBeans);
         fragments.clear();
         for (PageItemBean bean : pageItemBeans) {
+            bean.setShake(isShake);
             String[] dimensionArr = new Gson().fromJson(bean.getDimensions(),String[].class);
             switch (dimensionArr.length){
                 case 1 :
@@ -275,6 +282,7 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(DeletePageEvent event){
+        isShake = true ;
         CVGOKCancelWithTitle dialogOKCancel = new CVGOKCancelWithTitle(mContext);
         dialogOKCancel.setMessage(TextUtils.isEmpty(event.getTitle()) ? mContext.getResources()
                 .getString(R.string.are_you_sure_to_delete_all_data_on_this_page_and_current_page)
@@ -295,5 +303,18 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
      */
     private void deletePage(String page) {
         getPresenter().deletePageRequest(page);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(AddPageEvent event){
+        isShake = true ;
+        getDigitalPage();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ToAddPageEvent event){
+        Intent intent = new Intent(mContext, AddIndexPageActivity.class) ;
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,pageItemBeans.get(pageItemBeans.size() - 1).getPage());
+        mContext.startActivity(intent);
     }
 }
