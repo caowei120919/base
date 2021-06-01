@@ -47,8 +47,8 @@
 
             <ImageView
                 android:id="@+id/img_indexForReport"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/W40"
+                android:layout_height="@dimen/H40"
                 android:src="@mipmap/icon_index_report"
                 android:layout_alignParentRight="true"
                 android:layout_alignTop="@id/tv_name"
@@ -57,8 +57,8 @@
 
             <ImageView
                 android:id="@+id/img_describe"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/W40"
+                android:layout_height="@dimen/H40"
                 android:src="@mipmap/icon_describe"
                 android:layout_toLeftOf="@id/img_indexForReport"
                 android:layout_alignTop="@id/tv_name"

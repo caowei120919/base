@@ -119,4 +119,28 @@ public class BoardPagerPresenter extends BasePresenter<BoardPagerView>{
                     }
                 });
     }
+
+    /**
+     *
+     * @param params
+     */
+    public void changeChart(Map params) {
+        api.changeChart(params).compose(RxUtils.applySchedulersLifeCycle(getView()))
+                .subscribe(new RxObserver<BaseBean>(){
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                    }
+
+                    @Override
+                    public void onNext(BaseBean bean) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+                });
+    }
 }

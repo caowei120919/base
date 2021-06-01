@@ -101,13 +101,17 @@ public class BoardPagerAdapter extends PagerAdapter implements ViewPager.OnPageC
 
     @Override
     public void onPageSelected(int i) {
-        fragments.get(currentPageIndex).onPause();
-        if(fragments.get(i).isAdded()){
-            fragments.get(i).onResume();
+        int position = i ;
+        if(i >= fragments.size()){
+            position = 0 ;
         }
-        currentPageIndex = i;
+        fragments.get(position).onPause();
+        if(fragments.get(position).isAdded()){
+            fragments.get(position).onResume();
+        }
+        currentPageIndex = position;
         if(null != onExtraPageChangeListener){
-            onExtraPageChangeListener.onExtraPageSelected(i);
+            onExtraPageChangeListener.onExtraPageSelected(position);
         }
 
     }

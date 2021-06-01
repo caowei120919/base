@@ -1,11 +1,13 @@
 package com.datacvg.dimp.adapter;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -67,6 +69,7 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private LayoutInflater inflater ;
     private List<DimensionPositionBean.IndexPositionBean> chartBeans = new ArrayList<>();
     private IndexClickListener listener ;
+    private boolean mShake = false ;
 
 
     public DimensionIndexAdapter(Context mContext
@@ -138,8 +141,19 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
+    public void setHolderShake(boolean isShake){
+        mShake = isShake ;
+        notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        holder.itemView.setAnimation(AnimationUtils.loadAnimation(mContext,R.anim.shake));
+        if(mShake){
+            holder.itemView.getAnimation().start();
+        }else{
+            holder.itemView.getAnimation().cancel();
+        }
         if(holder instanceof TextHolder){
             onBindViewTextHolder((TextHolder) holder,position);
         }else if(holder instanceof LongTextHolder){
@@ -220,6 +234,19 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             PLog.e("标题被点击");
             listener.OnTitleClick(chartBeans.get(position));
         });
+        if (mShake){
+            holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                    .decodeResource(mContext.getResources(),R.mipmap.dash_delete));
+            holder.imgDescribe.setVisibility(View.GONE);
+            holder.imgIndexForReport.setOnClickListener(view -> {
+                PLog.e("删除指标");
+                listener.OnIndexDeleteClick(chartBeans.get(position));
+            });
+        }else{
+            holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                    .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
+            holder.imgDescribe.setVisibility(View.VISIBLE);
+        }
         holder.tvDefaultValue.setText(dimensionPositionBean.getIndex_data() + "");
         holder.tvDefaultValue.setTextColor(Color.parseColor(dimensionPositionBean.getIndex_default_color()));
     }
@@ -248,6 +275,19 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             PLog.e("标题被点击");
             listener.OnTitleClick(chartBeans.get(position));
         });
+        if (mShake){
+            holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                    .decodeResource(mContext.getResources(),R.mipmap.dash_delete));
+            holder.imgDescribe.setVisibility(View.GONE);
+            holder.imgIndexForReport.setOnClickListener(view -> {
+                PLog.e("删除指标");
+                listener.OnIndexDeleteClick(chartBeans.get(position));
+            });
+        }else{
+            holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                    .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
+            holder.imgDescribe.setVisibility(View.VISIBLE);
+        }
         holder.tvDefaultValue.setText(dimensionPositionBean.getIndex_data() + "");
         holder.tvDefaultValue.setTextColor(Color.parseColor(dimensionPositionBean
                 .getIndex_default_color()));
@@ -368,6 +408,19 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             PLog.e("标题被点击");
             listener.OnTitleClick(chartBeans.get(position));
         });
+        if (mShake){
+            holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                    .decodeResource(mContext.getResources(),R.mipmap.dash_delete));
+            holder.imgDescribe.setVisibility(View.GONE);
+            holder.imgIndexForReport.setOnClickListener(view -> {
+                PLog.e("删除指标");
+                listener.OnIndexDeleteClick(chartBeans.get(position));
+            });
+        }else{
+            holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                    .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
+            holder.imgDescribe.setVisibility(View.VISIBLE);
+        }
         holder.tvDefaultValue.setText(dimensionPositionBean.getIndex_data() + "");
         holder.tvDefaultValue
                 .setTextColor(Color.parseColor(dimensionPositionBean.getIndex_default_color()));
@@ -434,6 +487,19 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             PLog.e("标题被点击");
             listener.OnTitleClick(chartBeans.get(position));
         });
+        if (mShake){
+            holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                    .decodeResource(mContext.getResources(),R.mipmap.dash_delete));
+            holder.imgDescribe.setVisibility(View.GONE);
+            holder.imgIndexForReport.setOnClickListener(view -> {
+                PLog.e("删除指标");
+                listener.OnIndexDeleteClick(chartBeans.get(position));
+            });
+        }else{
+            holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                    .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
+            holder.imgDescribe.setVisibility(View.VISIBLE);
+        }
         holder.dashBoardChart.drawData(dimensionPositionBean);
     }
 
@@ -460,6 +526,19 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             PLog.e("标题被点击");
             listener.OnTitleClick(chartBeans.get(position));
         });
+        if (mShake){
+            holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                    .decodeResource(mContext.getResources(),R.mipmap.dash_delete));
+            holder.imgDescribe.setVisibility(View.GONE);
+            holder.imgIndexForReport.setOnClickListener(view -> {
+                PLog.e("删除指标");
+                listener.OnIndexDeleteClick(chartBeans.get(position));
+            });
+        }else{
+            holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                    .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
+            holder.imgDescribe.setVisibility(View.VISIBLE);
+        }
         holder.bulletChart.setValues(dimensionPositionBean);
         holder.bulletChart.setmUnit(dimensionPositionBean.getChart_unit());
     }
@@ -487,6 +566,19 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             PLog.e("标题被点击");
             listener.OnTitleClick(chartBeans.get(position));
         });
+        if (mShake){
+            holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                    .decodeResource(mContext.getResources(),R.mipmap.dash_delete));
+            holder.imgDescribe.setVisibility(View.GONE);
+            holder.imgIndexForReport.setOnClickListener(view -> {
+                PLog.e("删除指标");
+                listener.OnIndexDeleteClick(chartBeans.get(position));
+            });
+        }else{
+            holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                    .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
+            holder.imgDescribe.setVisibility(View.VISIBLE);
+        }
         String bottomValue = TextUtils.isEmpty(dimensionPositionBean.getChart_bottom_title())
                 ? "" : dimensionPositionBean.getChart_bottom_title()
                 + ((TextUtils.isEmpty(dimensionPositionBean.getBottom_value()))
@@ -520,6 +612,19 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             PLog.e("标题被点击");
             listener.OnTitleClick(chartBeans.get(position));
         });
+        if (mShake){
+            holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                    .decodeResource(mContext.getResources(),R.mipmap.dash_delete));
+            holder.imgDescribe.setVisibility(View.GONE);
+            holder.imgIndexForReport.setOnClickListener(view -> {
+                PLog.e("删除指标");
+                listener.OnIndexDeleteClick(chartBeans.get(position));
+            });
+        }else{
+            holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                    .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
+            holder.imgDescribe.setVisibility(View.VISIBLE);
+        }
         String bottomValue = TextUtils.isEmpty(dimensionPositionBean.getChart_bottom_title())
                 ? "" : dimensionPositionBean.getChart_bottom_title()
                 + ((TextUtils.isEmpty(dimensionPositionBean.getBottom_value()))
@@ -698,5 +803,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public interface IndexClickListener{
         void OnTitleClick(DimensionPositionBean.IndexPositionBean bean);
 //        void OnItemClick(DimensionPositionBean bean);
+        void OnIndexDeleteClick(DimensionPositionBean.IndexPositionBean bean);
     }
 }

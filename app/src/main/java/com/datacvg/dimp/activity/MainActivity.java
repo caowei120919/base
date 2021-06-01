@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+
 import androidx.fragment.app.Fragment;
 
 import com.datacvg.dimp.R;
@@ -20,6 +23,7 @@ import com.datacvg.dimp.bean.DefaultUserListBean;
 import com.datacvg.dimp.bean.ModuleBean;
 import com.datacvg.dimp.bean.ModuleListBean;
 import com.datacvg.dimp.event.ChangeUnReadMessageEvent;
+import com.datacvg.dimp.event.DeletePageEvent;
 import com.datacvg.dimp.event.HideNavigationEvent;
 import com.datacvg.dimp.event.LoginOutEvent;
 import com.datacvg.dimp.event.RebuildTableEvent;
@@ -38,6 +42,7 @@ import com.datacvg.dimp.presenter.MainPresenter;
 import com.datacvg.dimp.view.MainView;
 import com.next.easynavigation.view.EasyNavigationBar;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -47,6 +52,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * @Author : T-Bag (茶包)
@@ -59,6 +65,8 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @BindView(R.id.easy_tab)
     EasyNavigationBar tabModule;
+    @BindView(R.id.rel_addOrDelete)
+    RelativeLayout relAddOrDelete ;
 
     private PersonalFragment personalFragment ;
     private ScreenFragment screenFragment ;
@@ -235,6 +243,19 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                 .build();
     }
 
+    @OnClick({R.id.lin_addPage,R.id.lin_deletePage})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.lin_deletePage :
+                EventBus.getDefault().post(new DeletePageEvent());
+                break;
+
+            case R.id.lin_addPage :
+
+                break;
+        }
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RebuildTableEvent event){
        PLog.e("模块切换");
@@ -254,5 +275,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(HideNavigationEvent event){
         tabModule.getNavigationLayout().setVisibility(event.getHide() ? View.VISIBLE : View.GONE);
+        relAddOrDelete.setVisibility(event.getHide() ? View.GONE : View.VISIBLE);
     }
 }

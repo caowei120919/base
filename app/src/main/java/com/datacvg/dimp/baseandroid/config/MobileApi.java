@@ -5,6 +5,7 @@ import com.datacvg.dimp.bean.ActionPlanListBean;
 import com.datacvg.dimp.bean.ChartListBean;
 import com.datacvg.dimp.bean.CommentListBean;
 import com.datacvg.dimp.bean.DefaultUserListBean;
+import com.datacvg.dimp.bean.DeletePageBean;
 import com.datacvg.dimp.bean.DigitalPageBean;
 import com.datacvg.dimp.bean.DimensionListBean;
 import com.datacvg.dimp.bean.DimensionPositionBean;
@@ -313,6 +314,22 @@ public interface MobileApi {
     @GET("api/ddb/indexpad/time/default/rule")
     Observable<BaseBean<TimeValueBean>> getTimeVal();
 
+    /**
+     * 获取对应图表数据
+     * @param params
+     * @return
+     */
     @POST("api/ddb/indexpad/indexChart")
     Observable<BaseBean<EChartListBean>> getEChart(@Body HashMap params);
+
+    /**
+     * 根据page页删除
+     * @param page
+     * @return
+     */
+    @GET("api/ddb/indexpad/page/delete/{id}")
+    Observable<BaseBean<DeletePageBean>> deletePageRequest(@Path("id") String page);
+
+    @POST("api/ddb/indexpad/position/change")
+    Observable<BaseBean> changeChart(@Body Map params);
 }

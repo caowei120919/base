@@ -2,6 +2,7 @@ package com.datacvg.dimp.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -14,9 +15,14 @@ import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
+import com.datacvg.dimp.baseandroid.utils.ToastUtils;
+import com.datacvg.dimp.baseandroid.widget.CVGOKCancelWithTitle;
 import com.datacvg.dimp.bean.PageItemBean;
 import com.datacvg.dimp.bean.PageItemListBean;
+import com.datacvg.dimp.event.ChangePageChartEvent;
+import com.datacvg.dimp.event.DeletePageEvent;
 import com.datacvg.dimp.event.HideNavigationEvent;
+import com.datacvg.dimp.event.ShakeEvent;
 import com.datacvg.dimp.presenter.DigitalPresenter;
 import com.datacvg.dimp.view.DigitalView;
 import com.datacvg.dimp.widget.TitleNavigator;
@@ -29,6 +35,9 @@ import net.lucode.hackware.magicindicator.ViewPagerHelper;
 import net.lucode.hackware.magicindicator.buildins.circlenavigator.CircleNavigator;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -42,7 +51,8 @@ import butterknife.OnClick;
  * @Description : 数字神经
  */
 public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
-        implements DigitalView, TitleNavigator.OnTabSelectedListener ,BoardPagerAdapter.OnExtraPageChangeListener{
+        implements DigitalView, TitleNavigator.OnTabSelectedListener
+        ,BoardPagerAdapter.OnExtraPageChangeListener{
     @BindView(R.id.status_title)
     StatusRelativeLayout statusTitle ;
     @BindView(R.id.tv_manage)
@@ -85,7 +95,12 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
         statusTitle.setOnItemClickListener(R.id.tv_complete,view -> {
             PLog.e("完成");
             statusTitle.showContent();
+            for (PageItemBean bean : pageItemBeans){
+                bean.setShake(false);
+            }
+            EventBus.getDefault().post(new ChangePageChartEvent());
             EventBus.getDefault().post(new HideNavigationEvent(true));
+            EventBus.getDefault().post(new ShakeEvent(false));
         });
         statusTitle.setOnItemClickListener(R.id.img_addIndex,view -> {
             PLog.e("添加指标");
@@ -142,7 +157,11 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
     public void OnClick(View view){
         switch (view.getId()){
             case R.id.tv_manage :
+                for (PageItemBean bean : pageItemBeans){
+                    bean.setShake(true);
+                }
                 EventBus.getDefault().post(new HideNavigationEvent(false));
+                EventBus.getDefault().post(new ShakeEvent(true));
                 statusTitle.showExtendContent();
                 break;
         }
@@ -201,6 +220,12 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
     }
 
     @Override
+    public void deletePageSuccess(Boolean deletePage) {
+        ToastUtils.showLongToast(resources.getString(R.string.delete_the_success));
+        getDigitalPage();
+    }
+
+    @Override
     public void onExtraPageScrolled(int i, float v, int i2) {
         if(pageItemBeans.get(i).getPad_name().contains("{default}")){
             tvName.setText(resources.getString(R.string.the_current_page)
@@ -246,5 +271,29 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
     @Override
     public void onExtraPageScrollStateChanged(int i) {
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(DeletePageEvent event){
+        CVGOKCancelWithTitle dialogOKCancel = new CVGOKCancelWithTitle(mContext);
+        dialogOKCancel.setMessage(TextUtils.isEmpty(event.getTitle()) ? mContext.getResources()
+                .getString(R.string.are_you_sure_to_delete_all_data_on_this_page_and_current_page)
+                : event.getTitle());
+        dialogOKCancel.setCancelable(false);
+        dialogOKCancel.setOnClickPositiveButtonListener(view -> {
+            deletePage(pageItemBeans.get(adapter.getCurrentPageIndex()).getPage());
+        });
+        dialogOKCancel.setOnClickListenerNegativeBtn(view -> {
+            dialogOKCancel.dismiss();
+        });
+        dialogOKCancel.show();
+    }
+
+    /**
+     * 根据page页删除当前页
+     * @param page
+     */
+    private void deletePage(String page) {
+        getPresenter().deletePageRequest(page);
     }
 }

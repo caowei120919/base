@@ -15,15 +15,24 @@ import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
+import com.datacvg.dimp.baseandroid.widget.CVGOKCancelWithTitle;
+import com.datacvg.dimp.bean.ChangeChartRequestBean;
 import com.datacvg.dimp.bean.ChatTypeRequestBean;
 import com.datacvg.dimp.bean.DimensionBean;
 import com.datacvg.dimp.bean.DimensionPositionBean;
 import com.datacvg.dimp.bean.IndexChartBean;
 import com.datacvg.dimp.bean.IndexTreeNeedBean;
 import com.datacvg.dimp.bean.PageItemBean;
+import com.datacvg.dimp.event.ChangePageChartEvent;
+import com.datacvg.dimp.event.DeletePageEvent;
+import com.datacvg.dimp.event.ShakeEvent;
 import com.datacvg.dimp.presenter.BoardPagerPresenter;
 import com.datacvg.dimp.view.BoardPagerView;
 import com.google.gson.Gson;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -123,6 +132,7 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
 
     private void setItemBean() {
         itemBean = (PageItemBean) getArguments().getSerializable(Constants.EXTRA_DATA_FOR_BEAN);
+        adapter.setHolderShake(itemBean.getShake());
         if(TextUtils.isEmpty(itemBean.getTimeVal())){
             switch (itemBean.getTime_type()){
                 case "month" :
@@ -324,5 +334,47 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
         Intent intent = new Intent(mContext, IndexTreeActivity.class);
         intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,indexTreeNeedBean);
         startActivity(intent);
+    }
+
+    /**
+     * 删除指标
+     * @param bean
+     */
+    @Override
+    public void OnIndexDeleteClick(DimensionPositionBean.IndexPositionBean bean) {
+        if(indexPositionBeans.size() == 1){
+            EventBus.getDefault().post(new DeletePageEvent(resources
+                    .getString(R.string.this_page_is_empty_after_deleting_the_data_and_will_be_deleted_here)));
+        }else{
+            indexPositionBeans.remove(bean);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ShakeEvent event){
+        adapter.setHolderShake(event.isShake());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ChangePageChartEvent event){
+        ChangeChartRequestBean changeChartRequestBean = new ChangeChartRequestBean() ;
+        changeChartRequestBean.setPad_name(itemBean.getPad_name());
+        changeChartRequestBean.setPad_number(itemBean.getPage());
+        List<ChangeChartRequestBean.BisysindexpositionBean> bisysindexpositionBeans = new ArrayList<>() ;
+        for (DimensionPositionBean.IndexPositionBean bean : indexPositionBeans){
+            ChangeChartRequestBean.BisysindexpositionBean bisysindexpositionBean
+                    = new ChangeChartRequestBean.BisysindexpositionBean();
+            bisysindexpositionBean.setIndex_id(bean.getIndex_id());
+            bisysindexpositionBean.setPage(itemBean.getPage());
+            bisysindexpositionBean.setPos_x(bean.getPos_x()+"");
+            bisysindexpositionBean.setPos_y(bean.getPos_y()+"");
+            bisysindexpositionBean.setSize_x(bean.getSize_x());
+            bisysindexpositionBean.setSize_y(bean.getSize_y());
+            bisysindexpositionBeans.add(bisysindexpositionBean);
+        }
+        changeChartRequestBean.setBisysindexposition(bisysindexpositionBeans);
+        getPresenter().changeChart(new Gson().fromJson(new Gson()
+                .toJson(changeChartRequestBean),Map.class));
     }
 }

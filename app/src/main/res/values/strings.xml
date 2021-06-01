@@ -179,4 +179,9 @@
     <string name="actual">实际</string>
     <string name="year_on_year">同比</string>
     <string name="month_on_month">环比</string>
+    <string name="the_new_page">新增页</string>
+    <string name="delete_the_page">删除页</string>
+    <string name="are_you_sure_to_delete_all_data_on_this_page_and_current_page">确认删除本页和当前页所有数据?</string>
+    <string name="delete_the_success">删除成功</string>
+    <string name="this_page_is_empty_after_deleting_the_data_and_will_be_deleted_here">删除该数据后本页为空，此处将会删除</string>
 </resources>

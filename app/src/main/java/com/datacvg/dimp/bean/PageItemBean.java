@@ -35,6 +35,15 @@ public class PageItemBean implements Comparable<PageItemBean>, Serializable {
     private String mPDimension ;
     private String mpValue ;
     private String mpName ;
+    private Boolean isShake = false;
+
+    public Boolean getShake() {
+        return isShake;
+    }
+
+    public void setShake(Boolean shake) {
+        isShake = shake;
+    }
 
     public String getmOrgName() {
         return mOrgName;

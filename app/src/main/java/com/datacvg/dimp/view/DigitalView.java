@@ -14,4 +14,10 @@ public interface DigitalView extends MvpView {
      * @param pageItemBeans
      */
     void getDigitalPageSuccess(PageItemListBean pageItemBeans);
+
+    /**
+     * 删除页
+     * @param deletePage
+     */
+    void deletePageSuccess(Boolean deletePage);
 }
