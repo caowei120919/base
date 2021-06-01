@@ -1,5 +1,6 @@
 package com.datacvg.dimp.fragment;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -8,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.activity.IndexTreeActivity;
 import com.datacvg.dimp.adapter.DimensionIndexAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
@@ -17,9 +19,11 @@ import com.datacvg.dimp.bean.ChatTypeRequestBean;
 import com.datacvg.dimp.bean.DimensionBean;
 import com.datacvg.dimp.bean.DimensionPositionBean;
 import com.datacvg.dimp.bean.IndexChartBean;
+import com.datacvg.dimp.bean.IndexTreeNeedBean;
 import com.datacvg.dimp.bean.PageItemBean;
 import com.datacvg.dimp.presenter.BoardPagerPresenter;
 import com.datacvg.dimp.view.BoardPagerView;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,10 +41,11 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
     @BindView(R.id.recycle_index)
     RecyclerView recycleIndex ;
 
+    private final String ORG_TAG = "ORG" ;
+    private final String AREA_TAG = "AREA" ;
+    private final String PRO_TAG = "PRO" ;
     private PageItemBean itemBean ;
     private DimensionIndexAdapter adapter ;
-    private final String areaTag = "area" ;
-    private final String proTag = "pro" ;
     private List<DimensionPositionBean.IndexPositionBean> indexPositionBeans = new ArrayList<>() ;
 
     @Override
@@ -77,6 +82,43 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
     @Override
     protected void setupData(Bundle savedInstanceState) {
         setItemBean();
+        getDimensionValue();
+        getPageData();
+    }
+
+    /**
+     * 获取维度信息
+     */
+    private void getDimensionValue() {
+        if (TextUtils.isEmpty(itemBean.getmOrgDimension())){
+            return;
+        }
+        List arr = new ArrayList();
+        arr.add(itemBean.getmOrgDimension());
+        Map params = new HashMap();
+        params.put("timeVal",itemBean.getTimeVal());
+        params.put("dimensionArr",arr);
+        getPresenter().getDimension(params);
+
+        if(TextUtils.isEmpty(itemBean.getmFuDimension())){
+            return;
+        }
+        arr.add(itemBean.getmFuDimension());
+        params.put("dimensionArr",arr);
+        getPresenter().getOtherDimension(params,AREA_TAG);
+
+        if(TextUtils.isEmpty(itemBean.getmPDimension())){
+            return;
+        }
+        arr.add(itemBean.getmPDimension());
+        params.put("dimensionArr",arr);
+        getPresenter().getOtherDimension(params,PRO_TAG);
+    }
+
+    private void getPageData() {
+        Map params = new HashMap();
+        params.put("page",itemBean.getPage());
+        getPresenter().getPosition(params);
     }
 
     private void setItemBean() {
@@ -98,19 +140,6 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
             }
         }
         itemBean.setTimeVal(PreferencesHelper.get(Constants.USER_DEFAULT_TIME,""));
-        if(TextUtils.isEmpty(itemBean.getmOrgDimension())){
-            PLog.e(itemBean.getDimensions());
-            getDimension();
-        }
-    }
-
-    /**
-     * 获取第一维度信息
-     */
-    private void getDimension() {
-        if(TextUtils.isEmpty(itemBean.getmOrgDimension())){
-            getPresenter().getDimension(itemBean.getTimeVal());
-        }
     }
 
     public static BoardPagerFragment newInstance(PageItemBean bean) {
@@ -119,62 +148,6 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
         BoardPagerFragment fragment = new BoardPagerFragment();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    /**
-     * 第一维度获取成功
-     * @param selectDimension
-     */
-    @Override
-    public void getDimensionSuccess(List<DimensionBean> selectDimension) {
-        if (selectDimension != null && selectDimension.size() > 0){
-            itemBean.setmOrgDimension(selectDimension.get(0).getId());
-            itemBean.setmOrgValue(selectDimension.get(0).getValue());
-            if(TextUtils.isEmpty(itemBean.getmFuDimension())){
-                Map params = new HashMap();
-                params.put("timeVal",itemBean.getTimeVal());
-                params.put("orgValue",itemBean.getmOrgDimension());
-                getPresenter().getOtherDimension(params,areaTag);
-            }
-        }else{
-            Map params = new HashMap();
-            params.put("page",itemBean.getPage());
-            getPresenter().getPosition(params);
-        }
-    }
-
-    @Override
-    public void getOtherDimensionSuccess(List<DimensionBean> selectOtherDimension, String tag) {
-        switch (tag){
-            case areaTag :
-                if (selectOtherDimension != null && selectOtherDimension.size() > 0){
-                    itemBean.setmFuDimension(selectOtherDimension.get(0).getId());
-                    itemBean.setmFuValue(selectOtherDimension.get(0).getValue());
-                    if(TextUtils.isEmpty(itemBean.getmPDimension())){
-                        Map params = new HashMap();
-                        params.put("timeVal",itemBean.getTimeVal());
-                        params.put("orgValue",itemBean.getmOrgDimension());
-                        params.put("fuValue",itemBean.getmFuDimension());
-                        getPresenter().getOtherDimension(params,proTag);
-                    }
-                }else{
-                    Map params = new HashMap();
-                    params.put("page",itemBean.getPage());
-                    getPresenter().getPosition(params);
-                }
-                break;
-
-            case proTag :
-                if (selectOtherDimension != null && selectOtherDimension.size() > 0){
-                    itemBean.setmPDimension(selectOtherDimension.get(0).getId());
-                    itemBean.setMpValue(selectOtherDimension.get(0).getValue());
-                }else{
-                    Map params = new HashMap();
-                    params.put("page",itemBean.getPage());
-                    getPresenter().getPosition(params);
-                }
-                break;
-        }
     }
 
     @Override
@@ -215,13 +188,68 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
      */
     @Override
     public void getChartSuccess(IndexChartBean data) {
-        PLog.e(data.getIndex_id() + "=================== " + data.getIndex_pkid());
         for (DimensionPositionBean.IndexPositionBean indexPositionBean : indexPositionBeans) {
             if(indexPositionBean.getIndex_id().equals(data.getIndex_id())){
                 indexPositionBean.setChartBean(data);
             }
         }
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void getDimensionSuccess(List<DimensionBean> selectDimension) {
+        setItemBeanDimension(selectDimension,ORG_TAG);
+    }
+
+    @Override
+    public void getOtherDimensionSuccess(List<DimensionBean> selectOtherDimension, String tag) {
+        setItemBeanDimension(selectOtherDimension,tag);
+    }
+
+    /**
+     * 设置维度value
+     * @param dimensions
+     * @param tag
+     */
+    private void setItemBeanDimension(List<DimensionBean> dimensions, String tag) {
+        String tagDimension = "" ;
+        switch (tag){
+            case ORG_TAG :
+                tagDimension = itemBean.getmOrgDimension() ;
+                break;
+
+            case AREA_TAG :
+                tagDimension = itemBean.getmFuDimension() ;
+                break;
+
+            case PRO_TAG :
+                tagDimension = itemBean.getmPDimension() ;
+                break;
+        }
+        for (DimensionBean bean:dimensions){
+            if(bean.getId().equals(tagDimension)){
+                switch (tag){
+                    case ORG_TAG :
+                        itemBean.setmOrgValue(bean.getD_res_value());
+                        itemBean.setmOrgName(bean.getD_res_name());
+                        break;
+
+                    case AREA_TAG :
+                        itemBean.setmFuName(bean.getD_res_name());
+                        itemBean.setmFuValue(bean.getD_res_value());
+                        break;
+
+                    case PRO_TAG :
+                        itemBean.setMpValue(bean.getD_res_value());
+                        itemBean.setMpName(bean.getD_res_name());
+                        break;
+                }
+            return;
+            }
+            if(bean.getNodes() != null && bean.getNodes().size() > 0){
+                setItemBeanDimension(bean.getNodes(),tag);
+            }
+        }
     }
 
     /**
@@ -261,7 +289,40 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
     }
 
     @Override
-    public void OnTitleClick(IndexChartBean bean) {
-
+    public void OnTitleClick(DimensionPositionBean.IndexPositionBean bean) {
+        /**
+         * orgName : 数聚股份
+         * pValue : GOODS
+         * fuDimension : 118306192070461277956
+         * type : 4
+         * fuValue : region
+         * pName : 产品或服务
+         * orgValue : DATACVG
+         * analysisDimension : user_org
+         * indexId : IBI-ex-cost_MONTH
+         * pDimension : 118341583624371459776
+         * fuName : 所有地区
+         * timeVal : 202009
+         * orgDimension : 14860367656855969470
+         * state :
+         */
+        IndexTreeNeedBean indexTreeNeedBean = new IndexTreeNeedBean();
+        indexTreeNeedBean.setOrgName(itemBean.getmOrgName());
+        indexTreeNeedBean.setpValue(itemBean.getMpValue());
+        indexTreeNeedBean.setFuDimension(itemBean.getmFuDimension());
+        indexTreeNeedBean.setType("4");
+        indexTreeNeedBean.setFuValue(itemBean.getmFuValue());
+        indexTreeNeedBean.setpName(itemBean.getMpName());
+        indexTreeNeedBean.setOrgValue(itemBean.getmOrgValue());
+        indexTreeNeedBean.setAnalysisDimension(bean.getAnalysis_dimension());
+        indexTreeNeedBean.setIndexId(bean.getIndex_id());
+        indexTreeNeedBean.setpDimension(itemBean.getmPDimension());
+        indexTreeNeedBean.setFuName(itemBean.getmFuName());
+        indexTreeNeedBean.setTimeVal(itemBean.getTimeVal());
+        indexTreeNeedBean.setOrgDimension(itemBean.getmOrgDimension());
+        PLog.e(new Gson().toJson(indexTreeNeedBean));
+        Intent intent = new Intent(mContext, IndexTreeActivity.class);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,indexTreeNeedBean);
+        startActivity(intent);
     }
 }

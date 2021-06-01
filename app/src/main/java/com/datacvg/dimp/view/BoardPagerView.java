@@ -14,19 +14,6 @@ import java.util.List;
  */
 public interface BoardPagerView extends MvpView {
     /**
-     * 获取第一维度信息
-     * @param selectDimension
-     */
-    void getDimensionSuccess(List<DimensionBean> selectDimension);
-
-    /**
-     * 获取第二三维度信息
-     * @param selectOtherDimension
-     * @param tag
-     */
-    void getOtherDimensionSuccess(List<DimensionBean> selectOtherDimension, String tag);
-
-    /**
      * 获取指标信息成功
      * @param indexPosition
      */
@@ -37,4 +24,17 @@ public interface BoardPagerView extends MvpView {
      * @param data
      */
     void getChartSuccess(IndexChartBean data);
+
+    /**
+     * 维度信息成功
+     * @param selectDimension
+     */
+    void getDimensionSuccess(List<DimensionBean> selectDimension);
+
+    /**
+     * 其他维度信息获取成功
+     * @param selectOtherDimension
+     * @param tag
+     */
+    void getOtherDimensionSuccess(List<DimensionBean> selectOtherDimension, String tag);
 }

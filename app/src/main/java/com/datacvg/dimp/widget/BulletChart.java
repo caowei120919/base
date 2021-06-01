@@ -268,14 +268,14 @@ public class BulletChart extends View {
                 int subIndex = mPaint.breakText(value, 0, value.length()
                         , true, 40f, null) ;
                 if (value.length() > 2){
-                    myText = value.substring(0, subIndex + 2) + "..." ;
+                    myText = value.substring(0,  2) + "..." ;
                 }
             } else if (flag == 2) {
                 if (textWidth > 220) {
                     int subIndex = mPaint.breakText(value, 0, value.length()
                             , true, 48f, null) ;
                     if(subIndex > 4){
-                        myText = value.substring(0, subIndex + 4) + "..." ;
+                        myText = value.substring(0, 4) + "..." ;
                     }
                 }
             }
@@ -304,32 +304,32 @@ public class BulletChart extends View {
                     //绘制同期的图例
                     mPaint.setColor(mThickColor);
                     rect = new Rect(mLegendColorRectL,
-                            Integer.valueOf((mLegendColorRectT - i * 3f * mWidth / 32) + ""),
-                            mLegendColorRectR, Integer.valueOf((mLegendColorRectB - i * 3f * mWidth / 32) + ""));
+                            Double.valueOf((mLegendColorRectT - i * 3f * mWidth / 32) + "").intValue(),
+                            mLegendColorRectR, Double.valueOf((mLegendColorRectB - i * 3f * mWidth / 32) + "").intValue());
                     canvas.drawRect(rect, mPaint);
                 } else if (mKeyList.get(i) == mActualText) {
                     //绘制实际的图例
                     mPaint.setColor(mFineColor);
                     rect = new Rect(mLegendColorRectL,
-                            Integer.valueOf((mLegendColorRectT - i * 3f * mWidth / 32) + ""),
+                            Double.valueOf((mLegendColorRectT - i * 3f * mWidth / 32) + "").intValue(),
                             mLegendColorRectR,
-                            Integer.valueOf((mLegendColorRectB - i * 3f * mWidth / 32) + ""));
+                            Double.valueOf((mLegendColorRectB - i * 3f * mWidth / 32) + "").intValue());
                     canvas.drawRect(rect, mPaint) ;
                 } else if (mKeyList.get(i) == mYearRateText || mKeyList.get(i) == mMonthRateText) {
                     //绘制同比或者环比的向上或向下的标识箭头
                     if (!TextUtils.isEmpty(mValueList.get(i))) {
                         if (java.lang.Float.valueOf(mValueList.get(i)) < 0) {
-                            rect = new Rect(Integer.valueOf((mSize * 13 / 4 + mHeight / 24 + mLegendColorRectR)+ ""),
-                                    Integer.valueOf(((mLegendColorRectT + mLegendColorRectB - mWidth * i * 3f / 16) / 2 - 5 * mSize / 12) + ""),
-                                    Integer.valueOf((mSize * 31 / 8 + mHeight / 24 + mLegendColorRectR) + ""),
-                                    Integer.valueOf(((mLegendColorRectT + mLegendColorRectB - mWidth * i * 3f / 16) / 2 + mSize * 11 / 24) + "")) ;
+                            rect = new Rect(Double.valueOf((mSize * 13 / 4 + mHeight / 24 + mLegendColorRectR)+ "").intValue(),
+                                    Double.valueOf(((mLegendColorRectT + mLegendColorRectB - mWidth * i * 3f / 16) / 2 - 5 * mSize / 12) + "").intValue(),
+                                    Double.valueOf((mSize * 31 / 8 + mHeight / 24 + mLegendColorRectR) + "").intValue(),
+                                    Double.valueOf(((mLegendColorRectT + mLegendColorRectB - mWidth * i * 3f / 16) / 2 + mSize * 11 / 24) + "").intValue()) ;
                             canvas.drawBitmap(downSign, new Rect(0, 0, downSign.getWidth()
                                     , downSign.getHeight()), rect, null);
                         } else if (java.lang.Float.valueOf(mValueList.get(i)) > 0) {
-                            rect = new Rect(Integer.valueOf((mSize * 13 / 4 + mHeight / 24 + mLegendColorRectR) + ""),
-                                    Integer.valueOf(((mLegendColorRectT + mLegendColorRectB - mWidth * i * 3f / 16) / 2 - 5 * mSize / 12) + ""),
-                                    Integer.valueOf((mSize * 31 / 8 + mHeight / 24 + mLegendColorRectR) + ""),
-                                    Integer.valueOf(((mLegendColorRectT + mLegendColorRectB - mWidth * i * 3f / 16) / 2 + mSize * 11 / 24) + "")) ;
+                            rect = new Rect(Double.valueOf((mSize * 13 / 4 + mHeight / 24 + mLegendColorRectR) + "").intValue(),
+                                    Double.valueOf(((mLegendColorRectT + mLegendColorRectB - mWidth * i * 3f / 16) / 2 - 5 * mSize / 12) + "").intValue(),
+                                    Double.valueOf((mSize * 31 / 8 + mHeight / 24 + mLegendColorRectR) + "").intValue(),
+                                    Double.valueOf(((mLegendColorRectT + mLegendColorRectB - mWidth * i * 3f / 16) / 2 + mSize * 11 / 24) + "").intValue()) ;
                             canvas.drawBitmap(upSign,new Rect(0, 0, upSign.getWidth(), upSign.getHeight()), rect, null);
                         } else if (java.lang.Float.valueOf(mValueList.get(i)) == 0f) {
                             return ;

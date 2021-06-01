@@ -110,14 +110,14 @@ public interface MobileApi {
      * 获取组织维度
      * @return
      */
-    @GET("api/ddb/indexpad/dimension/get")
-    Observable<BaseBean<DimensionListBean>> getDimension(@Query("timeVal") String timeVal);
+    @POST("api/ddb/indexpad/indexChart/dimension")
+    Observable<BaseBean<DimensionListBean>> getDimension(@Body Map map);
 
     /**
      * 获取其他维度
      * @return
      */
-    @POST("api/ddb/indexpad/other/dimension/get")
+    @POST("api/ddb/indexpad/indexChart/other/dimension")
     Observable<BaseBean<DimensionListBean>> getOtherDimension(@Body Map map);
 
     /**

@@ -21,6 +21,7 @@ import com.datacvg.dimp.presenter.DigitalPresenter;
 import com.datacvg.dimp.view.DigitalView;
 import com.datacvg.dimp.widget.TitleNavigator;
 import com.enlogy.statusview.StatusRelativeLayout;
+import com.google.gson.Gson;
 
 import net.lucode.hackware.magicindicator.FragmentContainerHelper;
 import net.lucode.hackware.magicindicator.MagicIndicator;
@@ -173,6 +174,26 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
         this.pageItemBeans.addAll(pageItemBeans);
         fragments.clear();
         for (PageItemBean bean : pageItemBeans) {
+            String[] dimensionArr = new Gson().fromJson(bean.getDimensions(),String[].class);
+            switch (dimensionArr.length){
+                case 1 :
+                    bean.setmOrgDimension(dimensionArr[0]);
+                    break;
+
+                case 2 :
+                    bean.setmOrgDimension(dimensionArr[0]);
+                    bean.setmFuDimension(dimensionArr[1]);
+                    break;
+
+                case 3 :
+                    bean.setmOrgDimension(dimensionArr[0]);
+                    bean.setmFuDimension(dimensionArr[1]);
+                    bean.setmPDimension(dimensionArr[2]);
+                    break;
+
+                default:
+                    break;
+            }
             fragments.add(BoardPagerFragment.newInstance(bean));
         }
         adapter.notifyDataSetChanged();

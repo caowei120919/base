@@ -24,25 +24,5 @@ public class TestRealPresenter extends BasePresenter<TestRealView>{
         this.api = api ;
     }
 
-    public void getDimension(String timeVal) {
-        api.getDimension(timeVal)
-                .compose(RxUtils.applySchedulersLifeCycle(getView()))
-                .subscribe(new RxObserver<BaseBean<DimensionListBean>>(){
-                    @Override
-                    public void onComplete() {
-                        super.onComplete();
-                    }
 
-                    @Override
-                    public void onNext(BaseBean<DimensionListBean> bean) {
-                        getView().getDimensionSuccess(bean.getData());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        PLog.e("TAG",e.getMessage());
-                    }
-                });
-    }
 }

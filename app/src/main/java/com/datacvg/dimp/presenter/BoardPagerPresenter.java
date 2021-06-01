@@ -30,57 +30,6 @@ public class BoardPagerPresenter extends BasePresenter<BoardPagerView>{
     }
 
     /**
-     * 根据时间获取第一维度信息
-     * @param timeVal
-     */
-    public void getDimension(String timeVal) {
-        api.getDimension(timeVal).compose(RxUtils.applySchedulersLifeCycle(getView()))
-                .subscribe(new RxObserver<BaseBean<DimensionListBean>>(){
-                    @Override
-                    public void onComplete() {
-                        super.onComplete();
-                    }
-
-                    @Override
-                    public void onNext(BaseBean<DimensionListBean> bean) {
-                        PLog.e(new Gson().toJson(bean.getData()));
-                        getView().getDimensionSuccess(bean.getData().getSelectDimension());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        PLog.e("TAG",e.getMessage());
-                    }
-                });
-    }
-
-    /**
-     * 获取第二第三维度信息
-     * @param params
-     * @param tag
-     */
-    public void getOtherDimension(Map params, String tag) {
-        api.getOtherDimension(params).compose(RxUtils.applySchedulersLifeCycle(getView()))
-                .subscribe(new RxObserver<BaseBean<DimensionListBean>>(){
-                    @Override
-                    public void onComplete() {
-                        super.onComplete();
-                    }
-
-                    @Override
-                    public void onNext(BaseBean<DimensionListBean> bean) {
-                        getView().getOtherDimensionSuccess(bean.getData().getSelectOtherDimension(),tag);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                    }
-                });
-    }
-
-    /**
      * 根据页面获取指标信息
      * @param params
      */
@@ -121,6 +70,47 @@ public class BoardPagerPresenter extends BasePresenter<BoardPagerView>{
                         if (bean.getData().getIndexChart().size() > 0){
                             getView().getChartSuccess(bean.getData().getIndexChart().get(0));
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+                });
+    }
+
+    public void getDimension(Map params) {
+        api.getDimension(params).compose(RxUtils.applySchedulersLifeCycle(getView()))
+                .subscribe(new RxObserver<BaseBean<DimensionListBean>>(){
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                    }
+
+                    @Override
+                    public void onNext(BaseBean<DimensionListBean> bean) {
+                        getView().getDimensionSuccess(bean.getData().getSelectDimension());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+                });
+    }
+
+    public void getOtherDimension(Map params,String tag) {
+        api.getOtherDimension(params).compose(RxUtils.applySchedulersLifeCycle(getView()))
+                .subscribe(new RxObserver<BaseBean<DimensionListBean>>(){
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                    }
+
+                    @Override
+                    public void onNext(BaseBean<DimensionListBean> bean) {
+                        getView().getOtherDimensionSuccess(bean.getData()
+                                .getSelectOtherDimension(),tag);
                     }
 
                     @Override

@@ -1,5 +1,7 @@
 package com.datacvg.dimp.bean;
 
+import android.text.TextUtils;
+
 import androidx.annotation.Keep;
 
 import java.util.List;
@@ -378,7 +380,10 @@ public class IndexChartBean {
     }
 
     public String getIndex_data() {
-        return index_data;
+        if(TextUtils.isEmpty(index_data)){
+            return "" ;
+        }
+        return index_data.replaceAll(",","");
     }
 
     public void setIndex_data(String index_data) {

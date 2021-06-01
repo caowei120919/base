@@ -218,7 +218,7 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
-            listener.OnTitleClick(dimensionPositionBean);
+            listener.OnTitleClick(chartBeans.get(position));
         });
         holder.tvDefaultValue.setText(dimensionPositionBean.getIndex_data() + "");
         holder.tvDefaultValue.setTextColor(Color.parseColor(dimensionPositionBean.getIndex_default_color()));
@@ -246,7 +246,7 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
-            listener.OnTitleClick(dimensionPositionBean);
+            listener.OnTitleClick(chartBeans.get(position));
         });
         holder.tvDefaultValue.setText(dimensionPositionBean.getIndex_data() + "");
         holder.tvDefaultValue.setTextColor(Color.parseColor(dimensionPositionBean
@@ -366,7 +366,7 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
-            listener.OnTitleClick(dimensionPositionBean);
+            listener.OnTitleClick(chartBeans.get(position));
         });
         holder.tvDefaultValue.setText(dimensionPositionBean.getIndex_data() + "");
         holder.tvDefaultValue
@@ -381,7 +381,7 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         for (int i = 0 ; i < baseBean.getSeries().get(0).getData().size() ; i ++){
             Object[] items = new Object[]{baseBean.getSeries().get(0).getData().get(i).getName()
                     ,TextUtils.isEmpty(baseBean.getSeries().get(0).getData().get(i).getValue())? ""
-                    : Integer.valueOf(baseBean.getSeries().get(0).getData().get(i).getValue())};
+                    : Double.valueOf(baseBean.getSeries().get(0).getData().get(i).getValue())};
             datas[i] = items ;
         }
         AAChartModel aaChartModel = new AAChartModel()
@@ -432,7 +432,7 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
-            listener.OnTitleClick(dimensionPositionBean);
+            listener.OnTitleClick(chartBeans.get(position));
         });
         holder.dashBoardChart.drawData(dimensionPositionBean);
     }
@@ -458,7 +458,7 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
-            listener.OnTitleClick(dimensionPositionBean);
+            listener.OnTitleClick(chartBeans.get(position));
         });
         holder.bulletChart.setValues(dimensionPositionBean);
         holder.bulletChart.setmUnit(dimensionPositionBean.getChart_unit());
@@ -485,7 +485,7 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
-            listener.OnTitleClick(dimensionPositionBean);
+            listener.OnTitleClick(chartBeans.get(position));
         });
         String bottomValue = TextUtils.isEmpty(dimensionPositionBean.getChart_bottom_title())
                 ? "" : dimensionPositionBean.getChart_bottom_title()
@@ -518,7 +518,7 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
-            listener.OnTitleClick(dimensionPositionBean);
+            listener.OnTitleClick(chartBeans.get(position));
         });
         String bottomValue = TextUtils.isEmpty(dimensionPositionBean.getChart_bottom_title())
                 ? "" : dimensionPositionBean.getChart_bottom_title()
@@ -696,7 +696,7 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public interface IndexClickListener{
-        void OnTitleClick(IndexChartBean bean);
+        void OnTitleClick(DimensionPositionBean.IndexPositionBean bean);
 //        void OnItemClick(DimensionPositionBean bean);
     }
 }

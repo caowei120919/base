@@ -28,10 +28,37 @@ public class PageItemBean implements Comparable<PageItemBean>, Serializable {
     private String time_type;
     private String mOrgDimension ;
     private String mOrgValue ;
+    private String mOrgName ;
     private String mFuDimension ;
     private String mFuValue ;
+    private String mFuName ;
     private String mPDimension ;
     private String mpValue ;
+    private String mpName ;
+
+    public String getmOrgName() {
+        return mOrgName;
+    }
+
+    public void setmOrgName(String mOrgName) {
+        this.mOrgName = mOrgName;
+    }
+
+    public String getmFuName() {
+        return mFuName;
+    }
+
+    public void setmFuName(String mFuName) {
+        this.mFuName = mFuName;
+    }
+
+    public String getMpName() {
+        return mpName;
+    }
+
+    public void setMpName(String mpName) {
+        this.mpName = mpName;
+    }
 
     public String getTimeVal() {
         return timeVal;

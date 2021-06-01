@@ -12,35 +12,34 @@ import java.util.List;
 @Keep
 public class DimensionBean {
 
+
     /**
-     * defaultkey : user_org
-     * id : 965332601103451593621
-     * nodes : [{"defaultkey":"user_org","id":"14860367656855969470","nodes":[{"defaultkey":"user_org","id":"24992167968453710046","pid":"14860367656855969470","res_level":2,"res_level_sort":0,"rid":"965332601103451593621","text":"管理创新事业部","value":"D-1"},{"defaultkey":"user_org","id":"14883460379602917474","pid":"14860367656855969470","res_level":2,"res_level_sort":1,"rid":"965332601103451593621","text":"大数据事业部","value":"D-2"},{"defaultkey":"user_org","id":"24988510953860096287","pid":"14860367656855969470","res_level":2,"res_level_sort":2,"rid":"965332601103451593621","text":"战略发展部","value":"D-3"},{"defaultkey":"user_org","id":"66655027409736395867","nodes":[{"defaultkey":"user_org","id":"3128313019172355004239","pid":"66655027409736395867","res_level":3,"res_level_sort":0,"rid":"965332601103451593621","text":"业财融合部","value":"D-ZJ-YCRH"},{"defaultkey":"user_org","id":"3128315812388677702446","pid":"66655027409736395867","res_level":3,"res_level_sort":1,"rid":"965332601103451593621","text":"信息管理部","value":"D-ZJ-XXGL"}],"pid":"14860367656855969470","res_level":2,"res_level_sort":3,"rid":"965332601103451593621","text":"浙江子公司","value":"D-ZJ"},{"defaultkey":"user_org","id":"66653088127666091280","pid":"14860367656855969470","res_level":2,"res_level_sort":6,"rid":"965332601103451593621","text":"北京分公司","value":"D-BJ"},{"defaultkey":"user_org","id":"345375277066276786770","pid":"14860367656855969470","res_level":2,"res_level_sort":7,"rid":"965332601103451593621","text":"青岛分公司","value":"D-QD"}],"pid":"965332601103451593621","res_level":0,"res_level_sort":0,"rid":"965332601103451593621","text":"数聚股份","value":"DATACVG"}]
+     * id : 602219233859972617510
+     * d_res_name : sf多维度1
      * pid : 0
+     * d_res_rootid : 602219233859972617510
+     * d_res_value : sftest1
+     * defaultkey : sf1
+     * d_res_stime : 20140401
+     * d_res_etime : 20250430
      * res_level : 0
-     * res_level_sort : 30
-     * rid : 965332601103451593621
-     * text : 组织维度
-     * value : user_org
+     * res_level_sort : 42
+     * orgFlag :
+     * nodes : [{"id":"654225027948360427988","d_res_name":"一环","pid":"602219233859972617510","d_res_rootid":"602219233859972617510","d_res_value":"sf-1","defaultkey":"sf1","d_res_stime":"20140401","d_res_etime":"20240430","res_level":1,"res_level_sort":0,"orgFlag":""},{"id":"654227083199379599861","d_res_name":"二环","pid":"602219233859972617510","d_res_rootid":"602219233859972617510","d_res_value":"sf-2","defaultkey":"sf1","d_res_stime":"20140401","d_res_etime":"20250430","res_level":1,"res_level_sort":1,"orgFlag":""},{"id":"810694478578483749220","d_res_name":"三环","pid":"602219233859972617510","d_res_rootid":"602219233859972617510","d_res_value":"sf-3","defaultkey":"sf1","d_res_stime":"20140401","d_res_etime":"20250430","res_level":1,"res_level_sort":2,"orgFlag":""}]
      */
 
-    private String defaultkey;
     private String id;
-    private List<DimensionBean> nodes;
+    private String d_res_name;
     private String pid;
+    private String d_res_rootid;
+    private String d_res_value;
+    private String defaultkey;
+    private String d_res_stime;
+    private String d_res_etime;
     private Integer res_level;
     private Integer res_level_sort;
-    private String rid;
-    private String text;
-    private String value;
-
-    public String getDefaultkey() {
-        return defaultkey;
-    }
-
-    public void setDefaultkey(String defaultkey) {
-        this.defaultkey = defaultkey;
-    }
+    private String orgFlag;
+    private List<DimensionBean> nodes;
 
     public String getId() {
         return id;
@@ -50,12 +49,12 @@ public class DimensionBean {
         this.id = id;
     }
 
-    public List<DimensionBean> getNodes() {
-        return nodes;
+    public String getD_res_name() {
+        return d_res_name;
     }
 
-    public void setNodes(List<DimensionBean> nodes) {
-        this.nodes = nodes;
+    public void setD_res_name(String d_res_name) {
+        this.d_res_name = d_res_name;
     }
 
     public String getPid() {
@@ -64,6 +63,46 @@ public class DimensionBean {
 
     public void setPid(String pid) {
         this.pid = pid;
+    }
+
+    public String getD_res_rootid() {
+        return d_res_rootid;
+    }
+
+    public void setD_res_rootid(String d_res_rootid) {
+        this.d_res_rootid = d_res_rootid;
+    }
+
+    public String getD_res_value() {
+        return d_res_value;
+    }
+
+    public void setD_res_value(String d_res_value) {
+        this.d_res_value = d_res_value;
+    }
+
+    public String getDefaultkey() {
+        return defaultkey;
+    }
+
+    public void setDefaultkey(String defaultkey) {
+        this.defaultkey = defaultkey;
+    }
+
+    public String getD_res_stime() {
+        return d_res_stime;
+    }
+
+    public void setD_res_stime(String d_res_stime) {
+        this.d_res_stime = d_res_stime;
+    }
+
+    public String getD_res_etime() {
+        return d_res_etime;
+    }
+
+    public void setD_res_etime(String d_res_etime) {
+        this.d_res_etime = d_res_etime;
     }
 
     public Integer getRes_level() {
@@ -82,27 +121,19 @@ public class DimensionBean {
         this.res_level_sort = res_level_sort;
     }
 
-    public String getRid() {
-        return rid;
+    public String getOrgFlag() {
+        return orgFlag;
     }
 
-    public void setRid(String rid) {
-        this.rid = rid;
+    public void setOrgFlag(String orgFlag) {
+        this.orgFlag = orgFlag;
     }
 
-    public String getText() {
-        return text;
+    public List<DimensionBean> getNodes() {
+        return nodes;
     }
 
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
+    public void setNodes(List<DimensionBean> nodes) {
+        this.nodes = nodes;
     }
 }
