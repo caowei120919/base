@@ -174,4 +174,9 @@
     <string name="board">看板</string>
     <string name="the_current_page">当前页面:</string>
     <string name="the_page_is">第%s页呀</string>
+    <string name="plan">计划</string>
+    <string name="same_term">同期</string>
+    <string name="actual">实际</string>
+    <string name="year_on_year">同比</string>
+    <string name="month_on_month">环比</string>
 </resources>

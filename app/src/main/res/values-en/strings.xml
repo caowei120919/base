@@ -181,4 +181,9 @@
     <string name="board">board</string>
     <string name="the_current_page">The current page :</string>
     <string name="the_page_is">The %s page!</string>
+    <string name="plan">plan</string>
+    <string name="same_term">At the same time</string>
+    <string name="actual">The actual</string>
+    <string name="year_on_year">Compared with the same</string>
+    <string name="month_on_month">sequential</string>
 </resources>

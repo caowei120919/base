@@ -55,6 +55,14 @@
                 android:layout_marginRight="@dimen/W16">
             </ImageView>
 
+            <com.datacvg.dimp.widget.BulletChart
+                android:id="@+id/bullet_chart"
+                android:layout_width="match_parent"
+                android:layout_below="@id/tv_name"
+                android:layout_above="@id/tv_unit"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true">
+            </com.datacvg.dimp.widget.BulletChart>
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

@@ -24,7 +24,70 @@ public class PageItemBean implements Comparable<PageItemBean>, Serializable {
     private String page;
     private String pad_name;
     private String dimensions;
+    private String timeVal ;
     private String time_type;
+    private String mOrgDimension ;
+    private String mOrgValue ;
+    private String mFuDimension ;
+    private String mFuValue ;
+    private String mPDimension ;
+    private String mpValue ;
+
+    public String getTimeVal() {
+        return timeVal;
+    }
+
+    public void setTimeVal(String timeVal) {
+        this.timeVal = timeVal;
+    }
+
+    public String getmOrgDimension() {
+        return mOrgDimension;
+    }
+
+    public void setmOrgDimension(String mOrgDimension) {
+        this.mOrgDimension = mOrgDimension;
+    }
+
+    public String getmOrgValue() {
+        return mOrgValue;
+    }
+
+    public void setmOrgValue(String mOrgValue) {
+        this.mOrgValue = mOrgValue;
+    }
+
+    public String getmFuDimension() {
+        return mFuDimension;
+    }
+
+    public void setmFuDimension(String mFuDimension) {
+        this.mFuDimension = mFuDimension;
+    }
+
+    public String getmFuValue() {
+        return mFuValue;
+    }
+
+    public void setmFuValue(String mFuValue) {
+        this.mFuValue = mFuValue;
+    }
+
+    public String getmPDimension() {
+        return mPDimension;
+    }
+
+    public void setmPDimension(String mPDimension) {
+        this.mPDimension = mPDimension;
+    }
+
+    public String getMpValue() {
+        return mpValue;
+    }
+
+    public void setMpValue(String mpValue) {
+        this.mpValue = mpValue;
+    }
 
     public String getPage() {
         return page;

@@ -189,10 +189,11 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
             tvName.setText(resources.getString(R.string.the_current_page)
                     +pageItemBeans.get(i).getPad_name());
         }
-        setTimeValue(pageItemBeans.get(i));
+        setTimeValue(i);
     }
 
-    private void setTimeValue(PageItemBean bean) {
+    private void setTimeValue(int position) {
+        PageItemBean bean = pageItemBeans.get(position);
         switch (bean.getTime_type()){
             case "month" :
                 tvTime.setText(PreferencesHelper.get(Constants.USER_DEFAULT_MONTH,""));
@@ -204,6 +205,8 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
                 tvTime.setText(PreferencesHelper.get(Constants.USER_DEFAULT_DAY,""));
                 break;
         }
+        bean.setTimeVal(tvTime.getText().toString()
+                .replaceAll("/",""));
     }
 
     @Override
@@ -216,7 +219,7 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
             tvName.setText(resources.getString(R.string.the_current_page)
                     +pageItemBeans.get(i).getPad_name());
         }
-        setTimeValue(pageItemBeans.get(i));
+        setTimeValue(i);
     }
 
     @Override

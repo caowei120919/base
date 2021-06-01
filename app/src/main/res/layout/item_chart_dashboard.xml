@@ -55,12 +55,12 @@
                 android:layout_marginRight="@dimen/W16">
             </ImageView>
 
-            <com.datacvg.dimp.widget.DashBoardView
+            <com.datacvg.dimp.widget.DashboardChart
                 android:id="@+id/dashBoardChart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true">
-            </com.datacvg.dimp.widget.DashBoardView>
+            </com.datacvg.dimp.widget.DashboardChart>
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

@@ -7,7 +7,8 @@ import com.datacvg.dimp.bean.CommentListBean;
 import com.datacvg.dimp.bean.DefaultUserListBean;
 import com.datacvg.dimp.bean.DigitalPageBean;
 import com.datacvg.dimp.bean.DimensionListBean;
-import com.datacvg.dimp.bean.DimensionPositionListBean;
+import com.datacvg.dimp.bean.DimensionPositionBean;
+import com.datacvg.dimp.bean.EChartListBean;
 import com.datacvg.dimp.bean.ImageResBean;
 import com.datacvg.dimp.bean.IndexBean;
 import com.datacvg.dimp.bean.IndexTreeListBean;
@@ -25,6 +26,8 @@ import com.datacvg.dimp.bean.TaskInfoBean;
 import com.datacvg.dimp.bean.TimeValueBean;
 import com.datacvg.dimp.bean.UserJobsListBean;
 import com.datacvg.dimp.bean.UserLoginBean;
+
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.DoubleUnaryOperator;
 
@@ -98,17 +101,10 @@ public interface MobileApi {
 
     /**
      * 获取指标列表
-     * @param mTimeValue
-     * @param mOrgDimension
-     * @param mFuDimension
-     * @param mPDimension
      * @return
      */
-    @GET("indexpad/index/position")
-    Observable<BaseBean<DimensionPositionListBean>> getIndexPosition(@Query("timeval") String mTimeValue,
-                                                                     @Query("orgDimension") String mOrgDimension,
-                                                                     @Query("fuDimension") String mFuDimension,
-                                                                     @Query("pDimension") String mPDimension);
+    @POST("api/ddb/indexpad/index/position")
+    Observable<BaseBean<DimensionPositionBean>> getIndexPosition(@Body Map map);
 
     /**
      * 获取组织维度
@@ -316,4 +312,7 @@ public interface MobileApi {
      */
     @GET("api/ddb/indexpad/time/default/rule")
     Observable<BaseBean<TimeValueBean>> getTimeVal();
+
+    @POST("api/ddb/indexpad/indexChart")
+    Observable<BaseBean<EChartListBean>> getEChart(@Body HashMap params);
 }
