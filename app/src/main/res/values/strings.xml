@@ -195,5 +195,9 @@
     <string name="please_enter_a_page_name">请输入页名</string>
     <string name="please_select_dimension">请选择维度</string>
     <string name="please_select_at_least_one_metric">请至少选择一个指标</string>
-    <string name="add_success">添加页面成功</string>
+    <string name="add_success">添加成功</string>
+    <string name="add_indicators">添加指标</string>
+    <string name="my_index">我的指标</string>
+    <string name="recommend_index">推荐指标</string>
+    <string name="all_indicators">所有指标</string>
 </resources>

@@ -3,6 +3,7 @@ package com.datacvg.dimp.baseandroid.dragger.component;
 import android.app.Activity;
 
 
+import com.datacvg.dimp.activity.AddIndexActivity;
 import com.datacvg.dimp.activity.AddIndexPageActivity;
 import com.datacvg.dimp.activity.ConfirmInfoActivity;
 import com.datacvg.dimp.activity.ContactActivity;
@@ -105,4 +106,6 @@ public interface ActivityComponent {
     void inject(TableCommentActivity tableCommentActivity);
 
     void inject(AddIndexPageActivity addIndexPageActivity);
+
+    void inject(AddIndexActivity addIndexActivity);
 }

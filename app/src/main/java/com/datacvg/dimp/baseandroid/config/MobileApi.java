@@ -2,6 +2,7 @@ package com.datacvg.dimp.baseandroid.config;
 import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.dimp.bean.ActionPlanIndexListBean;
 import com.datacvg.dimp.bean.ActionPlanListBean;
+import com.datacvg.dimp.bean.AllIndexBean;
 import com.datacvg.dimp.bean.ChartListBean;
 import com.datacvg.dimp.bean.CommentListBean;
 import com.datacvg.dimp.bean.DefaultUserListBean;
@@ -18,6 +19,7 @@ import com.datacvg.dimp.bean.IndexTreeListBean;
 import com.datacvg.dimp.bean.MessageBean;
 import com.datacvg.dimp.bean.ModuleListBean;
 import com.datacvg.dimp.bean.ReadMessageBean;
+import com.datacvg.dimp.bean.RecommendIndexBean;
 import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.bean.ReportParamsBean;
 import com.datacvg.dimp.bean.ScreenDetailBean;
@@ -358,4 +360,19 @@ public interface MobileApi {
 
     @POST("api/ddb/indexpad/indexChart/info")
     Observable<BaseBean<IndexChartInfoBean>> getIndexForDimension(@Body Map params);
+
+    /**
+     * 根据page页获取推荐指标
+     * @param pageNo
+     * @return
+     */
+    @GET("api/ddb/indexpad/indexChart/relation")
+    Observable<BaseBean<RecommendIndexBean>> getRecommendIndexInfo(@Query("pageNo") String pageNo);
+
+    /**
+     * 获取所有哦指标信息
+     * @return
+     */
+    @GET("api/ddb/indexpad/able/add/index/info")
+    Observable<BaseBean<AllIndexBean>> getAllIndexInfo();
 }

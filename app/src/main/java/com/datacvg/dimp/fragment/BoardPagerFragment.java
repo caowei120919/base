@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.activity.AddIndexActivity;
 import com.datacvg.dimp.activity.IndexTreeActivity;
 import com.datacvg.dimp.adapter.DimensionIndexAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
@@ -20,12 +21,14 @@ import com.datacvg.dimp.bean.ChangeChartRequestBean;
 import com.datacvg.dimp.bean.ChatTypeRequestBean;
 import com.datacvg.dimp.bean.DimensionBean;
 import com.datacvg.dimp.bean.DimensionPositionBean;
+import com.datacvg.dimp.bean.EChartListBean;
 import com.datacvg.dimp.bean.IndexChartBean;
 import com.datacvg.dimp.bean.IndexTreeNeedBean;
 import com.datacvg.dimp.bean.PageItemBean;
 import com.datacvg.dimp.event.ChangePageChartEvent;
 import com.datacvg.dimp.event.DeletePageEvent;
 import com.datacvg.dimp.event.ShakeEvent;
+import com.datacvg.dimp.event.ToAddIndexEvent;
 import com.datacvg.dimp.presenter.BoardPagerPresenter;
 import com.datacvg.dimp.view.BoardPagerView;
 import com.google.gson.Gson;
@@ -376,5 +379,27 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
         changeChartRequestBean.setBisysindexposition(bisysindexpositionBeans);
         getPresenter().changeChart(new Gson().fromJson(new Gson()
                 .toJson(changeChartRequestBean),Map.class));
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ToAddIndexEvent event){
+        PageItemBean bean = event.getBean() ;
+        if(bean != itemBean){
+            return;
+        }
+        PLog.e(new Gson().toJson(indexPositionBeans));
+        EChartListBean eChartListBean = new EChartListBean();
+        List<IndexChartBean> indexChartBeans = new ArrayList<>();
+        for (DimensionPositionBean.IndexPositionBean indexPositionBean :indexPositionBeans){
+            if(indexPositionBean.getChartBean() != null){
+                indexChartBeans.add(indexPositionBean.getChartBean()) ;
+            }
+        }
+        eChartListBean.setPageNo(itemBean.getPage());
+        eChartListBean.setPageName(itemBean.getPad_name());
+        eChartListBean.setIndexChart(indexChartBeans);
+        Intent intent = new Intent(mContext, AddIndexActivity.class);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,eChartListBean);
+        mContext.startActivity(intent);
     }
 }

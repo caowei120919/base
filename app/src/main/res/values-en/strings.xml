@@ -203,4 +203,8 @@
     <string name="please_select_dimension">Please select dimension</string>
     <string name="please_select_at_least_one_metric">Please select at least one metric</string>
     <string name="add_success">Add a success</string>
+    <string name="add_indicators">Add indicators</string>
+    <string name="my_index">My Indicators</string>
+    <string name="recommend_index">Recommended Indictors</string>
+    <string name="all_indicators">All indicators</string>
 </resources>

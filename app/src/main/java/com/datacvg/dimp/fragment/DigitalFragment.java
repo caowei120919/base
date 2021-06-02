@@ -26,6 +26,7 @@ import com.datacvg.dimp.event.ChangePageChartEvent;
 import com.datacvg.dimp.event.DeletePageEvent;
 import com.datacvg.dimp.event.HideNavigationEvent;
 import com.datacvg.dimp.event.ShakeEvent;
+import com.datacvg.dimp.event.ToAddIndexEvent;
 import com.datacvg.dimp.event.ToAddPageEvent;
 import com.datacvg.dimp.presenter.DigitalPresenter;
 import com.datacvg.dimp.view.DigitalView;
@@ -110,6 +111,7 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
         });
         statusTitle.setOnItemClickListener(R.id.img_addIndex,view -> {
             PLog.e("添加指标");
+            EventBus.getDefault().post(new ToAddIndexEvent(pageItemBeans.get(adapter.getCurrentPageIndex())));
         });
         initTitleMagicTitle();
         initPageAdapter();

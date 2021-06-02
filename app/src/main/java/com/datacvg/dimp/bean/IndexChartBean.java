@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.Keep;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ import java.util.List;
  * @Description :
  */
 @Keep
-public class IndexChartBean {
+public class IndexChartBean implements Serializable {
     /**
      * index_id : st-maoli
      * index_pkid : 466215280368414856808
