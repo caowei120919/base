@@ -6,6 +6,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="@dimen/W340"
         android:layout_height="@dimen/H216"
+        android:layout_marginTop="@dimen/H10"
         android:background="@drawable/layer_background">
 
         <RelativeLayout

@@ -10,13 +10,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.activity.AddIndexActivity;
+import com.datacvg.dimp.activity.ChartDetailActivity;
 import com.datacvg.dimp.activity.IndexTreeActivity;
 import com.datacvg.dimp.adapter.DimensionIndexAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
-import com.datacvg.dimp.baseandroid.widget.CVGOKCancelWithTitle;
 import com.datacvg.dimp.bean.ChangeChartRequestBean;
 import com.datacvg.dimp.bean.ChatTypeRequestBean;
 import com.datacvg.dimp.bean.DimensionBean;
@@ -25,6 +25,7 @@ import com.datacvg.dimp.bean.EChartListBean;
 import com.datacvg.dimp.bean.IndexChartBean;
 import com.datacvg.dimp.bean.IndexTreeNeedBean;
 import com.datacvg.dimp.bean.PageItemBean;
+import com.datacvg.dimp.event.AddIndexEvent;
 import com.datacvg.dimp.event.ChangePageChartEvent;
 import com.datacvg.dimp.event.DeletePageEvent;
 import com.datacvg.dimp.event.ShakeEvent;
@@ -32,11 +33,9 @@ import com.datacvg.dimp.event.ToAddIndexEvent;
 import com.datacvg.dimp.presenter.BoardPagerPresenter;
 import com.datacvg.dimp.view.BoardPagerView;
 import com.google.gson.Gson;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -78,14 +77,6 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
 
     private void initAdapter() {
         GridLayoutManager manager = new GridLayoutManager(mContext,2);
-        int space = getResources().getDimensionPixelSize(R.dimen.H10);
-        recycleIndex.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view
-                    , @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                outRect.top = space;
-            }
-        });
         recycleIndex.setLayoutManager(manager);
         adapter = new DimensionIndexAdapter(mContext,indexPositionBeans,this);
         recycleIndex.setAdapter(adapter);
@@ -202,7 +193,17 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
     @Override
     public void getChartSuccess(IndexChartBean data) {
         for (DimensionPositionBean.IndexPositionBean indexPositionBean : indexPositionBeans) {
+            if(TextUtils.isEmpty(indexPositionBean.getPage_chart_type())){
+                indexPositionBean.setPage_chart_type(TextUtils.isEmpty(indexPositionBean.getPage_chart_type())
+                        ? indexPositionBean.getChart_type().split(",")[0]
+                        : indexPositionBean.getPage_chart_type());
+            }
             if(indexPositionBean.getIndex_id().equals(data.getIndex_id())){
+                if(TextUtils.isEmpty(indexPositionBean.getPage_chart_type())){
+                    indexPositionBean.setPage_chart_type(TextUtils.isEmpty(data.getPage_chart_type())
+                            ? data.getChart_type().split(",")[0]
+                            : data.getPage_chart_type());
+                }
                 indexPositionBean.setChartBean(data);
             }
         }
@@ -339,6 +340,14 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
         startActivity(intent);
     }
 
+    @Override
+    public void OnItemClick(DimensionPositionBean.IndexPositionBean bean) {
+        bean.setTime_type(itemBean.getTime_type());
+        Intent intent = new Intent(mContext, ChartDetailActivity.class);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,bean);
+        mContext.startActivity(intent);
+    }
+
     /**
      * 删除指标
      * @param bean
@@ -392,6 +401,10 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
         List<IndexChartBean> indexChartBeans = new ArrayList<>();
         for (DimensionPositionBean.IndexPositionBean indexPositionBean :indexPositionBeans){
             if(indexPositionBean.getChartBean() != null){
+                indexPositionBean.getChartBean()
+                        .setAnalysis_dimension(indexPositionBean.getAnalysis_dimension());
+                indexPositionBean.getChartBean().setPage_chart_type(indexPositionBean.getPage_chart_type());
+                indexPositionBean.getChartBean().setChart_type(indexPositionBean.getChart_type());
                 indexChartBeans.add(indexPositionBean.getChartBean()) ;
             }
         }
@@ -401,5 +414,42 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
         Intent intent = new Intent(mContext, AddIndexActivity.class);
         intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,eChartListBean);
         mContext.startActivity(intent);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(AddIndexEvent event){
+        if(!itemBean.getPage().equals(event.getPageNo())){
+            return;
+        }
+        this.indexPositionBeans.clear();
+        this.indexPositionBeans.addAll(event.getDimensionPositionBean().getIndexPosition());
+        sortChart();
+        for (DimensionPositionBean.IndexPositionBean indexPositionBean : indexPositionBeans) {
+            HashMap params = new HashMap() ;
+            params.put("lang", LanguageUtils.isZh(mContext) ?"zh" : "en");
+            params.put("timeValue",itemBean.getTimeVal());
+            List arr = new ArrayList();
+            if(!TextUtils.isEmpty(itemBean.getmOrgDimension())){
+                arr.add(itemBean.getmOrgDimension());
+            }
+            if(!TextUtils.isEmpty(itemBean.getmFuDimension())){
+                arr.add(itemBean.getmFuDimension()) ;
+            }
+            if(!TextUtils.isEmpty(itemBean.getmPDimension())){
+                arr.add(itemBean.getmPDimension()) ;
+            }
+            params.put("dimensionArr",arr);
+            params.put("page",itemBean.getPage());
+            List<ChatTypeRequestBean.ChartTypeBean> beans = new ArrayList<>();
+            ChatTypeRequestBean.ChartTypeBean chartTypeBean = new ChatTypeRequestBean.ChartTypeBean() ;
+            chartTypeBean.setIndexId(indexPositionBean.getIndex_id());
+            chartTypeBean.setDataType(TextUtils.isEmpty(indexPositionBean.getPage_chart_type())
+                    ? indexPositionBean.getChart_type().split(",")[0]
+                    : indexPositionBean.getPage_chart_type());
+            chartTypeBean.setAnalysisDim(indexPositionBean.getAnalysis_dimension());
+            beans.add(chartTypeBean);
+            params.put("chartType",beans);
+            getChartData(params);
+        }
     }
 }

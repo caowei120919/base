@@ -188,6 +188,10 @@
         <activity android:name=".activity.AddIndexActivity"
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait"/>
+        <activity
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait"
+            android:name=".activity.ChartDetailActivity" />
     </application>
 
 </manifest>

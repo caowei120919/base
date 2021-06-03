@@ -5,6 +5,7 @@ import android.app.Activity;
 
 import com.datacvg.dimp.activity.AddIndexActivity;
 import com.datacvg.dimp.activity.AddIndexPageActivity;
+import com.datacvg.dimp.activity.ChartDetailActivity;
 import com.datacvg.dimp.activity.ConfirmInfoActivity;
 import com.datacvg.dimp.activity.ContactActivity;
 import com.datacvg.dimp.activity.DepartmentActivity;
@@ -108,4 +109,6 @@ public interface ActivityComponent {
     void inject(AddIndexPageActivity addIndexPageActivity);
 
     void inject(AddIndexActivity addIndexActivity);
+
+    void inject(ChartDetailActivity chartDetailActivity);
 }

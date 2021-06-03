@@ -222,7 +222,7 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.itemView.setOnClickListener(view -> {
             PLog.e("点击");
-//            listener.OnItemClick(dimensionPositionBean);
+            listener.OnItemClick(chartBeans.get(position));
         });
         holder.tvUnit.setText(dimensionPositionBean.getChart_unit());
         if(TextUtils.isEmpty(dimensionPositionBean.getChart_top_title())){
@@ -263,7 +263,7 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.itemView.setOnClickListener(view -> {
             PLog.e("点击");
-//            listener.OnItemClick(dimensionPositionBean);
+            listener.OnItemClick(chartBeans.get(position));
         });
         holder.tvUnit.setText(dimensionPositionBean.getChart_unit());
         if(TextUtils.isEmpty(dimensionPositionBean.getChart_top_title())){
@@ -396,7 +396,7 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.itemView.setOnClickListener(view -> {
             PLog.e("点击");
-//            listener.OnItemClick(dimensionPositionBean);
+            listener.OnItemClick(chartBeans.get(position));
         });
         holder.tvUnit.setText(dimensionPositionBean.getChart_unit());
         if(TextUtils.isEmpty(dimensionPositionBean.getChart_top_title())){
@@ -475,7 +475,7 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.itemView.setOnClickListener(view -> {
             PLog.e("点击");
-//            listener.OnItemClick(dimensionPositionBean);
+            listener.OnItemClick(chartBeans.get(position));
         });
         holder.tvUnit.setText(dimensionPositionBean.getChart_unit());
         if(TextUtils.isEmpty(dimensionPositionBean.getChart_top_title())){
@@ -515,7 +515,7 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.itemView.setOnClickListener(view -> {
             PLog.e("点击");
-//            listener.OnItemClick(chartBeans.get(position));
+            listener.OnItemClick(chartBeans.get(position));
         });
         if(TextUtils.isEmpty(dimensionPositionBean.getChart_top_title())){
             holder.tvName.setText(dimensionPositionBean.getName());
@@ -555,7 +555,7 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.itemView.setOnClickListener(view -> {
             PLog.e("点击");
-//            listener.OnItemClick(chartBeans.get(position));
+            listener.OnItemClick(chartBeans.get(position));
         });
         if(TextUtils.isEmpty(dimensionPositionBean.getChart_top_title())){
             holder.tvName.setText(dimensionPositionBean.getName());
@@ -601,7 +601,7 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.itemView.setOnClickListener(view -> {
             PLog.e("点击");
-//            listener.OnItemClick(chartBeans.get(position));
+            listener.OnItemClick(chartBeans.get(position));
         });
         if(TextUtils.isEmpty(dimensionPositionBean.getChart_top_title())){
             holder.tvName.setText(dimensionPositionBean.getName());
@@ -802,7 +802,7 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public interface IndexClickListener{
         void OnTitleClick(DimensionPositionBean.IndexPositionBean bean);
-//        void OnItemClick(DimensionPositionBean bean);
+        void OnItemClick(DimensionPositionBean.IndexPositionBean bean);
         void OnIndexDeleteClick(DimensionPositionBean.IndexPositionBean bean);
     }
 }

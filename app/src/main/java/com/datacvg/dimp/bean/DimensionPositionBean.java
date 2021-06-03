@@ -24,7 +24,7 @@ public class DimensionPositionBean implements Serializable {
         this.indexPosition = indexPosition;
     }
 
-    public static class IndexPositionBean {
+    public static class IndexPositionBean implements Serializable{
         /**
          * index_id : hsf-total-sales
          * positon_pkid : 826926036743910479839
@@ -60,6 +60,16 @@ public class DimensionPositionBean implements Serializable {
         private String page_chart_type;
         private String page_analysis_dim;
         private String sort;
+        private String time_type ;
+
+        public String getTime_type() {
+            return time_type;
+        }
+
+        public void setTime_type(String time_type) {
+            this.time_type = time_type;
+        }
+
         private IndexChartBean chartBean ;
 
         public String getIndex_id() {

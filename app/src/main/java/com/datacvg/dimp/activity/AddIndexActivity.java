@@ -3,6 +3,7 @@ package com.datacvg.dimp.activity;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ import com.datacvg.dimp.bean.DimensionPositionBean;
 import com.datacvg.dimp.bean.EChartListBean;
 import com.datacvg.dimp.bean.IndexChartBean;
 import com.datacvg.dimp.bean.IndexDetailListBean;
+import com.datacvg.dimp.event.AddIndexEvent;
 import com.datacvg.dimp.event.AddOrRemoveIndexEvent;
 import com.datacvg.dimp.event.ChangeIndexEvent;
 import com.datacvg.dimp.presenter.AddIndexPresenter;
@@ -35,6 +37,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import butterknife.BindView;
@@ -133,7 +136,24 @@ public class AddIndexActivity extends BaseActivity<AddIndexView, AddIndexPresent
     public void onClick(View view){
         switch (view.getId()){
             case R.id.img_left :
-                    saveChangeIndex();
+                DimensionPositionBean dimensionPositionBean = new DimensionPositionBean() ;
+                List<DimensionPositionBean.IndexPositionBean> indexPositionBeans = new ArrayList<>();
+                for (IndexChartBean bean: showMineIndexBeans) {
+                    DimensionPositionBean.IndexPositionBean indexPositionBean
+                            = new DimensionPositionBean.IndexPositionBean();
+                    indexPositionBean.setIndex_id(bean.getIndex_id());
+                    indexPositionBean.setIndex_pkid(bean.getIndex_pkid());
+                    indexPositionBean.setSize_x(bean.getChart_wide());
+                    indexPositionBean.setSize_y(bean.getChart_high());
+                    indexPositionBean.setChart_type(TextUtils.isEmpty(bean.getPage_chart_type()) ?
+                            bean.getChart_type().split(",")[0]:bean.getPage_chart_type());
+                    indexPositionBean.setAnalysis_dimension(bean.getAnalysis_dimension());
+                    indexPositionBeans.add(indexPositionBean);
+                }
+                dimensionPositionBean.setIndexPosition(indexPositionBeans);
+                EventBus.getDefault().post(new AddIndexEvent(dimensionPositionBean
+                        ,eChartListBean.getPageNo()));
+                finish();
                 break;
             case R.id.img_right :
 
@@ -158,30 +178,6 @@ public class AddIndexActivity extends BaseActivity<AddIndexView, AddIndexPresent
                 indexOfBottomAdapter.notifyDataSetChanged();
                 break;
         }
-    }
-
-    /**
-     * 保存改变的指标信息
-     */
-    private void saveChangeIndex() {
-        ChangeChartRequestBean changeChartRequestBean = new ChangeChartRequestBean() ;
-        changeChartRequestBean.setPad_name(eChartListBean.getPageName());
-        changeChartRequestBean.setPad_number(eChartListBean.getPageNo());
-        List<ChangeChartRequestBean.BisysindexpositionBean> bisysindexpositionBeans = new ArrayList<>() ;
-        for (IndexChartBean bean : showMineIndexBeans){
-            ChangeChartRequestBean.BisysindexpositionBean bisysindexpositionBean
-                    = new ChangeChartRequestBean.BisysindexpositionBean();
-            bisysindexpositionBean.setIndex_id(bean.getIndex_id());
-            bisysindexpositionBean.setPage(eChartListBean.getPageNo());
-            bisysindexpositionBean.setPos_x("");
-            bisysindexpositionBean.setPos_y("");
-            bisysindexpositionBean.setSize_x(bean.getChart_wide());
-            bisysindexpositionBean.setSize_y(bean.getChart_high());
-            bisysindexpositionBeans.add(bisysindexpositionBean);
-        }
-        changeChartRequestBean.setBisysindexposition(bisysindexpositionBeans);
-        getPresenter().changeChart(new Gson().fromJson(new Gson()
-                .toJson(changeChartRequestBean), Map.class));
     }
 
     @Override
@@ -244,11 +240,18 @@ public class AddIndexActivity extends BaseActivity<AddIndexView, AddIndexPresent
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AddOrRemoveIndexEvent event){
         if(event.getBean().getSelected()){
-            for (IndexChartBean chartBean : showMineIndexBeans){
+            for (Iterator<IndexChartBean> it = showMineIndexBeans.iterator(); it.hasNext();){
+                IndexChartBean chartBean = it.next();
                 if(chartBean.getIndex_pkid().equals(event.getBean().getIndex_pkid())){
-                    showMineIndexBeans.remove(chartBean);
+                    it.remove();
                 }
             }
+
+//            for (IndexChartBean chartBean : showMineIndexBeans){
+//                if(chartBean.getIndex_pkid().equals(event.getBean().getIndex_pkid())){
+//                    showMineIndexBeans.remove(chartBean);
+//                }
+//            }
 
             for (IndexDetailListBean indexDetailListBean : showIndexTitles){
                 for (IndexChartBean chartBean : indexDetailListBean.getDetail()){
