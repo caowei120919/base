@@ -129,7 +129,6 @@ public class AddIndexPageActivity extends BaseActivity<AddIndexPageView, AddInde
     private List<DimensionForTimeBean.DimensionRelationBean.DimensionNameBean> dimensionNameBeans
             = new ArrayList<>() ;
     private List<DimensionBean> dimensionNodeBeans = new ArrayList<>() ;
-    private IndexChartInfoBean indexChartInfoBean ;
     private ArrayList<IndexChartInfoBean.IndexChartDetailBean> indexChart = new ArrayList<>();
     private List<IndexChartBean> detailBeans = new ArrayList<>() ;
     private JsonObject dimensionJson ;
@@ -691,7 +690,6 @@ public class AddIndexPageActivity extends BaseActivity<AddIndexPageView, AddInde
     @Override
     public void getIndexForDimensionSuccess(IndexChartInfoBean data) {
         indexChart.clear();
-        indexChartInfoBean = data ;
         indexChart.addAll(data.getIndexChart());
         titleNavigator.notifyDataSetChanged();
         if(data.getIndexChart() != null

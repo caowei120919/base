@@ -209,8 +209,8 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                     @Override
                     public void customLayout(View v) {
                         final TextView tvSubmit = v.findViewById(R.id.tv_finish);
-                        LinearLayout linChooseType = v.findViewById(R.id.lin_chooseType);
-                        linChooseType.setVisibility(View.GONE);
+//                        LinearLayout linChooseType = v.findViewById(R.id.lin_chooseType);
+//                        linChooseType.setVisibility(View.GONE);
                         TextView tvDataTitle = v.findViewById(R.id.tv_dataTitle);
                         tvDataTitle.setVisibility(View.VISIBLE);
                         TextView ivCancel = v.findViewById(R.id.iv_cancel);

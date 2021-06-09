@@ -24,14 +24,14 @@
         app:rExtendView="@layout/view_performance">
     </com.enlogy.statusview.StatusRelativeLayout>
 
-    <androidx.viewpager.widget.ViewPager
+    <com.datacvg.dimp.widget.ControlScrollViewPager
         android:id="@+id/vp_board"
         android:layout_width="match_parent"
         android:layout_below="@id/status_board"
         android:layout_height="match_parent"
         android:layout_above="@id/magic_indicator"
         android:layout_marginTop="@dimen/H10">
-    </androidx.viewpager.widget.ViewPager>
+    </com.datacvg.dimp.widget.ControlScrollViewPager>
 
     <net.lucode.hackware.magicindicator.MagicIndicator
         android:id="@+id/magic_indicator"

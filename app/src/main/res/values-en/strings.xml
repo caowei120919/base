@@ -207,4 +207,6 @@
     <string name="my_index">My Indicators</string>
     <string name="recommend_index">Recommended Indictors</string>
     <string name="all_indicators">All indicators</string>
+    <string name="note">note:</string>
+    <string name="the_target">The target</string>
 </resources>

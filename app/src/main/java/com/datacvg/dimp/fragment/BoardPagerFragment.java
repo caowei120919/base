@@ -28,6 +28,7 @@ import com.datacvg.dimp.bean.PageItemBean;
 import com.datacvg.dimp.event.AddIndexEvent;
 import com.datacvg.dimp.event.ChangePageChartEvent;
 import com.datacvg.dimp.event.DeletePageEvent;
+import com.datacvg.dimp.event.RefreshEvent;
 import com.datacvg.dimp.event.ShakeEvent;
 import com.datacvg.dimp.event.ToAddIndexEvent;
 import com.datacvg.dimp.presenter.BoardPagerPresenter;
@@ -342,8 +343,12 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
 
     @Override
     public void OnItemClick(DimensionPositionBean.IndexPositionBean bean) {
+        if(bean.getChartBean() == null){
+            return;
+        }
         bean.setTime_type(itemBean.getTime_type());
         Intent intent = new Intent(mContext, ChartDetailActivity.class);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,itemBean);
         intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,bean);
         mContext.startActivity(intent);
     }
@@ -451,5 +456,10 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
             params.put("chartType",beans);
             getChartData(params);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(RefreshEvent event){
+        getPageData();
     }
 }

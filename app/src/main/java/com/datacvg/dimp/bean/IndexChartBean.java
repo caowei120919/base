@@ -180,7 +180,7 @@ public class IndexChartBean implements Serializable {
         isSelected = selected;
     }
 
-    public static class ThresholdArrBean {
+    public static class ThresholdArrBean implements Serializable{
         /**
          * threshold_value : 30.34
          * type : 1
@@ -224,7 +224,7 @@ public class IndexChartBean implements Serializable {
         }
     }
 
-    public static class ChartDataBean {
+    public static class ChartDataBean implements Serializable{
         /**
          * value_type : actual
          * value_data : 89.46

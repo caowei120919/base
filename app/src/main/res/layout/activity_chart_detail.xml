@@ -1,7 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include layout="@layout/actionbar_title"/>
+    <include
+        android:id="@+id/layout_title"
+        layout="@layout/actionbar_title"/>
+
+    <LinearLayout
+        android:id="@+id/lin_type"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H88"
+        android:background="@color/c_FFFFFF"
+        android:layout_below="@id/layout_title"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_chartType"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="@color/c_303030"
+            android:textSize="14sp"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/W34"
+            android:drawableRight="@mipmap/dash_dimension_down"
+            android:paddingRight="@dimen/W34">
+        </TextView>
+
+        <TextView
+            android:layout_width="@dimen/W2"
+            android:layout_height="@dimen/H60"
+            android:background="@color/c_dbdbdb">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_dimensionType"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="@color/c_303030"
+            android:textSize="14sp"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/W34"
+            android:drawableRight="@mipmap/dash_dimension_down"
+            android:paddingRight="@dimen/W34">
+        </TextView>
+    </LinearLayout>
+
+    <com.enlogy.statusview.StatusRelativeLayout
+        android:id="@+id/status_chart"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H400"
+        android:background="@color/c_FFFFFF"
+        android:layout_below="@id/lin_type"
+        android:layout_marginTop="@dimen/H24"
+        app:rContentView="@layout/item_chart_detail_text"
+        app:rExtendView="@layout/item_chart_detail_dashboard"
+        app:rLoadingView="@layout/item_chart_detail_bullet"
+        app:rErrorView="@layout/item_chart_detail_aachart">
+    </com.enlogy.statusview.StatusRelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/lin_threshold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/status_chart"
+        android:background="@color/c_FFFFFF"
+        android:layout_marginTop="@dimen/H24"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/W24"
+        android:paddingRight="@dimen/W24"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_target"
+            android:layout_width="match_parent"
+            android:background="@color/c_FFFFFF"
+            android:layout_height="@dimen/H108"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:textColor="@color/c_303030"
+            android:gravity="center_vertical">
+        </TextView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/H1"
+            android:background="@color/c_f2f2f2">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_guaranteed"
+            android:layout_below="@id/status_chart"
+            android:layout_width="match_parent"
+            android:background="@color/c_FFFFFF"
+            android:layout_height="@dimen/H108"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:textColor="@color/c_303030"
+            android:gravity="center_vertical">
+        </TextView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/H1"
+            android:background="@color/c_f2f2f2">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_challenge"
+            android:layout_below="@id/status_chart"
+            android:layout_width="match_parent"
+            android:background="@color/c_FFFFFF"
+            android:layout_height="@dimen/H108"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:textColor="@color/c_303030"
+            android:gravity="center_vertical">
+        </TextView>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/H30"
+        android:layout_marginLeft="@dimen/W24"
+        android:layout_below="@id/lin_threshold">
+    </TextView>
 </RelativeLayout>

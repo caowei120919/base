@@ -1,5 +1,6 @@
 package com.datacvg.dimp.fragment;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,8 +15,12 @@ import com.datacvg.dimp.R;
 import com.datacvg.dimp.activity.AddIndexPageActivity;
 import com.datacvg.dimp.adapter.BoardPagerAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
+import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.PLog;
+import com.datacvg.dimp.baseandroid.utils.RxUtils;
+import com.datacvg.dimp.baseandroid.utils.ShareContentType;
+import com.datacvg.dimp.baseandroid.utils.ShareUtils;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.baseandroid.widget.CVGOKCancelWithTitle;
@@ -30,9 +35,11 @@ import com.datacvg.dimp.event.ToAddIndexEvent;
 import com.datacvg.dimp.event.ToAddPageEvent;
 import com.datacvg.dimp.presenter.DigitalPresenter;
 import com.datacvg.dimp.view.DigitalView;
+import com.datacvg.dimp.widget.ControlScrollViewPager;
 import com.datacvg.dimp.widget.TitleNavigator;
 import com.enlogy.statusview.StatusRelativeLayout;
 import com.google.gson.Gson;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import net.lucode.hackware.magicindicator.FragmentContainerHelper;
 import net.lucode.hackware.magicindicator.MagicIndicator;
@@ -73,7 +80,7 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
     @BindView(R.id.status_board)
     StatusRelativeLayout statusBoard ;
     @BindView(R.id.vp_board)
-    ViewPager vpBoard ;
+    ControlScrollViewPager vpBoard ;
 
     private TitleNavigator titleNavigator ;
     private FragmentContainerHelper mTitleFragmentContainerHelper ;
@@ -100,6 +107,8 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
                 ,mContext.getResources().getColor(R.color.c_FFFFFF));
         statusTitle.setOnItemClickListener(R.id.tv_complete,view -> {
             PLog.e("完成");
+            vpBoard.setScroll(true);
+            magicIndicator.setVisibility(View.VISIBLE);
             statusTitle.showContent();
             for (PageItemBean bean : pageItemBeans){
                 bean.setShake(false);
@@ -161,16 +170,36 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
         getPresenter().getDigitalPage();
     }
 
-    @OnClick({R.id.tv_manage})
+    @OnClick({R.id.tv_manage,R.id.img_share})
     public void OnClick(View view){
         switch (view.getId()){
             case R.id.tv_manage :
+                vpBoard.setScroll(false);
+                magicIndicator.setVisibility(View.GONE);
                 for (PageItemBean bean : pageItemBeans){
                     bean.setShake(true);
                 }
                 EventBus.getDefault().post(new HideNavigationEvent(false));
                 EventBus.getDefault().post(new ShakeEvent(true));
                 statusTitle.showExtendContent();
+                break;
+
+            case R.id.img_share :
+                new RxPermissions(getActivity())
+                        .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        .compose(RxUtils.applySchedulersLifeCycle(getMvpView()))
+                        .subscribe(new RxObserver<Boolean>(){
+                            @Override
+                            public void onComplete() {
+                                super.onComplete();
+                            }
+
+                            @Override
+                            public void onNext(Boolean aBoolean) {
+                                super.onNext(aBoolean);
+                                PLog.e("分享");
+                            }
+                        });
                 break;
         }
     }

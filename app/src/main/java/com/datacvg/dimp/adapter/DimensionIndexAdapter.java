@@ -148,11 +148,13 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        holder.itemView.setAnimation(AnimationUtils.loadAnimation(mContext,R.anim.shake));
         if(mShake){
+            holder.itemView.setAnimation(AnimationUtils.loadAnimation(mContext,R.anim.shake));
             holder.itemView.getAnimation().start();
         }else{
-            holder.itemView.getAnimation().cancel();
+            if(holder.itemView.getAnimation() != null && holder.itemView.getAnimation().hasStarted()){
+                holder.itemView.getAnimation().cancel();
+            }
         }
         if(holder instanceof TextHolder){
             onBindViewTextHolder((TextHolder) holder,position);
