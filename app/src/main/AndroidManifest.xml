@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.datacvg.dimp">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -183,6 +182,16 @@
             android:theme="@style/AlertDialog"
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait"/>
+        <activity android:name=".activity.AddIndexPageActivity"
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.AddIndexActivity"
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait"
+            android:name=".activity.ChartDetailActivity" />
     </application>
 
 </manifest>

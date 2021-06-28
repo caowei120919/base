@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+
 import androidx.fragment.app.Fragment;
 
 import com.datacvg.dimp.R;
@@ -20,8 +23,12 @@ import com.datacvg.dimp.bean.DefaultUserListBean;
 import com.datacvg.dimp.bean.ModuleBean;
 import com.datacvg.dimp.bean.ModuleListBean;
 import com.datacvg.dimp.event.ChangeUnReadMessageEvent;
+import com.datacvg.dimp.event.DeletePageEvent;
+import com.datacvg.dimp.event.HideNavigationEvent;
 import com.datacvg.dimp.event.LoginOutEvent;
 import com.datacvg.dimp.event.RebuildTableEvent;
+import com.datacvg.dimp.event.TabShowOrHideEvent;
+import com.datacvg.dimp.event.ToAddPageEvent;
 import com.datacvg.dimp.fragment.ActionFragment;
 import com.datacvg.dimp.fragment.DigitalFragment;
 import com.datacvg.dimp.fragment.PersonalFragment;
@@ -36,6 +43,7 @@ import com.datacvg.dimp.presenter.MainPresenter;
 import com.datacvg.dimp.view.MainView;
 import com.next.easynavigation.view.EasyNavigationBar;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -45,6 +53,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * @Author : T-Bag (茶包)
@@ -57,6 +66,8 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @BindView(R.id.easy_tab)
     EasyNavigationBar tabModule;
+    @BindView(R.id.rel_addOrDelete)
+    RelativeLayout relAddOrDelete ;
 
     private PersonalFragment personalFragment ;
     private ScreenFragment screenFragment ;
@@ -98,7 +109,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     protected void setupData(Bundle savedInstanceState) {
         buildFragment();
         getPresenter().getPermissionModule();
-        getPresenter().getDepartmentAndContact();
     }
 
     /**
@@ -168,42 +178,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
      */
     @Override
     public void getModuleSuccess(ModuleListBean resdata) {
-        DbModuleInfoController controller = DbModuleInfoController.getInstance(mContext);
-        for (ModuleBean bean : resdata){
-            ModuleInfo moduleInfo = controller.getModule(bean.getRes_pkid());
-            moduleInfo.setModule_permission(true);
-            DbModuleInfoController.getInstance(mContext).updateModuleInfo(moduleInfo);
-        }
         buildTab();
-    }
-
-    /**
-     * 获取维度下所有联系人成功
-     * @param resdata
-     */
-    @Override
-    public void getDepartmentAndContactSuccess(DefaultUserListBean resdata) {
-        DbDepartmentController departmentController = DbDepartmentController.getInstance(mContext);
-        DbContactController contactController = DbContactController.getInstance(mContext);
-        for (DefaultUserBean bean : resdata) {
-            DepartmentBean departmentBean = new DepartmentBean();
-            departmentBean.setD_res_clname(bean.getD_res_clname());
-            departmentBean.setD_res_flname(bean.getD_res_flname());
-            departmentBean.setD_res_id(bean.getD_res_id());
-            departmentBean.setD_res_parentid(bean.getD_res_parentid());
-            departmentBean.setD_res_pkid(bean.getD_res_pkid());
-            departmentBean.setD_res_rootid(bean.getD_res_rootid());
-            departmentController.insertOrUpdateDepartment(departmentBean);
-            for (DefaultUserBean.UserBean contact : bean.getUser()){
-                ContactBean contactBean = new ContactBean();
-                contactBean.setDepartment_id(bean.getD_res_pkid());
-                contactBean.setId(contact.getId());
-                contactBean.setUser_id(contact.getUser_id());
-                contactBean.setName(contact.getName());
-                contactController.insertOrUpdateContact(contactBean);
-            }
-        }
-        PLog.e(DbContactController.getInstance(mContext).queryContactList().size() + "");
     }
 
     /**
@@ -269,6 +244,19 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                 .build();
     }
 
+    @OnClick({R.id.lin_addPage,R.id.lin_deletePage})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.lin_deletePage :
+                EventBus.getDefault().post(new DeletePageEvent());
+                break;
+
+            case R.id.lin_addPage :
+                EventBus.getDefault().post(new ToAddPageEvent());
+                break;
+        }
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RebuildTableEvent event){
        PLog.e("模块切换");
@@ -283,5 +271,11 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ChangeUnReadMessageEvent event){
         tabModule.setMsgPointCount(titles.length - 1,event.getTotal());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(HideNavigationEvent event){
+        tabModule.getNavigationLayout().setVisibility(event.getHide() ? View.VISIBLE : View.GONE);
+        relAddOrDelete.setVisibility(event.getHide() ? View.GONE : View.VISIBLE);
     }
 }

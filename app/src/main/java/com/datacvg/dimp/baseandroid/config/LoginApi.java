@@ -1,7 +1,6 @@
 package com.datacvg.dimp.baseandroid.config;
 
 
-import com.datacvg.dimp.bean.ServiceBean;
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Url;
@@ -13,9 +12,6 @@ import retrofit2.http.Url;
  */
 public interface LoginApi {
 
-
-    void getCode(String companyCode);
-
     /**
      * 获取河狸项目license code
      * @param customUrl 请求的url
@@ -23,7 +19,4 @@ public interface LoginApi {
      */
     @GET
     Observable<String> getCustomLicense(@Url String customUrl);
-
-    @GET
-    Observable<ServiceBean> getServiceUrl(@Url String url);
 }

@@ -1,22 +1,17 @@
 package com.datacvg.dimp.presenter;
 
+import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.config.MobileApi;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
-import com.datacvg.dimp.bean.ChartBean;
-import com.datacvg.dimp.bean.ChartListBean;
-import com.datacvg.dimp.bean.DimensionListBean;
-import com.datacvg.dimp.bean.DimensionPositionListBean;
-import com.datacvg.dimp.bean.OtherDimensionBean;
+import com.datacvg.dimp.bean.ActionPlanListBean;
+import com.datacvg.dimp.bean.DeletePageBean;
+import com.datacvg.dimp.bean.DigitalPageBean;
+import com.datacvg.dimp.bean.PageItemListBean;
 import com.datacvg.dimp.view.DigitalView;
 import com.google.gson.Gson;
-import com.google.gson.internal.LinkedTreeMap;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -33,98 +28,21 @@ public class DigitalPresenter extends BasePresenter<DigitalView>{
         this.api = api ;
     }
 
-    /**
-     * 获取指标列表
-     * @param mTimeValue
-     * @param mOrgDimension
-     * @param mFuDimension
-     * @param mPDimension
-     */
-    public void getIndexPosition(String mTimeValue, String mOrgDimension, String mFuDimension, String mPDimension) {
-        api.getIndexPosition(mTimeValue,mOrgDimension,mFuDimension,mPDimension)
+    public void getDigitalPage() {
+        api.getDigitalPage()
                 .compose(RxUtils.applySchedulersLifeCycle(getView()))
-                .subscribe(new RxObserver<BaseBean<DimensionPositionListBean>>(){
+                .subscribe(new RxObserver<BaseBean<DigitalPageBean>>(){
                     @Override
                     public void onComplete() {
                         super.onComplete();
                     }
 
                     @Override
-                    public void onNext(BaseBean<DimensionPositionListBean> bean) {
-                        getView().getDimensionPositionSuccess(bean.getResdata());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        PLog.e("TAG",e.getMessage());
-                    }
-                });
-    }
-
-    public void getDimension(String timeVal) {
-        api.getDimension(timeVal)
-                .compose(RxUtils.applySchedulersLifeCycle(getView()))
-                .subscribe(new RxObserver<BaseBean<DimensionListBean>>(){
-                    @Override
-                    public void onComplete() {
-                        super.onComplete();
-                    }
-
-                    @Override
-                    public void onNext(BaseBean<DimensionListBean> bean) {
-                        getView().getDimensionSuccess(bean.getData());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        PLog.e("TAG",e.getMessage());
-                    }
-                });
-    }
-
-    /**
-     *
-     * @param type 传参类型(标记第二维度还是第三维度)
-     * @param map 传参封装的map
-     */
-    public void getOtherDimension(String type,Map map) {
-        api.getOtherDimension(map)
-                .compose(RxUtils.applySchedulersLifeCycle(getView()))
-                .subscribe(new RxObserver<BaseBean<DimensionListBean>>(){
-                    @Override
-                    public void onComplete() {
-                        super.onComplete();
-                    }
-
-                    @Override
-                    public void onNext(BaseBean<DimensionListBean> bean) {
-                        getView().getOtherDimensionSuccess(type,bean.getData());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        PLog.e("TAG",e.getMessage());
-                    }
-                });
-    }
-
-    public void getCharts(Map map) {
-        api.getCharts(map)
-                .compose(RxUtils.applySchedulersLifeCycle(getView()))
-                .subscribe(new RxObserver<BaseBean<ChartListBean>>(){
-                    @Override
-                    public void onComplete() {
-                        super.onComplete();
-                    }
-
-                    @Override
-                    public void onNext(BaseBean<ChartListBean> bean) {
-                        PLog.e(new Gson().toJson(bean));
-                        if(bean != null && bean.getResdata() != null){
-                            getView().getChartSuccess(bean.getResdata());
+                    public void onNext(BaseBean<DigitalPageBean> baseBean) {
+                        if(RxObserver.checkJsonCode(baseBean)){
+                            PageItemListBean pageItemBeans = new Gson()
+                                    .fromJson(baseBean.getData().getPositionPage(),PageItemListBean.class);
+                            getView().getDigitalPageSuccess(pageItemBeans);
                         }
                     }
 
@@ -132,6 +50,28 @@ public class DigitalPresenter extends BasePresenter<DigitalView>{
                     public void onError(Throwable e) {
                         super.onError(e);
                         PLog.e("TAG",e.getMessage());
+                    }
+                });
+    }
+
+    public void deletePageRequest(String page) {
+        api.deletePageRequest(page).compose(RxUtils.applySchedulersLifeCycle(getView()))
+                .subscribe(new RxObserver<BaseBean<DeletePageBean>>(){
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                    }
+
+                    @Override
+                    public void onNext(BaseBean<DeletePageBean> baseBean) {
+                        if(RxObserver.checkJsonCode(baseBean)){
+                            getView().deletePageSuccess(baseBean.getData().getDeletePage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
                     }
                 });
     }

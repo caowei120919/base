@@ -126,6 +126,15 @@ public class ChatTypeRequestBean implements Serializable {
         private String indexId;
         private String dataType;
         private String analysisDim;
+        private String defaultAnalysis ;
+
+        public String getDefaultAnalysis() {
+            return defaultAnalysis;
+        }
+
+        public void setDefaultAnalysis(String defaultAnalysis) {
+            this.defaultAnalysis = defaultAnalysis;
+        }
 
         public String getIndexId() {
             return indexId;

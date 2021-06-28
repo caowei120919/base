@@ -9,7 +9,11 @@ import android.os.StrictMode;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+<<<<<<< HEAD
 import androidx.multidex.MultiDex;
+=======
+
+>>>>>>> 57e213b226d5392c8a623563e09dc46e1735fe1d
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.download.DownloadConfiguration;
@@ -183,8 +187,6 @@ public class BaseApplication extends Application {
     @Override
     public void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        // you must install multiDex whatever tinker is installed!
-        MultiDex.install(base);
     }
 
     public static void exitApp() {
@@ -216,7 +218,8 @@ public class BaseApplication extends Application {
                 resolvedActivityClass = (Class<? extends Activity>) Class.forName(intent.getComponent()
                         .getClassName());
                 intent.setClass(activity, resolvedActivityClass);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
                 if (intent.getComponent() != null) {
                     intent.setAction(Intent.ACTION_MAIN);
                     intent.addCategory(Intent.CATEGORY_LAUNCHER);

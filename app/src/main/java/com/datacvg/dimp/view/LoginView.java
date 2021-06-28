@@ -11,12 +11,6 @@ import com.datacvg.dimp.bean.UserLoginBean;
  */
 public interface LoginView extends MvpView {
     /**
-     * 应用更新
-     * @param updateStandardURL
-     */
-    void onUpdateVersion(String updateStandardURL);
-
-    /**
      * 登录成功
      * @param baseBean
      */

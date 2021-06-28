@@ -46,8 +46,8 @@
 
             <ImageView
                 android:id="@+id/img_indexForReport"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/W40"
+                android:layout_height="@dimen/H40"
                 android:src="@mipmap/icon_index_report"
                 android:layout_alignParentRight="true"
                 android:layout_alignTop="@id/tv_name"
@@ -56,20 +56,30 @@
 
             <ImageView
                 android:id="@+id/img_describe"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/W40"
+                android:layout_height="@dimen/H40"
                 android:src="@mipmap/icon_describe"
                 android:layout_toLeftOf="@id/img_indexForReport"
                 android:layout_alignTop="@id/tv_name"
                 android:layout_marginRight="@dimen/W16">
             </ImageView>
 
+<<<<<<< HEAD
             <com.datacvg.dimp.widget.BarChartBarChart
+=======
+            <com.datacvg.dimp.AAChartCoreLib.AAChartCreator.AAChartView
+>>>>>>> 57e213b226d5392c8a623563e09dc46e1735fe1d
                 android:id="@+id/barChart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_below="@id/tv_defaultValue"
+                android:layout_above="@id/tv_unit"
+                android:layout_height="match_parent"
                 android:layout_centerInParent="true">
+<<<<<<< HEAD
             </com.datacvg.dimp.widget.BarChartBarChart>
+=======
+            </com.datacvg.dimp.AAChartCoreLib.AAChartCreator.AAChartView>
+>>>>>>> 57e213b226d5392c8a623563e09dc46e1735fe1d
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

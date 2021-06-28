@@ -15,10 +15,4 @@ public interface MainView extends MvpView {
      * @param resdata
      */
     void getModuleSuccess(ModuleListBean resdata);
-
-    /**
-     * 获取维度下联系人成功
-     * @param resdata
-     */
-    void getDepartmentAndContactSuccess(DefaultUserListBean resdata);
 }

@@ -6,6 +6,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="@dimen/H216"
+        android:layout_marginTop="@dimen/H10"
         android:background="@drawable/layer_background">
 
         <RelativeLayout
@@ -37,20 +38,18 @@
 
             <ImageView
                 android:id="@+id/img_indexForReport"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/W40"
+                android:layout_height="@dimen/H40"
                 android:src="@mipmap/icon_index_report"
                 android:layout_alignParentRight="true"
-                android:visibility="gone"
                 android:layout_alignTop="@id/tv_name"
                 android:layout_marginRight="@dimen/W16">
             </ImageView>
 
             <ImageView
                 android:id="@+id/img_describe"
-                android:layout_width="wrap_content"
-                android:visibility="gone"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/W40"
+                android:layout_height="@dimen/H40"
                 android:src="@mipmap/icon_describe"
                 android:layout_toLeftOf="@id/img_indexForReport"
                 android:layout_alignTop="@id/tv_name"

@@ -12,22 +12,22 @@ import java.util.List;
  */
 @Keep
 public class DimensionListBean {
-    private List<DimensionBean> selectDimension;
-    private List<DimensionBean> selectOtherDimension;
+    private List<DimensionBean> indexPadDimension;
+    private List<DimensionBean> indexPadOtherDimension;
 
     public List<DimensionBean> getSelectOtherDimension() {
-        return selectOtherDimension;
+        return indexPadOtherDimension;
     }
 
     public void setSelectOtherDimension(List<DimensionBean> selectOtherDimension) {
-        this.selectOtherDimension = selectOtherDimension;
+        this.indexPadOtherDimension = selectOtherDimension;
     }
 
     public List<DimensionBean> getSelectDimension() {
-        return selectDimension;
+        return indexPadDimension;
     }
 
     public void setSelectDimension(List<DimensionBean> selectDimension) {
-        this.selectDimension = selectDimension;
+        this.indexPadDimension = selectDimension;
     }
 }

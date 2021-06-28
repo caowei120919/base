@@ -27,8 +27,6 @@ import butterknife.BindView;
  */
 public class TestRealActivity extends BaseActivity<TestRealView, TestRealPresenter>
         implements TestRealView {
-    @BindView(R.id.flow_indexTree)
-    IndexTreeViewFlower flowIndexTree ;
 
     @Override
     protected int getLayoutId() {

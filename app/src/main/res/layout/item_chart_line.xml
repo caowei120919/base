@@ -6,6 +6,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="@dimen/H510"
+        android:layout_marginTop="@dimen/H10"
         android:background="@drawable/layer_background">
 
         <RelativeLayout
@@ -46,8 +47,8 @@
 
             <ImageView
                 android:id="@+id/img_indexForReport"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/W40"
+                android:layout_height="@dimen/H40"
                 android:src="@mipmap/icon_index_report"
                 android:layout_alignParentRight="true"
                 android:layout_alignTop="@id/tv_name"
@@ -56,20 +57,22 @@
 
             <ImageView
                 android:id="@+id/img_describe"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/W40"
+                android:layout_height="@dimen/H40"
                 android:src="@mipmap/icon_describe"
                 android:layout_toLeftOf="@id/img_indexForReport"
                 android:layout_alignTop="@id/tv_name"
                 android:layout_marginRight="@dimen/W16">
             </ImageView>
 
-            <com.datacvg.dimp.widget.LineChart
+            <com.datacvg.dimp.AAChartCoreLib.AAChartCreator.AAChartView
                 android:id="@+id/lineChart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_below="@id/tv_defaultValue"
+                android:layout_height="match_parent"
+                android:layout_above="@id/tv_unit"
                 android:layout_centerInParent="true">
-            </com.datacvg.dimp.widget.LineChart>
+            </com.datacvg.dimp.AAChartCoreLib.AAChartCreator.AAChartView>
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

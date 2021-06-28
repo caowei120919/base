@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/layout_actionBar"
+        layout="@layout/actionbar_title"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/H100"
+        android:layout_below="@id/layout_actionBar">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/lin_pageName"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/H24"
+                android:orientation="horizontal"
+                android:layout_height="@dimen/H66">
+
+                <TextView
+                    android:layout_width="@dimen/W180"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
+                    android:text="@string/custom_page_name"
+                    android:textSize="18sp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/W24"
+                    android:textColor="@color/c_000000"
+                    android:textStyle="bold">
+                </TextView>
+
+                <EditText
+                    android:id="@+id/edit_pageName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/W32"
+                    android:layout_marginRight="@dimen/W24"
+                    android:textSize="13sp"
+                    android:singleLine="true"
+                    android:textColor="@color/c_000000"
+                    android:background="@drawable/shape_bg_f8f8fa">
+                </EditText>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/lin_pageTime"
+                android:layout_below="@id/lin_pageName"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/H24"
+                android:orientation="horizontal"
+                android:layout_height="@dimen/H66">
+
+                <TextView
+                    android:id="@+id/tv_pageTimeTitle"
+                    android:layout_width="@dimen/W180"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
+                    android:text="@string/time_to_type"
+                    android:textSize="18sp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/W24"
+                    android:textColor="@color/c_000000"
+                    android:textStyle="bold">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/tv_timeType"
+                    android:layout_toRightOf="@id/tv_pageTimeTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/W32"
+                    android:layout_marginRight="@dimen/W24"
+                    android:paddingLeft="@dimen/W20"
+                    android:gravity="center_vertical"
+                    android:textSize="13sp"
+                    android:singleLine="true"
+                    android:textColor="@color/c_000000"
+                    android:background="@drawable/shape_bg_f8f8fa">
+                </TextView>
+
+                <ImageView
+                    android:id="@+id/img_pull"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/W24"
+                    android:paddingLeft="@dimen/W15"
+                    android:paddingRight="@dimen/W15"
+                    android:src="@mipmap/dash_index_report_down"
+                    android:layout_alignParentRight="true">
+                </ImageView>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_customDimension"
+                android:layout_below="@id/lin_pageTime"
+                android:layout_width="@dimen/W180"
+                android:layout_marginTop="@dimen/H40"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:text="@string/custom_dimension"
+                android:textSize="18sp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/W24"
+                android:textColor="@color/c_000000"
+                android:textStyle="bold">
+            </TextView>
+
+            <RelativeLayout
+                android:id="@+id/rel_dimensionOne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_customDimension"
+                android:layout_marginTop="@dimen/H30">
+
+                <ImageView
+                    android:id="@+id/img_addDimensionOne"
+                    android:layout_width="@dimen/W55"
+                    android:layout_height="@dimen/H55"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/W24"
+                    android:src="@mipmap/add">
+                </ImageView>
+
+                <LinearLayout
+                    android:id="@+id/lin_dimensionOne"
+                    android:layout_width="match_parent"
+                    android:layout_toLeftOf="@id/img_addDimensionOne"
+                    android:layout_marginRight="@dimen/W24"
+                    android:layout_height="@dimen/H65"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="@dimen/W24"
+                    android:background="@drawable/shape_bg_f8f8fa">
+
+                    <TextView
+                        android:id="@+id/tv_dimensionNameOne"
+                        android:layout_width="@dimen/W1"
+                        android:layout_height="match_parent"
+                        android:singleLine="true"
+                        android:gravity="center_vertical"
+                        android:drawableRight="@mipmap/dash_index_report_down"
+                        android:paddingRight="@dimen/W10"
+                        android:layout_weight="2">
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="@dimen/W2"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/H10"
+                        android:background="@color/c_dbdbdb"
+                        android:layout_marginBottom="@dimen/H10">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/tv_dimensionNodeNameOne"
+                        android:layout_width="@dimen/W1"
+                        android:layout_height="match_parent"
+                        android:singleLine="true"
+                        android:gravity="center_vertical"
+                        android:drawableRight="@mipmap/dash_index_report_down"
+                        android:paddingRight="@dimen/W10"
+                        android:layout_weight="5">
+                    </TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lin_dimensionPopOne"
+                    android:layout_below="@id/lin_dimensionOne"
+                    android:layout_width="match_parent"
+                    android:layout_toLeftOf="@id/img_addDimensionOne"
+                    android:layout_marginRight="@dimen/W24"
+                    android:layout_marginTop="@dimen/H2"
+                    android:layout_height="@dimen/H200"
+                    android:visibility="gone"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="@dimen/W24">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycle_dimensionOne"
+                        android:layout_width="@dimen/W1"
+                        android:background="@drawable/shape_bg_f8f8fa"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2">
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycle_dimensionDetailOne"
+                        android:layout_width="@dimen/W1"
+                        android:background="@drawable/shape_bg_f8f8fa"
+                        android:layout_height="match_parent"
+                        android:layout_weight="5">
+                    </androidx.recyclerview.widget.RecyclerView>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rel_dimensionTwo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_below="@id/rel_dimensionOne"
+                android:layout_marginTop="@dimen/H30">
+
+                <ImageView
+                    android:id="@+id/img_deleteDimension"
+                    android:layout_width="@dimen/W55"
+                    android:layout_height="@dimen/H55"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/W24"
+                    android:src="@mipmap/delete">
+                </ImageView>
+
+                <LinearLayout
+                    android:id="@+id/lin_dimensionTwo"
+                    android:layout_width="match_parent"
+                    android:layout_toLeftOf="@id/img_deleteDimension"
+                    android:layout_marginRight="@dimen/W24"
+                    android:layout_height="@dimen/H65"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="@dimen/W24"
+                    android:background="@drawable/shape_bg_f8f8fa">
+
+                    <TextView
+                        android:id="@+id/tv_dimensionNameTwo"
+                        android:layout_width="@dimen/W1"
+                        android:layout_height="match_parent"
+                        android:singleLine="true"
+                        android:gravity="center_vertical"
+                        android:drawableRight="@mipmap/dash_index_report_down"
+                        android:paddingRight="@dimen/W10"
+                        android:layout_weight="2">
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="@dimen/W2"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/H10"
+                        android:background="@color/c_dbdbdb"
+                        android:layout_marginBottom="@dimen/H10">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/tv_dimensionNodeNameTwo"
+                        android:layout_width="@dimen/W1"
+                        android:layout_height="match_parent"
+                        android:singleLine="true"
+                        android:gravity="center_vertical"
+                        android:drawableRight="@mipmap/dash_index_report_down"
+                        android:paddingRight="@dimen/W10"
+                        android:layout_weight="5">
+                    </TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lin_dimensionPopTwo"
+                    android:layout_below="@id/lin_dimensionTwo"
+                    android:layout_width="match_parent"
+                    android:layout_toLeftOf="@id/img_deleteDimension"
+                    android:layout_marginRight="@dimen/W24"
+                    android:layout_marginTop="@dimen/H2"
+                    android:layout_height="@dimen/H200"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:layout_marginLeft="@dimen/W24">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycle_dimensionTwo"
+                        android:layout_width="@dimen/W1"
+                        android:background="@drawable/shape_bg_f8f8fa"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2">
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycle_dimensionDetailTwo"
+                        android:layout_width="@dimen/W1"
+                        android:background="@drawable/shape_bg_f8f8fa"
+                        android:layout_height="match_parent"
+                        android:layout_weight="5">
+                    </androidx.recyclerview.widget.RecyclerView>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rel_dimensionThree"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_below="@id/rel_dimensionTwo"
+                android:layout_marginTop="@dimen/H30">
+
+                <ImageView
+                    android:id="@+id/img_deleteDimensionTwo"
+                    android:layout_width="@dimen/W55"
+                    android:layout_height="@dimen/H55"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/W24"
+                    android:src="@mipmap/delete">
+                </ImageView>
+
+                <LinearLayout
+                    android:id="@+id/lin_dimensionThree"
+                    android:layout_width="match_parent"
+                    android:layout_toLeftOf="@id/img_deleteDimensionTwo"
+                    android:layout_marginRight="@dimen/W24"
+                    android:layout_height="@dimen/H65"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="@dimen/W24"
+                    android:background="@drawable/shape_bg_f8f8fa">
+
+                    <TextView
+                        android:id="@+id/tv_dimensionNameThree"
+                        android:layout_width="@dimen/W1"
+                        android:layout_height="match_parent"
+                        android:singleLine="true"
+                        android:gravity="center_vertical"
+                        android:drawableRight="@mipmap/dash_index_report_down"
+                        android:paddingRight="@dimen/W10"
+                        android:layout_weight="2">
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="@dimen/W2"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/H10"
+                        android:background="@color/c_dbdbdb"
+                        android:layout_marginBottom="@dimen/H10">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/tv_dimensionNodeNameThree"
+                        android:layout_width="@dimen/W1"
+                        android:layout_height="match_parent"
+                        android:singleLine="true"
+                        android:gravity="center_vertical"
+                        android:drawableRight="@mipmap/dash_index_report_down"
+                        android:paddingRight="@dimen/W10"
+                        android:layout_weight="5">
+                    </TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lin_dimensionPopThree"
+                    android:layout_below="@id/lin_dimensionThree"
+                    android:layout_width="match_parent"
+                    android:layout_toLeftOf="@id/img_deleteDimensionTwo"
+                    android:layout_marginRight="@dimen/W24"
+                    android:layout_marginTop="@dimen/H2"
+                    android:layout_height="@dimen/H200"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:layout_marginLeft="@dimen/W24">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycle_dimensionThree"
+                        android:layout_width="@dimen/W1"
+                        android:background="@drawable/shape_bg_f8f8fa"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2">
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycle_dimensionDetailThree"
+                        android:layout_width="@dimen/W1"
+                        android:background="@drawable/shape_bg_f8f8fa"
+                        android:layout_height="match_parent"
+                        android:layout_weight="5">
+                    </androidx.recyclerview.widget.RecyclerView>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_personalizedBoard"
+                android:layout_below="@id/rel_dimensionThree"
+                android:layout_width="@dimen/W180"
+                android:layout_marginTop="@dimen/H40"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:text="@string/personalized_board"
+                android:textSize="18sp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/W24"
+                android:textColor="@color/c_000000"
+                android:textStyle="bold">
+            </TextView>
+
+            <TextView
+                android:id="@+id/tv_addOrCancel"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/H75"
+                android:textStyle="bold"
+                android:layout_below="@id/tv_personalizedBoard"
+                android:layout_marginTop="@dimen/H43"
+                android:layout_marginLeft="@dimen/W24"
+                android:layout_marginRight="@dimen/W24"
+                android:text="@string/add_all_metrics"
+                android:gravity="center"
+                android:textColor="@drawable/selector_black_white"
+                android:background="@drawable/selector_bg_red_gray">
+            </TextView>
+
+            <net.lucode.hackware.magicindicator.MagicIndicator
+                android:id="@+id/magic_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/H90"
+                android:layout_below="@id/tv_addOrCancel"
+                android:layout_marginTop="@dimen/H15">
+            </net.lucode.hackware.magicindicator.MagicIndicator>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycle_index"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/magic_indicator">
+            </androidx.recyclerview.widget.RecyclerView>
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H100"
+        android:background="@drawable/shape_index_bottom"
+        android:layout_alignParentBottom="true">
+
+        <CheckBox
+            android:id="@+id/cb_selectAll"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:button="@null"
+            android:background="@null"
+            android:text="@string/select_all"
+            android:drawablePadding="@dimen/W15"
+            android:drawableLeft="@drawable/selector_select"
+            android:paddingRight="@dimen/W30"
+            android:paddingLeft="@dimen/W30">
+        </CheckBox>
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/H50"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/W24"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/login_user_bg"
+            android:text="@string/confirm"
+            android:textColor="#fff"
+            android:textSize="@dimen/W30" />
+    </RelativeLayout>
+</RelativeLayout>
