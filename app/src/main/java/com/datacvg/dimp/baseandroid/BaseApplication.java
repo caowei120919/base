@@ -10,7 +10,6 @@ import android.os.StrictMode;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.multidex.MultiDex;
-
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.download.DownloadConfiguration;

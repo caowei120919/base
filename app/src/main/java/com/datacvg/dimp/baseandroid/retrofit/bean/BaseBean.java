@@ -6,12 +6,6 @@ import androidx.annotation.Keep;
  * @Author : T-Bag (茶包)
  * @Time : 2020-07-22
  * @Description : 返回数据基础格式
- *
- *      * message : ok
- *      * status : 1
- *      * user_token : ccdb281cdac7aa5c92650cb5bcafaf30168c8aae
- *      * resdata : {}
- *
  */
 @Keep
 public class BaseBean<T> {

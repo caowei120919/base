@@ -64,12 +64,12 @@
                 android:layout_marginRight="@dimen/W16">
             </ImageView>
 
-            <com.datacvg.dimp.widget.BarChart
+            <com.datacvg.dimp.widget.BarChartBarChart
                 android:id="@+id/barChart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true">
-            </com.datacvg.dimp.widget.BarChart>
+            </com.datacvg.dimp.widget.BarChartBarChart>
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

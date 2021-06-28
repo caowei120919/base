@@ -1,3 +1,2 @@
-include ':easynavigation'
 include ':app'
 rootProject.name = "baseAndroid"

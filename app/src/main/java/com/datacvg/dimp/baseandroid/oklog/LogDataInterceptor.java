@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-
 import okhttp3.Connection;
 import okhttp3.Headers;
 import okhttp3.Interceptor;

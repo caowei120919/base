@@ -51,13 +51,11 @@ import java.util.UUID;
 public class AndroidUtils {
     private static final String TAG = AndroidUtils.class.getSimpleName();
 
-    // 两次点击按钮之间的点击间隔不能少于1000毫秒
     private static final int MIN_CLICK_DELAY_TIME = 1000;
     private static long lastClickTime;
 
     private static Context mContext;
 
-    // must be first initialize on Application onCreate Method
     public static void init(@NonNull Context context) {
         mContext = context;
     }
