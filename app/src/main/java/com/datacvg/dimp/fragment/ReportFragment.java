@@ -96,7 +96,7 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
     }
 
     @Override
-    protected void setupData(Bundle savedInstanceState) {
+    protected void setupData() {
         imgLeft.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.report_menu_grid));
         tvReportOfMine.setSelected(true);
         tvReportToShare.setSelected(false);

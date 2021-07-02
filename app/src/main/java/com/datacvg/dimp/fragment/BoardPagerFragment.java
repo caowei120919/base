@@ -84,7 +84,7 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
     }
 
     @Override
-    protected void setupData(Bundle savedInstanceState) {
+    protected void setupData() {
         setItemBean();
         getDimensionValue();
         getPageData();

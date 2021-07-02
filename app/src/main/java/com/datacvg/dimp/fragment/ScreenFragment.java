@@ -70,7 +70,7 @@ public class ScreenFragment extends BaseFragment<ScreenView, ScreenPresenter>
     }
 
     @Override
-    protected void setupData(Bundle savedInstanceState) {
+    protected void setupData() {
         imgLeft.setVisibility(View.GONE);
         tvTitle.setText(resources.getString(R.string.screen));
         tvRight.setText(resources.getString(R.string.time_sequence));

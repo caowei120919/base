@@ -330,6 +330,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(HideNavigationEvent event){
-        tabModule.getNavigationLayout().setVisibility(event.getHide() ? View.VISIBLE : View.GONE);
+        tabModule.setVisibility(event.getHide() ? View.VISIBLE : View.GONE);
     }
 }

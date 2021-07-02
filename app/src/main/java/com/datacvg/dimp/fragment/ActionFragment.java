@@ -83,7 +83,7 @@ public class ActionFragment extends BaseFragment<ActionView, ActionPresenter>
     }
 
     @Override
-    protected void setupData(Bundle savedInstanceState) {
+    protected void setupData() {
         imgLeft.setVisibility(View.GONE);
         tvTitle.setText(resources.getString(R.string.action));
         imgRight.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_add));

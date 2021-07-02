@@ -16,6 +16,7 @@ import com.datacvg.dimp.baseandroid.dragger.component.MyAppComponent;
 import com.datacvg.dimp.baseandroid.mvp.MvpFragment;
 import com.datacvg.dimp.baseandroid.mvp.MvpPresenter;
 import com.datacvg.dimp.baseandroid.mvp.MvpView;
+import com.datacvg.dimp.baseandroid.mvp.OnFragmentVisibilityChangedListener;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.dragger.module.FragmentModule;
@@ -32,12 +33,13 @@ import butterknife.Unbinder;
  * @Description :
  */
 public abstract class BaseFragment<V extends MvpView,P extends MvpPresenter<V>>
-        extends MvpFragment<V,P> implements MvpView{
+        extends MvpFragment<V,P> implements MvpView, OnFragmentVisibilityChangedListener {
 
     protected Unbinder mUnbinder;
     protected Context mContext ;
     protected Resources resources ;
     private FragmentComponent mFragmentComponent;
+    protected Boolean hasLoaded = false ;
 
 
     /**
@@ -73,6 +75,7 @@ public abstract class BaseFragment<V extends MvpView,P extends MvpPresenter<V>>
         resources = mContext.getResources() ;
         mUnbinder = ButterKnife.bind(this, view);
         EventBus.getDefault().register(this);
+        setOnVisibilityChangedListener(this);
         return view;
     }
 
@@ -90,7 +93,6 @@ public abstract class BaseFragment<V extends MvpView,P extends MvpPresenter<V>>
                     .getColor(R.color.c_FFFFFF));
         }
         setupView(rootView);
-        setupData(savedInstanceState);
     }
 
     protected abstract int getLayoutId();
@@ -99,7 +101,7 @@ public abstract class BaseFragment<V extends MvpView,P extends MvpPresenter<V>>
 
     protected abstract void setupView(View rootView);
 
-    protected abstract void setupData(Bundle savedInstanceState);
+    protected abstract void setupData();
 
     @Override
     public void onDestroy() {
@@ -108,7 +110,6 @@ public abstract class BaseFragment<V extends MvpView,P extends MvpPresenter<V>>
         mUnbinder.unbind();
         EventBus.getDefault().unregister(this);
         if (BaseApplication.DEBUGMODE) {
-            // use the RefWatcher to watch for fragment leaks:
             RefWatcher refWatcher = BaseApplication.getRefWatcher(getActivity());
             refWatcher.watch(this);
         }
@@ -122,5 +123,8 @@ public abstract class BaseFragment<V extends MvpView,P extends MvpPresenter<V>>
     @Override
     public void onFragmentVisibilityChanged(boolean visible) {
         super.onFragmentVisibilityChanged(visible);
+        if(visible && !hasLoaded){
+            setupData();
+        }
     }
 }

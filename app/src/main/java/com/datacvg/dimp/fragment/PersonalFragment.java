@@ -94,7 +94,7 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
     }
 
     @Override
-    protected void setupData(Bundle savedInstanceState) {
+    protected void setupData() {
         tvTitle.setText(resources.getString(R.string.personal_center));
         imgLeft.setVisibility(View.GONE);
         imgRight.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.vpn_scan));

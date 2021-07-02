@@ -63,24 +63,13 @@ public class TableFragment extends BaseFragment<TableView, TablePresenter> imple
     }
 
     @Override
-    protected void setupData(Bundle savedInstanceState) {
+    protected void setupData() {
         imgLeft.setVisibility(View.GONE);
         tvTitle.setText(resources.getString(R.string.the_theme_report));
 
         getTableList();
         adapter = new TableAdapter(mContext,tableBeans,this);
         recyclerTable.setLayoutManager(new GridLayoutManager(mContext,2));
-        recyclerTable.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view
-                    , @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                //不是第一个的格子都设一个左边和底部的间距
-                outRect.left = (int) resources.getDimension(R.dimen.W25);
-                if (parent.getChildLayoutPosition(view) % 2 ==0) {
-                    outRect.left = 0;
-                }
-            }
-        });
         recyclerTable.setAdapter(adapter);
     }
 
