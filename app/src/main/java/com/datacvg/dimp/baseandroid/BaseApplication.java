@@ -107,8 +107,8 @@ public class BaseApplication extends Application {
             moduleInfo.setModule_id(i);
             moduleInfo.setModule_name(module_title[i]);
             moduleInfo.setModule_res_id(module_id[i]);
-            moduleInfo.setModule_checked(true || i != 4);
-            moduleInfo.setModule_permission(i==5 || false);
+            moduleInfo.setModule_checked(i != 4);
+            moduleInfo.setModule_permission(i==5);
             moduleInfo.setModule_normal_res(normalIds[i]);
             moduleInfo.setModule_selected_res(selectedIds[i]);
             moduleInfo.setModule_fragment_name(module_fragment[i]);

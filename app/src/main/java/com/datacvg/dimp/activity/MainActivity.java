@@ -66,8 +66,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @BindView(R.id.easy_tab)
     EasyNavigationBar tabModule;
-    @BindView(R.id.rel_addOrDelete)
-    RelativeLayout relAddOrDelete ;
 
     private PersonalFragment personalFragment ;
     private ScreenFragment screenFragment ;
@@ -178,6 +176,14 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
      */
     @Override
     public void getModuleSuccess(ModuleListBean resdata) {
+        for (ModuleBean moduleBean : resdata){
+            ModuleInfo moduleInfo = DbModuleInfoController.getInstance(mContext)
+                    .getModule(moduleBean.getRes_pkid());
+            if(moduleInfo != null){
+                moduleInfo.setModule_permission(true);
+                DbModuleInfoController.getInstance(mContext).updateModuleInfo(moduleInfo);
+            }
+        }
         buildTab();
     }
 
@@ -244,19 +250,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                 .build();
     }
 
-    @OnClick({R.id.lin_addPage,R.id.lin_deletePage})
-    public void onClick(View view){
-        switch (view.getId()){
-            case R.id.lin_deletePage :
-                EventBus.getDefault().post(new DeletePageEvent());
-                break;
-
-            case R.id.lin_addPage :
-                EventBus.getDefault().post(new ToAddPageEvent());
-                break;
-        }
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RebuildTableEvent event){
        PLog.e("模块切换");
@@ -276,6 +269,5 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(HideNavigationEvent event){
         tabModule.getNavigationLayout().setVisibility(event.getHide() ? View.VISIBLE : View.GONE);
-        relAddOrDelete.setVisibility(event.getHide() ? View.GONE : View.VISIBLE);
     }
 }

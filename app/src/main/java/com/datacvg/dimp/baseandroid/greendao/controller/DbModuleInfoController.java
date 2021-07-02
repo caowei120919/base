@@ -103,7 +103,8 @@ public class DbModuleInfoController {
         DaoSession daoSession = daoMaster.newSession();
         ModuleInfoDao moduleInfoDao = daoSession.getModuleInfoDao();
         QueryBuilder<ModuleInfo> qb = moduleInfoDao.queryBuilder();
-        qb.where(ModuleInfoDao.Properties.Module_checked.eq(true));
+        qb.where(ModuleInfoDao.Properties.Module_checked.eq(true)
+                ,ModuleInfoDao.Properties.Module_permission.eq(true));
         List<ModuleInfo> list = qb.list();
         return list;
     }

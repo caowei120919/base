@@ -43,7 +43,6 @@ public class EasyNavigationBar extends LinearLayout {
 
 
     private RelativeLayout AddContainerLayout;
-
     //Tab数量
     private int tabCount = 0;
 
@@ -230,14 +229,11 @@ public class EasyNavigationBar extends LinearLayout {
 
     private void parseStyle(TypedArray attributes) {
         if (attributes != null) {
-//要放在前面
+            //要放在前面
             textSizeType = attributes.getInt(R.styleable.EasyNavigationBar_Easy_textSizeType, textSizeType);
-
-
             msgPointColor = attributes.getColor(R.styleable.EasyNavigationBar_Easy_msgPointColor, msgPointColor);
             navigationHeight = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_navigationHeight, navigationHeight);
             navigationBackground = attributes.getColor(R.styleable.EasyNavigationBar_Easy_navigationBackground, navigationBackground);
-
             msgPointMoreWidth = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_msgPointMoreWidth, msgPointMoreWidth);
             msgPointMoreHeight = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_msgPointMoreHeight, msgPointMoreHeight);
             msgPointMoreRadius = attributes.getInt(R.styleable.EasyNavigationBar_Easy_msgPointMoreRadius, msgPointMoreRadius);
@@ -249,29 +245,20 @@ public class EasyNavigationBar extends LinearLayout {
             hintPointLeft = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_hintPointLeft, hintPointLeft);
             msgPointTop = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_msgPointTop, -iconSize * 3 / 5);
             hintPointTop = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_hintPointTop, hintPointTop);
-
             msgPointLeft = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_msgPointLeft, -iconSize / 2);
             msgPointTextSize = NavigationUtil.compareTo(getContext(),attributes.getDimension(R.styleable.EasyNavigationBar_Easy_msgPointTextSize, 0),msgPointTextSize,textSizeType);
             centerIconSize = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_centerIconSize, centerIconSize);
             centerLayoutBottomMargin = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_centerLayoutBottomMargin, centerLayoutBottomMargin);
-
-            //加号属性
             centerSelectTextColor = attributes.getColor(R.styleable.EasyNavigationBar_Easy_centerSelectTextColor, centerSelectTextColor);
             centerNormalTextColor = attributes.getColor(R.styleable.EasyNavigationBar_Easy_centerNormalTextColor, centerNormalTextColor);
             centerTextSize = NavigationUtil.compareTo(getContext(), attributes.getDimension(R.styleable.EasyNavigationBar_Easy_centerTextSize, 0), centerTextSize, textSizeType);
             centerTextTopMargin = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_centerTextTopMargin, centerTextTopMargin);
             centerAlignBottom = attributes.getBoolean(R.styleable.EasyNavigationBar_Easy_centerAlignBottom, centerAlignBottom);
-
-
             lineHeight = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_lineHeight, lineHeight);
             lineColor = attributes.getColor(R.styleable.EasyNavigationBar_Easy_lineColor, lineColor);
-
-
             centerLayoutHeight = attributes.getDimension(R.styleable.EasyNavigationBar_Easy_centerLayoutHeight, navigationHeight + lineHeight);
-
             normalTextColor = attributes.getColor(R.styleable.EasyNavigationBar_Easy_tabNormalColor, normalTextColor);
             selectTextColor = attributes.getColor(R.styleable.EasyNavigationBar_Easy_tabSelectColor, selectTextColor);
-
             int type = attributes.getInt(R.styleable.EasyNavigationBar_Easy_scaleType, 0);
             if (type == 0) {
                 scaleType = ImageView.ScaleType.CENTER_INSIDE;
@@ -290,7 +277,6 @@ public class EasyNavigationBar extends LinearLayout {
             } else if (type == 7) {
                 scaleType = ImageView.ScaleType.MATRIX;
             }
-
             centerLayoutRule = attributes.getInt(R.styleable.EasyNavigationBar_Easy_centerLayoutRule, centerLayoutRule);
             hasPadding = attributes.getBoolean(R.styleable.EasyNavigationBar_Easy_hasPadding, hasPadding);
 
@@ -301,10 +287,6 @@ public class EasyNavigationBar extends LinearLayout {
 
 
     public EasyNavigationBar setupWithViewPager(@NonNull ViewPager viewPager) {
-//        final PagerAdapter adapter = viewPager.getAdapter();
-//        if (adapter == null) {
-//            throw new IllegalArgumentException("ViewPager does not have a PagerAdapter set");
-//        }
         onlyNavigation = true;
         mViewPager = viewPager;
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
