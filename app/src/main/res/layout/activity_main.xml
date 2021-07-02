@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H1"
+        android:layout_weight="1"
+        android:background="@color/c_f8f8fa">
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H1"
+        android:background="@color/c_f2f2f2">
+    </View>
+
     <com.next.easynavigation.view.EasyNavigationBar
         android:id="@+id/easy_tab"
         android:layout_width="match_parent"
-        app:Easy_navigationHeight="@dimen/H100"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/H100"
         tools:ignore="MissingConstraints">
     </com.next.easynavigation.view.EasyNavigationBar>
-</RelativeLayout>
+</LinearLayout>

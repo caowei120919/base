@@ -10,6 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.greendao.bean.ModuleInfo;
@@ -77,12 +79,12 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     String[] titles ;
     int[] normalIcons ;
     int[] selectIcons ;
-    private List<Fragment> fragments = new ArrayList<>();
-    private Map<String,Fragment> fragmentMap = new HashMap<>();
 
     /**
      *记录返回键点击时间
      */
+    private FragmentManager fragmentManager ;
+    private FragmentTransaction fragmentTransaction ;
     private long firstTime = 0;
     private List<ModuleInfo> moduleBeans = new ArrayList<>();
     private boolean isNeedRebuild = false ;
@@ -105,43 +107,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Override
     protected void setupData(Bundle savedInstanceState) {
-        buildFragment();
         getPresenter().getPermissionModule();
-    }
-
-    /**
-     * fragment初始化
-     */
-    private void buildFragment() {
-        if(null == personalFragment){
-            personalFragment = new PersonalFragment();
-        }
-        fragmentMap.put(personalFragment.getClass().getSimpleName(),personalFragment);
-
-        if (null == screenFragment){
-            screenFragment = new ScreenFragment();
-        }
-        fragmentMap.put(screenFragment.getClass().getSimpleName(),screenFragment);
-
-        if(null == digitalFragment){
-            digitalFragment = new DigitalFragment();
-        }
-        fragmentMap.put(digitalFragment.getClass().getSimpleName(),digitalFragment);
-
-        if (null == reportFragment){
-            reportFragment = new ReportFragment();
-        }
-        fragmentMap.put(reportFragment.getClass().getSimpleName(),reportFragment);
-
-        if(null == tableFragment){
-            tableFragment = new TableFragment();
-        }
-        fragmentMap.put(tableFragment.getClass().getSimpleName(),tableFragment);
-
-        if (null == actionFragment){
-            actionFragment = new ActionFragment();
-        }
-        fragmentMap.put(actionFragment.getClass().getSimpleName(),actionFragment);
     }
 
     /**
@@ -192,9 +158,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
      */
     private void buildTab() {
         moduleBeans = DbModuleInfoController.getInstance(mContext).getSelectedModuleList();
-        for (ModuleInfo info : moduleBeans){
-            fragments.add(fragmentMap.get(info.getModule_fragment_name()));
-        }
         titles = new String[moduleBeans.size()];
         normalIcons = new int[moduleBeans.size()];
         selectIcons = new int[moduleBeans.size()];
@@ -225,13 +188,13 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                 .setOnTabClickListener(new EasyNavigationBar.OnTabClickListener() {
                     @Override
                     public boolean onTabSelectEvent(View view, int position) {
-                        PLog.e("onTabSelectEvent ========>" + view.getTag() );
+                        PLog.e(position + "===>" + view.getTag());
+                        showFragment((String)view.getTag());
                         return false;
                     }
 
                     @Override
                     public boolean onTabReSelectEvent(View view, int position) {
-                        PLog.e("onTabReSelectEvent");
                         return false;
                     }
                 })
@@ -239,20 +202,119 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                 .canScroll(false)
                 .mode(EasyNavigationBar.NavigationMode.MODE_NORMAL)
                 .hasPadding(true)
-                .fragmentList(fragments)
-                .fragmentManager(getSupportFragmentManager())
-                .setOnTabLoadListener(new EasyNavigationBar.OnTabLoadListener() {
-                    @Override
-                    public void onTabLoadCompleteEvent() {
-
-                    }
-                })
                 .build();
+        showFragment(titles[0]);
+    }
+
+    private void showFragment(String tag) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        hideFragment(fragmentTransaction);
+        switch (tag){
+            case "数字神经" :
+                if(null != digitalFragment){
+                    fragmentTransaction.show(digitalFragment);
+                }else{
+                    digitalFragment = new DigitalFragment();
+                    fragmentTransaction.add(R.id.content,digitalFragment);
+                }
+                fragmentTransaction.commitAllowingStateLoss();
+                break;
+
+            case "管理画布" :
+                if(null != reportFragment){
+                    fragmentTransaction.show(reportFragment);
+                }else{
+                    reportFragment = new ReportFragment();
+                    fragmentTransaction.add(R.id.content,reportFragment);
+                }
+                fragmentTransaction.commitAllowingStateLoss();
+                break;
+
+            case "主题报表" :
+                if(null != tableFragment){
+                    fragmentTransaction.show(tableFragment);
+                }else{
+                    tableFragment = new TableFragment();
+                    fragmentTransaction.add(R.id.content,tableFragment);
+                }
+                fragmentTransaction.commitAllowingStateLoss();
+                break;
+
+            case "行动方案" :
+                if(null != actionFragment){
+                    fragmentTransaction.show(actionFragment);
+                }else{
+                    actionFragment = new ActionFragment();
+                    fragmentTransaction.add(R.id.content,actionFragment);
+                }
+                fragmentTransaction.commitAllowingStateLoss();
+                break;
+
+            case "数字大屏" :
+                if(null != screenFragment){
+                    fragmentTransaction.show(screenFragment);
+                }else{
+                    screenFragment = new ScreenFragment();
+                    fragmentTransaction.add(R.id.content,screenFragment);
+                }
+                fragmentTransaction.commitAllowingStateLoss();
+                break;
+
+            case "个人中心" :
+                if(null != personalFragment){
+                    fragmentTransaction.show(personalFragment);
+                }else{
+                    personalFragment = new PersonalFragment();
+                    fragmentTransaction.add(R.id.content,personalFragment);
+                }
+                fragmentTransaction.commitAllowingStateLoss();
+                break;
+        }
+    }
+
+    private void hideFragment(FragmentTransaction fragmentTransaction) {
+        if(null != personalFragment){
+            fragmentTransaction.hide(personalFragment);
+        }
+        if(null != screenFragment){
+            fragmentTransaction.hide(screenFragment);
+        }
+        if(null != digitalFragment){
+            fragmentTransaction.hide(digitalFragment);
+        }
+        if(null != reportFragment){
+            fragmentTransaction.hide(reportFragment);
+        }
+        if(null != tableFragment){
+            fragmentTransaction.hide(tableFragment);
+        }
+        if(null != actionFragment){
+            fragmentTransaction.hide(actionFragment);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RebuildTableEvent event){
        PLog.e("模块切换");
+       moduleBeans = DbModuleInfoController.getInstance(mContext).getSelectedModuleList();
+       titles = new String[moduleBeans.size()];
+       normalIcons = new int[moduleBeans.size()];
+       selectIcons = new int[moduleBeans.size()];
+       for (int i = 0 ; i < moduleBeans.size() ; i++){
+           titles[i] = moduleBeans.get(i).getModule_name();
+           normalIcons[i] = moduleBeans.get(i).getModule_normal_res();
+           selectIcons[i] = moduleBeans.get(i).getModule_selected_res();
+       }
+       tabModule.titleItems(titles);
+       tabModule.normalIconItems(normalIcons);
+       tabModule.selectIconItems(selectIcons);
+       tabModule.setOnTabLoadListener(new EasyNavigationBar.OnTabLoadListener() {
+           @Override
+           public void onTabLoadCompleteEvent() {
+               tabModule.selectTab(titles.length -1);
+           }
+       }).build();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
