@@ -2,12 +2,13 @@ package com.datacvg.dimp.fragment;
 import android.Manifest;
 import android.view.View;
 import android.widget.TextView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
-import com.datacvg.dimp.bean.PageItemListBean;
 import com.datacvg.dimp.presenter.DigitalPresenter;
 import com.datacvg.dimp.view.DigitalView;
 import com.datacvg.dimp.widget.TitleNavigator;
@@ -33,11 +34,12 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
     TextView tvManage ;
     @BindView(R.id.magic_title)
     MagicIndicator magicTitle ;
-    @BindView(R.id.magic_indicator)
-    MagicIndicator magicIndicator ;
 
     private TitleNavigator titleNavigator ;
     private FragmentContainerHelper mTitleFragmentContainerHelper ;
+    private FragmentTransaction fragmentTransaction;
+    private BoardFragment boardFragment ;
+    private BudgetFragment budgetFragment ;
 
     @Override
     protected int getLayoutId() {
@@ -72,6 +74,7 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
         magicTitle.setNavigator(titleNavigator);
         mTitleFragmentContainerHelper = new FragmentContainerHelper() ;
         mTitleFragmentContainerHelper.attachMagicIndicator(magicTitle);
+        showFragment(0);
     }
 
     @Override
@@ -114,15 +117,42 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
     public void onTabSelected(int position) {
         mTitleFragmentContainerHelper.handlePageSelected(position);
         tvManage.setVisibility(position == 0 ? View.VISIBLE : View.GONE);
+        showFragment(position);
     }
 
-    @Override
-    public void getDigitalPageSuccess(PageItemListBean pageItemBeans) {
+    private void showFragment(int position) {
+        FragmentManager fragmentManager = getChildFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        hideFragment(fragmentTransaction);
+        switch (position){
+            case 0 :
+                if(null != boardFragment){
+                    fragmentTransaction.show(boardFragment);
+                }else{
+                    boardFragment = new BoardFragment();
+                    fragmentTransaction.add(R.id.content,boardFragment);
+                }
+                fragmentTransaction.commitAllowingStateLoss();
+                break;
 
+            case 1 :
+                if(null != budgetFragment){
+                    fragmentTransaction.show(budgetFragment);
+                }else{
+                    budgetFragment = new BudgetFragment();
+                    fragmentTransaction.add(R.id.content,budgetFragment);
+                }
+                fragmentTransaction.commitAllowingStateLoss();
+                break;
+        }
     }
 
-    @Override
-    public void deletePageSuccess(Boolean deletePage) {
-
+    private void hideFragment(FragmentTransaction fragmentTransaction) {
+        if(null != boardFragment){
+            fragmentTransaction.hide(boardFragment);
+        }
+        if(null != budgetFragment){
+            fragmentTransaction.hide(budgetFragment);
+        }
     }
 }

@@ -14,31 +14,11 @@
         app:rExtendView="@layout/board_title">
     </com.enlogy.statusview.StatusRelativeLayout>
 
-    <com.enlogy.statusview.StatusRelativeLayout
-        android:id="@+id/status_board"
+    <FrameLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_below="@id/status_title"
-        android:layout_height="@dimen/H100"
-        android:background="@color/c_f8f8fa"
-        app:rContentView="@layout/view_board"
-        app:rExtendView="@layout/view_performance">
-    </com.enlogy.statusview.StatusRelativeLayout>
-
-    <com.datacvg.dimp.widget.ControlScrollViewPager
-        android:id="@+id/vp_board"
-        android:layout_width="match_parent"
-        android:layout_below="@id/status_board"
         android:layout_height="match_parent"
-        android:layout_above="@id/magic_indicator"
-        android:layout_marginTop="@dimen/H10">
-    </com.datacvg.dimp.widget.ControlScrollViewPager>
-
-    <net.lucode.hackware.magicindicator.MagicIndicator
-        android:id="@+id/magic_indicator"
-        android:layout_width="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_height="@dimen/H34"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/H10">
-    </net.lucode.hackware.magicindicator.MagicIndicator>
+        android:layout_below="@id/status_title"
+        android:background="@color/c_f8f8fa">
+    </FrameLayout>
 </RelativeLayout>

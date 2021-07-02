@@ -1,12 +1,11 @@
 package com.datacvg.dimp.view;
 
 import com.datacvg.dimp.baseandroid.mvp.MvpView;
-import com.datacvg.dimp.bean.PageItemListBean;
 
 /**
  * @Author : T-Bag (茶包)
- * @Time : 2020-09-29
+ * @Time : 2021-07-02
  * @Description :
  */
-public interface DigitalView extends MvpView {
+public interface BudgetView extends MvpView {
 }
