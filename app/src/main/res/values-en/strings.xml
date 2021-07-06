@@ -210,4 +210,5 @@
     <string name="note">note:</string>
     <string name="the_target">The target</string>
     <string name="the_name_of_the_kanban">The name of the kanban:</string>
+    <string name="the_search_content_cannot_be_empty">The search content cannot be empty</string>
 </resources>

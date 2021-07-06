@@ -4,7 +4,6 @@ import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
-import com.datacvg.dimp.bean.ImageResBean;
 import com.datacvg.dimp.bean.TableListBean;
 import com.datacvg.dimp.view.TableFolderView;
 
@@ -40,28 +39,6 @@ public class TableFolderPresenter extends BasePresenter<TableFolderView> {
                     public void onNext(BaseBean<TableListBean> bean) {
                         PLog.e("getTableList ==== " + bean.getResdata().size());
                         getView().getTableSuccess(bean.getResdata());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        PLog.e("TAG",e.getMessage());
-                    }
-                });
-    }
-
-    public void getImageRes(String res_id) {
-        api.getImageRes(res_id)
-                .compose(RxUtils.applySchedulersLifeCycle(getView()))
-                .subscribe(new RxObserver<ImageResBean>(){
-                    @Override
-                    public void onComplete() {
-                        super.onComplete();
-                    }
-
-                    @Override
-                    public void onNext(ImageResBean bean) {
-                        getView().getImageResSuccess(res_id,bean.getResdata());
                     }
 
                     @Override

@@ -203,4 +203,5 @@
     <string name="note">备注:</string>
     <string name="the_target">目标</string>
     <string name="the_name_of_the_kanban">看板名称:</string>
+    <string name="the_search_content_cannot_be_empty">搜索内容不能为空</string>
 </resources>

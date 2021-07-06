@@ -15,11 +15,4 @@ public interface TableFolderView extends MvpView {
      * @param tableBeans
      */
     void getTableSuccess(TableListBean tableBeans);
-
-    /**
-     * 获取图片资源成功
-     * @param res_id
-     * @param resdata
-     */
-    void getImageResSuccess(String res_id, String resdata);
 }

@@ -3,7 +3,11 @@ package com.datacvg.dimp.activity;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +18,7 @@ import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.TableAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.Base64Utils;
+import com.datacvg.dimp.baseandroid.utils.DisplayUtils;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
@@ -29,6 +34,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnEditorAction;
+import butterknife.OnTextChanged;
 
 /**
  * @Author : T-Bag (茶包)
@@ -39,10 +46,14 @@ public class TableFolderActivity extends BaseActivity<TableFolderView, TableFold
         implements TableFolderView ,TableAdapter.OnItemClickListener{
     @BindView(R.id.tv_title)
     TextView tvTitle ;
+    @BindView(R.id.ed_search)
+    EditText edSearch ;
     @BindView(R.id.recycler_table)
     RecyclerView recyclerTable ;
 
     private List<TableBean> tableBeans = new ArrayList<>();
+    private List<TableBean> allTableBeans = new ArrayList<>() ;
+    private List<TableBean> showTables = new ArrayList<>() ;
     private TableAdapter adapter ;
     private TableBean rootBean ;
 
@@ -100,29 +111,18 @@ public class TableFolderActivity extends BaseActivity<TableFolderView, TableFold
      */
     @Override
     public void getTableSuccess(TableListBean tableBeans) {
+        allTableBeans.clear();
+        allTableBeans.addAll(tableBeans);
+        showTables.clear();
         for (TableBean childBean : tableBeans){
             if(childBean.getRes_parentid().equals(rootBean.getRes_id())){
-                this.tableBeans.add(childBean);
+                this.showTables.add(childBean);
             }
         }
-
+        this.tableBeans.clear();
+        this.tableBeans.addAll(showTables);
         adapter.notifyDataSetChanged();
-        for (TableBean bean : this.tableBeans){
-            getPresenter().getImageRes(bean.getRes_id());
-        }
         PLog.e("tableBeans size is " + this.tableBeans.size());
-    }
-
-    @Override
-    public void getImageResSuccess(String res_id, String resdata) {
-        for (TableBean bean : tableBeans){
-            if(bean.getRes_id().equals(res_id)){
-                bean.setImageRes(Base64Utils.decode(resdata.split("base64,")[1]));
-                adapter.notifyDataSetChanged();
-                return;
-            }
-        }
-
     }
 
     /**
@@ -162,6 +162,26 @@ public class TableFolderActivity extends BaseActivity<TableFolderView, TableFold
         }
     }
 
+    @OnEditorAction(R.id.ed_search)
+    public  boolean onEditorAction(KeyEvent key) {
+        DisplayUtils.hideSoftInput(mContext);
+        if(TextUtils.isEmpty(edSearch.getText())){
+            ToastUtils.showLongToast(resources.getString(R.string.the_search_content_cannot_be_empty));
+            return false ;
+        }
+        searchForTab(edSearch.getText().toString());
+        return true;
+    }
+
+    @OnTextChanged(value = R.id.ed_search,callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void onCodeTextChange(Editable editable){
+        if(TextUtils.isEmpty(editable)){
+            tableBeans.clear();
+            tableBeans.addAll(showTables);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
     @OnClick({R.id.img_left})
     public void OnClick(View view){
         switch (view.getId()){
@@ -169,5 +189,20 @@ public class TableFolderActivity extends BaseActivity<TableFolderView, TableFold
                     finish();
                 break;
         }
+    }
+
+    /**
+     * 根据关键字搜索
+     * @param keyStr
+     */
+    private void searchForTab(String keyStr) {
+        tableBeans.clear();
+        for (TableBean tableBean : allTableBeans){
+            if(tableBean.getRes_clname().contains(keyStr)
+                    && !tableBean.getRes_showtype().equals("FOLDER")){
+                tableBeans.add(tableBean);
+            }
+        }
+        adapter.notifyDataSetChanged();
     }
 }
