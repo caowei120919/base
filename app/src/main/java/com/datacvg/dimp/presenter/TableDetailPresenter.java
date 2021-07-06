@@ -8,9 +8,12 @@ import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.bean.CommentListBean;
+import com.datacvg.dimp.bean.ConstantReportBean;
+import com.datacvg.dimp.bean.SetDefaultResBean;
 import com.datacvg.dimp.bean.TableInfoBean;
 import com.datacvg.dimp.bean.TableParamInfoListBean;
 import com.datacvg.dimp.view.TableDetailView;
+import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -138,13 +141,45 @@ public class TableDetailPresenter extends BasePresenter<TableDetailView>{
                 });
     }
 
-    public void getPowerBiInfo( String token) {
+    public void getPowerBiInfo(String token) {
         api.getPowerBiInfo(token)
                 .compose(RxUtils.applySchedulersLifeCycle(getView()))
                 .subscribe(new RxObserver<String>(){
                     @Override
                     public void onNext(String baseBean) {
                         PLog.e(baseBean);
+                    }
+                });
+    }
+
+    /**
+     * 设置为默认报表
+     * @param map
+     */
+    public void setReportToDefault(Map map) {
+        api.setReportToDefault(map)
+                .compose(RxUtils.applySchedulersLifeCycle(getView()))
+                .subscribe(new RxObserver<SetDefaultResBean>(){
+                    @Override
+                    public void onNext(SetDefaultResBean baseBean) {
+                        if(baseBean.getResult()){
+                            getView().setDefaultReportSuccess(baseBean);
+                        }
+                    }
+                });
+    }
+
+    /**
+     * 取消默认报表
+     * @param res_pkid
+     */
+    public void cancelReportForDefault(String res_pkid) {
+        api.cancelReportForDefault(res_pkid)
+                .compose(RxUtils.applySchedulersLifeCycle(getView()))
+                .subscribe(new RxObserver<BaseBean>(){
+                    @Override
+                    public void onNext(BaseBean baseBean) {
+                        getView().cancelDefaultReportSuccess();
                     }
                 });
     }

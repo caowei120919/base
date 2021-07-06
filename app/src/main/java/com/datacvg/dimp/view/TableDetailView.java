@@ -2,6 +2,7 @@ package com.datacvg.dimp.view;
 
 import com.datacvg.dimp.baseandroid.mvp.MvpView;
 import com.datacvg.dimp.bean.CommentListBean;
+import com.datacvg.dimp.bean.SetDefaultResBean;
 import com.datacvg.dimp.bean.TableInfoBean;
 import com.datacvg.dimp.bean.TableParamInfoListBean;
 
@@ -33,4 +34,15 @@ public interface TableDetailView extends MvpView {
      * @param resdata
      */
     void getCommentsSuccess(CommentListBean resdata);
+
+    /**
+     * 设置默认报表成功
+     * @param baseBean
+     */
+    void setDefaultReportSuccess(SetDefaultResBean baseBean);
+
+    /**
+     * 取消默认报表成功
+     */
+    void cancelDefaultReportSuccess();
 }

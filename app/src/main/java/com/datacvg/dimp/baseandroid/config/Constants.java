@@ -3,6 +3,8 @@ package com.datacvg.dimp.baseandroid.config;
 import androidx.annotation.Keep;
 
 import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
+import com.datacvg.dimp.bean.ConstantReportBean;
+import com.datacvg.dimp.bean.DefaultReportBean;
 import com.datacvg.dimp.bean.ScreenBean;
 import com.datacvg.dimp.bean.UserLoginBean;
 import com.datacvg.dimp.bean.WebSocketLinkBean;
@@ -70,8 +72,11 @@ public class Constants {
     public final static int SERVICE_CODE_FAIL_FOR_TOKEN = 401 ;
 
     /**
-     * 大屏投放
+     * 获取默认报表的rootId
      */
+    public final static String REPORT_ROOT_ID = "141776322849763954" ;
+    public static ConstantReportBean constantReportBean = null;
+
     /**
      *启动
      */

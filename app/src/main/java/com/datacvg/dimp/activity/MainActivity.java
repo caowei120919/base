@@ -14,12 +14,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.greendao.bean.ModuleInfo;
 import com.datacvg.dimp.baseandroid.greendao.controller.DbModuleInfoController;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.PreferencesUtils;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
+import com.datacvg.dimp.bean.ConstantReportBean;
 import com.datacvg.dimp.bean.DefaultUserBean;
 import com.datacvg.dimp.bean.DefaultUserListBean;
 import com.datacvg.dimp.bean.ModuleBean;
@@ -108,6 +110,14 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @Override
     protected void setupData(Bundle savedInstanceState) {
         getPresenter().getPermissionModule();
+        getDefaultReport();
+    }
+
+    private void getDefaultReport() {
+        Map params = new HashMap();
+        params.put("rootId", Constants.REPORT_ROOT_ID);
+        params.put("mobileType","app");
+        getPresenter().getDefaultReport(params);
     }
 
     /**
@@ -151,6 +161,11 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
             }
         }
         buildTab();
+    }
+
+    @Override
+    public void getDefaultReportSuccess(ConstantReportBean reportBean) {
+        Constants.constantReportBean = reportBean ;
     }
 
     /**

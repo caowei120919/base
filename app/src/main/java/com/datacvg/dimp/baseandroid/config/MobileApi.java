@@ -5,6 +5,7 @@ import com.datacvg.dimp.bean.ActionPlanListBean;
 import com.datacvg.dimp.bean.AllIndexBean;
 import com.datacvg.dimp.bean.ChartListBean;
 import com.datacvg.dimp.bean.CommentListBean;
+import com.datacvg.dimp.bean.DefaultReportBean;
 import com.datacvg.dimp.bean.DefaultUserListBean;
 import com.datacvg.dimp.bean.DeletePageBean;
 import com.datacvg.dimp.bean.DigitalPageBean;
@@ -24,6 +25,7 @@ import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.bean.ReportParamsBean;
 import com.datacvg.dimp.bean.ScreenDetailBean;
 import com.datacvg.dimp.bean.ScreenListBean;
+import com.datacvg.dimp.bean.SetDefaultResBean;
 import com.datacvg.dimp.bean.TableInfoBean;
 import com.datacvg.dimp.bean.TableListBean;
 import com.datacvg.dimp.bean.TableParamInfoListBean;
@@ -39,6 +41,7 @@ import java.util.function.DoubleUnaryOperator;
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -375,4 +378,23 @@ public interface MobileApi {
      */
     @GET("api/ddb/indexpad/able/add/index/info")
     Observable<BaseBean<AllIndexBean>> getAllIndexInfo();
+
+    /**
+     * 获取默认报表相关信息
+     * @param params
+     * @return
+     */
+    @POST("api/mobile/mobilereport/getDefaultResInfo")
+    Observable<DefaultReportBean> getDefaultReport(@Body Map params);
+
+    /**
+     * 设置为默认报表
+     * @param map
+     * @return
+     */
+    @POST("api/mobile/mobilereport/setDefaultRes")
+    Observable<SetDefaultResBean> setReportToDefault(@Body Map map);
+
+    @DELETE("api/mobile/mobilereport/cancelDefaultRes/{id}")
+    Observable<BaseBean> cancelReportForDefault(@Path("id") String res_pkid);
 }

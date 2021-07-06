@@ -204,4 +204,6 @@
     <string name="the_target">目标</string>
     <string name="the_name_of_the_kanban">看板名称:</string>
     <string name="the_search_content_cannot_be_empty">搜索内容不能为空</string>
+    <string name="set_the_current_report_to_default">设置当前报表为默认</string>
+    <string name="cancel_the_current_report_as_default">取消当前报表为默认</string>
 </resources>
