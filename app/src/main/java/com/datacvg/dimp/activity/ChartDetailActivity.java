@@ -41,7 +41,6 @@ import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.baseandroid.utils.TimeUtils;
-import com.datacvg.dimp.bean.BarChartBaseBean;
 import com.datacvg.dimp.bean.ChartTypeBean;
 import com.datacvg.dimp.bean.ChatTypeRequestBean;
 import com.datacvg.dimp.bean.DimensionPositionBean;
@@ -51,7 +50,6 @@ import com.datacvg.dimp.bean.LinChartBaseBean;
 import com.datacvg.dimp.bean.PageItemBean;
 import com.datacvg.dimp.bean.PieChartBaseBean;
 import com.datacvg.dimp.event.RefreshEvent;
-import com.datacvg.dimp.event.RefreshTableEvent;
 import com.datacvg.dimp.presenter.ChartDetailPresenter;
 import com.datacvg.dimp.view.ChartDetailView;
 import com.datacvg.dimp.widget.BulletChart;
@@ -341,8 +339,8 @@ public class ChartDetailActivity extends BaseActivity<ChartDetailView, ChartDeta
                 ((TextView)statusChart.findViewById(R.id.tv_unit))
                         .setText(bean.getChartBean().getChart_unit());
 
-                BarChartBaseBean barChartBaseBean = new Gson()
-                        .fromJson(bean.getChartBean().getOption(),BarChartBaseBean.class);
+                LinChartBaseBean barChartBaseBean = new Gson()
+                        .fromJson(bean.getChartBean().getOption(),LinChartBaseBean.class);
 
                 String[] category ;
                 if(barChartBaseBean != null && barChartBaseBean.getxAxis()!= null && barChartBaseBean.getSeries().size() > 0){

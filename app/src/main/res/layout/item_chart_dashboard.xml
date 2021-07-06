@@ -6,7 +6,9 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="@dimen/H510"
-        android:layout_marginTop="@dimen/H10"
+        android:layout_marginTop="@dimen/H20"
+        android:layout_marginLeft="@dimen/W12"
+        android:layout_marginRight="@dimen/W12"
         android:background="@drawable/layer_background">
 
         <RelativeLayout
@@ -58,9 +60,11 @@
 
             <com.datacvg.dimp.widget.DashboardChart
                 android:id="@+id/dashBoardChart"
+                android:layout_below="@id/tv_name"
+                android:layout_marginTop="@dimen/H50"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true">
+                android:layout_above="@id/tv_unit"
+                android:layout_height="wrap_content">
             </com.datacvg.dimp.widget.DashboardChart>
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

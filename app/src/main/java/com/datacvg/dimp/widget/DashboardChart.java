@@ -267,7 +267,7 @@ public class DashboardChart extends View {
 
     private void drawLineValue(Canvas canvas) {
         mTextPaint.setColor(Color.parseColor("#999999"));
-        for (int i = 0 ; i < 10 ; i++) {
+        for (int i = 0 ; i < 11 ; i++) {
             mPaint.setStrokeWidth(5f);
             String data = String.format("%.2f", (mMax - mMin) / 10 * i + mMin) ;
             float textWidth = mTextPaint.measureText(data);
@@ -287,7 +287,7 @@ public class DashboardChart extends View {
         canvas.rotate(-90f, mPointX, mPointY);
         mPaint.setColor(Color.parseColor("#BCBCBC")) ;
         mTextPaint.setTextSize(mTextSize);
-        for (int i = 0 ; i < 50 ; i++) {
+        for (int i = 0 ; i < 51 ; i++) {
             if (i % 5 == 0) {
                 mPaint.setStrokeWidth(5f);
                 canvas.drawLine(mPointX, mPointY - mRadius - 30f, mPointX

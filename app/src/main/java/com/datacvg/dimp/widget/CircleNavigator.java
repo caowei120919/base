@@ -11,6 +11,8 @@ import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.baseandroid.utils.AndroidUtils;
+import com.datacvg.dimp.baseandroid.utils.PLog;
 
 import net.lucode.hackware.magicindicator.abs.IPagerNavigator;
 import net.lucode.hackware.magicindicator.buildins.UIUtil;
@@ -128,13 +130,15 @@ public class CircleNavigator extends View implements IPagerNavigator {
         if (mTotalCount > 0) {
             int y = (int) (getHeight() / 2.0f + 0.5f);
             int centerSpacing = mRadius * 2 + mCircleSpacing;
-            int startX = mRadius + (int) (mStrokeWidth / 2.0f + 0.5f) + getPaddingLeft();
+            int startX =  (UIUtil.getScreenWidth(AndroidUtils.getContext()) - mRadius * mTotalCount
+                    - mCircleSpacing * (mTotalCount -1))/2 ;
             for (int i = 0; i < mTotalCount; i++) {
                 PointF pointF = new PointF(startX, y);
                 mCirclePoints.add(pointF);
                 startX += centerSpacing;
             }
             mIndicatorX = mCirclePoints.get(mCurrentIndex).x;
+            PLog.e("mIndicatorX == >" + mIndicatorX);
         }
     }
 
@@ -277,7 +281,7 @@ public class CircleNavigator extends View implements IPagerNavigator {
     }
 
     public void setCircleCount(int count) {
-        mTotalCount = count;  // 此处不调用invalidate，让外部调用notifyDataSetChanged
+        mTotalCount = count;
     }
 
     public boolean isTouchable() {

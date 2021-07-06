@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,6 +43,8 @@ public class TableFragment extends BaseFragment<TableView, TablePresenter> imple
     TextView tvTitle ;
     @BindView(R.id.recycler_table)
     RecyclerView recyclerTable ;
+    @BindView(R.id.ed_search)
+    EditText edSearch ;
 
     private List<TableBean> tableBeans = new ArrayList<>();
     private TableAdapter adapter ;
@@ -60,13 +63,12 @@ public class TableFragment extends BaseFragment<TableView, TablePresenter> imple
     protected void setupView(View rootView) {
         StatusBarUtil.setStatusBarColor(getActivity()
                 ,mContext.getResources().getColor(R.color.c_FFFFFF));
+        imgLeft.setVisibility(View.GONE);
+        tvTitle.setText(resources.getString(R.string.the_theme_report));
     }
 
     @Override
     protected void setupData() {
-        imgLeft.setVisibility(View.GONE);
-        tvTitle.setText(resources.getString(R.string.the_theme_report));
-
         getTableList();
         adapter = new TableAdapter(mContext,tableBeans,this);
         recyclerTable.setLayoutManager(new GridLayoutManager(mContext,2));

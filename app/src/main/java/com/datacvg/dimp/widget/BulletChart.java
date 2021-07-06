@@ -353,8 +353,17 @@ public class BulletChart extends View {
         mPaint.reset();
     }
 
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        mHeight = h ;
+        mWidth = w ;
+        mSize = mWidth/20 ;
+        mUnitSize = mWidth /20 ;
+    }
+
     private void initPoints(float mChartPlan, float mChartSamePeriod, float mChartActual) {
-//实际矩形颜色标识坐标
+        //实际矩形颜色标识坐标
         mLegendColorRectL = (int) (mWidth / 2);
         mLegendColorRectT = (int) (mHeight * 19 / 20 - mWidth / 16) ;
         mLegendColorRectR = (int) (mLegendColorRectL + mWidth / 32);

@@ -1,46 +1,33 @@
 package com.datacvg.dimp.fragment;
 
-import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import androidx.annotation.NonNull;
+import android.widget.TextView;
+
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.dimp.R;
-import com.datacvg.dimp.activity.AddIndexActivity;
-import com.datacvg.dimp.activity.ChartDetailActivity;
-import com.datacvg.dimp.activity.IndexTreeActivity;
 import com.datacvg.dimp.adapter.DimensionIndexAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
-import com.datacvg.dimp.bean.ChangeChartRequestBean;
 import com.datacvg.dimp.bean.ChatTypeRequestBean;
 import com.datacvg.dimp.bean.DimensionBean;
 import com.datacvg.dimp.bean.DimensionPositionBean;
-import com.datacvg.dimp.bean.EChartListBean;
 import com.datacvg.dimp.bean.IndexChartBean;
-import com.datacvg.dimp.bean.IndexTreeNeedBean;
 import com.datacvg.dimp.bean.PageItemBean;
-import com.datacvg.dimp.event.AddIndexEvent;
-import com.datacvg.dimp.event.ChangePageChartEvent;
-import com.datacvg.dimp.event.DeletePageEvent;
-import com.datacvg.dimp.event.RefreshEvent;
-import com.datacvg.dimp.event.ShakeEvent;
-import com.datacvg.dimp.event.ToAddIndexEvent;
 import com.datacvg.dimp.presenter.BoardPagerPresenter;
 import com.datacvg.dimp.view.BoardPagerView;
+import com.enlogy.statusview.StatusRelativeLayout;
 import com.google.gson.Gson;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import butterknife.BindView;
 
 /**
@@ -49,16 +36,25 @@ import butterknife.BindView;
  * @Description :
  */
 public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerPresenter>
-        implements BoardPagerView ,DimensionIndexAdapter.IndexClickListener{
+        implements BoardPagerView {
+
+    @BindView(R.id.tv_pageName)
+    TextView tvPageName ;
+    @BindView(R.id.tv_pageTime)
+    TextView tvPageTime ;
+    @BindView(R.id.tv_timeType)
+    TextView tvTimeType ;
+    @BindView(R.id.status_board)
+    StatusRelativeLayout statusBoard ;
     @BindView(R.id.recycle_index)
     RecyclerView recycleIndex ;
 
-    private final String ORG_TAG = "ORG" ;
-    private final String AREA_TAG = "AREA" ;
-    private final String PRO_TAG = "PRO" ;
-    private PageItemBean itemBean ;
-    private DimensionIndexAdapter adapter ;
+    private final static String ORG_TAG = "ORG" ;
+    private final static String AREA_TAG = "AREA" ;
+    private final static String PRO_TAG = "PRO" ;
+    private PageItemBean pageItemBean ;
     private List<DimensionPositionBean.IndexPositionBean> indexPositionBeans = new ArrayList<>() ;
+    private DimensionIndexAdapter adapter ;
 
     @Override
     protected int getLayoutId() {
@@ -72,79 +68,59 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
 
     @Override
     protected void setupView(View rootView) {
-        initAdapter();
+        pageItemBean = (PageItemBean) getArguments().getSerializable(Constants.EXTRA_DATA_FOR_BEAN);
+        setTimeValue();
+        initChartAdapter() ;
     }
 
-
-    private void initAdapter() {
+    private void initChartAdapter() {
         GridLayoutManager manager = new GridLayoutManager(mContext,2);
         recycleIndex.setLayoutManager(manager);
-        adapter = new DimensionIndexAdapter(mContext,indexPositionBeans,this);
+        adapter = new DimensionIndexAdapter(mContext,indexPositionBeans);
         recycleIndex.setAdapter(adapter);
     }
 
+    private void setTimeValue() {
+        tvTimeType.setVisibility(View.VISIBLE);
+        switch (pageItemBean.getTime_type()){
+            case "month" :
+                tvPageTime.setText(PreferencesHelper.get(Constants.USER_DEFAULT_MONTH,""));
+                tvTimeType.setText(resources.getString(R.string.month));
+                break;
+            case "year" :
+                tvPageTime.setText(PreferencesHelper.get(Constants.USER_DEFAULT_YEAR,""));
+                tvTimeType.setText(resources.getString(R.string.year));
+                break;
+            default:
+                tvPageTime.setText(PreferencesHelper.get(Constants.USER_DEFAULT_DAY,""));
+                tvTimeType.setText(resources.getString(R.string.day));
+                break;
+        }
+        pageItemBean.setTimeVal(tvPageTime.getText().toString()
+                .replaceAll("/",""));
+        if(pageItemBean.getPad_name().contains("{default}")){
+            tvPageName.setText(resources.getString(R.string.the_current_page));
+        }else {
+            tvPageName.setText(resources.getString(R.string.the_current_page)
+                    + pageItemBean.getPad_name());
+        }
+    }
+
+
     @Override
     protected void setupData() {
-        setItemBean();
-        getDimensionValue();
-        getPageData();
-    }
-
-    /**
-     * 获取维度信息
-     */
-    private void getDimensionValue() {
-        if (TextUtils.isEmpty(itemBean.getmOrgDimension())){
-            return;
+        if(!TextUtils.isEmpty(pageItemBean.getmOrgDimension())){
+            List orgArr = new ArrayList() ;
+            orgArr.add(pageItemBean.getmOrgDimension());
+            Map paramOfOrg = new HashMap();
+            paramOfOrg.put("timeVal",pageItemBean.getTimeVal());
+            paramOfOrg.put("dimensionArr",orgArr);
+            getPresenter().getDimension(paramOfOrg);
         }
-        List arr = new ArrayList();
-        arr.add(itemBean.getmOrgDimension());
-        Map params = new HashMap();
-        params.put("timeVal",itemBean.getTimeVal());
-        params.put("dimensionArr",arr);
-        getPresenter().getDimension(params);
 
-        if(TextUtils.isEmpty(itemBean.getmFuDimension())){
-            return;
-        }
-        arr.add(itemBean.getmFuDimension());
-        params.put("dimensionArr",arr);
-        getPresenter().getOtherDimension(params,AREA_TAG);
-
-        if(TextUtils.isEmpty(itemBean.getmPDimension())){
-            return;
-        }
-        arr.add(itemBean.getmPDimension());
-        params.put("dimensionArr",arr);
-        getPresenter().getOtherDimension(params,PRO_TAG);
-    }
-
-    private void getPageData() {
-        Map params = new HashMap();
-        params.put("page",itemBean.getPage());
-        getPresenter().getPosition(params);
-    }
-
-    private void setItemBean() {
-        itemBean = (PageItemBean) getArguments().getSerializable(Constants.EXTRA_DATA_FOR_BEAN);
-        adapter.setHolderShake(itemBean.getShake());
-        if(TextUtils.isEmpty(itemBean.getTimeVal())){
-            switch (itemBean.getTime_type()){
-                case "month" :
-                    itemBean.setTimeVal(PreferencesHelper.get(Constants.USER_DEFAULT_MONTH,"")
-                            .replaceAll("/",""));
-                    break;
-                case "year" :
-                    itemBean.setTimeVal(PreferencesHelper.get(Constants.USER_DEFAULT_YEAR,"")
-                            .replaceAll("/",""));
-                    break;
-                default:
-                    itemBean.setTimeVal(PreferencesHelper.get(Constants.USER_DEFAULT_DAY,"")
-                            .replaceAll("/",""));
-                    break;
-            }
-        }
-        itemBean.setTimeVal(PreferencesHelper.get(Constants.USER_DEFAULT_TIME,""));
+        Map positionMap = new HashMap() ;
+        positionMap.put("page",pageItemBean.getPage());
+        getPresenter().getPosition(positionMap);
     }
 
     public static BoardPagerFragment newInstance(PageItemBean bean) {
@@ -163,19 +139,19 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
         for (DimensionPositionBean.IndexPositionBean indexPositionBean : indexPosition) {
             HashMap params = new HashMap() ;
             params.put("lang", LanguageUtils.isZh(mContext) ?"zh" : "en");
-            params.put("timeValue",itemBean.getTimeVal());
+            params.put("timeValue",pageItemBean.getTimeVal());
             List arr = new ArrayList();
-            if(!TextUtils.isEmpty(itemBean.getmOrgDimension())){
-                arr.add(itemBean.getmOrgDimension());
+            if(!TextUtils.isEmpty(pageItemBean.getmOrgDimension())){
+                arr.add(pageItemBean.getmOrgDimension());
             }
-            if(!TextUtils.isEmpty(itemBean.getmFuDimension())){
-                arr.add(itemBean.getmFuDimension()) ;
+            if(!TextUtils.isEmpty(pageItemBean.getmFuDimension())){
+                arr.add(pageItemBean.getmFuDimension()) ;
             }
-            if(!TextUtils.isEmpty(itemBean.getmPDimension())){
-                arr.add(itemBean.getmPDimension()) ;
+            if(!TextUtils.isEmpty(pageItemBean.getmPDimension())){
+                arr.add(pageItemBean.getmPDimension()) ;
             }
             params.put("dimensionArr",arr);
-            params.put("page",itemBean.getPage());
+            params.put("page",pageItemBean.getPage());
             List<ChatTypeRequestBean.ChartTypeBean> beans = new ArrayList<>();
             ChatTypeRequestBean.ChartTypeBean chartTypeBean = new ChatTypeRequestBean.ChartTypeBean() ;
             chartTypeBean.setIndexId(indexPositionBean.getIndex_id());
@@ -183,14 +159,10 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
             chartTypeBean.setAnalysisDim(indexPositionBean.getAnalysis_dimension());
             beans.add(chartTypeBean);
             params.put("chartType",beans);
-            getChartData(params);
+            getPresenter().getEChart(params);
         }
     }
 
-    /**
-     * 图表信息获取成功
-     * @param data
-     */
     @Override
     public void getChartSuccess(IndexChartBean data) {
         for (DimensionPositionBean.IndexPositionBean indexPositionBean : indexPositionBeans) {
@@ -209,70 +181,6 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
             }
         }
         adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void getDimensionSuccess(List<DimensionBean> selectDimension) {
-        setItemBeanDimension(selectDimension,ORG_TAG);
-    }
-
-    @Override
-    public void getOtherDimensionSuccess(List<DimensionBean> selectOtherDimension, String tag) {
-        setItemBeanDimension(selectOtherDimension,tag);
-    }
-
-    /**
-     * 设置维度value
-     * @param dimensions
-     * @param tag
-     */
-    private void setItemBeanDimension(List<DimensionBean> dimensions, String tag) {
-        String tagDimension = "" ;
-        switch (tag){
-            case ORG_TAG :
-                tagDimension = itemBean.getmOrgDimension() ;
-                break;
-
-            case AREA_TAG :
-                tagDimension = itemBean.getmFuDimension() ;
-                break;
-
-            case PRO_TAG :
-                tagDimension = itemBean.getmPDimension() ;
-                break;
-        }
-        for (DimensionBean bean:dimensions){
-            if(bean.getId().equals(tagDimension)){
-                switch (tag){
-                    case ORG_TAG :
-                        itemBean.setmOrgValue(bean.getD_res_value());
-                        itemBean.setmOrgName(bean.getD_res_name());
-                        break;
-
-                    case AREA_TAG :
-                        itemBean.setmFuName(bean.getD_res_name());
-                        itemBean.setmFuValue(bean.getD_res_value());
-                        break;
-
-                    case PRO_TAG :
-                        itemBean.setMpValue(bean.getD_res_value());
-                        itemBean.setMpName(bean.getD_res_name());
-                        break;
-                }
-            return;
-            }
-            if(bean.getNodes() != null && bean.getNodes().size() > 0){
-                setItemBeanDimension(bean.getNodes(),tag);
-            }
-        }
-    }
-
-    /**
-     * 查询图表信息数据
-     * @param params
-     */
-    private void getChartData(HashMap params) {
-        getPresenter().getEChart(params);
     }
 
     private void sortChart() {
@@ -304,162 +212,79 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
     }
 
     @Override
-    public void OnTitleClick(DimensionPositionBean.IndexPositionBean bean) {
-        /**
-         * orgName : 数聚股份
-         * pValue : GOODS
-         * fuDimension : 118306192070461277956
-         * type : 4
-         * fuValue : region
-         * pName : 产品或服务
-         * orgValue : DATACVG
-         * analysisDimension : user_org
-         * indexId : IBI-ex-cost_MONTH
-         * pDimension : 118341583624371459776
-         * fuName : 所有地区
-         * timeVal : 202009
-         * orgDimension : 14860367656855969470
-         * state :
-         */
-        IndexTreeNeedBean indexTreeNeedBean = new IndexTreeNeedBean();
-        indexTreeNeedBean.setOrgName(itemBean.getmOrgName());
-        indexTreeNeedBean.setpValue(itemBean.getMpValue());
-        indexTreeNeedBean.setFuDimension(itemBean.getmFuDimension());
-        indexTreeNeedBean.setType("4");
-        indexTreeNeedBean.setFuValue(itemBean.getmFuValue());
-        indexTreeNeedBean.setpName(itemBean.getMpName());
-        indexTreeNeedBean.setOrgValue(itemBean.getmOrgValue());
-        indexTreeNeedBean.setAnalysisDimension(bean.getAnalysis_dimension());
-        indexTreeNeedBean.setIndexId(bean.getIndex_id());
-        indexTreeNeedBean.setpDimension(itemBean.getmPDimension());
-        indexTreeNeedBean.setFuName(itemBean.getmFuName());
-        indexTreeNeedBean.setTimeVal(itemBean.getTimeVal());
-        indexTreeNeedBean.setOrgDimension(itemBean.getmOrgDimension());
-        PLog.e(new Gson().toJson(indexTreeNeedBean));
-        Intent intent = new Intent(mContext, IndexTreeActivity.class);
-        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,indexTreeNeedBean);
-        startActivity(intent);
+    public void getDimensionSuccess(List<DimensionBean> selectDimension) {
+        PLog.e(new Gson().toJson(selectDimension));
+        setPageItemBeanDimension(selectDimension,ORG_TAG);
+        if(!TextUtils.isEmpty(pageItemBean.getmFuDimension())){
+            List fuArr = new ArrayList() ;
+            fuArr.add(pageItemBean.getmOrgDimension());
+            fuArr.add(pageItemBean.getmFuDimension());
+            Map paramOfFu = new HashMap();
+            paramOfFu.put("timeVal",pageItemBean.getTimeVal());
+            paramOfFu.put("dimensionArr",fuArr);
+            getPresenter().getOtherDimension(paramOfFu,PRO_TAG);
+        }
     }
 
     @Override
-    public void OnItemClick(DimensionPositionBean.IndexPositionBean bean) {
-        if(bean.getChartBean() == null){
-            return;
-        }
-        bean.setTime_type(itemBean.getTime_type());
-        Intent intent = new Intent(mContext, ChartDetailActivity.class);
-        intent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,itemBean);
-        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,bean);
-        mContext.startActivity(intent);
+    public void getOtherDimensionSuccess(List<DimensionBean> selectOtherDimension, String tag) {
+        PLog.e(new Gson().toJson(selectOtherDimension));
+        setPageItemBeanDimension(selectOtherDimension,tag);
     }
 
     /**
-     * 删除指标
-     * @param bean
+     * 设置pageItemBean相关维度信息
+     * @param dimensions
+     * @param tag
      */
-    @Override
-    public void OnIndexDeleteClick(DimensionPositionBean.IndexPositionBean bean) {
-        if(indexPositionBeans.size() == 1){
-            EventBus.getDefault().post(new DeletePageEvent(resources
-                    .getString(R.string.this_page_is_empty_after_deleting_the_data_and_will_be_deleted_here)));
-        }else{
-            indexPositionBeans.remove(bean);
-            adapter.notifyDataSetChanged();
-        }
-    }
+    private void setPageItemBeanDimension(List<DimensionBean> dimensions, String tag) {
+        String tagDimension = "" ;
+        switch (tag){
+            case ORG_TAG :
+                tagDimension = pageItemBean.getmOrgDimension() ;
+                break;
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(ShakeEvent event){
-        adapter.setHolderShake(event.isShake());
-    }
+            case AREA_TAG :
+                tagDimension = pageItemBean.getmFuDimension() ;
+                if(!TextUtils.isEmpty(pageItemBean.getmPDimension())){
+                    List pArr = new ArrayList() ;
+                    pArr.add(pageItemBean.getmOrgDimension());
+                    pArr.add(pageItemBean.getmFuDimension());
+                    pArr.add(pageItemBean.getmPDimension());
+                    Map paramOfFu = new HashMap();
+                    paramOfFu.put("timeVal",pageItemBean.getTimeVal());
+                    paramOfFu.put("dimensionArr",pArr);
+                    getPresenter().getOtherDimension(paramOfFu,AREA_TAG);
+                }
+                break;
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(ChangePageChartEvent event){
-        ChangeChartRequestBean changeChartRequestBean = new ChangeChartRequestBean() ;
-        changeChartRequestBean.setPad_name(itemBean.getPad_name());
-        changeChartRequestBean.setPad_number(itemBean.getPage());
-        List<ChangeChartRequestBean.BisysindexpositionBean> bisysindexpositionBeans = new ArrayList<>() ;
-        for (DimensionPositionBean.IndexPositionBean bean : indexPositionBeans){
-            ChangeChartRequestBean.BisysindexpositionBean bisysindexpositionBean
-                    = new ChangeChartRequestBean.BisysindexpositionBean();
-            bisysindexpositionBean.setIndex_id(bean.getIndex_id());
-            bisysindexpositionBean.setPage(itemBean.getPage());
-            bisysindexpositionBean.setPos_x(bean.getPos_x()+"");
-            bisysindexpositionBean.setPos_y(bean.getPos_y()+"");
-            bisysindexpositionBean.setSize_x(bean.getSize_x());
-            bisysindexpositionBean.setSize_y(bean.getSize_y());
-            bisysindexpositionBeans.add(bisysindexpositionBean);
+            case PRO_TAG :
+                tagDimension = pageItemBean.getmPDimension() ;
+                break;
         }
-        changeChartRequestBean.setBisysindexposition(bisysindexpositionBeans);
-        getPresenter().changeChart(new Gson().fromJson(new Gson()
-                .toJson(changeChartRequestBean),Map.class));
-    }
+        for (DimensionBean bean:dimensions){
+            if(bean.getId().equals(tagDimension)){
+                switch (tag){
+                    case ORG_TAG :
+                        pageItemBean.setmOrgValue(bean.getD_res_value());
+                        pageItemBean.setmOrgName(bean.getD_res_name());
+                        break;
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(ToAddIndexEvent event){
-        PageItemBean bean = event.getBean() ;
-        if(bean != itemBean){
-            return;
-        }
-        PLog.e(new Gson().toJson(indexPositionBeans));
-        EChartListBean eChartListBean = new EChartListBean();
-        List<IndexChartBean> indexChartBeans = new ArrayList<>();
-        for (DimensionPositionBean.IndexPositionBean indexPositionBean :indexPositionBeans){
-            if(indexPositionBean.getChartBean() != null){
-                indexPositionBean.getChartBean()
-                        .setAnalysis_dimension(indexPositionBean.getAnalysis_dimension());
-                indexPositionBean.getChartBean().setPage_chart_type(indexPositionBean.getPage_chart_type());
-                indexPositionBean.getChartBean().setChart_type(indexPositionBean.getChart_type());
-                indexChartBeans.add(indexPositionBean.getChartBean()) ;
+                    case AREA_TAG :
+                        pageItemBean.setmFuName(bean.getD_res_name());
+                        pageItemBean.setmFuValue(bean.getD_res_value());
+                        break;
+
+                    case PRO_TAG :
+                        pageItemBean.setMpValue(bean.getD_res_value());
+                        pageItemBean.setMpName(bean.getD_res_name());
+                        break;
+                }
+                return;
+            }
+            if(bean.getNodes() != null && bean.getNodes().size() > 0){
+                setPageItemBeanDimension(bean.getNodes(),tag);
             }
         }
-        eChartListBean.setPageNo(itemBean.getPage());
-        eChartListBean.setPageName(itemBean.getPad_name());
-        eChartListBean.setIndexChart(indexChartBeans);
-        Intent intent = new Intent(mContext, AddIndexActivity.class);
-        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,eChartListBean);
-        mContext.startActivity(intent);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(AddIndexEvent event){
-        if(!itemBean.getPage().equals(event.getPageNo())){
-            return;
-        }
-        this.indexPositionBeans.clear();
-        this.indexPositionBeans.addAll(event.getDimensionPositionBean().getIndexPosition());
-        sortChart();
-        for (DimensionPositionBean.IndexPositionBean indexPositionBean : indexPositionBeans) {
-            HashMap params = new HashMap() ;
-            params.put("lang", LanguageUtils.isZh(mContext) ?"zh" : "en");
-            params.put("timeValue",itemBean.getTimeVal());
-            List arr = new ArrayList();
-            if(!TextUtils.isEmpty(itemBean.getmOrgDimension())){
-                arr.add(itemBean.getmOrgDimension());
-            }
-            if(!TextUtils.isEmpty(itemBean.getmFuDimension())){
-                arr.add(itemBean.getmFuDimension()) ;
-            }
-            if(!TextUtils.isEmpty(itemBean.getmPDimension())){
-                arr.add(itemBean.getmPDimension()) ;
-            }
-            params.put("dimensionArr",arr);
-            params.put("page",itemBean.getPage());
-            List<ChatTypeRequestBean.ChartTypeBean> beans = new ArrayList<>();
-            ChatTypeRequestBean.ChartTypeBean chartTypeBean = new ChatTypeRequestBean.ChartTypeBean() ;
-            chartTypeBean.setIndexId(indexPositionBean.getIndex_id());
-            chartTypeBean.setDataType(TextUtils.isEmpty(indexPositionBean.getPage_chart_type())
-                    ? indexPositionBean.getChart_type().split(",")[0]
-                    : indexPositionBean.getPage_chart_type());
-            chartTypeBean.setAnalysisDim(indexPositionBean.getAnalysis_dimension());
-            beans.add(chartTypeBean);
-            params.put("chartType",beans);
-            getChartData(params);
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(RefreshEvent event){
-        getPageData();
     }
 }

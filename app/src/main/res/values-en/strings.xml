@@ -209,4 +209,5 @@
     <string name="all_indicators">All indicators</string>
     <string name="note">note:</string>
     <string name="the_target">The target</string>
+    <string name="the_name_of_the_kanban">The name of the kanban:</string>
 </resources>

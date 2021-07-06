@@ -124,6 +124,7 @@ public abstract class BaseFragment<V extends MvpView,P extends MvpPresenter<V>>
     public void onFragmentVisibilityChanged(boolean visible) {
         super.onFragmentVisibilityChanged(visible);
         if(visible && !hasLoaded){
+            hasLoaded = true ;
             setupData();
         }
     }

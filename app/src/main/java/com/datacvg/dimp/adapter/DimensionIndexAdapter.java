@@ -35,10 +35,10 @@ import com.datacvg.dimp.AAChartCoreLib.AAOptionsModel.AAStyle;
 import com.datacvg.dimp.AAChartCoreLib.AAOptionsModel.AATitle;
 import com.datacvg.dimp.AAChartCoreLib.AAOptionsModel.AATooltip;
 import com.datacvg.dimp.AAChartCoreLib.AAOptionsModel.AAXAxis;
+import com.datacvg.dimp.AAChartCoreLib.AAOptionsModel.AAYAxis;
 import com.datacvg.dimp.AAChartCoreLib.AATools.AAColor;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.utils.PLog;
-import com.datacvg.dimp.bean.BarChartBaseBean;
 import com.datacvg.dimp.bean.DimensionPositionBean;
 import com.datacvg.dimp.bean.IndexChartBean;
 import com.datacvg.dimp.bean.LinChartBaseBean;
@@ -68,16 +68,14 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private Context mContext ;
     private LayoutInflater inflater ;
     private List<DimensionPositionBean.IndexPositionBean> chartBeans = new ArrayList<>();
-    private IndexClickListener listener ;
     private boolean mShake = false ;
 
 
     public DimensionIndexAdapter(Context mContext
-            , List<DimensionPositionBean.IndexPositionBean> chartBeans, IndexClickListener listener) {
+            , List<DimensionPositionBean.IndexPositionBean> chartBeans) {
         this.mContext = mContext;
         this.inflater = LayoutInflater.from(mContext);
         this.chartBeans = chartBeans;
-        this.listener = listener ;
     }
 
     @NonNull
@@ -85,9 +83,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = null ;
         switch (viewType){
-            case TEXT_CHART :
-                view = inflater.inflate(R.layout.item_chart_text,parent,false);
-                return new TextHolder(view);
             case LONG_TEXT_CHART :
                 view = inflater.inflate(R.layout.item_chart_long_text,parent,false);
                 return new LongTextHolder(view);
@@ -185,46 +180,100 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         LinChartBaseBean linChartBaseBean = new Gson()
                 .fromJson(dimensionPositionBean.getOption(),LinChartBaseBean.class);
+        String[] category ;
+        if(linChartBaseBean != null && linChartBaseBean.getxAxis()!= null && linChartBaseBean.getSeries().size() > 0){
+            List<String> xAxisName = new ArrayList<>() ;
+            for (String data : linChartBaseBean.getxAxis().get(0).getData()){
+                xAxisName.add(data);
+            }
+            category = new String[xAxisName.size()];
+            category = xAxisName.toArray(category) ;
 
-        AASeriesElement[] aaSeriesElements = new AASeriesElement[linChartBaseBean.getLegend().getData().size()];
-        for(int i = 0 ; i < linChartBaseBean.getLegend().getData().size() ; i ++){
-            List<Object> datas = new ArrayList<>() ;
-            for (String arg : linChartBaseBean.getSeries().get(i).getData()){
-                if(TextUtils.isEmpty(arg)){
-                    datas.add("");
-                }else{
-                    datas.add(Double.valueOf(arg));
+            AALabels aaLabels = new AALabels()
+                    .enabled(true)
+                    .style(new AAStyle()
+                            .color(AAColor.LightGray));
+            AAXAxis aaXAxis = new AAXAxis()
+                    .visible(true)
+                    .labels(aaLabels)
+                    .categories(category);
+
+            AATooltip aaTooltip = new AATooltip()
+                    .enabled(false)
+                    .shared(false);
+
+            AAPlotOptions aaPlotOptions = new AAPlotOptions()
+                    .series(new AASeries()
+                            .animation(new AAAnimation()
+                                    .easing(AAChartAnimationType.EaseTo)
+                                    .duration(1000)))
+                    .bar(new AABar()
+                            .grouping(false)
+                            .pointPadding(0f)
+                            .pointPlacement(0f)
+                    );
+
+            /**
+             * 标注
+             */
+            AALegend aaLegend = new AALegend()
+                    .enabled(false)
+                    .itemStyle(new AAItemStyle()
+                            .color(AAColor.LightGray))
+                    .layout(AAChartLayoutType.Horizontal)
+                    .align(AAChartAlignType.Center)
+                    .x(0f)
+                    .verticalAlign(AAChartVerticalAlignType.Bottom)
+                    .y(0f);
+
+            Object[] aaSeriesElement ;
+            AAYAxis[] aayAxes = new AAYAxis[linChartBaseBean.getyAxis().size()];
+            for (int i = 0 ; i < linChartBaseBean.getyAxis().size() ; i++){
+                AAYAxis aayAxis = new AAYAxis()
+                        .title(new AATitle().text(linChartBaseBean.getyAxis().get(i).getName())).opposite(i!= 0);
+                aayAxes[i] = aayAxis ;
+            }
+
+            aaSeriesElement = new Object[linChartBaseBean.getSeries().size()];
+            for (int i = 0; i < linChartBaseBean.getSeries().size(); i++) {
+                Object[] dataObj;
+                if (linChartBaseBean.getSeries().get(i).getData() != null
+                        && linChartBaseBean.getSeries().get(i).getData().size() > 0) {
+                    dataObj = new Object[linChartBaseBean.getSeries().get(i).getData().size()];
+                    for (int j = 0; j < linChartBaseBean.getSeries().get(i).getData().size(); j++) {
+                        if (TextUtils.isEmpty(linChartBaseBean.getSeries().get(i).getData().get(j))) {
+                            dataObj[j] = linChartBaseBean.getSeries().get(i).getData().get(j);
+                        } else {
+                            dataObj[j] = Float.valueOf(linChartBaseBean.getSeries().get(i).getData().get(j));
+                        }
+                    }
+                    if (i != 1) {
+                        aaSeriesElement[i] = new AASeriesElement().name(linChartBaseBean.getSeries().get(i).getName()).type(AAChartType.Line)
+                                .borderWidth(0f).yAxis(0).color(dimensionPositionBean
+                                        .getIndex_default_color()).data(dataObj).allowPointSelect(false);
+                    } else {
+                        aaSeriesElement[i] = new AASeriesElement().name(linChartBaseBean.getSeries().get(i).getName()).type(AAChartType.Line)
+                                .borderWidth(0f).yAxis(aayAxes.length > 1 ? 1 : 0).data(dataObj).allowPointSelect(false);
+                    }
+
                 }
             }
-            AASeriesElement element = new AASeriesElement()
-                    .name(linChartBaseBean.getLegend().getData().get(i))
-                    .data(datas.toArray());
-            aaSeriesElements[i] = element ;
-        }
 
-        String[] array =new String[linChartBaseBean.getxAxis().get(0).getData().size()];
-
-        AAChartModel aaChartModel = new AAChartModel();
-
-        aaChartModel.chartType(AAChartType.Line)
-                .inverted(false)
-                .title("")
-                .yAxisTitle("")
-                .legendEnabled(true)
-                .markerRadius(3f)
-                .yAxisMin(0f)
-                .categories(linChartBaseBean.getxAxis().get(0).getData().toArray(array))
-                .colorsTheme(new String[]{"#fe117c","#ffc069","#06caf4","#7dffc0"})//主题颜色数组
-                .series(aaSeriesElements);
-
-        holder.lineChart.aa_drawChartWithChartModel(aaChartModel);
-
-        if (dimensionPositionBean == null){
+            AAOptions aaOptions = new AAOptions()
+                    .title(new AATitle().text(""))
+                    .touchEventEnabled(false)
+                    .xAxis(aaXAxis)
+                    .yAxisArray(aayAxes)
+                    .tooltip(aaTooltip)
+                    .plotOptions(aaPlotOptions)
+                    .legend(aaLegend)
+                    .series(aaSeriesElement);
+            holder.lineChart.aa_drawChartWithChartOptions(aaOptions);
+        }else{
             return;
         }
         holder.itemView.setOnClickListener(view -> {
             PLog.e("点击");
-            listener.OnItemClick(chartBeans.get(position));
         });
         holder.tvUnit.setText(dimensionPositionBean.getChart_unit());
         if(TextUtils.isEmpty(dimensionPositionBean.getChart_top_title())){
@@ -234,7 +283,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
-            listener.OnTitleClick(chartBeans.get(position));
         });
         if (mShake){
             holder.imgIndexForReport.setImageBitmap(BitmapFactory
@@ -242,7 +290,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             holder.imgDescribe.setVisibility(View.GONE);
             holder.imgIndexForReport.setOnClickListener(view -> {
                 PLog.e("删除指标");
-                listener.OnIndexDeleteClick(chartBeans.get(position));
             });
         }else{
             holder.imgIndexForReport.setImageBitmap(BitmapFactory
@@ -265,7 +312,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.itemView.setOnClickListener(view -> {
             PLog.e("点击");
-            listener.OnItemClick(chartBeans.get(position));
         });
         holder.tvUnit.setText(dimensionPositionBean.getChart_unit());
         if(TextUtils.isEmpty(dimensionPositionBean.getChart_top_title())){
@@ -275,7 +321,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
-            listener.OnTitleClick(chartBeans.get(position));
         });
         if (mShake){
             holder.imgIndexForReport.setImageBitmap(BitmapFactory
@@ -283,7 +328,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             holder.imgDescribe.setVisibility(View.GONE);
             holder.imgIndexForReport.setOnClickListener(view -> {
                 PLog.e("删除指标");
-                listener.OnIndexDeleteClick(chartBeans.get(position));
             });
         }else{
             holder.imgIndexForReport.setImageBitmap(BitmapFactory
@@ -294,96 +338,103 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         holder.tvDefaultValue.setTextColor(Color.parseColor(dimensionPositionBean
                 .getIndex_default_color()));
 
-        BarChartBaseBean barChartBaseBean = new Gson()
-                .fromJson(dimensionPositionBean.getOption(),BarChartBaseBean.class);
 
+        LinChartBaseBean linChartBaseBean = new Gson()
+                .fromJson(dimensionPositionBean.getOption(),LinChartBaseBean.class);
         String[] category ;
-        if(barChartBaseBean != null && barChartBaseBean.getxAxis()!= null && barChartBaseBean.getSeries().size() > 0){
-            category = new String[barChartBaseBean.getSeries().get(0).getData().size()];
+        if(linChartBaseBean != null && linChartBaseBean.getxAxis()!= null && linChartBaseBean.getSeries().size() > 0){
             List<String> xAxisName = new ArrayList<>() ;
-            for (String data : barChartBaseBean.getxAxis().get(0).getData()){
+            for (String data : linChartBaseBean.getxAxis().get(0).getData()){
                 xAxisName.add(data);
             }
+            category = new String[xAxisName.size()];
             category = xAxisName.toArray(category) ;
-        }else{
-            return;
-        }
-        AALabels aaLabels = new AALabels()
-                .enabled(true)
-                .style(new AAStyle()
-                        .color(AAColor.LightGray));
-        AAXAxis aaXAxis = new AAXAxis()
-                .visible(true)
-                .labels(aaLabels)
-                .min(0f)
-                .categories(category);
 
-        AATooltip aaTooltip = new AATooltip()
-                .enabled(true)
-                .shared(true);
+            AALabels aaLabels = new AALabels()
+                    .enabled(true)
+                    .style(new AAStyle()
+                            .color(AAColor.LightGray));
+            AAXAxis aaXAxis = new AAXAxis()
+                    .visible(true)
+                    .labels(aaLabels)
+                    .min(0f)
+                    .categories(category);
 
-        AAPlotOptions aaPlotOptions = new AAPlotOptions()
-                .series(new AASeries()
-                        .animation(new AAAnimation()
-                                .easing(AAChartAnimationType.EaseTo)
-                                .duration(1000)))
-                .bar(new AABar()
-                        .grouping(false)
-                        .pointPadding(0f)
-                        .pointPlacement(0f)
-                );
+            AATooltip aaTooltip = new AATooltip()
+                    .enabled(false)
+                    .shared(false);
 
-        /**
-         * 标注
-         */
-        AALegend aaLegend = new AALegend()
-                .enabled(true)
-                .itemStyle(new AAItemStyle()
-                        .color(AAColor.LightGray))
-                .layout(AAChartLayoutType.Horizontal)
-                .align(AAChartAlignType.Center)
-                .x(0f)
-                .verticalAlign(AAChartVerticalAlignType.Bottom)
-                .y(0f);
+            AAPlotOptions aaPlotOptions = new AAPlotOptions()
+                    .series(new AASeries()
+                            .animation(new AAAnimation()
+                                    .easing(AAChartAnimationType.EaseTo)
+                                    .duration(1000)))
+                    .bar(new AABar()
+                            .grouping(false)
+                            .pointPadding(0f)
+                            .pointPlacement(0f)
+                    );
 
-        Object[] aaSeriesElement ;
-        if(barChartBaseBean != null && barChartBaseBean.getSeries()!= null && barChartBaseBean.getSeries().size() > 0){
-            aaSeriesElement = new Object[barChartBaseBean.getSeries().size()];
-            for (int i = 0 ; i <  barChartBaseBean.getSeries().size() ; i ++){
-                Object[] dataObj ;
-                if(barChartBaseBean.getSeries().get(i).getData() != null
-                        && barChartBaseBean.getSeries().get(i).getData().size() > 0){
-                    dataObj = new Object[barChartBaseBean.getSeries().get(i).getData().size()];
-                    for (int j = 0 ; j < barChartBaseBean.getSeries().get(i).getData().size() ; j++){
-                        if(TextUtils.isEmpty(barChartBaseBean.getSeries().get(i).getData().get(j))){
-                            dataObj[j] = barChartBaseBean.getSeries().get(i).getData().get(j) ;
-                        }else{
-                            dataObj[j] = Float.valueOf(barChartBaseBean.getSeries().get(i).getData().get(j));
+            /**
+             * 标注
+             */
+            AALegend aaLegend = new AALegend()
+                    .enabled(false)
+                    .itemStyle(new AAItemStyle()
+                            .color(AAColor.LightGray))
+                    .layout(AAChartLayoutType.Horizontal)
+                    .align(AAChartAlignType.Center)
+                    .x(0f)
+                    .verticalAlign(AAChartVerticalAlignType.Bottom)
+                    .y(0f);
+
+            Object[] aaSeriesElement ;
+            AAYAxis[] aayAxes = new AAYAxis[linChartBaseBean.getyAxis().size()];
+            for (int i = 0 ; i < linChartBaseBean.getyAxis().size() ; i++){
+                AAYAxis aayAxis = new AAYAxis()
+                        .title(new AATitle().text(linChartBaseBean.getyAxis().get(i).getName())).opposite(i!= 0);
+                aayAxes[i] = aayAxis ;
+            }
+
+            aaSeriesElement = new Object[linChartBaseBean.getSeries().size()];
+            for (int i = 0; i < linChartBaseBean.getSeries().size(); i++) {
+                Object[] dataObj;
+                if (linChartBaseBean.getSeries().get(i).getData() != null
+                        && linChartBaseBean.getSeries().get(i).getData().size() > 0) {
+                    dataObj = new Object[linChartBaseBean.getSeries().get(i).getData().size()];
+                    for (int j = 0; j < linChartBaseBean.getSeries().get(i).getData().size(); j++) {
+                        if (TextUtils.isEmpty(linChartBaseBean.getSeries().get(i).getData().get(j))) {
+                            dataObj[j] = linChartBaseBean.getSeries().get(i).getData().get(j);
+                        } else {
+                            dataObj[j] = Float.valueOf(linChartBaseBean.getSeries().get(i).getData().get(j));
                         }
                     }
-                    if(i != 1){
-                        aaSeriesElement[i] = new AASeriesElement().name(barChartBaseBean.getSeries().get(i).getName()).type(AAChartType.Column)
+                    if (i != 1) {
+                        aaSeriesElement[i] = new AASeriesElement().name(linChartBaseBean.getSeries().get(i).getName()).type(AAChartType.Column)
                                 .borderWidth(0f).yAxis(0).color(dimensionPositionBean
-                                        .getIndex_default_color()).data(dataObj);
-                    }else{
-                        aaSeriesElement[i] = new AASeriesElement().name(barChartBaseBean.getSeries().get(i).getName()).type(AAChartType.Column)
-                                .borderWidth(0f).yAxis(0).data(dataObj);
+                                        .getIndex_default_color()).data(dataObj).allowPointSelect(false);
+                    } else {
+                        aaSeriesElement[i] = new AASeriesElement().name(linChartBaseBean.getSeries().get(i).getName()).type(AAChartType.Column)
+                                .borderWidth(0f).yAxis(aayAxes.length > 1 ? 1 : 0).data(dataObj).allowPointSelect(false);
                     }
 
                 }
             }
 
-
             AAOptions aaOptions = new AAOptions()
                     .title(new AATitle().text(""))
+                    .touchEventEnabled(false)
                     .xAxis(aaXAxis)
+                    .yAxisArray(aayAxes)
                     .tooltip(aaTooltip)
                     .plotOptions(aaPlotOptions)
                     .legend(aaLegend)
                     .series(aaSeriesElement);
-
             holder.barChart.aa_drawChartWithChartOptions(aaOptions);
+        }else{
+            return;
         }
+
     }
 
     /**
@@ -398,7 +449,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.itemView.setOnClickListener(view -> {
             PLog.e("点击");
-            listener.OnItemClick(chartBeans.get(position));
         });
         holder.tvUnit.setText(dimensionPositionBean.getChart_unit());
         if(TextUtils.isEmpty(dimensionPositionBean.getChart_top_title())){
@@ -408,7 +458,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
-            listener.OnTitleClick(chartBeans.get(position));
         });
         if (mShake){
             holder.imgIndexForReport.setImageBitmap(BitmapFactory
@@ -416,7 +465,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             holder.imgDescribe.setVisibility(View.GONE);
             holder.imgIndexForReport.setOnClickListener(view -> {
                 PLog.e("删除指标");
-                listener.OnIndexDeleteClick(chartBeans.get(position));
             });
         }else{
             holder.imgIndexForReport.setImageBitmap(BitmapFactory
@@ -453,8 +501,11 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                         .name("")
                                         .innerSize("20%")
                                         .size(150f)
+                                        .allowPointSelect(false)
+                                        .showInLegend(false)
                                         .dataLabels(new AADataLabels()
-                                                .enabled(true)
+                                                .enabled(false)
+                                                .allowOverlap(false)
                                                 .useHTML(true)
                                                 .distance(5f)
                                                 .format("<b>{point.name}</b>"))
@@ -477,7 +528,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.itemView.setOnClickListener(view -> {
             PLog.e("点击");
-            listener.OnItemClick(chartBeans.get(position));
         });
         holder.tvUnit.setText(dimensionPositionBean.getChart_unit());
         if(TextUtils.isEmpty(dimensionPositionBean.getChart_top_title())){
@@ -487,7 +537,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
-            listener.OnTitleClick(chartBeans.get(position));
         });
         if (mShake){
             holder.imgIndexForReport.setImageBitmap(BitmapFactory
@@ -495,7 +544,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             holder.imgDescribe.setVisibility(View.GONE);
             holder.imgIndexForReport.setOnClickListener(view -> {
                 PLog.e("删除指标");
-                listener.OnIndexDeleteClick(chartBeans.get(position));
             });
         }else{
             holder.imgIndexForReport.setImageBitmap(BitmapFactory
@@ -517,7 +565,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.itemView.setOnClickListener(view -> {
             PLog.e("点击");
-            listener.OnItemClick(chartBeans.get(position));
         });
         if(TextUtils.isEmpty(dimensionPositionBean.getChart_top_title())){
             holder.tvName.setText(dimensionPositionBean.getName());
@@ -526,7 +573,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
-            listener.OnTitleClick(chartBeans.get(position));
         });
         if (mShake){
             holder.imgIndexForReport.setImageBitmap(BitmapFactory
@@ -534,7 +580,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             holder.imgDescribe.setVisibility(View.GONE);
             holder.imgIndexForReport.setOnClickListener(view -> {
                 PLog.e("删除指标");
-                listener.OnIndexDeleteClick(chartBeans.get(position));
             });
         }else{
             holder.imgIndexForReport.setImageBitmap(BitmapFactory
@@ -557,7 +602,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.itemView.setOnClickListener(view -> {
             PLog.e("点击");
-            listener.OnItemClick(chartBeans.get(position));
         });
         if(TextUtils.isEmpty(dimensionPositionBean.getChart_top_title())){
             holder.tvName.setText(dimensionPositionBean.getName());
@@ -566,7 +610,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
-            listener.OnTitleClick(chartBeans.get(position));
         });
         if (mShake){
             holder.imgIndexForReport.setImageBitmap(BitmapFactory
@@ -574,7 +617,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             holder.imgDescribe.setVisibility(View.GONE);
             holder.imgIndexForReport.setOnClickListener(view -> {
                 PLog.e("删除指标");
-                listener.OnIndexDeleteClick(chartBeans.get(position));
             });
         }else{
             holder.imgIndexForReport.setImageBitmap(BitmapFactory
@@ -603,7 +645,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.itemView.setOnClickListener(view -> {
             PLog.e("点击");
-            listener.OnItemClick(chartBeans.get(position));
         });
         if(TextUtils.isEmpty(dimensionPositionBean.getChart_top_title())){
             holder.tvName.setText(dimensionPositionBean.getName());
@@ -612,7 +653,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
-            listener.OnTitleClick(chartBeans.get(position));
         });
         if (mShake){
             holder.imgIndexForReport.setImageBitmap(BitmapFactory
@@ -620,7 +660,6 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             holder.imgDescribe.setVisibility(View.GONE);
             holder.imgIndexForReport.setOnClickListener(view -> {
                 PLog.e("删除指标");
-                listener.OnIndexDeleteClick(chartBeans.get(position));
             });
         }else{
             holder.imgIndexForReport.setImageBitmap(BitmapFactory

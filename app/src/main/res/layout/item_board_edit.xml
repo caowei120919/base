@@ -1,5 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H75"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/W24"
+        android:layout_marginRight="@dimen/W24"
+        android:orientation="horizontal"
+        android:background="@drawable/board_edit">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/W24"
+            android:layout_gravity="center_vertical"
+            android:text="@string/the_name_of_the_kanban"
+            android:textSize="14sp"
+            android:textColor="@color/c_303030">
+        </TextView>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:textSize="14sp"
+            android:layout_marginLeft="@dimen/W10"
+            android:layout_marginRight="@dimen/W20"
+            android:background="@null">
+        </EditText>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/edit_delete"
+            android:paddingTop="@dimen/H14"
+            android:paddingBottom="@dimen/H14"
+            android:paddingRight="@dimen/W14">
+        </ImageView>
+    </LinearLayout>
 </RelativeLayout>

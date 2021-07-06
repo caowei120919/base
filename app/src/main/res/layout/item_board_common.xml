@@ -23,4 +23,17 @@
         android:layout_marginRight="@dimen/W48"
         android:layout_alignParentRight="true">
     </TextView>
+
+    <TextView
+        android:id="@+id/tv_timeType"
+        android:layout_width="@dimen/W40"
+        android:layout_height="@dimen/H40"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/tv_pageTime"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_marginRight="@dimen/W20"
+        android:textColor="@color/c_808080"
+        android:background="@drawable/shape_dbdbdb_round">
+    </TextView>
 </RelativeLayout>

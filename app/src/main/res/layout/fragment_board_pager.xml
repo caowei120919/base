@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.enlogy.statusview.StatusRelativeLayout
+        android:id="@+id/status_board"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H100"
+        app:rContentView="@layout/item_board_common"
+        app:rExtendView="@layout/item_board_edit">
+    </com.enlogy.statusview.StatusRelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycle_index"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/status_board"
         android:layout_above="@id/rel_addOrDelete">
     </androidx.recyclerview.widget.RecyclerView>
 

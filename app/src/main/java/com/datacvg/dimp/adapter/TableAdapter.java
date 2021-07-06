@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.bean.TableBean;
 import java.util.ArrayList;
@@ -53,7 +54,8 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> 
             holder.tvTitle.setText(LanguageUtils.isZh(mContext)
                     ? bean.getRes_clname() : bean.getRes_flname());
 
-            Glide.with(mContext).load(bean.getDecode())
+            String imgUrl = String.format(Constants.BASE_URL + Constants.IMG_URL,bean.getRes_imgpath());
+            Glide.with(mContext).load(imgUrl)
                     .placeholder(R.mipmap.screen_default)
                     .error(R.mipmap.screen_default)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)

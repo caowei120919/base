@@ -1,15 +1,11 @@
 package com.datacvg.dimp.adapter;
 
-import android.view.View;
-import android.view.ViewGroup;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-
-import com.datacvg.dimp.fragment.DigitalFragment;
-
 import java.util.List;
 
 /**
@@ -17,7 +13,7 @@ import java.util.List;
  * @Time : 2021-05-28
  * @Description :
  */
-public class BoardPagerAdapter extends PagerAdapter implements ViewPager.OnPageChangeListener {
+public class BoardPagerAdapter extends FragmentStatePagerAdapter implements ViewPager.OnPageChangeListener {
     private List<Fragment> fragments;
     private FragmentManager fragmentManager;
     private ViewPager viewPager;
@@ -27,6 +23,7 @@ public class BoardPagerAdapter extends PagerAdapter implements ViewPager.OnPageC
 
     public BoardPagerAdapter(FragmentManager fragmentManager, ViewPager viewPager
             , List<Fragment> fragments) {
+        super(fragmentManager);
         this.fragments = fragments;
         this.fragmentManager = fragmentManager;
         this.viewPager = viewPager;
@@ -40,45 +37,15 @@ public class BoardPagerAdapter extends PagerAdapter implements ViewPager.OnPageC
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object o) {
-        return view == o;
+    public int getItemPosition(@NonNull Object object) {
+        return PagerAdapter.POSITION_NONE;
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-
+    public Fragment getItem(int position) {
+        return fragments.get(position);
     }
 
-    @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        Fragment fragment = fragments.get(position);
-        if(!fragment.isAdded()){
-            FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.add(fragment, fragment.getClass().getSimpleName());
-            ft.commit();
-            /**
-             * 在用FragmentTransaction.commit()方法提交FragmentTransaction对象后
-             * 会在进程的主线程中，用异步的方式来执行。
-             * 如果想要立即执行这个等待中的操作，就要调用这个方法（只能在主线程中调用）。
-             * 要注意的是，所有的回调和相关的行为都会在这个调用中被执行完成，因此要仔细确认这个方法的调用位置。
-             */
-            fragmentManager.executePendingTransactions();
-        }
-
-        if(fragment.getView().getParent() == null){
-            container.addView(fragment.getView());
-        }
-
-        return fragment.getView();
-    }
-
-    /**
-     * 当前page索引（切换之前）
-     * @return
-     */
-    public int getCurrentPageIndex() {
-        return currentPageIndex;
-    }
 
     public OnExtraPageChangeListener getOnExtraPageChangeListener() {
         return onExtraPageChangeListener;
@@ -101,17 +68,13 @@ public class BoardPagerAdapter extends PagerAdapter implements ViewPager.OnPageC
 
     @Override
     public void onPageSelected(int i) {
-        int position = i ;
-        if(i >= fragments.size()){
-            position = 0 ;
+        fragments.get(i).onPause();
+        if(fragments.get(i).isAdded()){
+            fragments.get(i).onResume();
         }
-        fragments.get(position).onPause();
-        if(fragments.get(position).isAdded()){
-            fragments.get(position).onResume();
-        }
-        currentPageIndex = position;
+        currentPageIndex = i;
         if(null != onExtraPageChangeListener){
-            onExtraPageChangeListener.onExtraPageSelected(position);
+            onExtraPageChangeListener.onExtraPageSelected(i);
         }
 
     }
@@ -123,12 +86,14 @@ public class BoardPagerAdapter extends PagerAdapter implements ViewPager.OnPageC
         }
     }
 
+
+
     /**
      * page切换额外功能接口
      */
     public interface OnExtraPageChangeListener{
-        void onExtraPageScrolled(int i, float v, int i2);
         void onExtraPageSelected(int i);
+        void onExtraPageScrolled(int i, float v, int i2);
         void onExtraPageScrollStateChanged(int i);
     }
 }

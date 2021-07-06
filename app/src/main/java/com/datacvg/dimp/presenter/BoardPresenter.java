@@ -1,21 +1,15 @@
 package com.datacvg.dimp.presenter;
 
-import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.config.MobileApi;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
-import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
-import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.bean.DigitalPageBean;
 import com.datacvg.dimp.bean.PageItemBean;
 import com.datacvg.dimp.bean.PageItemListBean;
-import com.datacvg.dimp.bean.TimeValueBean;
 import com.datacvg.dimp.view.BoardView;
 import com.google.gson.Gson;
-
 import java.util.List;
-
 import javax.inject.Inject;
 
 /**

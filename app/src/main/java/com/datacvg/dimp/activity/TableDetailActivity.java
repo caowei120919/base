@@ -245,8 +245,6 @@ public class TableDetailActivity extends BaseActivity<TableDetailView, TableDeta
                         intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,tableBean);
                         mContext.startActivity(intent);
                     }else{
-//                        Intent intent = new Intent(mContext,TableCommentActivity.class);
-//                        mContext.startActivity(intent);
                         showCommentDistPlay();
                     }
                 break;
@@ -257,8 +255,6 @@ public class TableDetailActivity extends BaseActivity<TableDetailView, TableDeta
                  *      无参数选择   默认报表
                  */
                 if (hasParamInfo){
-//                    Intent intent = new Intent(mContext,TableCommentActivity.class);
-//                    mContext.startActivity(intent);
                     showCommentDistPlay();
                 }else{
                     PLog.e("默认报表");
@@ -323,7 +319,6 @@ public class TableDetailActivity extends BaseActivity<TableDetailView, TableDeta
             params.put("params","{}");
             params.put("content",mComments);
             final  Map<String, RequestBody> requestBodyMap = MultipartUtil.getRequestBodyMap(params,"files",imgFiles);
-//            getPresenter().upload(requestBodyMap);
             getPresenter().submitComments(requestBodyMap);
         } catch (IOException e) {
             e.printStackTrace();
