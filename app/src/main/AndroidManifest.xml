@@ -179,7 +179,7 @@
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.TableCommentActivity"
-            android:theme="@style/AlertDialog"
+            android:theme="@style/ActivityDialogStyle"
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.AddIndexPageActivity"

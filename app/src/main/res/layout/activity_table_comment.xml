@@ -6,17 +6,86 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/H970"
+        android:layout_height="@dimen/H1200"
         android:background="@drawable/shape_comment"
         android:layout_alignParentBottom="true">
 
         <ImageView
-            android:layout_width="@dimen/W40"
-            android:layout_height="@dimen/H40"
+            android:id="@+id/img_closeComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/W40"
+            android:paddingRight="@dimen/W40"
             android:src="@mipmap/icon_comment_close"
-            android:padding="@dimen/W20">
+            android:paddingTop="@dimen/H40"
+            android:paddingLeft="@dimen/W40"
+            android:paddingBottom="@dimen/H40">
         </ImageView>
+
+        <RelativeLayout
+            android:id="@+id/rel_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/H120"
+            android:layout_alignParentBottom="true">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/H2"
+                android:background="@color/c_140000">
+            </TextView>
+
+            <ImageView
+                android:id="@+id/img_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/W20"
+                android:paddingRight="@dimen/W20"
+                android:paddingTop="@dimen/H40"
+                android:paddingBottom="@dimen/H40"
+                android:layout_alignParentRight="true"
+                android:src="@mipmap/report_comment_send">
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/img_addPicture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/W20"
+                android:paddingRight="@dimen/W20"
+                android:paddingTop="@dimen/H40"
+                android:paddingBottom="@dimen/H40"
+                android:layout_toLeftOf="@id/img_submit"
+                android:src="@mipmap/icon_add_picture">
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/img_at"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/W20"
+                android:paddingRight="@dimen/W20"
+                android:paddingTop="@dimen/H40"
+                android:paddingBottom="@dimen/H40"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/img_addPicture"
+                android:src="@mipmap/icon_at">
+            </ImageView>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/img_at"
+                android:layout_centerVertical="true">
+            </EditText>
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle_comment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/rel_submit"
+            android:layout_below="@id/img_closeComment">
+        </androidx.recyclerview.widget.RecyclerView>
     </RelativeLayout>
 </RelativeLayout>

@@ -2,6 +2,7 @@ package com.datacvg.dimp.bean;
 
 import androidx.annotation.Keep;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,7 +42,25 @@ public class CommentBean {
     private List<String> texts;
     private List<AppImageNameBean> appImageNameList;
     private boolean isCanDelete ;
-    private List<CommentBean> childComment ;
+    private List<CommentBean> childComment =new ArrayList<>();
+    private int level = 0 ;
+    private boolean hasSpread = false ;
+
+    public boolean isHasSpread() {
+        return hasSpread;
+    }
+
+    public void setHasSpread(boolean hasSpread) {
+        this.hasSpread = hasSpread;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
 
     public List<CommentBean> getChildComment() {
         return childComment;
@@ -156,7 +175,7 @@ public class CommentBean {
     }
 
     @Keep
-    private class AppImageNameBean {
+    public class AppImageNameBean {
 
         /**
          * pkid : 1270044484094078483534

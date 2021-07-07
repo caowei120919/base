@@ -206,4 +206,7 @@
     <string name="the_search_content_cannot_be_empty">搜索内容不能为空</string>
     <string name="set_the_current_report_to_default">设置当前报表为默认</string>
     <string name="cancel_the_current_report_as_default">取消当前报表为默认</string>
+    <string name="reply">回复</string>
+    <string name="a_reply">展开回复</string>
+    <string name="pack_up">收起</string>
 </resources>

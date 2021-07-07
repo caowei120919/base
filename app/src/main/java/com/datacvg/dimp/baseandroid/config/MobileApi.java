@@ -277,8 +277,7 @@ public interface MobileApi {
      * 查询报表相关评论
      * @return
      */
-    @Headers({"Domain-Name: ddb_api"})
-    @GET("report/comments/info/list")
+    @GET("api/report/comments/info/list")
     Observable<BaseBean<CommentListBean>> getTableComment(@Query("resId") String resId,
                                                           @Query("param") String param);
 

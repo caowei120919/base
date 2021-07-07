@@ -13,12 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
-import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
+import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.bean.CommentBean;
 
 import java.util.ArrayList;
@@ -33,16 +32,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * @Time : 2020-12-09
  * @Description :
  */
-public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.ViewHolder> {
+public class CommentChildAdapter extends RecyclerView.Adapter<CommentChildAdapter.ViewHolder> {
     private Context mContext ;
     private List<CommentBean> commentBeans = new ArrayList<>();
     private LayoutInflater inflater ;
     private CommentPictureAdapter adapter ;
-    private CommentChildAdapter childCommentAdapter ;
     private List<String> pictures = new ArrayList<>() ;
-    private List<CommentBean> childComments = new ArrayList<>() ;
 
-    public CommentListAdapter(Context mContext, List<CommentBean> commentBeans) {
+    public CommentChildAdapter(Context mContext, List<CommentBean> commentBeans) {
         this.mContext = mContext;
         this.commentBeans = commentBeans;
         inflater = LayoutInflater.from(mContext);
@@ -57,7 +54,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        pictures.clear();
+        pictures = new ArrayList<>() ;
         if(commentBeans.get(position) != null){
             CommentBean commentBean =commentBeans.get(position) ;
             String comment = "" ;
@@ -68,11 +65,13 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                     comment = comment + arg ;
                 }
             }
-            initPictureAdapter(holder.recycleCommentPicture);
+            adapter = new CommentPictureAdapter(mContext,pictures);
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext,3);
+            holder.recycleCommentPicture.setLayoutManager(gridLayoutManager);
+            holder.recycleCommentPicture.setAdapter(adapter);
             for (CommentBean.AppImageNameBean appImageNameBean : commentBean.getAppImageNameList()){
                 pictures.add(appImageNameBean.getImg_name()) ;
             }
-            adapter.notifyDataSetChanged();
             holder.tvComment.setText(Html.fromHtml(comment));
             holder.tvCommentName.setText(commentBean.getComment_username());
             holder.tvCommentTime.setText(commentBean.getUpdate_time());
@@ -86,27 +85,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
             holder.itemView.setOnClickListener(view -> {
 
             });
-            holder.tvPackReply.setVisibility(commentBean.getChildComment().isEmpty() ? View.GONE
-                    : View.VISIBLE);
-            holder.tvPackReply.setSelected(commentBean.isHasSpread());
-            childCommentAdapter = new CommentChildAdapter(mContext,childComments);
-            LinearLayoutManager manager = new LinearLayoutManager(mContext);
-            holder.recycleChildComment.setLayoutManager(manager);
-            holder.recycleChildComment.setAdapter(childCommentAdapter);
-            holder.tvPackReply.setOnClickListener(view -> {
-                if(commentBean.isHasSpread()){
-                    childComments.clear();
-                }else{
-                    childComments.clear();
-                    childComments.addAll(commentBean.getChildComment());
-                }
-                commentBean.setHasSpread(!commentBean.isHasSpread());
-                childCommentAdapter.notifyDataSetChanged();
-                holder.tvPackReply.setSelected(!holder.tvPackReply.isSelected());
-                holder.tvPackReply.setText(holder.tvPackReply.isSelected() ? mContext.getResources().getString(R.string.pack_up) : mContext.getResources().getString(R.string.a_reply));
-            });
-
-
+            holder.tvPackReply.setVisibility(View.GONE);
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
@@ -114,18 +93,6 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                 }
             });
         }
-    }
-
-    /**
-     * 初始化评论图片适配器
-     * @param recycleCommentPicture
-     */
-    private void initPictureAdapter(RecyclerView recycleCommentPicture) {
-        pictures.clear();
-        adapter = new CommentPictureAdapter(mContext,pictures);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext,3);
-        recycleCommentPicture.setLayoutManager(gridLayoutManager);
-        recycleCommentPicture.setAdapter(adapter);
     }
 
     @Override

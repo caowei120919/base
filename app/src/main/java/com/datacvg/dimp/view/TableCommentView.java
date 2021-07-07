@@ -1,6 +1,7 @@
 package com.datacvg.dimp.view;
 
 import com.datacvg.dimp.baseandroid.mvp.MvpView;
+import com.datacvg.dimp.bean.CommentListBean;
 
 /**
  * @Author : T-Bag (茶包)
@@ -8,4 +9,9 @@ import com.datacvg.dimp.baseandroid.mvp.MvpView;
  * @Description :
  */
 public interface TableCommentView extends MvpView {
+    /**
+     * 获取报表评论成功
+     * @param data
+     */
+    void getTableCommentSuccess(CommentListBean data);
 }

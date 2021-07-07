@@ -25,17 +25,6 @@ public interface TableDetailView extends MvpView {
     void getTableInfoSuccess(TableInfoBean resdata);
 
     /**
-     * 评论成功
-     */
-    void submitCommentsSuccess();
-
-    /**
-     * 获取报表评论成功
-     * @param resdata
-     */
-    void getCommentsSuccess(CommentListBean resdata);
-
-    /**
      * 设置默认报表成功
      * @param baseBean
      */

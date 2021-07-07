@@ -213,4 +213,7 @@
     <string name="the_search_content_cannot_be_empty">The search content cannot be empty</string>
     <string name="set_the_current_report_to_default">Set the current report to default</string>
     <string name="cancel_the_current_report_as_default">Cancel the current report as default</string>
+    <string name="reply">reply</string>
+    <string name="a_reply">A reply</string>
+    <string name="pack_up">Pack up</string>
 </resources>

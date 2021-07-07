@@ -11,7 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.event.DeleteCommentEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -47,11 +51,12 @@ public class CommentPictureAdapter extends RecyclerView.Adapter<CommentPictureAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Glide.with(mContext).load(imageList.get(position))
-                .error(R.mipmap.img_default).into(holder.imgPicture);
-        holder.imgDelete.setOnClickListener(view -> {
-            EventBus.getDefault().post(new DeleteCommentEvent(position));
-        });
+        String imgUrl = Constants.BASE_URL + Constants.IMG_URL_NONE + imageList.get(position);
+        Glide.with(mContext).load(imgUrl)
+                .placeholder(R.mipmap.screen_default)
+                .error(R.mipmap.screen_default)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(holder.imgPicture);
     }
 
     @Override
@@ -62,8 +67,6 @@ public class CommentPictureAdapter extends RecyclerView.Adapter<CommentPictureAd
     public class ViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.img_picture)
         ImageView imgPicture ;
-        @BindView(R.id.img_delete)
-        ImageView imgDelete ;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

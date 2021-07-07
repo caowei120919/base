@@ -1,45 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/W30"
-    android:layout_marginRight="@dimen/W30">
+    android:layout_marginLeft="@dimen/W30">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/H60">
-
-        <TextView
-            android:id="@+id/tv_commentName"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textSize="16sp">
-        </TextView>
-
-        <TextView
-            android:id="@+id/tv_commentTime"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:gravity="center"
-            android:textSize="16sp"></TextView>
-    </RelativeLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycle_commentPicture"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_head"
+        android:src="@mipmap/img_default"
+        android:layout_width="@dimen/W80"
         android:layout_marginTop="@dimen/H10"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="@dimen/H80">
+    </de.hdodenhof.circleimageview.CircleImageView>
+
+    <TextView
+        android:id="@+id/tv_commentName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="@color/c_999999"
+        android:layout_toRightOf="@id/img_head"
+        android:layout_alignTop="@id/img_head"
+        android:layout_marginLeft="@dimen/W32">
+    </TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/reply"
+        android:textSize="12sp"
+        android:padding="@dimen/W10"
+        android:textColor="@color/c_b5b5b5"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/W30"
+        android:layout_alignTop="@id/tv_commentName">
+    </TextView>
 
     <TextView
         android:id="@+id/tv_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/c_000000"
         android:textSize="14sp"
-        android:gravity="center_vertical"
-        android:layout_marginTop="@dimen/H10">
+        android:layout_marginRight="@dimen/W40"
+        android:layout_alignLeft="@id/tv_commentName"
+        android:layout_below="@id/tv_commentName"
+        android:layout_marginTop="@dimen/H12">
     </TextView>
-</LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_commentPicture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/H12"
+        android:layout_below="@id/tv_comment"
+        android:layout_alignLeft="@id/tv_commentName">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/tv_commentTime"
+        android:textSize="12sp"
+        android:textColor="@color/c_999999"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/H12"
+        android:layout_alignLeft="@id/tv_commentName"
+        android:layout_below="@id/recycle_commentPicture">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H1"
+        android:background="@color/c_f2f2f2"
+        android:layout_marginRight="@dimen/W30"
+        android:layout_alignLeft="@id/tv_commentName"
+        android:layout_below="@id/tv_commentTime"
+        android:layout_marginTop="@dimen/H5">
+    </TextView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_childComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_line"
+        android:layout_marginTop="@dimen/H10"
+        android:layout_alignLeft="@id/tv_commentName">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/tv_packReply"
+        android:layout_below="@id/recycle_childComment"
+        android:layout_marginTop="@dimen/H10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingTop="@dimen/H10"
+        android:layout_alignLeft="@id/tv_commentName"
+        android:paddingBottom="@dimen/H10"
+        android:drawableRight="@drawable/selector_reply"
+        android:drawablePadding="@dimen/W40"
+        android:text="@string/a_reply">
+    </TextView>
+</RelativeLayout>
