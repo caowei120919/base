@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
@@ -20,8 +19,6 @@ import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.baseandroid.utils.TimeUtils;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
-import com.datacvg.dimp.baseandroid.widget.dialog.ChooseContactWindowDialog;
-import com.datacvg.dimp.baseandroid.widget.dialog.ChooseIndexWindowDialog;
 import com.datacvg.dimp.bean.ActionPlanIndexBean;
 import com.datacvg.dimp.bean.ActionPlanIndexListBean;
 import com.datacvg.dimp.bean.CreateTaskBean;
@@ -34,7 +31,6 @@ import com.datacvg.dimp.presenter.NewTaskPresenter;
 import com.datacvg.dimp.view.NewTaskView;
 import com.datacvg.dimp.widget.FlowLayout;
 import com.google.gson.Gson;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -95,8 +91,6 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
      * 任务标题
      */
     private String taskTitle ;
-    private ChooseContactWindowDialog contactWindowDialog;
-    private ChooseIndexWindowDialog indexWindowDialog ;
     private boolean fromActionFragment = true ;
     private String actionType = "1";
     private IndexTreeNeedBean indexTreeNeedBean ;
@@ -240,15 +234,6 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
         taskDetail = editable.toString().trim() ;
     }
 
-    @OnTextChanged(value = R.id.ed_taskDetails,callback = OnTextChanged.Callback.TEXT_CHANGED)
-    public void onDetailTextChange(final CharSequence s, int start, int before, int count){
-        PLog.e("s == " + s + ", start == " + start + ",before == " + before + ",count == " + count);
-//        if(s.charAt(s.length() - 1) == AT){
-//            PLog.e("这里是@被输入");
-//            mContext.startActivity(new Intent(mContext,ContactActivity.class));
-//        }
-    }
-
     @OnCheckedChanged(R.id.switch_task)
     public void onCheckChanged(boolean checked){
         PLog.e("测试 ====" + checked);
@@ -303,15 +288,15 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
                 break;
 
             case R.id.img_addHead :
-                initSelectParamsView(Constants.CHOOSE_TYPE_HEAD);
+                    PLog.e("选择联系人");
                 break;
 
             case R.id.img_addAssistant :
-                initSelectParamsView(Constants.CHOOSE_TYPE_ASSISTANT);
+                    PLog.e("选择协助人");
                 break;
 
             case R.id.img_addIndex :
-                    createIndexWindowDialog();
+                    PLog.e("选择指标");
                 break;
 
             case R.id.tv_right :
@@ -363,41 +348,6 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
                     createTaskBean.setActionPlanInfoDTO(actionPlanInfoDTO);
                     getPresenter().createTask(createTaskBean);
                 break;
-        }
-    }
-
-
-    private void createIndexWindowDialog() {
-        if(indexWindowDialog != null){
-            indexWindowDialog.showDialog();
-        }else{
-            indexWindowDialog = new ChooseIndexWindowDialog(mContext,actionPlanIndexBeans)
-                    .backgroundLight(0.2)
-                    .fromTopToMiddle()
-                    .showDialog()
-                    .setCancelAble(true)
-                    .setWidthAndHeight((int)resources.getDimension(R.dimen.W500)
-                            ,(int)resources.getDimension(R.dimen.H800))
-                    .setCanceledOnTouchOutside(true);
-        }
-    }
-
-    /**
-     *  初始化选择器
-     * @param chooseTypeHead
-     */
-    private void initSelectParamsView(int chooseTypeHead){
-        if(contactWindowDialog != null){
-            contactWindowDialog.setChooseType(chooseTypeHead);
-            contactWindowDialog.showDialog();
-        }else{
-            contactWindowDialog = new ChooseContactWindowDialog(mContext,chooseTypeHead)
-                    .backgroundLight(0.2)
-                    .fromTopToMiddle()
-                    .showDialog()
-                    .setCancelAble(true)
-                    .setWidthAndHeight((int)resources.getDimension(R.dimen.W500),(int)resources.getDimension(R.dimen.H800))
-                    .setCanceledOnTouchOutside(true);
         }
     }
 

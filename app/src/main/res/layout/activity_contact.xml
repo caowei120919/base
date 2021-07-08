@@ -22,11 +22,11 @@
         android:layout_height="@dimen/H50"
         android:text="@string/department"
         android:layout_marginTop="@dimen/H10"
-        android:textColor="@color/c_666666"
+        android:textColor="@color/c_BCBCBC"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/W24"
         android:textSize="12sp"
-        android:background="@color/c_e6e6e6">
+        android:background="@color/c_f8f8fa">
     </TextView>
 
     <RelativeLayout
@@ -38,8 +38,8 @@
             android:layout_height="wrap_content"
             android:text="@string/department"
             android:layout_centerVertical="true"
-            android:textColor="@color/c_666666"
-            android:drawableLeft="@mipmap/icon_at"
+            android:textColor="@color/c_BCBCBC"
+            android:drawableLeft="@mipmap/icon_at_for_department"
             android:gravity="center"
             android:paddingLeft="@dimen/W24"
             android:drawablePadding="@dimen/W24">
@@ -48,40 +48,16 @@
         <TextView
             android:id="@+id/tv_chooseDepartment"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:paddingRight="@dimen/W24"
             android:textColor="@color/c_e6e6e6"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:drawableRight="@mipmap/person_next"
             android:drawablePadding="@dimen/W24"
             android:textSize="@dimen/W28">
         </TextView>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rel_nearestContact"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
-        <TextView
-            android:id="@+id/tv_nearestContact"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/H50"
-            android:text="@string/nearest_contact"
-            android:textColor="@color/c_5b7c7c"
-            android:gravity="center_vertical"
-            android:paddingLeft="@dimen/W24"
-            android:textSize="12sp"
-            android:background="@color/c_e6e6e6">
-        </TextView>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_below="@id/tv_nearestContact"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </androidx.recyclerview.widget.RecyclerView>
     </RelativeLayout>
 
     <RelativeLayout
@@ -98,6 +74,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginRight="@dimen/W18"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
             android:layout_alignParentRight="true">
         </com.datacvg.dimp.widget.LetterView>
     </RelativeLayout>

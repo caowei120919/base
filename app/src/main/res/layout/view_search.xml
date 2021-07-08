@@ -2,8 +2,20 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/H60"
-    android:background="@color/c_FFFFFF">
+    android:layout_height="@dimen/H72"
+    android:layout_marginLeft="@dimen/W20"
+    android:layout_marginRight="@dimen/W20"
+    android:background="@drawable/shape_search">
+
+    <ImageView
+        android:id="@+id/edit_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/H72"
+        android:padding="@dimen/H16"
+        android:layout_centerVertical="true"
+        android:src="@mipmap/edit_delete"
+        android:layout_alignParentRight="true">
+    </ImageView>
 
     <EditText
         android:id="@+id/ed_search"
@@ -11,11 +23,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:hint="@string/search"
-        android:layout_marginLeft="@dimen/W20"
-        android:layout_marginRight="@dimen/W20"
+        android:layout_toLeftOf="@id/edit_delete"
         android:textSize="12sp"
         android:singleLine="true"
-        android:background="@drawable/shape_search"
+        android:background="@null"
         android:textColorHint="@color/c_b5b5b5"
         android:drawableLeft="@mipmap/icon_search"
         android:drawablePadding="@dimen/W32"
