@@ -4,13 +4,13 @@
     android:layout_marginTop="@dimen/H55"
     android:layout_marginLeft="@dimen/W20"
     android:layout_marginRight="@dimen/W20"
+    android:background="@color/c_f2f2f2"
     android:layout_height="wrap_content">
 
     <RelativeLayout
         android:id="@+id/rel_screen"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/selector_screen">
+        android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/img_picture"
             android:layout_width="@dimen/W315"
@@ -29,7 +29,8 @@
             android:text="@string/action"
             android:singleLine="true"
             android:ellipsize="end"
-            android:layout_marginTop="@dimen/H30"
+            android:layout_marginTop="@dimen/H20"
+            android:layout_marginBottom="@dimen/H20"
             android:textColor="@color/c_666666"
             android:textSize="14sp">
         </TextView>

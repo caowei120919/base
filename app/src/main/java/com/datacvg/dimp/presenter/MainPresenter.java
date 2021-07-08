@@ -84,4 +84,30 @@ public class MainPresenter extends BasePresenter<MainView>{
                     }
                 });
     }
+
+    /**
+     * 获取所有维度和维度下用户信息
+     */
+    public void getDepartmentAndContact() {
+        mobileApi.getDefaultUser().compose(RxUtils.applySchedulersLifeCycle(getView()))
+                .subscribe(new RxObserver<BaseBean<DefaultUserListBean>>(){
+                    @Override
+                    public void onComplete() {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseBean<DefaultUserListBean> defaultUserListBeanBaseBean) {
+                        if(checkJsonCode(defaultUserListBeanBaseBean)){
+                            getView().getDepartmentAndContactSuccess(defaultUserListBeanBaseBean.getResdata());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        PLog.e("TAG",e.getMessage());
+                    }
+                });
+    }
 }

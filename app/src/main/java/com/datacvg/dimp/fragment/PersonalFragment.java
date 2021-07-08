@@ -117,7 +117,6 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
              */
             case R.id.rel_setting :
                 startActivity(new Intent(mContext, SettingActivity.class));
-//                startActivity(new Intent(mContext, ContactActivity.class));
                 break;
 
             /**

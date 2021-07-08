@@ -22,4 +22,10 @@ public interface MainView extends MvpView {
      * @param reportBean
      */
     void getDefaultReportSuccess(ConstantReportBean reportBean);
+
+    /**
+     * 获取部门联系人信息成功
+     * @param resdata
+     */
+    void getDepartmentAndContactSuccess(DefaultUserListBean resdata);
 }

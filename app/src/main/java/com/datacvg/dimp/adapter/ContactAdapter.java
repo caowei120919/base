@@ -12,7 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.baseandroid.config.Constants;
+import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.ContactComparator;
 import com.datacvg.dimp.baseandroid.utils.PinYinUtils;
 import com.datacvg.dimp.bean.Contact;
@@ -28,6 +32,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 /**
@@ -106,18 +111,15 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (holder instanceof CharacterViewHolder) {
             ((CharacterViewHolder) holder).mTextView.setText(resultList.get(position).getName());
         } else if (holder instanceof ContactViewHolder) {
-            String url = "http://dimp.dev.datacvg.com/api/mobile/"
-                    + "login/readheadimg?userPkid=" + resultList.get(position).getBean().getId();
-            Glide.with(mContext)
-                    .load(url)
+            GlideUrl imgUrl = new GlideUrl(Constants.BASE_MOBILE_URL + Constants.HEAD_IMG_URL
+                    + resultList.get(position).getBean().getId()
+                    , new LazyHeaders.Builder().addHeader(Constants.AUTHORIZATION,Constants.token).build());
+            Glide.with(mContext).load(imgUrl)
                     .placeholder(R.mipmap.screen_default)
                     .error(R.mipmap.screen_default)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(((ContactViewHolder) holder).imgAvatar);
-            ((ContactViewHolder) holder).mTextView.setText(resultList.get(position).getName()
-                    + "(" + DbDepartmentController.getInstance(mContext)
-                    .getDepartmentNameForDepartmentId(resultList.get(position)
-                            .getBean().getDepartment_id()) + ")");
+            ((ContactViewHolder) holder).mTextView.setText(resultList.get(position).getName());
         }
     }
 
@@ -137,7 +139,7 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         TextView mTextView ;
 
         @BindView(R.id.img_avatar)
-        ImageView imgAvatar ;
+        CircleImageView imgAvatar ;
 
         @BindView(R.id.cb_contact)
         CheckBox cbContact ;

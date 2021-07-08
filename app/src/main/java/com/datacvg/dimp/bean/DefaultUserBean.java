@@ -106,6 +106,7 @@ public class DefaultUserBean {
         this.user = user;
     }
 
+    @Keep
     public static class UserBean {
         /**
          * user_id : wenfang

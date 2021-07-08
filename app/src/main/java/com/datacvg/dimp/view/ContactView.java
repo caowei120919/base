@@ -1,6 +1,7 @@
 package com.datacvg.dimp.view;
 
 import com.datacvg.dimp.baseandroid.mvp.MvpView;
+import com.datacvg.dimp.bean.DefaultUserListBean;
 
 /**
  * @Author : T-Bag (茶包)

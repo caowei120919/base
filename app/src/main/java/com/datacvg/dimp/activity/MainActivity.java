@@ -85,7 +85,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     /**
      *记录返回键点击时间
      */
-    private FragmentManager fragmentManager ;
     private FragmentTransaction fragmentTransaction ;
     private long firstTime = 0;
     private List<ModuleInfo> moduleBeans = new ArrayList<>();
@@ -111,6 +110,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     protected void setupData(Bundle savedInstanceState) {
         getPresenter().getPermissionModule();
         getDefaultReport();
+        getPresenter().getDepartmentAndContact();
     }
 
     private void getDefaultReport() {
@@ -307,6 +307,35 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         if(null != actionFragment){
             fragmentTransaction.hide(actionFragment);
         }
+    }
+
+    /**
+     * 获取维度下所有联系人成功
+     * @param resdata
+     */
+    @Override
+    public void getDepartmentAndContactSuccess(DefaultUserListBean resdata) {
+        DbDepartmentController departmentController = DbDepartmentController.getInstance(mContext);
+        DbContactController contactController = DbContactController.getInstance(mContext);
+        for (DefaultUserBean bean : resdata) {
+            DepartmentBean departmentBean = new DepartmentBean();
+            departmentBean.setD_res_clname(bean.getD_res_clname());
+            departmentBean.setD_res_flname(bean.getD_res_flname());
+            departmentBean.setD_res_id(bean.getD_res_id());
+            departmentBean.setD_res_parentid(bean.getD_res_parentid());
+            departmentBean.setD_res_pkid(bean.getD_res_pkid());
+            departmentBean.setD_res_rootid(bean.getD_res_rootid());
+            departmentController.insertOrUpdateDepartment(departmentBean);
+            for (DefaultUserBean.UserBean contact : bean.getUser()){
+                ContactBean contactBean = new ContactBean();
+                contactBean.setDepartment_id(bean.getD_res_pkid());
+                contactBean.setId(contact.getId());
+                contactBean.setUser_id(contact.getUser_id());
+                contactBean.setName(contact.getName());
+                contactController.insertOrUpdateContact(contactBean);
+            }
+        }
+        PLog.e(DbContactController.getInstance(mContext).queryContactList().size() + "");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

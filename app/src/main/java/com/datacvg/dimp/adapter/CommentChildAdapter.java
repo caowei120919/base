@@ -73,7 +73,9 @@ public class CommentChildAdapter extends RecyclerView.Adapter<CommentChildAdapte
                 pictures.add(appImageNameBean.getImg_name()) ;
             }
             holder.tvComment.setText(Html.fromHtml(comment));
-            holder.tvCommentName.setText(commentBean.getComment_username());
+            holder.tvCommentName.setText(commentBean.getReply_username() + " "
+                    + mContext.getResources().getString(R.string.reply) + " "
+                    + commentBean.getComment_username());
             holder.tvCommentTime.setText(commentBean.getUpdate_time());
             GlideUrl imgUrl = new GlideUrl(Constants.BASE_MOBILE_URL + Constants.HEAD_IMG_URL
                     + commentBean.getComment_user_id()
