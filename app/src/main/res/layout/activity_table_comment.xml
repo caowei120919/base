@@ -73,6 +73,7 @@
             </ImageView>
 
             <EditText
+                android:id="@+id/ed_comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@id/img_at"

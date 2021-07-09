@@ -23,23 +23,11 @@ public class Contact {
         isChecked = checked;
     }
 
-    /**
-     * 是否展开,目标为维度
-     */
-    private boolean isExpend = false ;
 
     /**
      * 是否被选中,目标为人员
      */
     private boolean isChecked = false ;
-
-    public boolean isExpend() {
-        return isExpend;
-    }
-
-    public void setExpend(boolean expend) {
-        isExpend = expend;
-    }
 
     public Contact() {
     }

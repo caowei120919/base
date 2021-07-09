@@ -209,4 +209,5 @@
     <string name="reply">回复</string>
     <string name="a_reply">展开回复</string>
     <string name="pack_up">收起</string>
+    <string name="selected_people">已选择:%s人</string>
 </resources>

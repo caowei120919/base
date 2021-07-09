@@ -107,6 +107,13 @@ public class DbContactController {
         userDao.delete(user);
     }
 
+    public void deleteAllContact(){
+        DaoMaster daoMaster = new DaoMaster(getWritableDatabase());
+        DaoSession daoSession = daoMaster.newSession();
+        ContactBeanDao userDao = daoSession.getContactBeanDao();
+        userDao.deleteAll();
+    }
+
     /**
      * 更新一条记录
      *
@@ -141,6 +148,16 @@ public class DbContactController {
         QueryBuilder<ContactBean> qb = userDao.queryBuilder();
         qb.where(ContactBeanDao.Properties.Department_id.eq(department_id))
                 .orderAsc(ContactBeanDao.Properties.Department_id);
+        List<ContactBean> list = qb.list();
+        return list;
+    }
+
+    public List<ContactBean> queryCheckedContacts(){
+        DaoMaster daoMaster = new DaoMaster(getReadableDatabase());
+        DaoSession daoSession = daoMaster.newSession();
+        ContactBeanDao userDao = daoSession.getContactBeanDao();
+        QueryBuilder<ContactBean> qb = userDao.queryBuilder();
+        qb.where(ContactBeanDao.Properties.Checked.eq(true));
         List<ContactBean> list = qb.list();
         return list;
     }

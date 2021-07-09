@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,8 +21,12 @@ import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.ContactComparator;
 import com.datacvg.dimp.baseandroid.utils.PinYinUtils;
 import com.datacvg.dimp.bean.Contact;
+import com.datacvg.dimp.event.ContactEvent;
 import com.datacvg.dimp.greendao.bean.ContactBean;
+import com.datacvg.dimp.greendao.controller.DbContactController;
 import com.datacvg.dimp.greendao.controller.DbDepartmentController;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,6 +52,7 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private List<String> mContactList = new ArrayList<>();
     private List<Contact> resultList = new ArrayList<>();
     private List<String> characterList = new ArrayList<>();
+    private final int nearCount = 5 ;
 
     public enum ITEM_TYPE {
         ITEM_TYPE_CHARACTER,
@@ -73,7 +79,22 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         resultList = new ArrayList<>();
         characterList = new ArrayList<>();
-
+        characterList.add(mContext.getResources().getString(R.string.nearest_contact));
+        resultList.add(new Contact(mContext.getResources().getString(R.string.nearest_contact)
+                , ITEM_TYPE.ITEM_TYPE_CHARACTER.ordinal()));
+        if(beans.size() > nearCount){
+            for (int i = 0 ; i < nearCount ; i++){
+                Contact contact = new Contact(beans.get(i),beans.get(i).getName());
+                contact.setmType(ITEM_TYPE.ITEM_TYPE_CONTACT.ordinal());
+                resultList.add(contact);
+            }
+        }else{
+            for (int i = 0 ; i < beans.size() ; i++){
+                Contact contact = new Contact(beans.get(i),beans.get(i).getName());
+                contact.setmType(ITEM_TYPE.ITEM_TYPE_CONTACT.ordinal());
+                resultList.add(contact);
+            }
+        }
         for (int i = 0; i < mContactList.size(); i++) {
             String name = mContactList.get(i);
             String character = (name.charAt(0) + "").toUpperCase(Locale.ENGLISH);
@@ -120,6 +141,14 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(((ContactViewHolder) holder).imgAvatar);
             ((ContactViewHolder) holder).mTextView.setText(resultList.get(position).getName());
+            ((ContactViewHolder) holder).cbContact.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    ContactBean contactBean = resultList.get(position).getBean();
+                    contactBean.setChecked(b);
+                    EventBus.getDefault().post(new ContactEvent(contactBean));
+                }
+            });
         }
     }
 

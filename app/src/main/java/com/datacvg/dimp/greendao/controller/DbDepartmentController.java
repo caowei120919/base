@@ -106,6 +106,13 @@ public class DbDepartmentController {
         userDao.delete(user);
     }
 
+    public void deleteAllDepartment(){
+        DaoMaster daoMaster = new DaoMaster(getWritableDatabase());
+        DaoSession daoSession = daoMaster.newSession();
+        DepartmentBeanDao userDao = daoSession.getDepartmentBeanDao();
+        userDao.deleteAll();
+    }
+
     /**
      * 更新一条记录
      *

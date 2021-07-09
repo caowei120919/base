@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/H107"
-    android:gravity="center_vertical">
+    android:layout_height="@dimen/H107">
 
     <CheckBox
         android:id="@+id/cb_contact"
@@ -16,6 +15,8 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_avatar"
         android:layout_width="@dimen/W68"
+        android:layout_toRightOf="@id/cb_contact"
+        android:layout_centerVertical="true"
         android:layout_height="@dimen/H68"
         android:layout_marginLeft="@dimen/W24"/>
 
@@ -24,7 +25,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/W24"
-        android:textColor="@color/c_666666"
+        android:layout_toRightOf="@id/img_avatar"
+        android:layout_centerVertical="true"
+        android:textColor="@color/c_303030"
         android:textSize="14sp" />
 
-</LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H2"
+        android:layout_alignLeft="@id/img_avatar"
+        android:layout_alignParentBottom="true"
+        android:background="@color/c_f2f2f2">
+    </TextView>
+</RelativeLayout>

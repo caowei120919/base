@@ -1,7 +1,6 @@
 package com.datacvg.dimp.greendao.bean;
 
 import androidx.annotation.Keep;
-
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
@@ -35,50 +34,23 @@ public class ContactBean{
 
     private String user_id;
 
-    private String name;
+    private String name ;
 
-    /**
-     * 是否为负责人选中(只适用于行动方案创建任务)
-     */
-    private boolean isHeadChecked = false ;
+    private boolean checked = false;
 
-    public boolean isHeadChecked() {
-        return isHeadChecked;
+    @Generated(hash = 1283900925)
+    public ContactBean() {
     }
 
-    public void setHeadChecked(boolean headChecked) {
-        isHeadChecked = headChecked;
-    }
-
-    public boolean isAssistantChecked() {
-        return isAssistantChecked;
-    }
-
-    public void setAssistantChecked(boolean assistantChecked) {
-        isAssistantChecked = assistantChecked;
-    }
-
-    /**
-     * 是否为协助人选中(只适用于行动方案)
-     */
-    private boolean isAssistantChecked = false ;
-
-
-    @Generated(hash = 943245095)
+    @Generated(hash = 328321984)
     public ContactBean(Long contact_id, String id, String department_id,
-            String user_id, String name, boolean isHeadChecked,
-            boolean isAssistantChecked) {
+            String user_id, String name, boolean checked) {
         this.contact_id = contact_id;
         this.id = id;
         this.department_id = department_id;
         this.user_id = user_id;
         this.name = name;
-        this.isHeadChecked = isHeadChecked;
-        this.isAssistantChecked = isAssistantChecked;
-    }
-
-    @Generated(hash = 1283900925)
-    public ContactBean() {
+        this.checked = checked;
     }
 
     public Long getContact_id() {
@@ -121,20 +93,11 @@ public class ContactBean{
         this.name = name;
     }
 
-
-    public boolean getIsHeadChecked() {
-        return this.isHeadChecked;
+    public boolean getChecked() {
+        return this.checked;
     }
 
-    public void setIsHeadChecked(boolean isHeadChecked) {
-        this.isHeadChecked = isHeadChecked;
-    }
-
-    public boolean getIsAssistantChecked() {
-        return this.isAssistantChecked;
-    }
-
-    public void setIsAssistantChecked(boolean isAssistantChecked) {
-        this.isAssistantChecked = isAssistantChecked;
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 }

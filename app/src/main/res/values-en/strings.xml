@@ -216,4 +216,5 @@
     <string name="reply">reply</string>
     <string name="a_reply">A reply</string>
     <string name="pack_up">Pack up</string>
+    <string name="selected_people">Selected: %s people</string>
 </resources>

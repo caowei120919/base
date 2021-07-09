@@ -3,7 +3,9 @@ package com.datacvg.dimp.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.View;
+import android.widget.EditText;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,14 +17,19 @@ import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.bean.CommentBean;
 import com.datacvg.dimp.bean.CommentListBean;
 import com.datacvg.dimp.bean.TableBean;
+import com.datacvg.dimp.event.SelectChooseContactEvent;
 import com.datacvg.dimp.presenter.TableCommentPresenter;
 import com.datacvg.dimp.view.TableCommentView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 /**
  * @Author : T-Bag (茶包)
@@ -33,6 +40,8 @@ public class TableCommentActivity extends BaseActivity<TableCommentView, TableCo
         implements TableCommentView {
     @BindView(R.id.recycle_comment)
     RecyclerView recycleComment ;
+    @BindView(R.id.ed_comment)
+    EditText edComment ;
 
 
     private TableBean tableBean ;
@@ -90,6 +99,11 @@ public class TableCommentActivity extends BaseActivity<TableCommentView, TableCo
         }
     }
 
+    @OnTextChanged(value = R.id.ed_comment,callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void onUserNameTextChange(Editable editable){
+
+    }
+
     @Override
     public void getTableCommentSuccess(CommentListBean data) {
         if (data.getCommentInfoList().isEmpty()){
@@ -112,5 +126,10 @@ public class TableCommentActivity extends BaseActivity<TableCommentView, TableCo
             }
         }
         adapter.notifyDataSetChanged();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SelectChooseContactEvent event){
+
     }
 }

@@ -15,6 +15,8 @@
     <include
         android:layout_width="match_parent"
         android:layout_height="@dimen/H83"
+        android:layout_marginLeft="@dimen/W24"
+        android:layout_marginRight="@dimen/W24"
         layout="@layout/view_search"/>
 
     <TextView
@@ -38,7 +40,7 @@
             android:layout_height="wrap_content"
             android:text="@string/department"
             android:layout_centerVertical="true"
-            android:textColor="@color/c_BCBCBC"
+            android:textColor="@color/c_303030"
             android:drawableLeft="@mipmap/icon_at_for_department"
             android:gravity="center"
             android:paddingLeft="@dimen/W24"
@@ -80,4 +82,42 @@
         </com.datacvg.dimp.widget.LetterView>
     </RelativeLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H6"
+        android:background="@color/c_f8f8fa">
+    </TextView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H100">
+
+        <TextView
+            android:id="@+id/tv_selectNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/selected_people"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/W30"
+            android:textSize="14sp"
+            android:textColor="@color/c_303030">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/confirm"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/W30"
+            android:paddingTop="@dimen/H20"
+            android:paddingBottom="@dimen/H20"
+            android:paddingLeft="@dimen/W40"
+            android:paddingRight="@dimen/W40"
+            android:textSize="14sp"
+            android:textColor="@color/c_FFFFFF"
+            android:background="@drawable/shape_round_8_da3a16">
+        </TextView>
+    </RelativeLayout>
 </LinearLayout>

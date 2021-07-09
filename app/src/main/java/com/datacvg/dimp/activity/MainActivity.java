@@ -316,7 +316,9 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @Override
     public void getDepartmentAndContactSuccess(DefaultUserListBean resdata) {
         DbDepartmentController departmentController = DbDepartmentController.getInstance(mContext);
+        departmentController.deleteAllDepartment();
         DbContactController contactController = DbContactController.getInstance(mContext);
+        contactController.deleteAllContact();
         for (DefaultUserBean bean : resdata) {
             DepartmentBean departmentBean = new DepartmentBean();
             departmentBean.setD_res_clname(bean.getD_res_clname());
