@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.datacvg.dimp",
+  "variantName": "ProdRelease",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "properties": [],
+      "versionCode": 3230,
+      "versionName": "3.2.3",
+      "enabled": true,
+      "outputFile": "dimp-v3.2.3-prod.apk"
+    }
+  ]
+}

@@ -1,10 +1,11 @@
 package com.datacvg.dimp.view;
 
 import com.datacvg.dimp.baseandroid.mvp.MvpView;
-import com.datacvg.dimp.bean.CommentListBean;
 import com.datacvg.dimp.bean.SetDefaultResBean;
 import com.datacvg.dimp.bean.TableInfoBean;
-import com.datacvg.dimp.bean.TableParamInfoListBean;
+import com.datacvg.dimp.bean.TableParamInfoBean;
+
+import java.util.List;
 
 /**
  * @Author : T-Bag (茶包)
@@ -16,7 +17,7 @@ public interface TableDetailView extends MvpView {
      * 获取报表参数成功
      * @param tableParamInfoListBean
      */
-    void getParamInfoSuccess(TableParamInfoListBean tableParamInfoListBean);
+    void getParamInfoSuccess(List<TableParamInfoBean> tableParamInfoListBean);
 
     /**
      * 获取报表配置信息成功

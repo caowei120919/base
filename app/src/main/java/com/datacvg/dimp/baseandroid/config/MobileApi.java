@@ -243,7 +243,7 @@ public interface MobileApi {
      * @param res_id
      * @return
      */
-    @GET("api/mobile/mobilereport/app_getresparaminfobyresid")
+    @GET("api/report/params/init")
     Observable<BaseBean<TableParamInfoListBean>> getResParamInfo(@Query("resId") String res_id);
 
     /**

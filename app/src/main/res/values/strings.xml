@@ -210,4 +210,11 @@
     <string name="a_reply">展开回复</string>
     <string name="pack_up">收起</string>
     <string name="selected_people">已选择:%s人</string>
+    <string name="the_time_parameter">时间参数</string>
+    <string name="the_dimension_parameters">维度参数</string>
+    <string name="custom_parameter">自定义参数</string>
+    <string name="time_parameter_query_error">时间参数查询错误</string>
+    <string name="my_choice">我的选择</string>
+    <string name="clear">清除</string>
+    <string name="all_the_reference">全部参考</string>
 </resources>

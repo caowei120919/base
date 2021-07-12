@@ -15,9 +15,7 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
     <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
-    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
 
     <application
@@ -192,6 +190,10 @@
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait"
             android:name=".activity.ChartDetailActivity" />
+        <activity
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait"
+            android:name=".activity.SelectDimensionActivity" />
     </application>
 
 </manifest>

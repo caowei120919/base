@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/H100"
+    android:orientation="horizontal">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/H10"
+        android:layout_marginBottom="@dimen/H10"
+        android:layout_marginLeft="@dimen/W20"
+        android:layout_marginRight="@dimen/W20"
+        android:background="@drawable/selector_f2f2f2_da3a16">
+    </EditText>
+</RelativeLayout>

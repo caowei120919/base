@@ -38,7 +38,7 @@ public class SelectTableParamPresenter extends BasePresenter<SelectTableParamVie
 
                     @Override
                     public void onNext(BaseBean<TableParamInfoListBean> bean) {
-                        getView().getParamInfoSuccess(bean.getResdata());
+                        getView().getParamInfoSuccess(bean.getData());
                     }
 
                     @Override

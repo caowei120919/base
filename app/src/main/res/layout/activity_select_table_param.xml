@@ -14,85 +14,62 @@
         android:background="@color/c_d8d8d8">
     </TextView>
 
-    <RelativeLayout
-        android:id="@+id/rel_typeTime"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone">
-        <TextView
-            android:id="@+id/tv_typeTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/to_choose_time"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginLeft="@dimen/W40"
-            android:layout_marginTop="@dimen/H20"
-            android:textColor="@color/c_000000">
-        </TextView>
+        android:layout_weight="1">
 
-        <TextView
-            android:id="@+id/tv_timeTitleOfOne"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/W50"
-            android:layout_below="@id/tv_typeTime"
-            android:layout_marginTop="@dimen/H20"
-            android:textColor="@color/c_000000"
-            android:textSize="18sp">
-        </TextView>
-
-        <TextView
-            android:id="@+id/tv_timeOfOne"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/W40"
-            android:layout_below="@id/tv_typeTime"
-            android:layout_marginTop="@dimen/H20"
-            android:drawablePadding="@dimen/W40"
-            android:drawableRight="@mipmap/account_next"
-            android:paddingLeft="@dimen/W40"
-            android:textSize="18sp"
-            android:textColor="@color/c_000000">
-        </TextView>
-
-        <TextView
-            android:id="@+id/tv_timeTitleOfTwo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/W50"
-            android:layout_below="@id/tv_timeOfOne"
-            android:layout_marginTop="@dimen/H20"
-            android:textColor="@color/c_000000"
-            android:textSize="18sp">
-        </TextView>
-
-        <TextView
-            android:id="@+id/tv_timeOfTwo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/W40"
-            android:layout_below="@id/tv_timeOfOne"
-            android:layout_marginTop="@dimen/H20"
-            android:drawablePadding="@dimen/W40"
-            android:drawableRight="@mipmap/account_next"
-            android:paddingLeft="@dimen/W40"
-            android:textSize="18sp"
-            android:textColor="@color/c_000000">
-        </TextView>
-
-        <TextView
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/H2"
-            android:layout_below="@id/tv_timeOfTwo"
-            android:background="@color/c_d8d8d8"
-            android:layout_marginLeft="@dimen/W50"
-            android:layout_marginRight="@dimen/W50"
-            android:layout_marginTop="@dimen/H20">
-        </TextView>
-    </RelativeLayout>
+            android:layout_height="match_parent">
 
+            <LinearLayout
+                android:id="@+id/lin_timeParam"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:orientation="vertical">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/H60"
+                    android:background="@color/c_f8f8fa"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/W25"
+                    android:text="@string/the_time_parameter"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_808080">
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lin_dimensionParam"
+                android:layout_below="@id/lin_timeParam"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/H60"
+                    android:background="@color/c_f8f8fa"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/W25"
+                    android:text="@string/the_dimension_parameters"
+                    android:textSize="14sp"
+                    android:textColor="@color/c_808080">
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lin_custom"
+                android:layout_below="@id/lin_dimensionParam"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:orientation="vertical">
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

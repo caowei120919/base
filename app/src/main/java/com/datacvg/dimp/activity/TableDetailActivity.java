@@ -24,7 +24,7 @@ import com.datacvg.dimp.bean.ConstantReportBean;
 import com.datacvg.dimp.bean.SetDefaultResBean;
 import com.datacvg.dimp.bean.TableBean;
 import com.datacvg.dimp.bean.TableInfoBean;
-import com.datacvg.dimp.bean.TableParamInfoListBean;
+import com.datacvg.dimp.bean.TableParamInfoBean;
 import com.datacvg.dimp.event.RefreshTableEvent;
 import com.datacvg.dimp.presenter.TableDetailPresenter;
 import com.datacvg.dimp.view.TableDetailView;
@@ -35,6 +35,7 @@ import com.just.agentweb.WebViewClient;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -186,7 +187,7 @@ public class TableDetailActivity extends BaseActivity<TableDetailView, TableDeta
      *         不为空并且有维度或者参数选择，则允许跳转到选择页面
      */
     @Override
-    public void getParamInfoSuccess(TableParamInfoListBean tableParamInfoListBean) {
+    public void getParamInfoSuccess(List<TableParamInfoBean> tableParamInfoListBean) {
         if(tableParamInfoListBean != null && tableParamInfoListBean.size() > 0){
             imgThree.setImageBitmap(isDefaultReport ? BitmapFactory.decodeResource(resources
                     ,R.mipmap.icon_report_normal) : BitmapFactory.decodeResource(resources

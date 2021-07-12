@@ -17,12 +17,9 @@ import com.datacvg.dimp.baseandroid.utils.AndroidUtils;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.baseandroid.utils.StringUtils;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
-import com.datacvg.dimp.baseandroid.widget.CVGOKCancelWithTitle;
 import com.datacvg.dimp.bean.UserLoginBean;
 import com.datacvg.dimp.presenter.LoginPresenter;
 import com.datacvg.dimp.view.LoginView;
-import com.squareup.haha.perflib.Main;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;

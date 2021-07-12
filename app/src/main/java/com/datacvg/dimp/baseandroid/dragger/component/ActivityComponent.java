@@ -26,6 +26,7 @@ import com.datacvg.dimp.activity.ScanActivity;
 import com.datacvg.dimp.activity.ScreenDetailActivity;
 import com.datacvg.dimp.activity.ScreenResultActivity;
 import com.datacvg.dimp.activity.ScreenSettingActivity;
+import com.datacvg.dimp.activity.SelectDimensionActivity;
 import com.datacvg.dimp.activity.SelectTableParamActivity;
 import com.datacvg.dimp.activity.SettingActivity;
 import com.datacvg.dimp.activity.SettingVpnActivity;
@@ -111,4 +112,6 @@ public interface ActivityComponent {
     void inject(AddIndexActivity addIndexActivity);
 
     void inject(ChartDetailActivity chartDetailActivity);
+
+    void inject(SelectDimensionActivity selectDimensionActivity);
 }

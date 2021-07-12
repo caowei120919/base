@@ -217,4 +217,11 @@
     <string name="a_reply">A reply</string>
     <string name="pack_up">Pack up</string>
     <string name="selected_people">Selected: %s people</string>
+    <string name="the_time_parameter">The time parameter</string>
+    <string name="the_dimension_parameters">The dimension parameters</string>
+    <string name="custom_parameter">Custom parameter</string>
+    <string name="time_parameter_query_error">Time parameter query error</string>
+    <string name="my_choice">My choice</string>
+    <string name="clear">clear</string>
+    <string name="all_the_reference">All the reference</string>
 </resources>

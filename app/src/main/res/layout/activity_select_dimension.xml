@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c_FFFFFF">
+
+    <include
+        android:id="@+id/layout_title"
+        layout="@layout/actionbar_title" />
+
+    <include
+        android:id="@+id/layout_search"
+        android:layout_below="@id/layout_title"
+        layout="@layout/view_search"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/W25"
+        android:layout_marginRight="@dimen/W25"
+        android:layout_marginBottom="@dimen/H10"
+        android:layout_height="@dimen/H90"/>
+
+    <RelativeLayout
+        android:id="@+id/rel_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H100"
+        android:background="@drawable/shape_index_bottom"
+        android:layout_alignParentBottom="true">
+
+        <CheckBox
+            android:id="@+id/cb_selectAll"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:button="@null"
+            android:background="@null"
+            android:text="@string/select_all"
+            android:drawablePadding="@dimen/W15"
+            android:drawableLeft="@drawable/selector_select"
+            android:paddingRight="@dimen/W30"
+            android:paddingLeft="@dimen/W30">
+        </CheckBox>
+
+        <Button
+            android:id="@+id/btn_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/H50"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/W24"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/login_user_bg"
+            android:text="@string/clear"
+            android:textColor="#fff"
+            android:textSize="@dimen/W30" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/c_f8f8fa"
+        android:layout_below="@id/layout_search"
+        android:layout_above="@id/rel_confirm">
+
+        <TextView
+            android:id="@+id/tv_select"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/H80"
+            android:gravity="center"
+            android:textColor="@color/c_303030"
+            android:text="@string/my_choice"
+            android:layout_marginLeft="@dimen/W24"
+            android:drawableLeft="@mipmap/icon_filter_recomend"
+            android:drawablePadding="@dimen/W24">
+        </TextView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle_myChoice"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/H310"
+            android:layout_below="@id/tv_select">
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/tv_all"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/H80"
+            android:gravity="center"
+            android:layout_below="@id/recycle_myChoice"
+            android:textColor="@color/c_303030"
+            android:text="@string/all_the_reference"
+            android:layout_marginLeft="@dimen/W24"
+            android:drawableLeft="@mipmap/icon_filter_my"
+            android:drawablePadding="@dimen/W24">
+        </TextView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle_all"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tv_all"
+            android:layout_marginTop="3dp"></androidx.recyclerview.widget.RecyclerView>
+    </RelativeLayout>
+</RelativeLayout>

@@ -41,7 +41,9 @@ public class TableDetailPresenter extends BasePresenter<TableDetailView>{
 
                     @Override
                     public void onNext(BaseBean<TableParamInfoListBean> bean) {
-                        getView().getParamInfoSuccess(bean.getResdata());
+                        if (checkJsonCode(bean)){
+                            getView().getParamInfoSuccess(bean.getData().getReportInitParam());
+                        }
                     }
 
                     @Override

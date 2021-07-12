@@ -264,6 +264,13 @@ public class TimeUtils {
         return cal.getTime();
     }
 
+    public static Date addYear(Date date, int n) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.YEAR, n);
+        return cal.getTime();
+    }
+
     /**
      *  在日期上增加整个周
      * @param date
@@ -521,14 +528,12 @@ public class TimeUtils {
     /**
      * 日期在当年第几季度
      * @param date2Str
-     * @param formatYmd
      * @return
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public static String getNewStrDateInQuarterForStrQ(String date2Str, String formatYmd) {
+    public static String getNewStrDateInQuarterForStrQ(Date date2Str) {
         Calendar calendar = Calendar.getInstance();
-        Date date = parse(date2Str,formatYmd);
-        calendar.setTime(date);
+        calendar.setTime(date2Str);
         int quarter = calendar.get(Calendar.MONTH);
         if(quarter >= 1 && quarter <= 3){
             return  calendar.getWeekYear() + "Q1";

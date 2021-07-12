@@ -3,6 +3,7 @@ package com.datacvg.dimp.bean;
 import androidx.annotation.Keep;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author : T-Bag (茶包)
@@ -10,6 +11,15 @@ import java.util.ArrayList;
  * @Description :
  */
 @Keep
-public class TableParamInfoListBean extends ArrayList<TableParamInfoBean> {
+public class TableParamInfoListBean {
 
+    private List<TableParamInfoBean> ReportInitParam;
+
+    public List<TableParamInfoBean> getReportInitParam() {
+        return ReportInitParam;
+    }
+
+    public void setReportInitParam(List<TableParamInfoBean> reportInitParam) {
+        ReportInitParam = reportInitParam;
+    }
 }

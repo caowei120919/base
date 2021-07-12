@@ -1,10 +1,13 @@
 package com.datacvg.dimp.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,9 +20,11 @@ import com.bigkoo.pickerview.view.TimePickerView;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
+import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.baseandroid.utils.TimeUtils;
+import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.TableBean;
 import com.datacvg.dimp.bean.TableParamInfoBean;
 import com.datacvg.dimp.bean.TableParamInfoListBean;
@@ -33,6 +38,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -48,16 +54,12 @@ public class SelectTableParamActivity extends BaseActivity<SelectTableParamView,
     TextView tvTitle ;
     @BindView(R.id.tv_right)
     TextView tvRight ;
-    @BindView(R.id.rel_typeTime)
-    RelativeLayout relTypeTime ;
-    @BindView(R.id.tv_timeTitleOfOne)
-    TextView tvTimeTitleOfOne ;
-    @BindView(R.id.tv_timeOfOne)
-    TextView tvTimeOfOne ;
-    @BindView(R.id.tv_timeTitleOfTwo)
-    TextView tvTimeTitleOfTwo ;
-    @BindView(R.id.tv_timeOfTwo)
-    TextView tvTimeOfTwo ;
+    @BindView(R.id.lin_timeParam)
+    LinearLayout linTimeParam ;
+    @BindView(R.id.lin_dimensionParam)
+    LinearLayout linDimensionParam ;
+    @BindView(R.id.lin_custom)
+    LinearLayout linCustom ;
 
     private TimePickerView pvCustomTime ;
     private TableBean tableBean ;
@@ -76,12 +78,12 @@ public class SelectTableParamActivity extends BaseActivity<SelectTableParamView,
     protected void setupView() {
         StatusBarUtil.setStatusBarColor(this,mContext.getResources()
                 .getColor(R.color.c_FFFFFF));
+        tvTitle.setText(resources.getString(R.string.report_parameters));
+        tvRight.setText(resources.getString(R.string.confirm));
     }
 
     @Override
     protected void setupData(Bundle savedInstanceState) {
-        tvTitle.setText(resources.getString(R.string.report_parameters));
-        tvRight.setText(resources.getString(R.string.confirm));
         tableBean = (TableBean) getIntent().getSerializableExtra(Constants.EXTRA_DATA_FOR_BEAN);
         if(tableBean == null){
             finish();
@@ -97,7 +99,7 @@ public class SelectTableParamActivity extends BaseActivity<SelectTableParamView,
         getPresenter().getResParamInfo(tableBean.getRes_id());
     }
 
-    @OnClick({R.id.img_left,R.id.tv_right,R.id.tv_timeOfOne,R.id.tv_timeOfTwo})
+    @OnClick({R.id.img_left,R.id.tv_right})
     public void OnClick(View view){
         switch (view.getId()){
             case R.id.img_left :
@@ -114,20 +116,6 @@ public class SelectTableParamActivity extends BaseActivity<SelectTableParamView,
                     finish();
                 }
                 break;
-
-            case R.id.tv_timeOfOne :
-                    if(pvCustomTime != null){
-                        pvCustomTime.getDialogContainerLayout().setTag(tvTimeOfOne);
-                        pvCustomTime.show();
-                    }
-                break;
-
-            case R.id.tv_timeOfTwo :
-                    if(pvCustomTime != null){
-                        pvCustomTime.getDialogContainerLayout().setTag(tvTimeOfTwo);
-                        pvCustomTime.show();
-                    }
-                break;
         }
     }
 
@@ -136,14 +124,6 @@ public class SelectTableParamActivity extends BaseActivity<SelectTableParamView,
      */
     private void getParamArr() throws UnsupportedEncodingException {
         String paramArr = "" ;
-        if(relTypeTime.getVisibility() == View.VISIBLE){
-            if(tvTimeOfTwo.getVisibility() == View.VISIBLE){
-                paramArr = "beginTime=" + tvTimeOfOne.getText().toString() + "::"
-                        + "endTime=" + tvTimeOfTwo.getText().toString();
-            }else{
-                paramArr = "reportTime=" + tvTimeOfOne.getText().toString();
-            }
-        }
         if(!TextUtils.isEmpty(paramArr)){
             paramArr = paramArr + "::"
                     + "userpkid=" + PreferencesHelper.get(Constants.USER_PKID,"");
@@ -155,20 +135,46 @@ public class SelectTableParamActivity extends BaseActivity<SelectTableParamView,
 
     @Override
     public void getParamInfoSuccess(TableParamInfoListBean resdata) {
-        if(resdata != null && resdata.size() > 0){
-            for (TableParamInfoBean tableParamInfoBean : resdata){
-                /**
-                 * 时间维度
-                 */
-                if(tableParamInfoBean.getParam_type().equals(Constants.REPORT_PARAMS_TIME)){
+        if(resdata != null && resdata.getReportInitParam().size() > 0){
+            for (TableParamInfoBean tableParamInfoBean : resdata.getReportInitParam()){
+                if(tableParamInfoBean.getControlType().equals(Constants.REPORT_PARAMS_TIME)){
                     dealWithTimeType(tableParamInfoBean);
                 }
-                /**
-                 * 维度
-                 */
-                if(tableParamInfoBean.getParam_type().equals(Constants.REPORT_PARAMS_DIMENSION)){
-                    dealWithDimensionType();
+                if(tableParamInfoBean.getControlType().equals(Constants.REPORT_PARAMS_DIMENSION)){
+                    dealWithDimensionType(tableParamInfoBean);
                 }
+                if(tableParamInfoBean.getControlType().equals(Constants.REPORT_PARAMS_CUSTOM)){
+                    dealWithCustomType(tableParamInfoBean);
+                }
+            }
+        }
+    }
+
+    /**
+     * 自定义参数
+     */
+    private void dealWithCustomType(TableParamInfoBean tableParamInfoBean) {
+        linCustom.setVisibility(View.VISIBLE);
+        if(tableParamInfoBean.getDataSource().isEmpty()){
+            View customView = LayoutInflater.from(mContext).inflate(R.layout.item_param
+                    ,linCustom,false);
+            linCustom.addView(customView);
+            TextView tvCustomName = customView.findViewById(R.id.tv_paramName);
+            tvCustomName.setText(tableParamInfoBean.getControlName());
+        }else{
+            View customView = LayoutInflater.from(mContext).inflate(R.layout.item_param_custom
+                    ,linCustom,false);
+            linCustom.addView(customView);
+            TextView tvCustomName = customView.findViewById(R.id.tv_customName);
+            LinearLayout linCustomType = customView.findViewById(R.id.lin_customType);
+            tvCustomName.setText(tableParamInfoBean.getControlName());
+            for (TableParamInfoBean.DataSourceBean dataSourceBean : tableParamInfoBean.getDataSource()){
+                View view = LayoutInflater.from(mContext).inflate(R.layout.item_param
+                        ,linCustomType,false);
+                TextView tvParamName = view.findViewById(R.id.tv_paramName);
+                TextView tvParamValue = view.findViewById(R.id.tv_paramValue);
+                tvParamName.setText(dataSourceBean.getSetName());
+                linCustomType.addView(view);
             }
         }
     }
@@ -176,8 +182,27 @@ public class SelectTableParamActivity extends BaseActivity<SelectTableParamView,
     /**
      * 维度参数
      */
-    private void dealWithDimensionType() {
-
+    private void dealWithDimensionType(TableParamInfoBean tableParamInfoBean) {
+        linDimensionParam.setVisibility(View.VISIBLE);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_param
+                ,linDimensionParam,false);
+        linDimensionParam.addView(view);
+        TextView tvParamName = view.findViewById(R.id.tv_paramName);
+        TextView tvParamValue = view.findViewById(R.id.tv_paramValue);
+        tvParamName.setText(tableParamInfoBean.getControlName());
+        if(!tableParamInfoBean.getDataSource().isEmpty()){
+            tvParamValue.setText(LanguageUtils.isZh(mContext)
+                    ? tableParamInfoBean.getDataSource().get(0).getD_res_clname()
+                    : tableParamInfoBean.getDataSource().get(0).getD_res_flname());
+        }else{
+            tvParamValue.setText("");
+        }
+        view.setOnClickListener(view1 -> {
+            PLog.e("维度参数");
+            Intent intent = new Intent(mContext,SelectDimensionActivity.class);
+            intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,tableParamInfoBean);
+            mContext.startActivity(intent);
+        });
     }
 
     /**
@@ -186,166 +211,151 @@ public class SelectTableParamActivity extends BaseActivity<SelectTableParamView,
      */
     @SuppressLint("NewApi")
     private void dealWithTimeType(TableParamInfoBean tableParamInfoBean) {
-        relTypeTime.setVisibility(View.VISIBLE);
-        initCustomPickView(tableParamInfoBean);
-        switch (tableParamInfoBean.getTime_type()){
-            /**
-             * 时间点
-             */
-            case "POINTER" :
-                    if(tableParamInfoBean.getTime_unit().equals("TIME_DAY")){
-                        tvTimeTitleOfOne.setText(resources.getString(R.string.to_choose_time)
-                                + "(" + resources.getString(R.string.day) + ")");
-                    }else if(tableParamInfoBean.getTime_unit().equals("TIME_MONTH")){
-                        tvTimeTitleOfOne.setText(resources.getString(R.string.to_choose_time)
-                                + "(" + resources.getString(R.string.month) + ")");
-                    }else if(tableParamInfoBean.getTime_unit().equals("TIME_YEAR")){
-                        tvTimeTitleOfOne.setText(resources.getString(R.string.to_choose_time)
-                                + "(" + resources.getString(R.string.year) + ")");
-                    }else if(tableParamInfoBean.getTime_unit().equals("TIME_QUARTER")){
-                        tvTimeTitleOfOne.setText(resources.getString(R.string.to_choose_time)
-                                + "(" + resources.getString(R.string.quarter) + ")");
-                    }else if(tableParamInfoBean.getTime_unit().equals("TIME_WEEK")){
-                        tvTimeTitleOfOne.setText(resources.getString(R.string.to_choose_time)
-                                + "(" + resources.getString(R.string.week) + ")");
+        linTimeParam.setVisibility(View.VISIBLE);
+        if (tableParamInfoBean.getDataSource() != null && tableParamInfoBean.getDataSource().size() > 0){
+            TableParamInfoBean.DataSourceBean dataSourceBean = tableParamInfoBean.getDataSource().get(0) ;
+            switch (dataSourceBean.getTimeType()) {
+                /**
+                 * 时间点
+                 */
+                case "POINTER":
+                    View view = LayoutInflater.from(mContext).inflate(R.layout.item_param
+                            ,linTimeParam,false);
+                    linTimeParam.addView(view);
+                    TextView tvParamName = view.findViewById(R.id.tv_paramName);
+                    TextView tvParamValue = view.findViewById(R.id.tv_paramValue);
+                    Date date = new Date();
+                    if (dataSourceBean.getTimeUnit().equals("TIME_DAY")) {
+                        date = TimeUtils.parse(dataSourceBean.getEndTime()
+                                ,dataSourceBean.getTimeFormat());
+                        int change = Integer.valueOf(dataSourceBean.getRelativeEnd());
+                        tvParamValue.setText(TimeUtils.date2Str(TimeUtils.addDay(date,-change)
+                                ,dataSourceBean.getTimeFormat()));
+                        tvParamName.setText(resources.getString(R.string.to_choose_time)
+                                + "(" + resources.getString(R.string.day) + "):");
+                    } else if (dataSourceBean.getTimeUnit().equals("TIME_MONTH")) {
+                        tvParamName.setText(resources.getString(R.string.to_choose_time)
+                                + "(" + resources.getString(R.string.month) + "):");
+                        date = TimeUtils.parse(dataSourceBean.getEndTime()
+                                ,dataSourceBean.getTimeFormat());
+                        int change = Integer.valueOf(dataSourceBean.getRelativeEnd());
+                        tvParamValue.setText(TimeUtils.date2Str(TimeUtils.addMonth(date,-change)
+                                ,dataSourceBean.getTimeFormat()));
+                    } else if (dataSourceBean.getTimeUnit().equals("TIME_YEAR")) {
+                        tvParamName.setText(resources.getString(R.string.to_choose_time)
+                                + "(" + resources.getString(R.string.year) + "):");
+                        date = TimeUtils.parse(dataSourceBean.getEndTime()
+                                ,dataSourceBean.getTimeFormat());
+                        int change = Integer.valueOf(dataSourceBean.getRelativeEnd());
+                        tvParamValue.setText(TimeUtils.date2Str(TimeUtils.addYear(date,-change)
+                                ,dataSourceBean.getTimeFormat()));
+                    } else if (dataSourceBean.getTimeUnit().equals("TIME_QUARTER")) {
+                        tvParamName.setText(resources.getString(R.string.to_choose_time)
+                                + "(" + resources.getString(R.string.quarter) + "):");
+                        int change = Integer.valueOf(dataSourceBean.getRelativeEnd());
+                        int year = Integer.valueOf(dataSourceBean.getEndTime().substring(0,4));
+                        int month = Integer.valueOf(dataSourceBean.getEndTime().substring(5,6)) * 3;
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(year,month,1);
+                        date = calendar.getTime();
+                        tvParamValue.setText(TimeUtils.getNewStrDateInQuarterForStrQ(TimeUtils.addQuarter(date,-change)));
+                    } else if (dataSourceBean.getTimeUnit().equals("TIME_WEEK")) {
+                        tvParamName.setText(resources.getString(R.string.to_choose_time)
+                                + "(" + resources.getString(R.string.week) + "):");
+                        date = TimeUtils.parse(dataSourceBean.getEndTime()
+                                ,dataSourceBean.getTimeFormat());
+                        int change = Integer.valueOf(dataSourceBean.getRelativeEnd());
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(TimeUtils.addWeek(date,-change));
+                        int week = calendar.get(Calendar.WEEK_OF_YEAR) ;
+                        tvParamValue.setText(calendar.get(Calendar.YEAR) + "" + (week >= 10 ? week : "0" + week));
                     }
-                tvTimeOfOne.setText(tableParamInfoBean.getEnd_time());
-                tvTimeTitleOfTwo.setVisibility(View.GONE);
-                tvTimeOfTwo.setVisibility(View.GONE);
-                break;
 
-            default:
-                tvTimeTitleOfTwo.setVisibility(View.VISIBLE);
-                tvTimeOfTwo.setVisibility(View.VISIBLE);
-                    if(tableParamInfoBean.getTime_unit().equals("TIME_DAY")){
-                        tvTimeTitleOfOne.setText(resources.getString(R.string.to_choose_time)
-                                + "(" + resources.getString(R.string.day) + ")");
-                        tvTimeTitleOfTwo.setText(resources.getString(R.string.to_choose_time)
-                                + "(" + resources.getString(R.string.day) + ")");
-                    }else if(tableParamInfoBean.getTime_unit().equals("TIME_MONTH")){
-                        tvTimeTitleOfOne.setText(resources.getString(R.string.to_choose_time)
-                                + "(" + resources.getString(R.string.month) + ")");
-                        tvTimeTitleOfTwo.setText(resources.getString(R.string.to_choose_time)
-                                + "(" + resources.getString(R.string.month) + ")");
-                    }else if(tableParamInfoBean.getTime_unit().equals("TIME_YEAR")){
-                        tvTimeTitleOfOne.setText(resources.getString(R.string.to_choose_time)
-                                + "(" + resources.getString(R.string.year) + ")");
-                        tvTimeTitleOfTwo.setText(resources.getString(R.string.to_choose_time)
-                                + "(" + resources.getString(R.string.year) + ")");
-                    }else if(tableParamInfoBean.getTime_unit().equals("TIME_QUARTER")){
-                        tvTimeTitleOfOne.setText(resources.getString(R.string.to_choose_time)
-                                + "(" + resources.getString(R.string.quarter) + ")");
-                        tvTimeTitleOfTwo.setText(resources.getString(R.string.to_choose_time)
-                                + "(" + resources.getString(R.string.quarter) + ")");
-                    }else if(tableParamInfoBean.getTime_unit().equals("TIME_WEEK")){
-                        tvTimeTitleOfOne.setText(resources.getString(R.string.to_choose_time)
-                                + "(" + resources.getString(R.string.week) + ")");
-                        tvTimeTitleOfTwo.setText(resources.getString(R.string.to_choose_time)
-                                + "(" + resources.getString(R.string.week) + ")");
+                    view.setOnClickListener(view1 -> {
+                        PLog.e("选择参数");
+                    });
+                    break;
+
+                default:
+                    View viewStart = LayoutInflater.from(mContext).inflate(R.layout.item_param
+                            ,linTimeParam,false);
+                    linTimeParam.addView(viewStart);
+                    TextView tvStartParamName = viewStart.findViewById(R.id.tv_paramName);
+                    TextView tvStartParamValue = viewStart.findViewById(R.id.tv_paramValue);
+
+                    View viewEnd = LayoutInflater.from(mContext).inflate(R.layout.item_param
+                            ,linTimeParam,false);
+                    linTimeParam.addView(viewEnd);
+                    TextView tvEndParamName = viewEnd.findViewById(R.id.tv_paramName);
+                    TextView tvEndParamValue = viewEnd.findViewById(R.id.tv_paramValue);
+                    Date dateRange = new Date();
+                    if (dataSourceBean.getTimeUnit().equals("TIME_DAY")) {
+                        dateRange = TimeUtils.parse(dataSourceBean.getEndTime()
+                                ,dataSourceBean.getTimeFormat());
+                        int change = Integer.valueOf(dataSourceBean.getRelativeEnd());
+                        tvStartParamName.setText(resources.getString(R.string.the_start_time)
+                                + "(" + resources.getString(R.string.day) + "):");
+                        tvStartParamValue.setText(dataSourceBean.getStartTime());
+
+                        tvEndParamValue.setText(TimeUtils.date2Str(TimeUtils.addDay(dateRange,-change)
+                                ,dataSourceBean.getTimeFormat()));
+                        tvEndParamName.setText(resources.getString(R.string.the_end_of_time)
+                                + "(" + resources.getString(R.string.day) + "):");
+                    } else if (dataSourceBean.getTimeUnit().equals("TIME_MONTH")) {
+                        tvEndParamName.setText(resources.getString(R.string.the_end_of_time)
+                                + "(" + resources.getString(R.string.month) + "):");
+
+                        tvStartParamName.setText(resources.getString(R.string.the_start_time)
+                                + "(" + resources.getString(R.string.month) + "):");
+                        tvStartParamValue.setText(dataSourceBean.getStartTime());
+
+                        dateRange = TimeUtils.parse(dataSourceBean.getEndTime()
+                                ,dataSourceBean.getTimeFormat());
+                        int change = Integer.valueOf(dataSourceBean.getRelativeEnd());
+                        tvEndParamValue.setText(TimeUtils.date2Str(TimeUtils.addMonth(dateRange,-change)
+                                ,dataSourceBean.getTimeFormat()));
+                    } else if (dataSourceBean.getTimeUnit().equals("TIME_YEAR")) {
+                        tvEndParamName.setText(resources.getString(R.string.the_end_of_time)
+                                + "(" + resources.getString(R.string.year) + "):");
+                        tvStartParamName.setText(resources.getString(R.string.the_start_time)
+                                + "(" + resources.getString(R.string.year) + "):");
+                        tvStartParamValue.setText(dataSourceBean.getStartTime());
+                        dateRange = TimeUtils.parse(dataSourceBean.getEndTime()
+                                ,dataSourceBean.getTimeFormat());
+                        int change = Integer.valueOf(dataSourceBean.getRelativeEnd());
+                        tvEndParamValue.setText(TimeUtils.date2Str(TimeUtils.addYear(dateRange,-change)
+                                ,dataSourceBean.getTimeFormat()));
+                    } else if (dataSourceBean.getTimeUnit().equals("TIME_QUARTER")) {
+                        tvEndParamName.setText(resources.getString(R.string.the_end_of_time)
+                                + "(" + resources.getString(R.string.quarter) + "):");
+                        tvStartParamName.setText(resources.getString(R.string.the_start_time)
+                                + "(" + resources.getString(R.string.quarter) + "):");
+                        tvStartParamValue.setText(dataSourceBean.getStartTime());
+                        int change = Integer.valueOf(dataSourceBean.getRelativeEnd());
+                        int year = Integer.valueOf(dataSourceBean.getEndTime().substring(0,4));
+                        int month = Integer.valueOf(dataSourceBean.getEndTime().substring(5,6)) * 3;
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(year,month,1);
+                        dateRange = calendar.getTime();
+                        tvEndParamValue.setText(TimeUtils.getNewStrDateInQuarterForStrQ(TimeUtils.addQuarter(dateRange,-change)));
+                    } else if (dataSourceBean.getTimeUnit().equals("TIME_WEEK")) {
+                        tvEndParamName.setText(resources.getString(R.string.the_end_of_time)
+                                + "(" + resources.getString(R.string.week) + "):");
+                        tvStartParamName.setText(resources.getString(R.string.the_start_time)
+                                + "(" + resources.getString(R.string.week) + "):");
+                        tvStartParamValue.setText(dataSourceBean.getStartTime());
+                        dateRange = TimeUtils.parse(dataSourceBean.getEndTime()
+                                ,dataSourceBean.getTimeFormat());
+                        int change = Integer.valueOf(dataSourceBean.getRelativeEnd());
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(TimeUtils.addWeek(dateRange,-change));
+                        int week = calendar.get(Calendar.WEEK_OF_YEAR) ;
+                        tvEndParamValue.setText(calendar.get(Calendar.YEAR) + "" + (week >= 10 ? week : "0" + week));
                     }
-                tvTimeOfOne.setText(tableParamInfoBean.getStart_time());
-                tvTimeOfTwo.setText(tableParamInfoBean.getEnd_time());
-                break;
-        }
-    }
-
-    /**
-     * 初始化时间选择器
-     */
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private void initCustomPickView(TableParamInfoBean tableParamInfoBean) {
-        Calendar selectedDate = Calendar.getInstance();
-        selectedDate.setTime(new Date());
-        Calendar startDate = Calendar.getInstance();
-        Calendar endDate = Calendar.getInstance();
-        if (tableParamInfoBean.getStart_time().equals(tableParamInfoBean.getEnd_time())){
-            startDate.set(2000,0,0);
-            endDate.setTime(new Date());
-        }else{
-            if(tableParamInfoBean.getTime_unit().equals("TIME_WEEK")
-                    || tableParamInfoBean.getTime_unit().equals("TIME_QUARTER")){
-                if(TextUtils.isEmpty(tableParamInfoBean.getTime_format())){
-                    startDate.setTime(TimeUtils.getWeekFirstDay(tableParamInfoBean.getStart_time()));
-                    endDate.setTime(TimeUtils.getWeekLastDay(tableParamInfoBean.getEnd_time()));
-                }else{
-                    startDate.setTime(TimeUtils.getQuarterFirstDay(tableParamInfoBean.getStart_time()));
-                    endDate.setTime(TimeUtils.getQuarterLastDay(tableParamInfoBean.getEnd_time()));
-                }
-            }else{
-                startDate.setTime(TimeUtils.str2Date(tableParamInfoBean.getStart_time(),tableParamInfoBean.getTime_format()));
-                endDate.setTime(TimeUtils.str2Date(tableParamInfoBean.getEnd_time(),tableParamInfoBean.getTime_format()));
+                    break;
             }
-        }
-        boolean[] dateType ;
-        if(tableParamInfoBean.getTime_unit().equals("TIME_YEAR")){
-            dateType = new boolean[]{true,false,false,false,false,false};
-        }else if(tableParamInfoBean.getTime_unit().equals("TIME_MONTH")){
-            dateType = new boolean[]{true,true,false,false,false,false};
         }else{
-            dateType = new boolean[]{true,true,true,false,false,false};
+            ToastUtils.showLongToast(resources.getString(R.string.time_parameter_query_error));
         }
-        pvCustomTime = new TimePickerBuilder(mContext, new OnTimeSelectListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onTimeSelect(Date date, View v) {
-                if (tableParamInfoBean!= null){
-                    switch (tableParamInfoBean.getTime_unit()){
-                        case "TIME_DAY" :
-                            ((TextView)pvCustomTime.getDialogContainerLayout().getTag())
-                                    .setText(TimeUtils.date2Str(date,TimeUtils.FORMAT_YMD_EN));
-                            break;
-
-                        case "TIME_MONTH" :
-                            ((TextView)pvCustomTime.getDialogContainerLayout().getTag())
-                                    .setText(TimeUtils.date2Str(date,TimeUtils.FORMAT_YM));
-                            break;
-
-                        case "TIME_YEAR" :
-                            ((TextView)pvCustomTime.getDialogContainerLayout().getTag())
-                                    .setText(TimeUtils.date2Str(date, TextUtils.isEmpty(tableParamInfoBean.getTime_format())
-                                            ? TimeUtils.FORMAT_YMD_EN : tableParamInfoBean.getTime_format()));
-                            break;
-
-                        case "TIME_WEEK" :
-                            ((TextView)pvCustomTime.getDialogContainerLayout().getTag())
-                                    .setText(TimeUtils.getNewStrDateInWeekForStr(TimeUtils.date2Str(date)
-                                            ,TimeUtils.FORMAT_YMD_CN));
-                            break;
-
-                        default:
-                            ((TextView)pvCustomTime.getDialogContainerLayout().getTag())
-                                    .setText(TimeUtils.getNewStrDateInQuarterForStrQ(TimeUtils.date2Str(date)
-                                            ,TimeUtils.FORMAT_YMD_CN));
-                            break;
-                    }
-                }
-            }
-        })
-                .setType(dateType)
-                .setLayoutRes(R.layout.pickerview_report_time, new CustomListener() {
-                    @Override
-                    public void customLayout(View v) {
-                        final TextView tvSubmit = v.findViewById(R.id.tv_finish);
-                        TextView ivCancel = v.findViewById(R.id.iv_cancel);
-                        tvSubmit.setOnClickListener(view -> {
-                            pvCustomTime.returnData();
-                            pvCustomTime.dismiss();
-                        });
-
-                        ivCancel.setOnClickListener(view -> {
-                            pvCustomTime.dismiss();
-                        });
-                    }
-                })
-                .setContentTextSize(18)
-                .setTitleSize(20)
-                .setTitleText("")
-                .setOutSideCancelable(false)
-                .isCyclic(true)
-                .setDate(selectedDate)
-                .setRangDate(startDate,endDate)
-                .isCenterLabel(false)
-                .isDialog(true)
-                .build();
     }
 }
