@@ -2,17 +2,12 @@ package com.datacvg.dimp.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import androidx.annotation.RequiresApi;
-
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
@@ -32,17 +27,14 @@ import com.datacvg.dimp.event.DimensionParamsSelectEvent;
 import com.datacvg.dimp.event.RefreshTableEvent;
 import com.datacvg.dimp.presenter.SelectTableParamPresenter;
 import com.datacvg.dimp.view.SelectTableParamView;
-
+import com.datacvg.dimp.widget.DatePicker;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -84,7 +76,10 @@ public class SelectTableParamActivity extends BaseActivity<SelectTableParamView,
                 .getColor(R.color.c_FFFFFF));
         tvTitle.setText(resources.getString(R.string.report_parameters));
         tvRight.setText(resources.getString(R.string.confirm));
-        initCustomPickView();
+        initDataPicker();
+    }
+
+    private void initDataPicker() {
     }
 
     @Override
@@ -224,6 +219,7 @@ public class SelectTableParamActivity extends BaseActivity<SelectTableParamView,
         linTimeParam.setVisibility(View.VISIBLE);
         if (tableParamInfoBean.getDataSource() != null && tableParamInfoBean.getDataSource().size() > 0){
             TableParamInfoBean.DataSourceBean dataSourceBean = tableParamInfoBean.getDataSource().get(0) ;
+            initCustomPickView(dataSourceBean);
             switch (dataSourceBean.getTimeType()) {
                 /**
                  * 时间点
@@ -236,8 +232,10 @@ public class SelectTableParamActivity extends BaseActivity<SelectTableParamView,
                     TextView tvParamValue = view.findViewById(R.id.tv_paramValue);
                     Date date = new Date();
                     if (dataSourceBean.getTimeUnit().equals("TIME_DAY")) {
-                        date = TimeUtils.parse(dataSourceBean.getEndTime()
-                                ,dataSourceBean.getTimeFormat());
+                        if (!TextUtils.isEmpty(dataSourceBean.getEndTime())){
+                            date = TimeUtils.parse(dataSourceBean.getEndTime()
+                                    ,dataSourceBean.getTimeFormat());
+                        }
                         int change = Integer.valueOf(dataSourceBean.getRelativeEnd());
                         tvParamValue.setText(TimeUtils.date2Str(TimeUtils.addDay(date,-change)
                                 ,dataSourceBean.getTimeFormat()));
@@ -246,16 +244,20 @@ public class SelectTableParamActivity extends BaseActivity<SelectTableParamView,
                     } else if (dataSourceBean.getTimeUnit().equals("TIME_MONTH")) {
                         tvParamName.setText(resources.getString(R.string.to_choose_time)
                                 + "(" + resources.getString(R.string.month) + "):");
-                        date = TimeUtils.parse(dataSourceBean.getEndTime()
-                                ,dataSourceBean.getTimeFormat());
+                        if (!TextUtils.isEmpty(dataSourceBean.getEndTime())){
+                            date = TimeUtils.parse(dataSourceBean.getEndTime()
+                                    ,dataSourceBean.getTimeFormat());
+                        }
                         int change = Integer.valueOf(dataSourceBean.getRelativeEnd());
                         tvParamValue.setText(TimeUtils.date2Str(TimeUtils.addMonth(date,-change)
                                 ,dataSourceBean.getTimeFormat()));
                     } else if (dataSourceBean.getTimeUnit().equals("TIME_YEAR")) {
                         tvParamName.setText(resources.getString(R.string.to_choose_time)
                                 + "(" + resources.getString(R.string.year) + "):");
-                        date = TimeUtils.parse(dataSourceBean.getEndTime()
-                                ,dataSourceBean.getTimeFormat());
+                        if (!TextUtils.isEmpty(dataSourceBean.getEndTime())){
+                            date = TimeUtils.parse(dataSourceBean.getEndTime()
+                                    ,dataSourceBean.getTimeFormat());
+                        }
                         int change = Integer.valueOf(dataSourceBean.getRelativeEnd());
                         tvParamValue.setText(TimeUtils.date2Str(TimeUtils.addYear(date,-change)
                                 ,dataSourceBean.getTimeFormat()));
@@ -263,17 +265,21 @@ public class SelectTableParamActivity extends BaseActivity<SelectTableParamView,
                         tvParamName.setText(resources.getString(R.string.to_choose_time)
                                 + "(" + resources.getString(R.string.quarter) + "):");
                         int change = Integer.valueOf(dataSourceBean.getRelativeEnd());
-                        int year = Integer.valueOf(dataSourceBean.getEndTime().substring(0,4));
-                        int month = Integer.valueOf(dataSourceBean.getEndTime().substring(5,6)) * 3;
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.set(year,month,1);
-                        date = calendar.getTime();
+                        if (!TextUtils.isEmpty(dataSourceBean.getEndTime())){
+                            int year = Integer.valueOf(dataSourceBean.getEndTime().substring(0,4));
+                            int month = Integer.valueOf(dataSourceBean.getEndTime().substring(5,6)) * 3;
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.set(year,month,1);
+                            date = calendar.getTime();
+                        }
                         tvParamValue.setText(TimeUtils.getNewStrDateInQuarterForStrQ(TimeUtils.addQuarter(date,-change)));
                     } else if (dataSourceBean.getTimeUnit().equals("TIME_WEEK")) {
                         tvParamName.setText(resources.getString(R.string.to_choose_time)
                                 + "(" + resources.getString(R.string.week) + "):");
-                        date = TimeUtils.parse(dataSourceBean.getEndTime()
-                                ,dataSourceBean.getTimeFormat());
+                        if (!TextUtils.isEmpty(dataSourceBean.getEndTime())){
+                            date = TimeUtils.parse(dataSourceBean.getEndTime()
+                                    ,dataSourceBean.getTimeFormat());
+                        }
                         int change = Integer.valueOf(dataSourceBean.getRelativeEnd());
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTime(TimeUtils.addWeek(date,-change));
@@ -370,7 +376,7 @@ public class SelectTableParamActivity extends BaseActivity<SelectTableParamView,
         }
     }
 
-    private void initCustomPickView() {
+    private void initCustomPickView(TableParamInfoBean.DataSourceBean dataSourceBean) {
         Calendar selectedDate = Calendar.getInstance();
         Calendar startDate = Calendar.getInstance();
         Calendar endDate = Calendar.getInstance();

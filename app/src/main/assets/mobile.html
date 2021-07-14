@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<title>Power BI - Web sample</title>
+<html lang="en">
+<body>
+    <script type="text/javascript" src="./dist/powerbi.js"></script>
+    <div id="reportContainer" style="width: 100%; height: 1334px">
+    </div>
+    <script type="text/javascript">
+    function GetQueryString(name) {
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+		var r = window.location.search.substr(1).match(reg);
+        if(r != null) return decodeURI(r[2]);
+		return '';
+	}
+
+    var embedUrl = decodeURIComponent(GetQueryString("embedUrl"));
+    var accessToken = GetQueryString("accessToken");
+    var reportId = GetQueryString("reportId");
+
+    var models = window['powerbi-client'].models;
+    
+    var permissions = models.Permissions.All;
+    // Embed configuration used to describe the what and how to embed.
+    // This object is used when calling powerbi.embed.
+    // You can find more information at https://github.com/Microsoft/PowerBI-JavaScript/wiki/Embed-Configuration-Details.
+    var config = {
+        type: 'report',
+        tokenType: models.TokenType.Aad,
+        accessToken: accessToken,
+        embedUrl: embedUrl,
+        id: reportId,
+        permissions: permissions,
+        settings: {
+            filterPaneEnabled: false,
+            navContentPaneEnabled: false,
+            // layoutType: models.LayoutType.MobilePortrait
+        }
+    };
+ 
+    // Grab the reference to the div HTML element that will host the report.
+    var reportContainer = document.getElementById('reportContainer');
+ 
+    // Embed the report and display it within the div container.
+    var report = powerbi.embed(reportContainer, config);
+    // report.on('loaded', function() {
+    //           console.log('loaded');
+    //         });
+    </script>
+</body>
+</html>
