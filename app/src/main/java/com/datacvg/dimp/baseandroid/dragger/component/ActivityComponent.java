@@ -26,6 +26,7 @@ import com.datacvg.dimp.activity.ScanActivity;
 import com.datacvg.dimp.activity.ScreenDetailActivity;
 import com.datacvg.dimp.activity.ScreenResultActivity;
 import com.datacvg.dimp.activity.ScreenSettingActivity;
+import com.datacvg.dimp.activity.SearchIndexActivity;
 import com.datacvg.dimp.activity.SelectDimensionActivity;
 import com.datacvg.dimp.activity.SelectTableParamActivity;
 import com.datacvg.dimp.activity.SettingActivity;
@@ -114,4 +115,6 @@ public interface ActivityComponent {
     void inject(ChartDetailActivity chartDetailActivity);
 
     void inject(SelectDimensionActivity selectDimensionActivity);
+
+    void inject(SearchIndexActivity searchIndexActivity);
 }

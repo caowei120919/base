@@ -1,6 +1,9 @@
 package com.datacvg.dimp.activity;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -12,15 +15,20 @@ import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.DataSourceOfAllAdapter;
 import com.datacvg.dimp.adapter.DataSourceOfMineAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
+import com.datacvg.dimp.baseandroid.utils.DisplayUtils;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.bean.TableParamInfoBean;
+import com.datacvg.dimp.event.DimensionParamsSelectEvent;
 import com.datacvg.dimp.presenter.SelectDimensionPresenter;
 import com.datacvg.dimp.view.SelectDimensionView;
+import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
+import butterknife.OnEditorAction;
+import butterknife.OnTextChanged;
 
 /**
  * @Author : T-Bag (茶包)
@@ -47,6 +55,10 @@ public class SelectDimensionActivity extends BaseActivity<SelectDimensionView, S
     private List<TableParamInfoBean.DataSourceBean> dataSourceBeansOfAll = new ArrayList<>();
     private DataSourceOfMineAdapter mineAdapter ;
     private DataSourceOfAllAdapter allAdapter ;
+    /**
+     *是否为单选
+     */
+    private Boolean isSingleChoice = false ;
 
     @Override
     protected int getLayoutId() {
@@ -88,8 +100,49 @@ public class SelectDimensionActivity extends BaseActivity<SelectDimensionView, S
             finish();
             return;
         }
+        isSingleChoice = tableParamInfoBean.getSelectType().equals("0")
+                && tableParamInfoBean.getSelectionType().equals("0");
+        cbSelectAll.setEnabled(!isSingleChoice);
+        cbSelectAll.setVisibility(isSingleChoice ? View.GONE : View.VISIBLE);
         tvTitle.setText(tableParamInfoBean.getControlName());
         dataSourceBeansOfAll.addAll(tableParamInfoBean.getDataSource());
+        allAdapter.notifyDataSetChanged();
+    }
+
+    @OnTextChanged(value = R.id.ed_search,callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void onTextChange(Editable editable){
+        if(editable.toString().isEmpty()){
+            dataSourceBeansOfAll.addAll(tableParamInfoBean.getDataSource());
+            dataSourceBeansOfAll.removeAll(dataSourceBeansOfMine);
+            allAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @OnEditorAction(R.id.ed_search)
+    public  boolean onEditorAction(KeyEvent key) {
+        DisplayUtils.hideSoftInput(mContext);
+        searchForKeyWord(edSearch.getText().toString());
+        return true;
+    }
+
+    /**
+     * 根据关键字查找
+     * @param keyword
+     */
+    private void searchForKeyWord(String keyword) {
+        List<TableParamInfoBean.DataSourceBean> dataSourceBeans = new ArrayList<>();
+        dataSourceBeans.addAll(dataSourceBeansOfAll);
+        dataSourceBeansOfAll.clear();
+        if(!TextUtils.isEmpty(keyword)){
+            for (TableParamInfoBean.DataSourceBean bean : dataSourceBeans){
+                if(bean.getD_res_clname().contains(keyword)){
+                    dataSourceBeansOfAll.add(bean);
+                }
+            }
+        }else{
+            dataSourceBeansOfAll.addAll(tableParamInfoBean.getDataSource());
+            dataSourceBeansOfAll.removeAll(dataSourceBeansOfMine);
+        }
         allAdapter.notifyDataSetChanged();
     }
 
@@ -97,7 +150,8 @@ public class SelectDimensionActivity extends BaseActivity<SelectDimensionView, S
     public void onClick(View view){
         switch (view.getId()){
             case R.id.img_left :
-                    finish();
+                EventBus.getDefault().post(new DimensionParamsSelectEvent(dataSourceBeansOfMine));
+                finish();
                 break;
 
             case R.id.edit_delete :
@@ -128,10 +182,19 @@ public class SelectDimensionActivity extends BaseActivity<SelectDimensionView, S
 
     @Override
     public void onAllClick(TableParamInfoBean.DataSourceBean dataSourceBean) {
-        dataSourceBeansOfAll.remove(dataSourceBean);
-        allAdapter.notifyDataSetChanged();
-        dataSourceBeansOfMine.add(dataSourceBean);
-        mineAdapter.notifyDataSetChanged();
+        if(isSingleChoice){
+            dataSourceBeansOfAll.remove(dataSourceBean);
+            dataSourceBeansOfAll.addAll(dataSourceBeansOfMine);
+            allAdapter.notifyDataSetChanged();
+            dataSourceBeansOfMine.clear();
+            dataSourceBeansOfMine.add(dataSourceBean);
+            mineAdapter.notifyDataSetChanged();
+        }else{
+            dataSourceBeansOfAll.remove(dataSourceBean);
+            allAdapter.notifyDataSetChanged();
+            dataSourceBeansOfMine.add(dataSourceBean);
+            mineAdapter.notifyDataSetChanged();
+        }
         if(dataSourceBeansOfAll.isEmpty()){
             cbSelectAll.setChecked(true);
             cbSelectAll.setEnabled(false);
@@ -145,8 +208,10 @@ public class SelectDimensionActivity extends BaseActivity<SelectDimensionView, S
     public void onMineClick(TableParamInfoBean.DataSourceBean dataSourceBean) {
         dataSourceBeansOfMine.remove(dataSourceBean);
         mineAdapter.notifyDataSetChanged();
-        dataSourceBeansOfAll.add(dataSourceBean);
-        allAdapter.notifyDataSetChanged();
+        if(edSearch.getText().toString().isEmpty()){
+            dataSourceBeansOfAll.add(dataSourceBean);
+            allAdapter.notifyDataSetChanged();
+        }
         if(dataSourceBeansOfAll.isEmpty()){
             cbSelectAll.setChecked(true);
             cbSelectAll.setEnabled(false);

@@ -21,6 +21,10 @@ public class BoardPagerAdapter extends FragmentStatePagerAdapter implements View
 
     private OnExtraPageChangeListener onExtraPageChangeListener;
 
+    public int getCurrentPageIndex(){
+        return currentPageIndex ;
+    }
+
     public BoardPagerAdapter(FragmentManager fragmentManager, ViewPager viewPager
             , List<Fragment> fragments) {
         super(fragmentManager);

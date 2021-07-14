@@ -224,4 +224,7 @@
     <string name="my_choice">My choice</string>
     <string name="clear">clear</string>
     <string name="all_the_reference">All the reference</string>
+    <string name="temporarily_no_data">Temporarily no data</string>
+    <string name="no_optional_parameter">No optional parameter</string>
+    <string name="the_search_results">The search results</string>
 </resources>

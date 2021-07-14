@@ -194,6 +194,10 @@
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait"
             android:name=".activity.SelectDimensionActivity" />
+        <activity
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait"
+            android:name=".activity.SearchIndexActivity" />
     </application>
 
 </manifest>

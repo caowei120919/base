@@ -14,6 +14,7 @@ import java.util.List;
 public class EChartListBean implements Serializable {
     private String pageNo ;
     private String pageName ;
+    private List<IndexChartBean> indexChart;
 
     public String getPageName() {
         return pageName;
@@ -38,6 +39,4 @@ public class EChartListBean implements Serializable {
     public void setIndexChart(List<IndexChartBean> indexChart) {
         this.indexChart = indexChart;
     }
-
-    private List<IndexChartBean> indexChart;
 }

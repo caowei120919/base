@@ -28,11 +28,14 @@ import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.TableBean;
 import com.datacvg.dimp.bean.TableParamInfoBean;
 import com.datacvg.dimp.bean.TableParamInfoListBean;
+import com.datacvg.dimp.event.DimensionParamsSelectEvent;
 import com.datacvg.dimp.event.RefreshTableEvent;
 import com.datacvg.dimp.presenter.SelectTableParamPresenter;
 import com.datacvg.dimp.view.SelectTableParamView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -63,6 +66,7 @@ public class SelectTableParamActivity extends BaseActivity<SelectTableParamView,
 
     private TimePickerView pvCustomTime ;
     private TableBean tableBean ;
+    private View selectView ;
 
     @Override
     protected int getLayoutId() {
@@ -80,6 +84,7 @@ public class SelectTableParamActivity extends BaseActivity<SelectTableParamView,
                 .getColor(R.color.c_FFFFFF));
         tvTitle.setText(resources.getString(R.string.report_parameters));
         tvRight.setText(resources.getString(R.string.confirm));
+        initCustomPickView();
     }
 
     @Override
@@ -103,7 +108,7 @@ public class SelectTableParamActivity extends BaseActivity<SelectTableParamView,
     public void OnClick(View view){
         switch (view.getId()){
             case R.id.img_left :
-                    finish();
+                 finish();
                 break;
 
             case R.id.tv_right :
@@ -199,9 +204,14 @@ public class SelectTableParamActivity extends BaseActivity<SelectTableParamView,
         }
         view.setOnClickListener(view1 -> {
             PLog.e("维度参数");
-            Intent intent = new Intent(mContext,SelectDimensionActivity.class);
-            intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,tableParamInfoBean);
-            mContext.startActivity(intent);
+            selectView = tvParamValue ;
+            if (tableParamInfoBean.getDataSource().isEmpty()){
+                ToastUtils.showLongToast(resources.getString(R.string.no_optional_parameter));
+            }else{
+                Intent intent = new Intent(mContext,SelectDimensionActivity.class);
+                intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,tableParamInfoBean);
+                mContext.startActivity(intent);
+            }
         });
     }
 
@@ -273,6 +283,7 @@ public class SelectTableParamActivity extends BaseActivity<SelectTableParamView,
 
                     view.setOnClickListener(view1 -> {
                         PLog.e("选择参数");
+                        pvCustomTime.show();
                     });
                     break;
 
@@ -357,5 +368,62 @@ public class SelectTableParamActivity extends BaseActivity<SelectTableParamView,
         }else{
             ToastUtils.showLongToast(resources.getString(R.string.time_parameter_query_error));
         }
+    }
+
+    private void initCustomPickView() {
+        Calendar selectedDate = Calendar.getInstance();
+        Calendar startDate = Calendar.getInstance();
+        Calendar endDate = Calendar.getInstance();
+        endDate.set(2100,1,1);
+        startDate.set(selectedDate.get(Calendar.YEAR), selectedDate.get(Calendar.MONTH)
+                , selectedDate.get(Calendar.DATE));
+        pvCustomTime = new TimePickerBuilder(mContext, new OnTimeSelectListener() {
+            @Override
+            public void onTimeSelect(Date date, View v) {
+            }
+        })
+                .setType(new boolean[]{true, true, true, false, false, false})
+                .setLayoutRes(R.layout.pickerview_custom_time, new CustomListener() {
+                    @Override
+                    public void customLayout(View v) {
+                        final TextView tvSubmit = v.findViewById(R.id.tv_finish);
+                        TextView tvDataTitle = v.findViewById(R.id.tv_dataTitle);
+                        tvDataTitle.setVisibility(View.VISIBLE);
+                        TextView ivCancel = v.findViewById(R.id.iv_cancel);
+                        tvSubmit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                pvCustomTime.returnData();
+                                pvCustomTime.dismiss();
+                            }
+                        });
+                        ivCancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                pvCustomTime.dismiss();
+                            }
+                        });
+                    }
+                })
+                .setContentTextSize(18)
+                .setTitleSize(20)
+                .setTitleText("")
+                .setOutSideCancelable(false)
+                .isCyclic(true)
+                .setDate(selectedDate)
+                .setRangDate(startDate,endDate)
+                .isCenterLabel(false)
+                .isDialog(false)
+                .build();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(DimensionParamsSelectEvent event){
+        String params = "" ;
+        for (TableParamInfoBean.DataSourceBean bean : event.getDataSourceBeans()){
+            params = TextUtils.isEmpty(params) ? params + bean.getD_res_clname() : params
+                    + "," + bean.getD_res_clname();
+        }
+        ((TextView)selectView).setText(params);
     }
 }

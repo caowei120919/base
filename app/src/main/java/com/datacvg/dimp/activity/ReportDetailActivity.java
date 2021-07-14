@@ -194,7 +194,6 @@ public class ReportDetailActivity extends BaseActivity<ReportDetailView, ReportD
                         ToastUtils.showLongToast(resources
                                 .getString(R.string.the_current_report_has_no_optional_parameters));
                     }else{
-//                        dealWithParams();
                         initSelectParamsView();
                     }
                 break;
@@ -354,24 +353,22 @@ public class ReportDetailActivity extends BaseActivity<ReportDetailView, ReportD
     private void loadWebUrl() {
         String url = "" ;
         if(paramsResultBean == null){
-             url = "file:///android_asset/mobile.html?lang=" + LanguageUtils.getLanguage(mContext)
-                    + "#/" + serviceUrl + "/"  + reportId + "/" +Constants.token + "?themeName=dap";
+             url = Constants.BASE_URL + "/dataexporler/mobile.html#/" + serviceUrl + "/"  + reportId + "/" +Constants.token + "?lang=" + LanguageUtils.getLanguage(mContext) + "&themeName=dap";
             webView.loadUrl(url);
             PLog.e(url);
             return;
         }
         switch (paramsResultBean.getTimeShow()){
             case TIME_OF_POINT :
-                url = "file:///android_asset/mobile.html?lang=" + LanguageUtils.getLanguage(mContext)
-                        + "#/" + serviceUrl + "/"  + reportId + "/" +Constants.token + "?reportTime = "
-                        + reportTime +  "?themeName=dap";
+                url = Constants.BASE_URL +  "/dataexporler/mobile.html#/" + serviceUrl + "/"  + reportId  +"?lang=" + LanguageUtils.getLanguage(mContext)
+                        +Constants.token + "?reportTime = "
+                        + reportTime +  "&themeName=dap";
                 break;
 
             case TIME_OF_PERIOD :
-                url = "file:///android_asset/mobile.html?lang=" + LanguageUtils.getLanguage(mContext)
-                        + "#/" + serviceUrl + "/"  + reportId + "/" +Constants.token + "?beginTime="
+                url = Constants.BASE_URL +  "/dataexporler/mobile.html#/" + serviceUrl + "/"  + reportId + "/" +Constants.token + "?lang=" + LanguageUtils.getLanguage(mContext) + "?beginTime="
                         + beginTime + "&endTime="
-                        + endTime +  "?themeName=dap";
+                        + endTime +  "&themeName=dap";
                 break;
         }
         webView.loadUrl(url);

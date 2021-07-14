@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/c_FFFFFF"
+    android:layout_height="@dimen/H108">
+
+    <TextView
+        android:id="@+id/tv_indexType"
+        android:layout_width="@dimen/W100"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/W10"
+        android:textColor="@color/c_FFFFFF"
+        android:layout_marginRight="@dimen/W10"
+        android:paddingRight="@dimen/W10"
+        android:gravity="center"
+        android:layout_marginLeft="@dimen/W25"
+        android:paddingTop="@dimen/W5"
+        android:paddingBottom="@dimen/W5"
+        android:layout_centerVertical="true">
+    </TextView>
+
+    <CheckBox
+        android:id="@+id/cb_select"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:button="@null"
+        android:background="@null"
+        android:layout_alignParentRight="true"
+        android:drawableLeft="@drawable/selector_select"
+        android:paddingRight="@dimen/W30"
+        android:paddingLeft="@dimen/W30">
+    </CheckBox>
+
+    <TextView
+        android:id="@+id/tv_indexName"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@id/cb_select"
+        android:layout_toRightOf="@id/tv_indexType"
+        android:gravity="center_vertical"
+        android:textColor="@color/c_303030"
+        android:textSize="14sp"
+        android:layout_marginLeft="@dimen/W25">
+    </TextView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H2"
+        android:background="@color/c_f8f8fa"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@id/tv_indexType">
+    </TextView>
+</RelativeLayout>

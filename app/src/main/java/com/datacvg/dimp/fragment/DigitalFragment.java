@@ -8,7 +8,11 @@ import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
+import com.datacvg.dimp.baseandroid.utils.ShareUtils;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
+import com.datacvg.dimp.event.AddIndexEvent;
+import com.datacvg.dimp.event.EditEvent;
+import com.datacvg.dimp.event.ToAddIndexEvent;
 import com.datacvg.dimp.presenter.DigitalPresenter;
 import com.datacvg.dimp.view.DigitalView;
 import com.datacvg.dimp.widget.TitleNavigator;
@@ -16,6 +20,9 @@ import com.enlogy.statusview.StatusRelativeLayout;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import net.lucode.hackware.magicindicator.FragmentContainerHelper;
 import net.lucode.hackware.magicindicator.MagicIndicator;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Arrays;
 import java.util.List;
 import butterknife.BindView;
@@ -87,6 +94,12 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
         switch (view.getId()){
             case R.id.tv_manage :
                 PLog.e("管理");
+                EventBus.getDefault().post(new EditEvent());
+                statusTitle.showExtendContent();
+                statusTitle.setOnItemClickListener(R.id.img_addIndex,view1 -> {
+                    PLog.e("添加选择指标");
+                    EventBus.getDefault().post(new ToAddIndexEvent());
+                });
                 break;
 
             case R.id.img_share :

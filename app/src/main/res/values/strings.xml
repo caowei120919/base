@@ -217,4 +217,7 @@
     <string name="my_choice">我的选择</string>
     <string name="clear">清除</string>
     <string name="all_the_reference">全部参考</string>
+    <string name="temporarily_no_data">暂无数据</string>
+    <string name="no_optional_parameter">无可选参数</string>
+    <string name="the_search_results">搜索结果</string>
 </resources>

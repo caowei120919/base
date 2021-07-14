@@ -1,14 +1,11 @@
 package com.datacvg.dimp.activity;
-
+import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,29 +14,26 @@ import com.datacvg.dimp.adapter.IndexOfBottomAdapter;
 import com.datacvg.dimp.adapter.IndexOfMineAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
-import com.datacvg.dimp.baseandroid.utils.ToastUtils;
-import com.datacvg.dimp.bean.ChangeChartRequestBean;
 import com.datacvg.dimp.bean.DimensionPositionBean;
 import com.datacvg.dimp.bean.EChartListBean;
 import com.datacvg.dimp.bean.IndexChartBean;
 import com.datacvg.dimp.bean.IndexDetailListBean;
+import com.datacvg.dimp.bean.SearchIndexBean;
 import com.datacvg.dimp.event.AddIndexEvent;
 import com.datacvg.dimp.event.AddOrRemoveIndexEvent;
 import com.datacvg.dimp.event.ChangeIndexEvent;
+import com.datacvg.dimp.event.SearchIndexBeanSuccessEvent;
 import com.datacvg.dimp.presenter.AddIndexPresenter;
 import com.datacvg.dimp.view.AddIndexView;
 import com.datacvg.dimp.widget.IndexTitleNavigator;
-import com.google.gson.Gson;
 import net.lucode.hackware.magicindicator.FragmentContainerHelper;
 import net.lucode.hackware.magicindicator.MagicIndicator;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -156,7 +150,11 @@ public class AddIndexActivity extends BaseActivity<AddIndexView, AddIndexPresent
                 finish();
                 break;
             case R.id.img_right :
-
+                SearchIndexBean bean = new SearchIndexBean();
+                bean.setIndexChartBeans(allIndexBeans);
+                Intent intent = new Intent(mContext,SearchIndexActivity.class);
+                intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,bean);
+                mContext.startActivity(intent);
                 break;
 
             case R.id.tv_recommend :
@@ -247,17 +245,23 @@ public class AddIndexActivity extends BaseActivity<AddIndexView, AddIndexPresent
                 }
             }
 
-//            for (IndexChartBean chartBean : showMineIndexBeans){
-//                if(chartBean.getIndex_pkid().equals(event.getBean().getIndex_pkid())){
-//                    showMineIndexBeans.remove(chartBean);
-//                }
-//            }
-
             for (IndexDetailListBean indexDetailListBean : showIndexTitles){
                 for (IndexChartBean chartBean : indexDetailListBean.getDetail()){
                     if(chartBean.getIndex_pkid().equals(event.getBean().getIndex_pkid())){
                         chartBean.setSelected(false);
                     }
+                }
+            }
+
+            for (IndexChartBean indexChartBean : allIndexBeans){
+                if(indexChartBean.getIndex_pkid().equals(event.getBean().getIndex_pkid())){
+                    indexChartBean.setSelected(false);
+                }
+            }
+
+            for (IndexChartBean indexChartBean : recommendIndexBeans){
+                if(indexChartBean.getIndex_pkid().equals(event.getBean().getIndex_pkid())){
+                    indexChartBean.setSelected(false);
                 }
             }
         }else{
@@ -268,9 +272,33 @@ public class AddIndexActivity extends BaseActivity<AddIndexView, AddIndexPresent
                     }
                 }
             }
+
+            for (IndexChartBean indexChartBean : allIndexBeans){
+                if(indexChartBean.getIndex_pkid().equals(event.getBean().getIndex_pkid())){
+                    indexChartBean.setSelected(true);
+                }
+            }
+
+            for (IndexChartBean indexChartBean : recommendIndexBeans){
+                if(indexChartBean.getIndex_pkid().equals(event.getBean().getIndex_pkid())){
+                    indexChartBean.setSelected(true);
+                }
+            }
             showMineIndexBeans.add(event.getBean());
         }
         adapter.notifyDataSetChanged();
         indexOfBottomAdapter.notifyDataSetChanged();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SearchIndexBeanSuccessEvent event){
+        allIndexBeans.clear();
+        allIndexBeans.addAll(event.getSearchIndexBean().getIndexChartBeans());
+        for (IndexChartBean chartBean : allIndexBeans){
+            if (chartBean.getSelected()){
+                showMineIndexBeans.add(chartBean);
+            }
+        }
+        adapter.notifyDataSetChanged();
     }
 }

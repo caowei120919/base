@@ -1,13 +1,16 @@
 package com.datacvg.dimp.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.activity.AddIndexActivity;
 import com.datacvg.dimp.adapter.DimensionIndexAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
@@ -16,12 +19,18 @@ import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.bean.ChatTypeRequestBean;
 import com.datacvg.dimp.bean.DimensionBean;
 import com.datacvg.dimp.bean.DimensionPositionBean;
+import com.datacvg.dimp.bean.EChartListBean;
 import com.datacvg.dimp.bean.IndexChartBean;
 import com.datacvg.dimp.bean.PageItemBean;
+import com.datacvg.dimp.event.CheckIndexEvent;
+import com.datacvg.dimp.event.EditEvent;
+import com.datacvg.dimp.event.ToAddIndexEvent;
 import com.datacvg.dimp.presenter.BoardPagerPresenter;
 import com.datacvg.dimp.view.BoardPagerView;
 import com.enlogy.statusview.StatusRelativeLayout;
 import com.google.gson.Gson;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * @Author : T-Bag (茶包)
@@ -48,6 +58,8 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
     StatusRelativeLayout statusBoard ;
     @BindView(R.id.recycle_index)
     RecyclerView recycleIndex ;
+    @BindView(R.id.rel_addOrDelete)
+    RelativeLayout relAddOrDelete ;
 
     private final static String ORG_TAG = "ORG" ;
     private final static String AREA_TAG = "AREA" ;
@@ -232,6 +244,19 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
         setPageItemBeanDimension(selectOtherDimension,tag);
     }
 
+    @OnClick({R.id.lin_deletePage,R.id.lin_addPage})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.lin_deletePage :
+                PLog.e("删除页");
+                break;
+
+            case R.id.lin_addPage :
+                PLog.e("新增页");
+                break;
+        }
+    }
+
     /**
      * 设置pageItemBean相关维度信息
      * @param dimensions
@@ -286,5 +311,36 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
                 setPageItemBeanDimension(bean.getNodes(),tag);
             }
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EditEvent event){
+        relAddOrDelete.setVisibility(View.VISIBLE);
+        statusBoard.showExtendContent();
+        ((EditText)statusBoard.findViewById(R.id.edit_pageName)).setText(pageItemBean.getPad_name());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(CheckIndexEvent event){
+        if(event.getPageItemBean() != pageItemBean){
+            return;
+        }
+        EChartListBean eChartListBean = new EChartListBean();
+        List<IndexChartBean> indexChartBeans = new ArrayList<>();
+        for (DimensionPositionBean.IndexPositionBean indexPositionBean :indexPositionBeans){
+            if(indexPositionBean.getChartBean() != null){
+                indexPositionBean.getChartBean()
+                        .setAnalysis_dimension(indexPositionBean.getAnalysis_dimension());
+                indexPositionBean.getChartBean().setPage_chart_type(indexPositionBean.getPage_chart_type());
+                indexPositionBean.getChartBean().setChart_type(indexPositionBean.getChart_type());
+                indexChartBeans.add(indexPositionBean.getChartBean()) ;
+            }
+        }
+        eChartListBean.setPageNo(pageItemBean.getPage());
+        eChartListBean.setPageName(pageItemBean.getPad_name());
+        eChartListBean.setIndexChart(indexChartBeans);
+        Intent intent = new Intent(mContext, AddIndexActivity.class);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,eChartListBean);
+        mContext.startActivity(intent);
     }
 }

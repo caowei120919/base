@@ -28,6 +28,7 @@ import com.datacvg.dimp.bean.ModuleBean;
 import com.datacvg.dimp.bean.ModuleListBean;
 import com.datacvg.dimp.event.ChangeUnReadMessageEvent;
 import com.datacvg.dimp.event.DeletePageEvent;
+import com.datacvg.dimp.event.EditEvent;
 import com.datacvg.dimp.event.HideNavigationEvent;
 import com.datacvg.dimp.event.LoginOutEvent;
 import com.datacvg.dimp.event.RebuildTableEvent;
@@ -377,5 +378,10 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(HideNavigationEvent event){
         tabModule.setVisibility(event.getHide() ? View.VISIBLE : View.GONE);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EditEvent event){
+        tabModule.setVisibility(View.GONE);
     }
 }
