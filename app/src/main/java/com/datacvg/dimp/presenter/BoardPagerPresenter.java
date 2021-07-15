@@ -5,9 +5,11 @@ import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
+import com.datacvg.dimp.bean.DeletePageBean;
 import com.datacvg.dimp.bean.DimensionListBean;
 import com.datacvg.dimp.bean.DimensionPositionBean;
 import com.datacvg.dimp.bean.EChartListBean;
+import com.datacvg.dimp.bean.SavePageBean;
 import com.datacvg.dimp.view.BoardPagerView;
 import com.google.gson.Gson;
 
@@ -126,15 +128,43 @@ public class BoardPagerPresenter extends BasePresenter<BoardPagerView>{
      */
     public void changeChart(Map params) {
         api.changeChart(params).compose(RxUtils.applySchedulersLifeCycle(getView()))
-                .subscribe(new RxObserver<BaseBean>(){
+                .subscribe(new RxObserver<BaseBean<SavePageBean>>(){
                     @Override
                     public void onComplete() {
                         super.onComplete();
                     }
 
                     @Override
-                    public void onNext(BaseBean bean) {
+                    public void onNext(BaseBean<SavePageBean> bean) {
+                        if(checkJsonCode(bean)){
+                            getView().savePageSuccess();
+                        }
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+                });
+    }
+
+    /**
+     * 根据页码删除页
+     * @param page
+     */
+    public void deletePage(String page) {
+        api.deletePageRequest(page).compose(RxUtils.applySchedulersLifeCycle(getView()))
+                .subscribe(new RxObserver<BaseBean<DeletePageBean>>(){
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                    }
+
+                    @Override
+                    public void onNext(BaseBean<DeletePageBean> bean) {
+                        if(checkJsonCode(bean) && bean.getData().getDeletePage()){
+                            getView().deletePageSuccess();
+                        }
                     }
 
                     @Override

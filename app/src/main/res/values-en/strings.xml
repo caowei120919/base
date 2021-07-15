@@ -227,4 +227,8 @@
     <string name="temporarily_no_data">Temporarily no data</string>
     <string name="no_optional_parameter">No optional parameter</string>
     <string name="the_search_results">The search results</string>
+    <string name="confirm_the_deletion">Confirm the deletion</string>
+    <string name="cannot_duplicate_kanban_names">Cannot duplicate Kanban names</string>
+    <string name="kanban_name_cannot_be_set_to_blank">Kanban name cannot be set to blank</string>
+    <string name="save_success">Save success</string>
 </resources>

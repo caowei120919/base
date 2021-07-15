@@ -37,4 +37,14 @@ public interface BoardPagerView extends MvpView {
      * @param tag
      */
     void getOtherDimensionSuccess(List<DimensionBean> selectOtherDimension, String tag);
+
+    /**
+     * 删除页成功
+     */
+    void deletePageSuccess();
+
+    /**
+     * 保存页面信息成功
+     */
+    void savePageSuccess();
 }

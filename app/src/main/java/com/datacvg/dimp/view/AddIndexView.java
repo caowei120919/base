@@ -22,9 +22,4 @@ public interface AddIndexView extends MvpView {
      * @param addAbleIndexInfo
      */
     void getAllIndexSuccess(List<IndexDetailListBean> addAbleIndexInfo);
-
-    /**
-     * 保存成功
-     */
-    void saveSuccess();
 }

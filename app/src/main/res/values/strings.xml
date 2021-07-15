@@ -220,4 +220,8 @@
     <string name="temporarily_no_data">暂无数据</string>
     <string name="no_optional_parameter">无可选参数</string>
     <string name="the_search_results">搜索结果</string>
+    <string name="confirm_the_deletion">确认删除</string>
+    <string name="cannot_duplicate_kanban_names">不可重复命名看板名称</string>
+    <string name="kanban_name_cannot_be_set_to_blank">看板名称不能设置为空</string>
+    <string name="save_success">保存成功</string>
 </resources>

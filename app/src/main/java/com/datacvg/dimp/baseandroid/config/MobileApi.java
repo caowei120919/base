@@ -23,6 +23,7 @@ import com.datacvg.dimp.bean.ReadMessageBean;
 import com.datacvg.dimp.bean.RecommendIndexBean;
 import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.bean.ReportParamsBean;
+import com.datacvg.dimp.bean.SavePageBean;
 import com.datacvg.dimp.bean.ScreenDetailBean;
 import com.datacvg.dimp.bean.ScreenListBean;
 import com.datacvg.dimp.bean.SetDefaultResBean;
@@ -342,7 +343,7 @@ public interface MobileApi {
      * @return
      */
     @POST("api/ddb/indexpad/position/change")
-    Observable<BaseBean> changeChart(@Body Map params);
+    Observable<BaseBean<SavePageBean>> changeChart(@Body Map params);
 
     /**
      * 根据时间维度获取指标信息

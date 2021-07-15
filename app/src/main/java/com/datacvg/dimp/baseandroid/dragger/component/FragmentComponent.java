@@ -9,6 +9,7 @@ import com.datacvg.dimp.fragment.BoardFragment;
 import com.datacvg.dimp.fragment.BoardPagerFragment;
 import com.datacvg.dimp.fragment.BudgetFragment;
 import com.datacvg.dimp.fragment.DigitalFragment;
+import com.datacvg.dimp.fragment.EmptyBoardFragment;
 import com.datacvg.dimp.fragment.PersonalFragment;
 import com.datacvg.dimp.fragment.ReportFragment;
 import com.datacvg.dimp.fragment.ScreenFragment;
@@ -38,4 +39,6 @@ public interface FragmentComponent {
     void inject(BoardFragment boardFragment);
 
     void inject(BudgetFragment budgetFragment);
+
+    void inject(EmptyBoardFragment emptyBoardFragment);
 }

@@ -7,8 +7,12 @@ import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.BoardPagerAdapter;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.PageItemBean;
+import com.datacvg.dimp.event.AddPageEvent;
 import com.datacvg.dimp.event.CheckIndexEvent;
+import com.datacvg.dimp.event.DeletePageEvent;
 import com.datacvg.dimp.event.EditEvent;
+import com.datacvg.dimp.event.EmptyFragmentEvent;
+import com.datacvg.dimp.event.SavePageEvent;
 import com.datacvg.dimp.event.ToAddIndexEvent;
 import com.datacvg.dimp.presenter.BoardPresenter;
 import com.datacvg.dimp.view.BoardView;
@@ -36,6 +40,7 @@ public class BoardFragment extends BaseFragment<BoardView, BoardPresenter> imple
     @BindView(R.id.vp_board)
     ControlScrollViewPager vpBoard ;
 
+    private Boolean isAddEvent = false ;
     private List<PageItemBean> pageItemBeans = new ArrayList<>() ;
     private List<Fragment> pageFragments = new ArrayList<>() ;
     private CircleNavigator circleNavigator;
@@ -81,6 +86,7 @@ public class BoardFragment extends BaseFragment<BoardView, BoardPresenter> imple
         this.pageItemBeans.clear();
         pageFragments.clear();
         if(pageItemBeans.isEmpty()){
+            pageFragments.add(EmptyBoardFragment.newInstance());
             boardPagerAdapter.notifyDataSetChanged();
         }else{
             this.pageItemBeans.addAll(pageItemBeans);
@@ -108,6 +114,11 @@ public class BoardFragment extends BaseFragment<BoardView, BoardPresenter> imple
             circleNavigator.setCircleCount(pageFragments.size());
             magicIndicator.getNavigator().notifyDataSetChanged();
             vpBoard.setCurrentItem(0);
+        }
+
+        if(isAddEvent){
+            vpBoard.setCurrentItem(pageFragments.size() - 1);
+            EventBus.getDefault().post(new EditEvent());
         }
     }
 
@@ -137,12 +148,65 @@ public class BoardFragment extends BaseFragment<BoardView, BoardPresenter> imple
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(CheckPageNameEvent event){
+        String padName = event.getPadName() ;
+        for (int i = 0 ; i < pageItemBeans.size() ;i++){
+            if(i == boardPagerAdapter.getCurrentPageIndex()){
+                break;
+            }
+
+            if (padName.equals(pageItemBeans.get(i).getPad_name())){
+                ToastUtils.showLongToast(resources.getString(R.string.cannot_duplicate_kanban_names));
+                return;
+            }
+        }
+
+        EventBus.getDefault().post(new SavePageEvent());
+    }
+
+    /**
+     * 去添加指标
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ToAddIndexEvent event){
-        if(pageFragments.isEmpty()){
+        if(pageFragments.isEmpty() || pageItemBeans.isEmpty()){
             ToastUtils.showLongToast(resources.getString(R.string.temporarily_no_data));
         }else{
             EventBus.getDefault()
                     .post(new CheckIndexEvent(pageItemBeans.get(boardPagerAdapter.getCurrentPageIndex())));
         }
+    }
+
+    /**
+     * 删除看板页
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(DeletePageEvent event){
+        int position = boardPagerAdapter.getCurrentPageIndex() ;
+        pageFragments.remove(boardPagerAdapter.getCurrentPageIndex());
+        pageItemBeans.remove(boardPagerAdapter.getCurrentPageIndex());
+        if(pageFragments.isEmpty()){
+            pageFragments.add(EmptyBoardFragment.newInstance());
+            EventBus.getDefault().post(new EditEvent());
+            boardPagerAdapter.notifyDataSetChanged();
+            return;
+        }else if(position >= pageFragments.size()){
+            position = position - 1 ;
+        }
+        EventBus.getDefault().post(new EditEvent());
+        boardPagerAdapter.notifyDataSetChanged();
+        vpBoard.setCurrentItem(position);
+    }
+
+    /**
+     * 添加看板页
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(AddPageEvent event){
+        isAddEvent = true ;
+        getPresenter().getBoardPage();
     }
 }
