@@ -64,6 +64,7 @@ public class Constants {
     public static String BASE_FIS_URL = "" ;
     public static String BASE_UPLOAD_URL = "" ;
     public static String BASE_DDB_URL = "" ;
+    public static String ACTION_HEAD_IMG = "api/mobile" ;
     public static String HEAD_IMG_URL = "api/mobile/login/readheadimg?userPkid=" ;
     public static String IMG_URL = "api/file/data/download?fileName=%s&fileType=resimg" ;
     public static String IMG_URL_NONE = "api/file/data/download?" ;

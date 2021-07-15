@@ -52,7 +52,7 @@ public class ActionPlanAdapter extends RecyclerView.Adapter<ActionPlanAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ActionPlanBean bean = actionPlanBeans.get(position);
-        GlideUrl imgUrl = new GlideUrl(Constants.BASE_MOBILE_URL + bean.getImgurl()
+        GlideUrl imgUrl = new GlideUrl(Constants.BASE_MOBILE_URL + Constants.ACTION_HEAD_IMG + bean.getImgurl()
                 , new LazyHeaders.Builder().addHeader(Constants.AUTHORIZATION,Constants.token).build());
         Glide.with(mContext).load(imgUrl).into(holder.circleHead);
         holder.tvName.setText(bean.getCreate_user_name());
