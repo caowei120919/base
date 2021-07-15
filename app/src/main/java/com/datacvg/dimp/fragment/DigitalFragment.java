@@ -11,7 +11,9 @@ import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.baseandroid.utils.ShareUtils;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.event.AddIndexEvent;
+import com.datacvg.dimp.event.CompleteEvent;
 import com.datacvg.dimp.event.EditEvent;
+import com.datacvg.dimp.event.PageCompleteEvent;
 import com.datacvg.dimp.event.ToAddIndexEvent;
 import com.datacvg.dimp.presenter.DigitalPresenter;
 import com.datacvg.dimp.view.DigitalView;
@@ -22,6 +24,8 @@ import net.lucode.hackware.magicindicator.FragmentContainerHelper;
 import net.lucode.hackware.magicindicator.MagicIndicator;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Arrays;
 import java.util.List;
@@ -64,9 +68,7 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
                 ,mContext.getResources().getColor(R.color.c_FFFFFF));
         statusTitle.setOnItemClickListener(R.id.tv_complete,view -> {
             PLog.e("完成");
-        });
-        statusTitle.setOnItemClickListener(R.id.img_addIndex,view -> {
-            PLog.e("添加指标");
+            EventBus.getDefault().post(new CompleteEvent());
         });
         initTitleMagicTitle();
     }
@@ -167,5 +169,10 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
         if(null != budgetFragment){
             fragmentTransaction.hide(budgetFragment);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(PageCompleteEvent event){
+        statusTitle.showContent();
     }
 }

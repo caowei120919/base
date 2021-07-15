@@ -12,6 +12,7 @@ import com.datacvg.dimp.event.CheckIndexEvent;
 import com.datacvg.dimp.event.DeletePageEvent;
 import com.datacvg.dimp.event.EditEvent;
 import com.datacvg.dimp.event.EmptyFragmentEvent;
+import com.datacvg.dimp.event.PageCompleteEvent;
 import com.datacvg.dimp.event.SavePageEvent;
 import com.datacvg.dimp.event.ToAddIndexEvent;
 import com.datacvg.dimp.presenter.BoardPresenter;
@@ -160,7 +161,6 @@ public class BoardFragment extends BaseFragment<BoardView, BoardPresenter> imple
                 return;
             }
         }
-
         EventBus.getDefault().post(new SavePageEvent());
     }
 
@@ -176,6 +176,13 @@ public class BoardFragment extends BaseFragment<BoardView, BoardPresenter> imple
             EventBus.getDefault()
                     .post(new CheckIndexEvent(pageItemBeans.get(boardPagerAdapter.getCurrentPageIndex())));
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(PageCompleteEvent event){
+        vpBoard.setScroll(true);
+        magicIndicator.setVisibility(View.VISIBLE);
+        magicIndicator.getNavigator().notifyDataSetChanged();
     }
 
     /**

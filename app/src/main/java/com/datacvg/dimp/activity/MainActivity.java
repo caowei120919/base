@@ -31,6 +31,7 @@ import com.datacvg.dimp.event.DeletePageEvent;
 import com.datacvg.dimp.event.EditEvent;
 import com.datacvg.dimp.event.HideNavigationEvent;
 import com.datacvg.dimp.event.LoginOutEvent;
+import com.datacvg.dimp.event.PageCompleteEvent;
 import com.datacvg.dimp.event.RebuildTableEvent;
 import com.datacvg.dimp.event.TabShowOrHideEvent;
 import com.datacvg.dimp.event.ToAddPageEvent;
@@ -383,5 +384,10 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EditEvent event){
         tabModule.setVisibility(View.GONE);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(PageCompleteEvent event){
+        tabModule.setVisibility(View.VISIBLE);
     }
 }

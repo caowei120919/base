@@ -229,12 +229,6 @@ public class AddIndexActivity extends BaseActivity<AddIndexView, AddIndexPresent
         }
     }
 
-    @Override
-    public void saveSuccess() {
-        EventBus.getDefault().post(new ChangeIndexEvent());
-        finish();
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AddOrRemoveIndexEvent event){
         if(event.getBean().getSelected()){

@@ -27,8 +27,10 @@ import com.datacvg.dimp.bean.IndexChartBean;
 import com.datacvg.dimp.bean.PageItemBean;
 import com.datacvg.dimp.event.AddIndexEvent;
 import com.datacvg.dimp.event.CheckIndexEvent;
+import com.datacvg.dimp.event.CompleteEvent;
 import com.datacvg.dimp.event.DeletePageEvent;
 import com.datacvg.dimp.event.EditEvent;
+import com.datacvg.dimp.event.PageCompleteEvent;
 import com.datacvg.dimp.event.SavePageEvent;
 import com.datacvg.dimp.event.ToAddIndexEvent;
 import com.datacvg.dimp.presenter.BoardPagerPresenter;
@@ -268,9 +270,16 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
      */
     @Override
     public void savePageSuccess() {
+        String padName = ((EditText)statusBoard.findViewById(R.id.edit_pageName)).getText().toString();
+        pageItemBean.setPad_name(padName);
         ToastUtils.showLongToast(resources.getString(R.string.save_success));
         if(isComplete){
             PLog.e("完成");
+            EventBus.getDefault().post(new PageCompleteEvent());
+            relAddOrDelete.setVisibility(View.GONE);
+            statusBoard.showContent();
+            tvPageName.setText(resources.getString(R.string.the_current_page)
+                    + padName);
         }else{
             Intent intent = new Intent(mContext, AddIndexPageActivity.class);
             intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,pageItemBean.getPage());
@@ -291,6 +300,7 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
                 if(indexPositionBeans.isEmpty()){
                     showDeleteDialog(resources.getString(R.string.this_page_is_empty_after_deleting_the_data_and_will_be_deleted_here));
                 }else{
+                    isComplete = false ;
                     String padName = ((EditText)statusBoard.findViewById(R.id.edit_pageName)).getText().toString() ;
                     EventBus.getDefault().post(new CheckPageNameEvent(padName));
                 }
@@ -412,6 +422,22 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
         }
     }
 
+    /**
+     * 完成操作
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(CompleteEvent event){
+        isComplete = true ;
+        if(isFragmentVisible()){
+            savePageIndex();
+        }
+    }
+
+    /**
+     * 编辑状态
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EditEvent event){
         relAddOrDelete.setVisibility(View.VISIBLE);
@@ -492,6 +518,14 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
             beans.add(chartTypeBean);
             params.put("chartType",beans);
             getPresenter().getEChart(params);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(PageCompleteEvent event){
+        if(!isFragmentVisible()){
+            relAddOrDelete.setVisibility(View.GONE);
+            statusBoard.showContent();
         }
     }
 }
