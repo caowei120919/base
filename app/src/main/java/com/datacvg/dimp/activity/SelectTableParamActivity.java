@@ -27,7 +27,6 @@ import com.datacvg.dimp.event.DimensionParamsSelectEvent;
 import com.datacvg.dimp.event.RefreshTableEvent;
 import com.datacvg.dimp.presenter.SelectTableParamPresenter;
 import com.datacvg.dimp.view.SelectTableParamView;
-import com.datacvg.dimp.widget.DatePicker;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

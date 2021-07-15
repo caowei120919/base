@@ -292,13 +292,25 @@ public class AddIndexActivity extends BaseActivity<AddIndexView, AddIndexPresent
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SearchIndexBeanSuccessEvent event){
-        allIndexBeans.clear();
-        allIndexBeans.addAll(event.getSearchIndexBean().getIndexChartBeans());
-        for (IndexChartBean chartBean : allIndexBeans){
-            if (chartBean.getSelected()){
-                showMineIndexBeans.add(chartBean);
+        showMineIndexBeans.clear();
+        for (IndexChartBean indexChartBean : event.getSearchIndexBean().getIndexChartBeans()){
+            if(indexChartBean.getSelected()){
+                showMineIndexBeans.add(indexChartBean);
+            }
+
+            for (IndexChartBean allIndexChartBean : allIndexBeans){
+                if(allIndexChartBean.getIndex_pkid().equals(indexChartBean.getIndex_pkid())){
+                    allIndexChartBean.setSelected(indexChartBean.getSelected());
+                }
+            }
+
+            for (IndexChartBean recommendIndexBean : recommendIndexBeans){
+                if(recommendIndexBean.getIndex_pkid().equals(indexChartBean.getIndex_pkid())){
+                    recommendIndexBean.setSelected(indexChartBean.getSelected());
+                }
             }
         }
         adapter.notifyDataSetChanged();
+        indexOfBottomAdapter.notifyDataSetChanged();
     }
 }
