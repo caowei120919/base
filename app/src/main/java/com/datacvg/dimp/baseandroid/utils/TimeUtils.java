@@ -414,7 +414,14 @@ public class TimeUtils {
      * @return 提取字符串的日期
      */
     public static Date parse(String strDate) {
-        return parse(strDate, strDate.length() == 4 ? FORMAT_Y : getDatePattern());
+        switch (strDate.length()){
+            case 4 :
+                return parse(strDate, FORMAT_Y );
+            case 6 :
+                return parse(strDate,FORMAT_YM) ;
+            default:
+                return parse(strDate,FORMAT_YMD_EN);
+        }
     }
 
     public static String getNewStrDateForStr(String date2Str, String formatYmd, String replace) {

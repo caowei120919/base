@@ -160,6 +160,9 @@ public class SelectTableParamActivity extends BaseActivity<SelectTableParamView,
             linCustom.addView(customView);
             TextView tvCustomName = customView.findViewById(R.id.tv_paramName);
             tvCustomName.setText(tableParamInfoBean.getControlName());
+            customView.setOnClickListener(view -> {
+                ToastUtils.showLongToast(resources.getString(R.string.no_optional_parameter));
+            });
         }else{
             View customView = LayoutInflater.from(mContext).inflate(R.layout.item_param_custom
                     ,linCustom,false);
@@ -174,6 +177,9 @@ public class SelectTableParamActivity extends BaseActivity<SelectTableParamView,
                 TextView tvParamValue = view.findViewById(R.id.tv_paramValue);
                 tvParamName.setText(dataSourceBean.getSetName());
                 linCustomType.addView(view);
+                view.setOnClickListener(view1 -> {
+                    PLog.e(dataSourceBean.getBizKey());
+                });
             }
         }
     }

@@ -14,6 +14,7 @@ import com.datacvg.dimp.event.AddIndexEvent;
 import com.datacvg.dimp.event.CompleteEvent;
 import com.datacvg.dimp.event.EditEvent;
 import com.datacvg.dimp.event.PageCompleteEvent;
+import com.datacvg.dimp.event.SelectParamsEvent;
 import com.datacvg.dimp.event.ToAddIndexEvent;
 import com.datacvg.dimp.presenter.DigitalPresenter;
 import com.datacvg.dimp.view.DigitalView;
@@ -91,7 +92,7 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
 
     }
 
-    @OnClick({R.id.tv_manage,R.id.img_share})
+    @OnClick({R.id.tv_manage,R.id.img_share,R.id.img_select})
     public void OnClick(View view){
         switch (view.getId()){
             case R.id.tv_manage :
@@ -120,6 +121,10 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
                                 PLog.e("分享");
                             }
                         });
+                break;
+
+            case R.id.img_select :
+                EventBus.getDefault().post(new SelectParamsEvent());
                 break;
         }
     }

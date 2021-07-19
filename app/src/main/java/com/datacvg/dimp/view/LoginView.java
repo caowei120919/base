@@ -2,6 +2,7 @@ package com.datacvg.dimp.view;
 
 import com.datacvg.dimp.baseandroid.mvp.MvpView;
 import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
+import com.datacvg.dimp.bean.CheckVersionBean;
 import com.datacvg.dimp.bean.UserLoginBean;
 
 /**
@@ -15,4 +16,16 @@ public interface LoginView extends MvpView {
      * @param baseBean
      */
     void loginSuccess(BaseBean<UserLoginBean> baseBean);
+
+    /**
+     * 检查更新
+     * @param bean
+     */
+    void checkVersionSuccess(CheckVersionBean bean);
+
+    /**
+     * 文件下载完成
+     * @param name
+     */
+    void downloadCompleted(String name);
 }

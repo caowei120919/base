@@ -6,6 +6,9 @@ import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.config.LoginApi;
 import com.datacvg.dimp.baseandroid.config.MobileApi;
+import com.datacvg.dimp.baseandroid.download.DownloadException;
+import com.datacvg.dimp.baseandroid.download.DownloadManager;
+import com.datacvg.dimp.baseandroid.download.SimpleDownLoadCallBack;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
@@ -14,11 +17,13 @@ import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.baseandroid.utils.StringUtils;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
+import com.datacvg.dimp.bean.CheckVersionBean;
 import com.datacvg.dimp.bean.TimeValueBean;
 import com.datacvg.dimp.bean.UserLoginBean;
 import com.datacvg.dimp.view.LoginView;
 import com.google.gson.Gson;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
@@ -168,5 +173,60 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                         super.onError(e);
                     }
                 });
+    }
+
+    public void checkVersion() {
+        Map params = new HashMap();
+        params.put("device","android");
+        loginApi.checkVersion(params)
+                .compose(RxUtils.applySchedulersLifeCycle(getView()))
+                .subscribe(new RxObserver<CheckVersionBean>(){
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                    }
+
+                    @Override
+                    public void onNext(CheckVersionBean bean) {
+                        PLog.e(bean.getDesc());
+                        getView().checkVersionSuccess(bean);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+                });
+    }
+
+    /**
+     *
+     * @param download
+     * @param mDownLoadApkFolder
+     * @param mDownLoadApkFileName
+     */
+    public void requestDownload(String download, String mDownLoadApkFolder, String mDownLoadApkFileName) {
+        DownloadManager.getInstance().init(AndroidUtils.getContext());
+        DownloadManager.getInstance()
+                .download(download, new File(mDownLoadApkFolder), mDownLoadApkFileName
+                        , false, new SimpleDownLoadCallBack() {
+
+                            @Override
+                            public void onProgress(long finished, long total, int progress) {
+                                PLog.e(progress + "");
+                            }
+
+                            @Override
+                            public void onCompleted(File downloadfile) {
+                                if (getView() != null) {
+                                    getView().downloadCompleted(downloadfile.getName());
+                                }
+                            }
+
+                            @Override
+                            public void onFailed(DownloadException e) {
+                                PLog.e(e.getErrorMessage());
+                            }
+                        });
     }
 }

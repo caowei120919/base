@@ -219,7 +219,6 @@ public class TableDetailActivity extends BaseActivity<TableDetailView, TableDeta
                 case "powerbi" :
                     Map<String,String> map = new HashMap<>();
                     map.put("authorization",resdata.getData().getToken());
-//                    getPresenter().getPowerBiInfo(powerBiToken);
                     String url = "file:///android_asset/mobile.html";
                     mAgentWeb = AgentWeb.with(this)
                             .setAgentWebParent(container, new LinearLayout.LayoutParams(-1, -1))

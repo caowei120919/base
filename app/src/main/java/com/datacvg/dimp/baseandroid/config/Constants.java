@@ -27,6 +27,7 @@ public class Constants {
     public static final String DIMENSION_FIRST = "DIMENSION_FIRST";
     public static final String DIMENSION_SECOND = "DIMENSION_SECOND";
     public static final String DIMENSION_THIRD = "DIMENSION_THIRD";
+    public static final int INSTALL_APK = 0x00008;
 
     /**
      * 选择联系人类型

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.activity.AddIndexActivity;
 import com.datacvg.dimp.activity.AddIndexPageActivity;
+import com.datacvg.dimp.activity.SelectFilterActivity;
 import com.datacvg.dimp.adapter.DimensionIndexAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
@@ -32,6 +33,7 @@ import com.datacvg.dimp.event.DeletePageEvent;
 import com.datacvg.dimp.event.EditEvent;
 import com.datacvg.dimp.event.PageCompleteEvent;
 import com.datacvg.dimp.event.SavePageEvent;
+import com.datacvg.dimp.event.SelectParamsEvent;
 import com.datacvg.dimp.event.ToAddIndexEvent;
 import com.datacvg.dimp.presenter.BoardPagerPresenter;
 import com.datacvg.dimp.view.BoardPagerView;
@@ -296,6 +298,9 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
                 break;
 
             case R.id.lin_addPage :
+                if(!isFragmentVisible()){
+                    return;
+                }
                 PLog.e("新增页");
                 if(indexPositionBeans.isEmpty()){
                     showDeleteDialog(resources.getString(R.string.this_page_is_empty_after_deleting_the_data_and_will_be_deleted_here));
@@ -526,6 +531,15 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
         if(!isFragmentVisible()){
             relAddOrDelete.setVisibility(View.GONE);
             statusBoard.showContent();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SelectParamsEvent event){
+        if(isFragmentVisible()){
+            Intent intent = new Intent(mContext, SelectFilterActivity.class);
+            intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,pageItemBean);
+            mContext.startActivity(intent);
         }
     }
 }

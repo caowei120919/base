@@ -1,6 +1,8 @@
 package com.datacvg.dimp.activity;
 
 import android.os.Bundle;
+
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
@@ -27,7 +29,7 @@ import butterknife.BindView;
  */
 public class TestRealActivity extends BaseActivity<TestRealView, TestRealPresenter>
         implements TestRealView {
-
+    private OptionsPickerBuilder optionsPickerBuilder ;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_test;
@@ -45,11 +47,6 @@ public class TestRealActivity extends BaseActivity<TestRealView, TestRealPresent
 
     @Override
     protected void setupData(Bundle savedInstanceState) {
-        
-    }
-
-    @Override
-    public void getDimensionSuccess(DimensionListBean data) {
 
     }
 }

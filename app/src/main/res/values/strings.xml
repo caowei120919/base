@@ -16,7 +16,9 @@
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
     <string name="warm_prompt">温馨提示</string>
+    <string name="screening">筛选</string>
     <string name="a_new_version_of_the_application_has_been_detected_is_it_updated">检测到应用有新版本，是否更新？</string>
+    <string name="permissions_not_to_down">检查到新版本，但您的权限被拒绝，无法使用存储空间，无法下载最新版本。</string>
     <string name="to_generate_the_qr_code_you_need_read_and_write_permission_please_authorize_it_and_try_again">
         生成二维码需要读写权限，请授权后重试</string>
     <string name="click_again_exit_app">再按一次退出应用</string>

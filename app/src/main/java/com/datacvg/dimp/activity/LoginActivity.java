@@ -1,6 +1,11 @@
 package com.datacvg.dimp.activity;
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
@@ -9,17 +14,28 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.datacvg.dimp.BuildConfig;
+import com.datacvg.dimp.MyApplication;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
+import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.AndroidUtils;
+import com.datacvg.dimp.baseandroid.utils.ApiLevel;
+import com.datacvg.dimp.baseandroid.utils.AppUtils;
+import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.baseandroid.utils.StringUtils;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
+import com.datacvg.dimp.baseandroid.widget.CVGOKCancelWithTitle;
+import com.datacvg.dimp.bean.CheckVersionBean;
 import com.datacvg.dimp.bean.UserLoginBean;
 import com.datacvg.dimp.presenter.LoginPresenter;
 import com.datacvg.dimp.view.LoginView;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+
+import java.io.File;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
@@ -51,6 +67,11 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
 
     @BindView(R.id.btn_login)
     Button btnLogin ;
+
+    /**
+     * apk下载文件夹
+     */
+    private String mDownLoadApkFolder;
 
     @Override
     protected int getLayoutId() {
@@ -109,6 +130,14 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
         if(!StringUtils.isEmpty(password)){
             edPwd.setText(password);
         }
+        checkVersion();
+    }
+
+    /**
+     * 检查更新
+     */
+    private void checkVersion() {
+        getPresenter().checkVersion();
     }
 
     @OnClick({R.id.btn_login,R.id.tv_settingVpn})
@@ -154,5 +183,105 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
                 ,cbRememberUser.isChecked(),password,companyCode);
         mContext.startActivity(new Intent(mContext, MainActivity.class));
         finish();
+    }
+
+    @Override
+    public void checkVersionSuccess(CheckVersionBean bean) {
+        if(updateCheck(bean)){
+            CVGOKCancelWithTitle dialogOKCancel = new CVGOKCancelWithTitle(mContext);
+            dialogOKCancel.setMessage(mContext.getResources()
+                    .getString(R.string.a_new_version_of_the_application_has_been_detected_is_it_updated));
+            dialogOKCancel.getNegativeButton()
+                    .setVisibility(bean.getEnforce().equals("1") ? View.GONE : View.VISIBLE);
+            dialogOKCancel.setCancelable(false);
+            dialogOKCancel.setOnClickPositiveButtonListener(view -> {
+                upDate(bean);
+            });
+            dialogOKCancel.setOnClickListenerNegativeBtn(view -> {
+                dialogOKCancel.dismiss();
+            });
+            dialogOKCancel.show();
+        }
+    }
+
+    @Override
+    public void downloadCompleted(String name) {
+        if (ApiLevel.requireOreo()) {
+            installApp(name);
+        } else {
+            AndroidUtils.installApk(new File(mDownLoadApkFolder, name));
+            MyApplication.exitApp();
+        }
+    }
+
+    private boolean updateCheck(CheckVersionBean bean) {
+        try {
+            if(AppUtils.compareVersion(bean.getVersion(),AppUtils.getVerName(mContext)) > 0){
+                return true ;
+            }
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false ;
+        }
+    }
+
+    /**
+     * 更新操作
+     * @param bean
+     */
+    private void upDate(CheckVersionBean bean) {
+        mDownLoadApkFolder = Environment
+                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                .getAbsolutePath();
+        String mDownLoadApkFileName = "dimp_" + AppUtils.getVerName(mContext) + ".apk";
+        new RxPermissions(mContext).request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .compose(RxUtils.<Boolean>applySchedulersLifeCycle(getMvpView()))
+                .subscribe(new RxObserver<Boolean>() {
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        if (aBoolean) {
+                            getPresenter().requestDownload(bean.getDownload()
+                                    , mDownLoadApkFolder
+                                    , mDownLoadApkFileName);
+                        } else {
+                            ToastUtils.showShortToast(mContext.getResources()
+                                    .getString(R.string.permissions_not_to_down));
+                        }
+                    }
+                });
+    }
+
+    /**
+     * 安装app
+     * @param name
+     */
+    private void installApp(String name) {
+        @SuppressLint({"NewApi", "LocalSuppress"})
+        boolean canbeInstall = AndroidUtils.getContext()
+                .getPackageManager()
+                .canRequestPackageInstalls();
+        if (canbeInstall) {
+            AndroidUtils.installApk(new File(mDownLoadApkFolder, name));
+            MyApplication.exitApp();
+        } else {
+            //请求安装未知应用来源的权限
+            new RxPermissions(mContext).request(Manifest.permission.REQUEST_INSTALL_PACKAGES)
+                    .compose(RxUtils.<Boolean>applySchedulersLifeCycle(getMvpView()))
+                    .subscribe(new RxObserver<Boolean>() {
+                        @Override
+                        public void onNext(Boolean aBoolean) {
+                            if (aBoolean) {
+                                AndroidUtils.installApk(new File(mDownLoadApkFolder
+                                        , name));
+                                MyApplication.exitApp();
+                            } else {
+                                Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES
+                                        , Uri.parse("package:" + getPackageName()));
+                                startActivityForResult(intent, Constants.INSTALL_APK);
+                            }
+                        }
+                    });
+        }
     }
 }
