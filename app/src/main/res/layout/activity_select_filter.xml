@@ -163,11 +163,12 @@
                         </TextView>
 
                         <ImageView
+                            android:id="@+id/img_org"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:paddingRight="@dimen/W30"
-                            android:src="@mipmap/dash_index_report_down">
+                            android:src="@drawable/selector_filter">
                         </ImageView>
                     </LinearLayout>
 
@@ -242,11 +243,12 @@
                         </TextView>
 
                         <ImageView
+                            android:id="@+id/img_area"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:paddingRight="@dimen/W30"
-                            android:src="@mipmap/dash_index_report_down">
+                            android:src="@drawable/selector_filter">
                         </ImageView>
                     </LinearLayout>
 
@@ -321,11 +323,12 @@
                         </TextView>
 
                         <ImageView
+                            android:id="@+id/img_pro"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:paddingRight="@dimen/W30"
-                            android:src="@mipmap/dash_index_report_down">
+                            android:src="@drawable/selector_filter">
                         </ImageView>
                     </LinearLayout>
 

@@ -12,6 +12,7 @@ import com.datacvg.dimp.event.CheckIndexEvent;
 import com.datacvg.dimp.event.DeletePageEvent;
 import com.datacvg.dimp.event.EditEvent;
 import com.datacvg.dimp.event.EmptyFragmentEvent;
+import com.datacvg.dimp.event.FilterEvent;
 import com.datacvg.dimp.event.PageCompleteEvent;
 import com.datacvg.dimp.event.SavePageEvent;
 import com.datacvg.dimp.event.ToAddIndexEvent;

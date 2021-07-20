@@ -18,7 +18,9 @@ import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
+import com.datacvg.dimp.baseandroid.utils.TimeUtils;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
+import com.datacvg.dimp.baseandroid.utils.UiHandlers;
 import com.datacvg.dimp.bean.ChangeChartRequestBean;
 import com.datacvg.dimp.bean.ChatTypeRequestBean;
 import com.datacvg.dimp.bean.DimensionBean;
@@ -31,6 +33,7 @@ import com.datacvg.dimp.event.CheckIndexEvent;
 import com.datacvg.dimp.event.CompleteEvent;
 import com.datacvg.dimp.event.DeletePageEvent;
 import com.datacvg.dimp.event.EditEvent;
+import com.datacvg.dimp.event.FilterEvent;
 import com.datacvg.dimp.event.PageCompleteEvent;
 import com.datacvg.dimp.event.SavePageEvent;
 import com.datacvg.dimp.event.SelectParamsEvent;
@@ -38,6 +41,7 @@ import com.datacvg.dimp.event.ToAddIndexEvent;
 import com.datacvg.dimp.presenter.BoardPagerPresenter;
 import com.datacvg.dimp.view.BoardPagerView;
 import com.enlogy.statusview.StatusRelativeLayout;
+import com.facebook.stetho.common.android.HandlerUtil;
 import com.google.gson.Gson;
 import com.mylhyl.superdialog.SuperDialog;
 
@@ -110,15 +114,31 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
         tvTimeType.setVisibility(View.VISIBLE);
         switch (pageItemBean.getTime_type()){
             case "month" :
-                tvPageTime.setText(PreferencesHelper.get(Constants.USER_DEFAULT_MONTH,""));
+                if(TextUtils.isEmpty(pageItemBean.getTimeVal())){
+                    tvPageTime.setText(PreferencesHelper.get(Constants.USER_DEFAULT_MONTH,""));
+                }else{
+                    StringBuilder month = new StringBuilder(pageItemBean.getTimeVal());
+                    month.insert(4,"/");
+                    tvPageTime.setText(month);
+                }
                 tvTimeType.setText(resources.getString(R.string.month));
                 break;
             case "year" :
-                tvPageTime.setText(PreferencesHelper.get(Constants.USER_DEFAULT_YEAR,""));
+                if(TextUtils.isEmpty(pageItemBean.getTimeVal())){
+                    tvPageTime.setText(PreferencesHelper.get(Constants.USER_DEFAULT_YEAR,""));
+                }else{
+                    tvPageTime.setText(pageItemBean.getTimeVal());
+                }
                 tvTimeType.setText(resources.getString(R.string.year));
                 break;
             default:
-                tvPageTime.setText(PreferencesHelper.get(Constants.USER_DEFAULT_DAY,""));
+                if(TextUtils.isEmpty(pageItemBean.getTimeVal())){
+                    tvPageTime.setText(PreferencesHelper.get(Constants.USER_DEFAULT_DAY,""));
+                }else{
+                    StringBuilder day = new StringBuilder(pageItemBean.getTimeVal());
+                    day.insert(6,"/").insert(4,"/");
+                    tvPageTime.setText(day);
+                }
                 tvTimeType.setText(resources.getString(R.string.day));
                 break;
         }
@@ -130,6 +150,7 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
             tvPageName.setText(resources.getString(R.string.the_current_page)
                     + pageItemBean.getPad_name());
         }
+        PLog.e(pageItemBean.getPad_name());
     }
 
 
@@ -540,6 +561,46 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
             Intent intent = new Intent(mContext, SelectFilterActivity.class);
             intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,pageItemBean);
             mContext.startActivity(intent);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FilterEvent event){
+        if(isFragmentVisible()){
+            UiHandlers.post(new Runnable() {
+                @Override
+                public void run() {
+                    pageItemBean = event.getPageItemBean() ;
+                    tvTimeType.setVisibility(View.VISIBLE);
+                    switch (pageItemBean.getTime_type()){
+                        case "month" :
+                            StringBuilder month = new StringBuilder(pageItemBean.getTimeVal());
+                            month.insert(4,"/");
+                            tvPageTime.setText(month);
+                            tvTimeType.setText(resources.getString(R.string.month));
+                            break;
+                        case "year" :
+                            tvPageTime.setText(pageItemBean.getTimeVal());
+                            tvTimeType.setText(resources.getString(R.string.year));
+                            break;
+                        default:
+                            StringBuilder day = new StringBuilder(pageItemBean.getTimeVal());
+                            day.insert(6,"/").insert(4,"/");
+                            tvPageTime.setText(day);
+                            tvTimeType.setText(resources.getString(R.string.day));
+                            break;
+                    }
+                    if(pageItemBean.getPad_name().contains("{default}")){
+                        tvPageName.setText(resources.getString(R.string.the_current_page));
+                    }else {
+                        tvPageName.setText(resources.getString(R.string.the_current_page)
+                                + pageItemBean.getPad_name());
+                    }
+                    Map positionMap = new HashMap() ;
+                    positionMap.put("page",pageItemBean.getPage());
+                    getPresenter().getPosition(positionMap);
+                }
+            });
         }
     }
 }

@@ -55,7 +55,7 @@ public class SelectAreaDimensionAdapter extends RecyclerView.Adapter<SelectAreaD
         holder.imgDimension.setVisibility((bean.getNodes() != null && bean.getNodes().size() > 0)
                 ? View.VISIBLE : View.INVISIBLE);
         if(bean.getNodes() != null && bean.getNodes().size() > 0){
-            holder.itemView.setOnClickListener(v -> {
+            holder.imgDimension.setOnClickListener(v -> {
                 if(!bean.getOpen()){
                     bean.setOpen(true);
                     orgIndexDimensionBeans.addAll(position + 1 ,bean.getNodes());

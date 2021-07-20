@@ -91,7 +91,9 @@ public class BoardPagerPresenter extends BasePresenter<BoardPagerView>{
 
                     @Override
                     public void onNext(BaseBean<DimensionListBean> bean) {
-                        getView().getDimensionSuccess(bean.getData().getSelectDimension());
+                        if(checkJsonCode(bean)){
+                            getView().getDimensionSuccess(bean.getData().getSelectDimension());
+                        }
                     }
 
                     @Override

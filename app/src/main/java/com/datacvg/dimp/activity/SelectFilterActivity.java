@@ -5,23 +5,40 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectChangeListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.adapter.SelectAreaDimensionAdapter;
+import com.datacvg.dimp.adapter.SelectOrgDimensionAdapter;
+import com.datacvg.dimp.adapter.SelectProDimensionAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
+import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.TimeUtils;
 import com.datacvg.dimp.bean.DimensionBean;
 import com.datacvg.dimp.bean.PageItemBean;
+import com.datacvg.dimp.event.FilterEvent;
 import com.datacvg.dimp.presenter.SelectFilterPresenter;
 import com.datacvg.dimp.view.SelectFilterView;
+import com.google.gson.Gson;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -32,7 +49,7 @@ import butterknife.OnClick;
  * @Description : 维度时间选择
  */
 public class SelectFilterActivity extends BaseActivity<SelectFilterView, SelectFilterPresenter>
-        implements SelectFilterView {
+        implements SelectFilterView, SelectOrgDimensionAdapter.SelectOrgClickListener, SelectAreaDimensionAdapter.SelectAreaDimensionClickListener, SelectProDimensionAdapter.SelectProClickListener {
     @BindView(R.id.tv_parameterTime)
     TextView tvParameterTime ;
     @BindView(R.id.img_time)
@@ -41,19 +58,46 @@ public class SelectFilterActivity extends BaseActivity<SelectFilterView, SelectF
     LinearLayout lineOrg ;
     @BindView(R.id.tv_parameterOrg)
     TextView tvParameterOrg ;
+    @BindView(R.id.img_org)
+    ImageView imgOrg ;
+    @BindView(R.id.rel_org)
+    RelativeLayout relOrg ;
+    @BindView(R.id.recycleOrg)
+    RecyclerView recycleOrg ;
     @BindView(R.id.lin_area)
     LinearLayout linArea ;
     @BindView(R.id.tv_parameterArea)
     TextView tvParameterArea ;
+    @BindView(R.id.img_area)
+    ImageView imgArea ;
+    @BindView(R.id.rel_area)
+    RelativeLayout relArea ;
+    @BindView(R.id.recycleArea)
+    RecyclerView recycleArea ;
     @BindView(R.id.lin_pro)
     LinearLayout linPro ;
     @BindView(R.id.tv_parameterPro)
     TextView tvParameterPro ;
+    @BindView(R.id.img_pro)
+    ImageView imgPro ;
+    @BindView(R.id.rel_pro)
+    RelativeLayout relPro ;
+    @BindView(R.id.recyclePro)
+    RecyclerView recyclePro ;
     @BindView(R.id.timepicker)
     LinearLayout timePicker ;
 
+    private final static String ORG_TAG = "ORG" ;
+    private final static String AREA_TAG = "AREA" ;
+    private final static String PRO_TAG = "PRO" ;
     private PageItemBean pageItemBean ;
     private TimePickerView pvCustomTime ;
+    private List<DimensionBean> orgDimensions = new ArrayList<>() ;
+    private List<DimensionBean> proDimensions = new ArrayList<>() ;
+    private List<DimensionBean> areaDimensions = new ArrayList<>() ;
+    private SelectOrgDimensionAdapter orgDimensionAdapter ;
+    private SelectAreaDimensionAdapter areaDimensionAdapter ;
+    private SelectProDimensionAdapter proDimensionAdapter ;
 
     @Override
     protected int getLayoutId() {
@@ -67,7 +111,27 @@ public class SelectFilterActivity extends BaseActivity<SelectFilterView, SelectF
 
     @Override
     protected void setupView() {
+        initAdapter();
+    }
 
+    /**
+     * 初始化维度选择器
+     */
+    private void initAdapter() {
+        orgDimensionAdapter = new SelectOrgDimensionAdapter(mContext,orgDimensions,this);
+        LinearLayoutManager orgManager = new LinearLayoutManager(mContext);
+        recycleOrg.setLayoutManager(orgManager);
+        recycleOrg.setAdapter(orgDimensionAdapter);
+
+        areaDimensionAdapter = new SelectAreaDimensionAdapter(mContext,areaDimensions,this);
+        LinearLayoutManager areaManager = new LinearLayoutManager(mContext);
+        recycleArea.setLayoutManager(areaManager);
+        recycleArea.setAdapter(areaDimensionAdapter);
+
+        proDimensionAdapter = new SelectProDimensionAdapter(mContext,proDimensions,this);
+        LinearLayoutManager proManager = new LinearLayoutManager(mContext);
+        recyclePro.setLayoutManager(proManager);
+        recyclePro.setAdapter(proDimensionAdapter);
     }
 
     @Override
@@ -94,6 +158,15 @@ public class SelectFilterActivity extends BaseActivity<SelectFilterView, SelectF
         tvParameterPro.setText(TextUtils.isEmpty(pageItemBean.getMpName())?"":pageItemBean.getMpName());
         linArea.setVisibility(TextUtils.isEmpty(pageItemBean.getmFuName()) ? View.GONE : View.VISIBLE);
         tvParameterArea.setText(TextUtils.isEmpty(pageItemBean.getmFuName())?"":pageItemBean.getmFuName());
+
+        if(!TextUtils.isEmpty(pageItemBean.getmOrgDimension())){
+            List orgArr = new ArrayList() ;
+            orgArr.add(pageItemBean.getmOrgDimension());
+            Map paramOfOrg = new HashMap();
+            paramOfOrg.put("timeVal",pageItemBean.getTimeVal());
+            paramOfOrg.put("dimensionArr",orgArr);
+            getPresenter().getDimension(paramOfOrg);
+        }
     }
 
     /**
@@ -136,7 +209,7 @@ public class SelectFilterActivity extends BaseActivity<SelectFilterView, SelectF
                             case "month" :
                                 tvParameterTime.setText(calendar.get(Calendar.YEAR) + "-"
                                         + ((calendar.get(Calendar.MONTH) + 1) > 9 ? (calendar.get(Calendar.MONTH) + 1) : "0" + (calendar.get(Calendar.MONTH) + 1)));
-                                pageItemBean.setTimeVal(Calendar.YEAR + ""+ ((calendar.get(Calendar.MONTH) + 1) > 9 ? (calendar.get(Calendar.MONTH) + 1) : "0" + (calendar.get(Calendar.MONTH) + 1)));
+                                pageItemBean.setTimeVal(calendar.get(Calendar.YEAR) + ""+ ((calendar.get(Calendar.MONTH) + 1) > 9 ? (calendar.get(Calendar.MONTH) + 1) : "0" + (calendar.get(Calendar.MONTH) + 1)));
                                 break;
 
                             default:
@@ -162,7 +235,7 @@ public class SelectFilterActivity extends BaseActivity<SelectFilterView, SelectF
         pvCustomTime.show();
     }
 
-    @OnClick({R.id.tv_filtrate_cancel,R.id.tv_complete,R.id.lin_time,R.id.line_org})
+    @OnClick({R.id.tv_filtrate_cancel,R.id.tv_complete,R.id.lin_time,R.id.line_org,R.id.lin_area,R.id.lin_pro})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.tv_filtrate_cancel :
@@ -171,6 +244,8 @@ public class SelectFilterActivity extends BaseActivity<SelectFilterView, SelectF
 
             case R.id.tv_complete :
                 PLog.e("确定");
+                EventBus.getDefault().post(new FilterEvent(pageItemBean));
+                finish();
                 break;
 
             case R.id.lin_time :
@@ -179,18 +254,114 @@ public class SelectFilterActivity extends BaseActivity<SelectFilterView, SelectF
                 imgTime.setSelected(timePicker.getVisibility() == View.VISIBLE);
                 break;
             case R.id.line_org :
+                relOrg.setVisibility(relOrg.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                imgOrg.setSelected(!imgOrg.isSelected());
+                break;
 
+            case R.id.lin_area :
+                relArea.setVisibility(relArea.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                imgArea.setSelected(!imgArea.isSelected());
+                break;
+
+            case R.id.lin_pro :
+                relPro.setVisibility(relPro.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                imgPro.setSelected(!imgPro.isSelected());
                 break;
         }
     }
 
     @Override
     public void getDimensionSuccess(List<DimensionBean> selectDimension) {
-
+        PLog.e(new Gson().toJson(selectDimension));
+        setPageItemBeanDimension(selectDimension,ORG_TAG);
+        if(!TextUtils.isEmpty(pageItemBean.getmFuDimension())){
+            List fuArr = new ArrayList() ;
+            fuArr.add(pageItemBean.getmOrgDimension());
+            fuArr.add(pageItemBean.getmFuDimension());
+            Map paramOfFu = new HashMap();
+            paramOfFu.put("timeVal",pageItemBean.getTimeVal());
+            paramOfFu.put("dimensionArr",fuArr);
+            getPresenter().getOtherDimension(paramOfFu,PRO_TAG);
+        }
     }
 
     @Override
     public void getOtherDimensionSuccess(List<DimensionBean> selectOtherDimension, String tag) {
+        PLog.e(new Gson().toJson(selectOtherDimension));
+        setPageItemBeanDimension(selectOtherDimension,tag);
+    }
 
+    private void setPageItemBeanDimension(List<DimensionBean> dimensions, String tag) {
+        switch (tag){
+            case ORG_TAG :
+                orgDimensions.clear();
+                orgDimensions.addAll(dimensions);
+                orgDimensionAdapter.notifyDataSetChanged();
+                break;
+
+            case AREA_TAG :
+                areaDimensions.clear();
+                areaDimensions.addAll(dimensions);
+                areaDimensionAdapter.notifyDataSetChanged();
+                if(!TextUtils.isEmpty(pageItemBean.getmPDimension())){
+                    List pArr = new ArrayList() ;
+                    pArr.add(pageItemBean.getmOrgDimension());
+                    pArr.add(pageItemBean.getmFuDimension());
+                    pArr.add(pageItemBean.getmPDimension());
+                    Map paramOfFu = new HashMap();
+                    paramOfFu.put("timeVal",pageItemBean.getTimeVal());
+                    paramOfFu.put("dimensionArr",pArr);
+                    getPresenter().getOtherDimension(paramOfFu,AREA_TAG);
+                }
+                break;
+
+            case PRO_TAG :
+                proDimensions.clear();
+                proDimensions.addAll(dimensions);
+                proDimensionAdapter.notifyDataSetChanged();
+                break;
+        }
+    }
+
+    /**
+     * org维度选择
+     * @param bean
+     */
+    @Override
+    public void onSelectOrgClick(DimensionBean bean) {
+        pageItemBean.setmOrgName(bean.getD_res_name());
+        pageItemBean.setmOrgValue(bean.getD_res_value());
+        pageItemBean.setmOrgDimension(bean.getId());
+        tvParameterOrg.setText(bean.getD_res_name());
+        relOrg.setVisibility(View.GONE);
+        relOrg.setTag(bean);
+    }
+
+    /**
+     * area维度选择
+     * @param bean
+     */
+    @Override
+    public void onSelectAreaClick(DimensionBean bean) {
+        pageItemBean.setmFuValue(bean.getD_res_value());
+        pageItemBean.setmFuName(bean.getD_res_name());
+        pageItemBean.setmFuDimension(bean.getId());
+        tvParameterArea.setText(bean.getD_res_name());
+        relArea.setVisibility(View.GONE);
+        relArea.setTag(bean);
+    }
+
+    /**
+     * pro维度选择
+     * @param bean
+     */
+    @Override
+    public void onSelectProClick(DimensionBean bean) {
+        pageItemBean.setMpValue(bean.getD_res_value());
+        pageItemBean.setMpName(bean.getD_res_name());
+        pageItemBean.setmPDimension(bean.getId());
+        tvParameterPro.setText(bean.getD_res_name());
+        relPro.setVisibility(View.GONE);
+        relPro.setTag(bean);
     }
 }

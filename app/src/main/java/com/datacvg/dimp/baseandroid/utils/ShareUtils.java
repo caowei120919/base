@@ -10,7 +10,6 @@ import android.os.Build;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
-
 import java.util.List;
 
 /**
@@ -20,7 +19,6 @@ import java.util.List;
  */
 public class ShareUtils {
     private final String TAG = this.getClass().getSimpleName();
-
     /**
      * Current activity
      */

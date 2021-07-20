@@ -1,13 +1,19 @@
 package com.datacvg.dimp.fragment;
 import android.Manifest;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Environment;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
+import com.datacvg.dimp.baseandroid.utils.FileUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
+import com.datacvg.dimp.baseandroid.utils.ShareContentType;
 import com.datacvg.dimp.baseandroid.utils.ShareUtils;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.event.AddIndexEvent;
@@ -28,6 +34,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.List;
 import butterknife.BindView;
@@ -46,6 +54,8 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
     TextView tvManage ;
     @BindView(R.id.magic_title)
     MagicIndicator magicTitle ;
+    @BindView(R.id.rel_share)
+    RelativeLayout relShare ;
 
     private TitleNavigator titleNavigator ;
     private FragmentContainerHelper mTitleFragmentContainerHelper ;
@@ -119,6 +129,16 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
                             public void onNext(Boolean aBoolean) {
                                 super.onNext(aBoolean);
                                 PLog.e("分享");
+                                File file = screenshot() ;
+                                if(file != null){
+                                    Uri mUri = Uri.fromFile(screenshot());
+                                    new ShareUtils
+                                            .Builder(getActivity())
+                                            .setContentType(ShareContentType.IMAGE)
+                                            .setShareFileUri(mUri)
+                                            .build()
+                                            .shareBySystem();
+                                }
                             }
                         });
                 break;
@@ -127,6 +147,32 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
                 EventBus.getDefault().post(new SelectParamsEvent());
                 break;
         }
+    }
+
+    private File screenshot() {
+        // 获取屏幕
+        View dView = getActivity().getWindow().getDecorView();
+        dView.setDrawingCacheEnabled(true);
+        dView.buildDrawingCache();
+        Bitmap bmp = dView.getDrawingCache();
+        if (bmp != null)
+        {
+            try {
+                // 获取内置SD卡路径
+                String sdCardPath = Environment.getExternalStorageDirectory().getPath();
+                // 图片文件路径
+                String imagePath = sdCardPath + File.separator + "screenshot.png";
+                File file = new File(imagePath);
+                FileOutputStream os = new FileOutputStream(file);
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
+                os.flush();
+                os.close();
+                return file ;
+            } catch (Exception e) {
+                return null ;
+            }
+        }
+        return null ;
     }
 
     /**
