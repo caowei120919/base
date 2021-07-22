@@ -10,6 +10,7 @@ import com.datacvg.dimp.bean.ConstantReportBean;
 import com.datacvg.dimp.bean.DefaultReportBean;
 import com.datacvg.dimp.bean.DefaultUserListBean;
 import com.datacvg.dimp.bean.ModuleListBean;
+import com.datacvg.dimp.bean.TableListBean;
 import com.datacvg.dimp.view.MainView;
 import com.google.gson.Gson;
 
@@ -101,6 +102,28 @@ public class MainPresenter extends BasePresenter<MainView>{
                         if(checkJsonCode(defaultUserListBeanBaseBean)){
                             getView().getDepartmentAndContactSuccess(defaultUserListBeanBaseBean.getResdata());
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        PLog.e("TAG",e.getMessage());
+                    }
+                });
+    }
+
+    public void getTableList(String tableType) {
+        mobileApi.getTableList(tableType)
+                .compose(RxUtils.applySchedulersLifeCycle(getView()))
+                .subscribe(new RxObserver<BaseBean<TableListBean>>(){
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                    }
+
+                    @Override
+                    public void onNext(BaseBean<TableListBean> bean) {
+                        getView().getTableSuccess(bean.getResdata());
                     }
 
                     @Override

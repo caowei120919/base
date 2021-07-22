@@ -175,7 +175,7 @@ public class TableDetailActivity extends BaseActivity<TableDetailView, TableDeta
             }
         });
         dialogOKCancel.setOnClickListenerNegativeBtn(view -> {
-
+            dialogOKCancel.dismiss();
         });
         dialogOKCancel.show();
     }

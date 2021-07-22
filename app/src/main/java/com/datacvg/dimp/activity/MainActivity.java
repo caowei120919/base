@@ -26,6 +26,8 @@ import com.datacvg.dimp.bean.DefaultUserBean;
 import com.datacvg.dimp.bean.DefaultUserListBean;
 import com.datacvg.dimp.bean.ModuleBean;
 import com.datacvg.dimp.bean.ModuleListBean;
+import com.datacvg.dimp.bean.TableBean;
+import com.datacvg.dimp.bean.TableListBean;
 import com.datacvg.dimp.event.ChangeUnReadMessageEvent;
 import com.datacvg.dimp.event.DeletePageEvent;
 import com.datacvg.dimp.event.EditEvent;
@@ -168,6 +170,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @Override
     public void getDefaultReportSuccess(ConstantReportBean reportBean) {
         Constants.constantReportBean = reportBean ;
+        getPresenter().getTableList(Constants.TABLE_TYPE);
     }
 
     /**
@@ -340,6 +343,24 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
             }
         }
         PLog.e(DbContactController.getInstance(mContext).queryContactList().size() + "");
+    }
+
+    /**
+     * 获取报表列表成功
+     * @param resdata
+     */
+    @Override
+    public void getTableSuccess(TableListBean resdata) {
+        if(Constants.constantReportBean != null){
+            for (TableBean tableBean : resdata){
+                if(tableBean.getRes_id().equals(Constants.constantReportBean.getResId())){
+                    Intent tableIntent = new Intent(mContext, TableDetailActivity.class);
+                    tableIntent.putExtra(Constants
+                            .EXTRA_DATA_FOR_BEAN,tableBean);
+                    mContext.startActivity(tableIntent);
+                }
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

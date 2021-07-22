@@ -4,6 +4,7 @@ import com.datacvg.dimp.baseandroid.mvp.MvpView;
 import com.datacvg.dimp.bean.ConstantReportBean;
 import com.datacvg.dimp.bean.DefaultUserListBean;
 import com.datacvg.dimp.bean.ModuleListBean;
+import com.datacvg.dimp.bean.TableListBean;
 
 /**
  * @Author : T-Bag (茶包)
@@ -28,4 +29,10 @@ public interface MainView extends MvpView {
      * @param resdata
      */
     void getDepartmentAndContactSuccess(DefaultUserListBean resdata);
+
+    /**
+     * 报表列表获取
+     * @param resdata
+     */
+    void getTableSuccess(TableListBean resdata);
 }
