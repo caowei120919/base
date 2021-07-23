@@ -63,7 +63,7 @@ public class Constants {
     public static final String TABLE_TYPE = "3";
     public static String BASE_MOBILE_URL = "" ;
     public static String BASE_FIS_URL = "" ;
-    public static String BASE_UPLOAD_URL = "" ;
+    public static String BASE_UPLOAD_URL = "http://semp.datacvg.com/" ;
     public static String BASE_DDB_URL = "" ;
     public static String ACTION_HEAD_IMG = "api/mobile" ;
     public static String HEAD_IMG_URL = "api/mobile/login/readheadimg?userPkid=" ;

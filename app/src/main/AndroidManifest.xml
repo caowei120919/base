@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.datacvg.dimp">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -27,7 +28,8 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_app_launcher_round"
         android:usesCleartextTraffic="true"
-        android:supportsRtl="true">
+        android:supportsRtl="true"
+        tools:replace="android:allowBackup">
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -43,14 +45,11 @@
             android:theme="@style/ThemeSplash"
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".activity.TestRealActivity"
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait">

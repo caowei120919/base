@@ -19,6 +19,7 @@ import java.util.Map;
  * Author: 曹伟
  * Date: 2019/9/16 15:35
  * Description:
+ * @author 曹伟
  */
 
 public class MultiDownloadTask extends DownloadTaskImpl {

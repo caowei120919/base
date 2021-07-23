@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Unique;
 
 /**
  * @Author : T-Bag (茶包)
@@ -15,6 +16,7 @@ import org.greenrobot.greendao.annotation.Generated;
 @Keep
 @Entity
 public class ThreadInfo {
+
 
     @Id(autoincrement = true)
     private long id;

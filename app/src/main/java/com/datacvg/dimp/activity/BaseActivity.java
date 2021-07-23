@@ -23,6 +23,8 @@ import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
+import com.kaopiz.kprogresshud.KProgressHUD;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -44,6 +46,7 @@ public abstract class BaseActivity<V extends MvpView,P extends MvpBasePresenter<
     private WeakReference<Activity> softActivity ;
     protected BaseActivity mContext ;
     protected Resources resources ;
+    protected KProgressHUD mDialog ;
 
     /**
      * Instantiate a presenter instance
@@ -139,6 +142,28 @@ public abstract class BaseActivity<V extends MvpView,P extends MvpBasePresenter<
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         return super.onKeyDown(keyCode,event);
+    }
+
+    public void showDialog(String message){
+        if (mDialog == null) {
+            mDialog = KProgressHUD
+                    .create(mContext)
+                    .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                    .setCancellable(false)
+                    .setAnimationSpeed(2)
+                    .setDimAmount(0.5f);
+            mDialog.setDetailsLabel(message);
+        }
+
+        if(!mDialog.isShowing()){
+            mDialog.show();
+        }
+    }
+
+    public void dismissDialog(){
+        if(mDialog != null && mDialog.isShowing()){
+            mDialog.dismiss();
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

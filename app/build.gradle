@@ -216,6 +216,7 @@ dependencies {
     //多页面切换
     implementation 'com.github.Enlogty:StatusView:1.0.3'
     implementation 'com.mylhyl:superDialog:1.2.1'
+    implementation 'com.kaopiz:kprogresshud:1.0.5'
     implementation 'com.github.Justson.AgentWeb:agentweb-core:v4.1.9-androidx'
     implementation 'com.github.Justson.AgentWeb:agentweb-filechooser:v4.1.9-androidx'
 }

@@ -7,15 +7,11 @@
 
     <style name="AppTheme" parent="AppBaseTheme"></style>
 
-    <style name="ThemeSplash" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:background">@mipmap/splash_bg</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowContentOverlay">@android:color/transparent</item>
-        <item name="android:windowBackground">@color/c_24334F</item>
-        <item name="colorPrimary">@color/c_24334F</item>
-        <item name="colorPrimaryDark">@color/c_26A69A</item>
-        <item name="colorAccent">@color/c_24334F</item>
+    <style name="ThemeSplash" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@mipmap/splash_bg</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 
     <style name="customDialogTheme" parent="@android:style/Theme.Dialog">

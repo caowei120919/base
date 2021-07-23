@@ -70,7 +70,7 @@ public class MyAppModule {
     @Provides
     @UploadUrl
     Retrofit provideUploadUrlRetrofit(MyOkhttpHelper okhttpHelper, RetrofitHelper retrofitHelper) {
-        return createUploadApiRetrofit(okhttpHelper, retrofitHelper,  "http://dimp.dev.datacvg.com"/*Constants.BASE_URL*/);
+        return createUploadApiRetrofit(okhttpHelper, retrofitHelper,  Constants.BASE_UPLOAD_URL);
     }
 
 

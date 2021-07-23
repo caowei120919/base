@@ -79,6 +79,11 @@ public class LoginPresenter extends BasePresenter<LoginView> {
     }
 
 
+    /**
+     * 登录
+     * @param userName 登录名
+     * @param password 登录密码
+     */
     public void login(String userName, String password) {
         Map<String,String> params = new HashMap<>();
         params.put("login_name",userName);

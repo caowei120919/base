@@ -4,13 +4,19 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-
+import com.datacvg.dimp.BuildConfig;
+import com.datacvg.dimp.R;
+import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
+import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
+import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.DisplayUtils;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
+import com.datacvg.dimp.bean.UserLoginBean;
 import com.datacvg.dimp.presenter.SplashPresenter;
 import com.datacvg.dimp.view.SplashView;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import me.jessyan.retrofiturlmanager.RetrofitUrlManager;
 
 /**
  * @Author : T-Bag (茶包)
@@ -20,10 +26,14 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 public class SplashActivity extends BaseActivity<SplashView, SplashPresenter> implements SplashView{
 
     private final int DELAY_TIME = 1000 ;
+    private boolean REMEMBER_USER = false ;
+    private String companyCode = "" ;
+    private String userName = "" ;
+    private String password = "" ;
 
     @Override
     protected int getLayoutId() {
-        return 0;
+        return R.layout.activity_splash;
     }
 
     @Override
@@ -33,7 +43,11 @@ public class SplashActivity extends BaseActivity<SplashView, SplashPresenter> im
 
     @Override
     protected void setupView() {
-
+        REMEMBER_USER = PreferencesHelper
+                .get(Constants.USER_CHECK_REMEMBER,false) ;
+        companyCode = PreferencesHelper.get(Constants.USER_COMPANY_CODE, BuildConfig.DEBUG ? "datacvg" : "");
+        userName = PreferencesHelper.get(Constants.USER_ID,BuildConfig.DEBUG ? "windy" : "");
+        password = PreferencesHelper.get(Constants.USER_PWD,BuildConfig.DEBUG ? "111111" : "");
     }
 
     @Override
@@ -53,7 +67,6 @@ public class SplashActivity extends BaseActivity<SplashView, SplashPresenter> im
             }
             DisplayUtils.fullScreen(mContext,true);
         }
-
         checkPermissions();
     }
 
@@ -75,7 +88,16 @@ public class SplashActivity extends BaseActivity<SplashView, SplashPresenter> im
                     @Override
                     public void onNext(Boolean aBoolean) {
                         super.onNext(aBoolean);
-                        goToLogin();
+                        if(REMEMBER_USER){
+                            String url = String.format(Constants.BASE_MERCHANT,companyCode);
+                            Constants.BASE_MOBILE_URL = url ;
+                            RetrofitUrlManager.getInstance().setRun(true);
+                            RetrofitUrlManager.getInstance()
+                                    .setGlobalDomain(url);
+                            getPresenter().login(userName,password);
+                        }else{
+                            goToLogin();
+                        }
                     }
                 });
     }
@@ -92,5 +114,14 @@ public class SplashActivity extends BaseActivity<SplashView, SplashPresenter> im
                 finish();
             }
         }, DELAY_TIME);
+    }
+
+
+    @Override
+    public void loginSuccess(BaseBean<UserLoginBean> baseBean) {
+        Constants.saveUser(baseBean.getResdata()
+                ,REMEMBER_USER,password,companyCode);
+        mContext.startActivity(new Intent(mContext, MainActivity.class));
+        finish();
     }
 }

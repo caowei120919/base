@@ -76,6 +76,7 @@ public class DbThreadInfoController {
         DaoMaster daoMaster = new DaoMaster(getWritableDatabase());
         DaoSession daoSession = daoMaster.newSession();
         ThreadInfoDao threadInfoDao = daoSession.getThreadInfoDao();
+        debugInfo.setId(threadInfoDao.loadAll().size());
         threadInfoDao.insert(debugInfo);
     }
 

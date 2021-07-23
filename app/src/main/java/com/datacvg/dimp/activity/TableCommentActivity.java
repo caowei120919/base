@@ -48,6 +48,7 @@ public class TableCommentActivity extends BaseActivity<TableCommentView, TableCo
     private String params = "{}" ;
     private List<CommentBean> commentBeans = new ArrayList<>() ;
     private CommentListAdapter adapter ;
+    protected final String AT = "@" ;
 
     @Override
     protected int getLayoutId() {
@@ -102,6 +103,13 @@ public class TableCommentActivity extends BaseActivity<TableCommentView, TableCo
     @OnTextChanged(value = R.id.ed_comment,callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onUserNameTextChange(Editable editable){
 
+    }
+
+    @OnTextChanged(value = R.id.ed_comment,callback = OnTextChanged.Callback.TEXT_CHANGED)
+    public void onUserNameTextChange(CharSequence s ,int start,int before,int count){
+        if(start==s.length()-1 && s.toString().endsWith(AT)){
+            startActivity(new Intent(mContext, ContactActivity.class));
+        }
     }
 
     @Override

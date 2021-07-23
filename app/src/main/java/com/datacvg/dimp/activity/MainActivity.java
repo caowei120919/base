@@ -92,7 +92,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     private FragmentTransaction fragmentTransaction ;
     private long firstTime = 0;
     private List<ModuleInfo> moduleBeans = new ArrayList<>();
-    private boolean isNeedRebuild = false ;
 
     @Override
     protected int getLayoutId() {
