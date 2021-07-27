@@ -1,11 +1,31 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <RelativeLayout
-        android:id="@+id/rel_contain"
-        android:layout_width="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_height="wrap_content">
-    </RelativeLayout>
-</RelativeLayout>
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <Button
+        android:id="@+id/tv_edit"
+        style="@style/btn_bg"
+        android:text="弹出可输入的对话框"/>
+
+    <Button
+        android:id="@+id/tv_time"
+        style="@style/btn_bg"
+        android:layout_marginTop="10dp"
+        android:text="弹出时间"/>
+
+    <Button
+        android:id="@+id/tv_date"
+        style="@style/btn_bg"
+        android:layout_marginTop="10dp"
+        android:text="弹出日期"/>
+
+    <Button
+        android:id="@+id/tv_date_time"
+        style="@style/btn_bg"
+        android:layout_marginTop="10dp"
+        android:text="弹出日期时间"/>
+
+</LinearLayout>

@@ -15,6 +15,12 @@ public class Contact {
     private ContactBean bean ;
     private String name ;
 
+    public Contact(ContactBean contactBean, String name, boolean checked) {
+        this.bean = contactBean;
+        this.name = name;
+        this.isChecked = checked ;
+    }
+
     public boolean isChecked() {
         return isChecked;
     }

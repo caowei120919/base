@@ -19,6 +19,7 @@ import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.ContactComparator;
+import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.PinYinUtils;
 import com.datacvg.dimp.bean.Contact;
 import com.datacvg.dimp.event.ContactEvent;
@@ -71,7 +72,7 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         for (int i = 0; i < beans.size(); i++) {
             String pinyin = PinYinUtils.getPingYin(beans.get(i).getName());
-            Contact contact = new Contact(beans.get(i),beans.get(i).getName());
+            Contact contact = new Contact(beans.get(i),beans.get(i).getName(),beans.get(i).getChecked());
             map.put(pinyin, contact);
             mContactList.add(pinyin);
         }
@@ -84,13 +85,13 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 , ITEM_TYPE.ITEM_TYPE_CHARACTER.ordinal()));
         if(beans.size() > nearCount){
             for (int i = 0 ; i < nearCount ; i++){
-                Contact contact = new Contact(beans.get(i),beans.get(i).getName());
+                Contact contact = new Contact(beans.get(i),beans.get(i).getName(),beans.get(i).getChecked());
                 contact.setmType(ITEM_TYPE.ITEM_TYPE_CONTACT.ordinal());
                 resultList.add(contact);
             }
         }else{
             for (int i = 0 ; i < beans.size() ; i++){
-                Contact contact = new Contact(beans.get(i),beans.get(i).getName());
+                Contact contact = new Contact(beans.get(i),beans.get(i).getName(),beans.get(i).getChecked());
                 contact.setmType(ITEM_TYPE.ITEM_TYPE_CONTACT.ordinal());
                 resultList.add(contact);
             }
@@ -144,6 +145,7 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ((ContactViewHolder) holder).cbContact.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    ((ContactViewHolder) holder).cbContact.setChecked(b);
                     ContactBean contactBean = resultList.get(position).getBean();
                     contactBean.setChecked(b);
                     EventBus.getDefault().post(new ContactEvent(contactBean));

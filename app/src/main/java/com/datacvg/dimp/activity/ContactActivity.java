@@ -111,7 +111,6 @@ public class ContactActivity extends BaseActivity<ContactView, ContactPresenter>
         }else{
             selectContactBeans.remove(event.getContactBean());
         }
-        DbContactController.getInstance(mContext).updateContact(event.getContactBean());
         tvSelectNum.setText(String.format(resources.getString(R.string.selected_people)
                 ,selectContactBeans.size()+""));
     }
