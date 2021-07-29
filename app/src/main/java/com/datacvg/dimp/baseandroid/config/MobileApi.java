@@ -19,6 +19,7 @@ import com.datacvg.dimp.bean.IndexChartInfoBean;
 import com.datacvg.dimp.bean.IndexTreeListBean;
 import com.datacvg.dimp.bean.MessageBean;
 import com.datacvg.dimp.bean.ModuleListBean;
+import com.datacvg.dimp.bean.PerformanceBean;
 import com.datacvg.dimp.bean.ReadMessageBean;
 import com.datacvg.dimp.bean.RecommendIndexBean;
 import com.datacvg.dimp.bean.ReportListBean;
@@ -398,4 +399,7 @@ public interface MobileApi {
 
     @DELETE("api/mobile/mobilereport/cancelDefaultRes/{id}")
     Observable<BaseBean> cancelReportForDefault(@Path("id") String res_pkid);
+
+    @POST("api/ddb/indexpad/position/budget")
+    Observable<BaseBean<PerformanceBean>> getBudget(@Body Map params);
 }

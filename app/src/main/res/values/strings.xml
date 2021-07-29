@@ -29,6 +29,7 @@
     <string name="easy_app">EasyApp</string>
     <string name="vpn_address">vpn地址</string>
     <string name="account">账号</string>
+    <string name="there_are_no_current_performance_indicators">当前无绩效指标</string>
     <string name="save">保存</string>
     <string name="l_three_vpn">L3VPN</string>
     <string name="qr_code_generation_fails">二维码生成失败</string>

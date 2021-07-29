@@ -19,6 +19,7 @@
     <string name="to_generate_the_qr_code_you_need_read_and_write_permission_please_authorize_it_and_try_again">
         To generate the QR code, you need read and write permission. Please authorize it and try again
     </string>
+    <string name="there_are_no_current_performance_indicators">There are no current performance indicators</string>
     <string name="permissions_not_to_down">The new version was checked, but your permission was denied, you could not use the storage space, and you could not download the latest version.</string>
     <string name="please_wait">Please later</string>
     <string name="confirm">Confirm</string>

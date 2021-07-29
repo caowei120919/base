@@ -4,6 +4,7 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
+        android:id="@+id/rel_dimension"
         android:layout_width="match_parent"
         android:layout_height="@dimen/H100">
 
@@ -33,7 +34,7 @@
 
         <LinearLayout
             android:layout_toRightOf="@id/tv_pageTime"
-            android:layout_marginLeft="@dimen/W60"
+            android:layout_marginLeft="@dimen/W20"
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_height="match_parent">
@@ -54,9 +55,9 @@
                 android:layout_width="@dimen/W4"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_marginTop="@dimen/H25"
+                android:layout_marginTop="@dimen/H30"
                 android:visibility="gone"
-                android:layout_marginBottom="@dimen/H25"
+                android:layout_marginBottom="@dimen/H30"
                 android:background="@color/c_17263b">
             </TextView>
 
@@ -76,8 +77,8 @@
                 android:layout_width="@dimen/W4"
                 android:layout_height="match_parent"
                 android:visibility="gone"
-                android:layout_marginTop="@dimen/H25"
-                android:layout_marginBottom="@dimen/H25"
+                android:layout_marginTop="@dimen/H30"
+                android:layout_marginBottom="@dimen/H30"
                 android:background="@color/c_17263b">
             </TextView>
 
@@ -94,4 +95,39 @@
         </LinearLayout>
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rel_dimension">
+        <RelativeLayout
+            android:id="@+id/rel_empty"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/img_empty"
+                android:layout_width="@dimen/W400"
+                android:layout_height="@dimen/H400"
+                android:layout_centerInParent="true"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/empty_index" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/there_are_no_current_performance_indicators"
+                android:gravity="center"
+                android:layout_below="@id/img_empty"
+                android:textSize="14sp"
+                android:textColor="@color/c_808080">
+            </TextView>
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle_budget"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </androidx.recyclerview.widget.RecyclerView>
+    </RelativeLayout>
 </RelativeLayout>

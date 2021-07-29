@@ -407,6 +407,10 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
                 break;
 
             case AREA_TAG :
+                tagDimension = pageItemBean.getmPDimension() ;
+                break;
+
+            case PRO_TAG :
                 tagDimension = pageItemBean.getmFuDimension() ;
                 if(!TextUtils.isEmpty(pageItemBean.getmPDimension())){
                     List pArr = new ArrayList() ;
@@ -418,10 +422,6 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
                     paramOfFu.put("dimensionArr",pArr);
                     getPresenter().getOtherDimension(paramOfFu,AREA_TAG);
                 }
-                break;
-
-            case PRO_TAG :
-                tagDimension = pageItemBean.getmPDimension() ;
                 break;
         }
         for (DimensionBean bean:dimensions){

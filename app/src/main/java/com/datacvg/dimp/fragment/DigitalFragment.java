@@ -207,12 +207,8 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
                 break;
 
             case 1 :
-                if(null != budgetFragment){
-                    fragmentTransaction.show(budgetFragment);
-                }else{
-                    budgetFragment = BudgetFragment.newInstance(pageItemBean);
-                    fragmentTransaction.add(R.id.content,budgetFragment);
-                }
+                budgetFragment = BudgetFragment.newInstance(pageItemBean);
+                fragmentTransaction.add(R.id.content,budgetFragment);
                 fragmentTransaction.commitAllowingStateLoss();
                 break;
         }
