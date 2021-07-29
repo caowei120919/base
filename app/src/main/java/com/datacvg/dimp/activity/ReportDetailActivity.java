@@ -1,14 +1,20 @@
 package com.datacvg.dimp.activity;
 
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.webkit.ValueCallback;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -32,6 +38,10 @@ import com.datacvg.dimp.bean.ReportParamsBean;
 import com.datacvg.dimp.presenter.ReportDetailPresenter;
 import com.datacvg.dimp.view.ReportDetailView;
 import com.google.gson.Gson;
+import com.just.agentweb.AgentWeb;
+import com.just.agentweb.DefaultWebClient;
+import com.just.agentweb.WebChromeClient;
+import com.just.agentweb.WebViewClient;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -51,8 +61,8 @@ public class ReportDetailActivity extends BaseActivity<ReportDetailView, ReportD
     private final String TIME_OF_POINT = "point" ;
     private final String TIME_OF_PERIOD = "period" ;
 
-    @BindView(R.id.webView)
-    WebView webView ;
+    @BindView(R.id.container)
+    RelativeLayout container ;
     @BindView(R.id.tv_title)
     TextView tvTitle ;
     @BindView(R.id.img_right)
@@ -65,7 +75,7 @@ public class ReportDetailActivity extends BaseActivity<ReportDetailView, ReportD
      */
     private TimePickerView pvCustomTime ;
     private BaseWindowDialog selectParamsView ;
-
+    protected AgentWeb mAgentWeb;
     private ReportBean bean ;
     private String reportId = "" ;
     private ReportParamsBean.ParamsResultBean paramsResultBean ;
@@ -141,46 +151,69 @@ public class ReportDetailActivity extends BaseActivity<ReportDetailView, ReportD
      * 初始化webview相关设置
      */
     private void initWebView() {
-        WebSettings webSettings = webView.getSettings();
-        //如果访问的页面中要与Javascript交互，则webview必须设置支持Javascript
-        //若加载的html里有JS在执行动画等操作，会造成资源浪费（CPU、电量）在onStop和onResume
-        //里分别把 setJavaScriptEnabled()给设置成false和true即可
-        webSettings.setJavaScriptEnabled(true);
-        // 设置允许JS弹窗
-        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-        //设置自适应屏幕，两者合用
-        webSettings.setUseWideViewPort(true);
-        webSettings.setLoadWithOverviewMode(true);
-        //缩放操作
-        //webSettings.setSupportZoom(true); //支持缩放，默认为true。是下面二个的前提。
-        //webSettings.setBuiltInZoomControls(true); //设置内置的缩放控件。若为false，则该WebView不可缩放
-        //webSettings.setDisplayZoomControls(false); //隐藏原生的缩放控件
-        //设置图片加载
-        webSettings.setBlockNetworkImage(false);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            webSettings.setMixedContentMode(android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        }
-        webSettings.setDomStorageEnabled(true);
-        webSettings.setDatabaseEnabled(true);
-        //String cacheDirPath = getFilesDir().getAbsolutePath() + APP_CACAHE_DIRNAME;
-        //webSettings.setAppCachePath(cacheDirPath); //设置  Application Caches 缓存目录
-        webSettings.setAppCacheEnabled(false);
-        //设置WebView是否使用其内置的变焦机制，该机制结合屏幕缩放控件使用，默认是false，不使用内置变焦机制。
-        webSettings.setAllowContentAccess(false);
-        //设置WebView是否保存表单数据，默认true，保存数据。
-        webSettings.setSaveFormData(true);
-        //缓存模式如下：
-        //LOAD_CACHE_ONLY: 不使用网络，只读取本地缓存数据
-        //LOAD_DEFAULT: （默认）根据cache-control决定是否从网络上取数据。
-        //LOAD_NO_CACHE: 不使用缓存，只从网络获取数据.
-        //LOAD_CACHE_ELSE_NETWORK，只要本地有，无论是否过期，或者no-cache，都使用缓存中的数据。
-        if (AndroidUtils.isNetworkAvailable()) {
-            webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        } else {
-            webSettings.setCacheMode(WebSettings.LOAD_CACHE_ONLY);
-        }
-        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        mAgentWeb = AgentWeb.with(this)
+                .setAgentWebParent(container, new LinearLayout.LayoutParams(-1, -1))
+                .useDefaultIndicator()
+                .setWebChromeClient(mWebChromeClient)
+                .setWebViewClient(mWebViewClient)
+                .setMainFrameErrorView(R.layout.agentweb_error_page, -1)
+                .setSecurityType(AgentWeb.SecurityType.STRICT_CHECK)
+                .setOpenOtherPageWays(DefaultWebClient.OpenOtherPageWays.ASK)
+                .interceptUnkownUrl() //拦截找不到相关页面的Scheme
+                .createAgentWeb()
+                .ready()
+                .go("");
     }
+
+    private com.just.agentweb.WebViewClient mWebViewClient = new WebViewClient() {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            return super.shouldOverrideUrlLoading(view, request);
+        }
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            PLog.e(url);
+            return super.shouldOverrideUrlLoading(view, url);
+        }
+
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageStarted(view, url, favicon);
+            PLog.e(url);
+        }
+    };
+    private WebChromeClient mWebChromeClient = new WebChromeClient() {
+        @Override
+        public void onReceivedTitle(WebView view, String title) {
+            super.onReceivedTitle(view, title);
+        }
+
+        @Override
+        public void openFileChooser(ValueCallback valueCallback, String acceptType) {
+        }
+
+        @Override
+        public void openFileChooser(ValueCallback<Uri> valueCallback) {
+        }
+
+        @Override
+        public void openFileChooser(ValueCallback<Uri> uploadFile, String acceptType, String capture) {
+        }
+
+        @Override
+        public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
+            return true;
+        }
+
+
+
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            PLog.e(view.getUrl());
+            super.onProgressChanged(view, newProgress);
+        }
+    };
 
     @OnClick({R.id.img_left,R.id.img_other,R.id.img_right})
     public void OnClick(View view){
@@ -353,25 +386,25 @@ public class ReportDetailActivity extends BaseActivity<ReportDetailView, ReportD
     private void loadWebUrl() {
         String url = "" ;
         if(paramsResultBean == null){
-             url = Constants.BASE_URL + "/dataexporler/mobile.html#/" + serviceUrl + "/"  + reportId + "/" +Constants.token + "?lang=" + LanguageUtils.getLanguage(mContext) + "&themeName=dap";
-            webView.loadUrl(url);
+             url = Constants.BASE_URL + "/dataexporler/mobile.html#/" + serviceUrl + "/"  + reportId + "/" +Constants.token + "?lang=" + LanguageUtils.getLanguage(mContext) + (bean.getClassify().equals("screen") ? "&themeName=dark" : "&themeName=dap");
+            mAgentWeb.getUrlLoader().loadUrl(url);
             PLog.e(url);
             return;
         }
         switch (paramsResultBean.getTimeShow()){
             case TIME_OF_POINT :
                 url = Constants.BASE_URL +  "/dataexporler/mobile.html#/" + serviceUrl + "/"  + reportId  +"?lang=" + LanguageUtils.getLanguage(mContext)
-                        +Constants.token + "?reportTime = "
-                        + reportTime +  "&themeName=dap";
+                        + Constants.token + "?reportTime = "
+                        + reportTime +  (bean.getClassify().equals("screen") ? "&themeName=dark" : "&themeName=dap");
                 break;
 
             case TIME_OF_PERIOD :
                 url = Constants.BASE_URL +  "/dataexporler/mobile.html#/" + serviceUrl + "/"  + reportId + "/" +Constants.token + "?lang=" + LanguageUtils.getLanguage(mContext) + "?beginTime="
                         + beginTime + "&endTime="
-                        + endTime +  "&themeName=dap";
+                        + endTime +  (bean.getClassify().equals("screen") ? "&themeName=dark" : "&themeName=dap");
                 break;
         }
-        webView.loadUrl(url);
+        mAgentWeb.getUrlLoader().loadUrl(url);
         PLog.e(url);
     }
 

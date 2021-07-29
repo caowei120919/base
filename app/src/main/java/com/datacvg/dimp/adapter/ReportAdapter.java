@@ -12,6 +12,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.DisplayUtils;
@@ -167,8 +171,12 @@ public class ReportAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         PLog.e("文件夹被点击，打开文件夹");
                     });
                 }else{
-                    holder.imgPicture.setImageBitmap(BitmapFactory
-                            .decodeResource(mContext.getResources(),R.mipmap.icon_report));
+                    String imgUrl = String.format(Constants.BASE_URL + Constants.IMG_REPORT_URL,bean.getThumbnail_path());
+                    Glide.with(mContext).load(imgUrl)
+                            .placeholder(R.mipmap.icon_report)
+                            .error(R.mipmap.icon_report)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .into(holder.imgPicture);
                     holder.itemView.setOnClickListener(view -> {
                         listener.onReportClick(bean);
                         PLog.e("报告被打开，跳转" + bean.getModel_id());
@@ -187,8 +195,12 @@ public class ReportAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         PLog.e("文件夹被点击，打开文件夹");
                     });
                 }else{
-                    holder.imgPicture.setImageBitmap(BitmapFactory
-                            .decodeResource(mContext.getResources(),R.mipmap.icon_report));
+                    String imgUrl = String.format(Constants.BASE_URL + Constants.IMG_REPORT_URL,bean.getThumbnail_path());
+                    Glide.with(mContext).load(imgUrl)
+                            .placeholder(R.mipmap.icon_report)
+                            .error(R.mipmap.icon_report)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .into(holder.imgPicture);
                     holder.itemView.setOnClickListener(view -> {
                         listener.onReportClick(bean);
                         PLog.e("报告被打开，跳转" + bean.getShare_id());

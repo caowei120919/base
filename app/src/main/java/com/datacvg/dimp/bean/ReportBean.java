@@ -1,9 +1,7 @@
 package com.datacvg.dimp.bean;
 
 import androidx.annotation.Keep;
-
 import com.datacvg.dimp.baseandroid.config.Constants;
-
 import java.io.Serializable;
 
 /**
@@ -51,7 +49,7 @@ public class ReportBean implements Serializable {
     private String level_sort;
     private String status;
     private String combination_id;
-    private String classify;
+    private String classify = "";
     private String sign;
     private String model_id;
     private String model_clname;
@@ -59,9 +57,18 @@ public class ReportBean implements Serializable {
     private String model_type;
     private String parent_id;
     private String root_id;
+    private String thumbnail_path ;
     private int level = -1;
     private boolean isOpen = false ;
     private String report_type = Constants.REPORT_MINE ;
+
+    public String getThumbnail_path() {
+        return thumbnail_path;
+    }
+
+    public void setThumbnail_path(String thumbnail_path) {
+        this.thumbnail_path = thumbnail_path;
+    }
 
     public String getReport_type() {
         return report_type;

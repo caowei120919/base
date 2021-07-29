@@ -67,7 +67,8 @@ public class Constants {
     public static String BASE_DDB_URL = "" ;
     public static String ACTION_HEAD_IMG = "api/mobile" ;
     public static String HEAD_IMG_URL = "api/mobile/login/readheadimg?userPkid=" ;
-    public static String IMG_URL = "api/file/data/download?fileName=%s&fileType=resimg" ;
+    public static String IMG_TAB_URL = "api/file/data/download?fileName=%s&fileType=resimg" ;
+    public static String IMG_REPORT_URL = "api/file/data/download?fileType=canvas_thumbnails&fileName=%s" ;
     public static String IMG_URL_NONE = "api/file/data/download?" ;
 
     public final static int SERVICE_CODE_SUCCESS_MOBILE = 1 ;

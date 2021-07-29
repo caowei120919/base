@@ -137,6 +137,7 @@ public class SelectFilterActivity extends BaseActivity<SelectFilterView, SelectF
     @Override
     protected void setupData(Bundle savedInstanceState) {
         pageItemBean = (PageItemBean) getIntent().getSerializableExtra(Constants.EXTRA_DATA_FOR_BEAN);
+        PLog.e(pageItemBean.getPad_name());
         StringBuilder builder = new StringBuilder(pageItemBean.getTimeVal());
         switch (pageItemBean.getTime_type()){
             case "year":
@@ -334,6 +335,7 @@ public class SelectFilterActivity extends BaseActivity<SelectFilterView, SelectF
         pageItemBean.setmOrgDimension(bean.getId());
         tvParameterOrg.setText(bean.getD_res_name());
         relOrg.setVisibility(View.GONE);
+        imgOrg.setSelected(!imgOrg.isSelected());
         relOrg.setTag(bean);
     }
 
@@ -348,6 +350,7 @@ public class SelectFilterActivity extends BaseActivity<SelectFilterView, SelectF
         pageItemBean.setmFuDimension(bean.getId());
         tvParameterArea.setText(bean.getD_res_name());
         relArea.setVisibility(View.GONE);
+        imgArea.setSelected(!imgArea.isSelected());
         relArea.setTag(bean);
     }
 
@@ -362,6 +365,7 @@ public class SelectFilterActivity extends BaseActivity<SelectFilterView, SelectF
         pageItemBean.setmPDimension(bean.getId());
         tvParameterPro.setText(bean.getD_res_name());
         relPro.setVisibility(View.GONE);
+        imgPro.setSelected(!imgPro.isSelected());
         relPro.setTag(bean);
     }
 }

@@ -14,6 +14,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.activity.ReportDetailActivity;
 import com.datacvg.dimp.activity.TableDetailActivity;
@@ -51,6 +53,8 @@ public class TableFragment extends BaseFragment<TableView, TablePresenter> imple
     RecyclerView recyclerTable ;
     @BindView(R.id.ed_search)
     EditText edSearch ;
+    @BindView(R.id.swipe_tab)
+    SwipeRefreshLayout swipeTab ;
 
     private List<TableBean> tableBeans = new ArrayList<>();
     private List<TableBean> allTableBeans = new ArrayList<>() ;
@@ -73,6 +77,13 @@ public class TableFragment extends BaseFragment<TableView, TablePresenter> imple
                 ,mContext.getResources().getColor(R.color.c_FFFFFF));
         imgLeft.setVisibility(View.GONE);
         tvTitle.setText(resources.getString(R.string.the_theme_report));
+
+        swipeTab.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getTableList();
+            }
+        });
     }
 
     @Override
@@ -96,6 +107,9 @@ public class TableFragment extends BaseFragment<TableView, TablePresenter> imple
      */
     @Override
     public void getTableSuccess(TableListBean tableBeans) {
+        if (swipeTab.isRefreshing()){
+            swipeTab.setRefreshing(false);
+        }
         List<TableBean> rootBeans = new ArrayList<>();
         allTableBeans.clear();
         allTableBeans.addAll(tableBeans);

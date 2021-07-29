@@ -3,16 +3,15 @@ package com.datacvg.dimp.fragment;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.activity.ReportDetailActivity;
@@ -24,10 +23,8 @@ import com.datacvg.dimp.bean.ReportBean;
 import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.presenter.ReportPresenter;
 import com.datacvg.dimp.view.ReportView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -51,12 +48,17 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
     RelativeLayout relFolder ;
     @BindView(R.id.tv_folderName)
     TextView tvFolderName ;
+    @BindView(R.id.swipe_report)
+    SwipeRefreshLayout swipeReport ;
 
     private String reportDisplayModel = Constants.REPORT_GRID;
     private String reportType = Constants.REPORT_MINE ;
     private ReportAdapter adapter ;
     private int parentLevel = -1 ;
     private String parentId =  "" ;
+    private final String requestModelParentId = "1000000000" ;
+    private final String requestShareParentId = "100000000" ;
+
     /**
      * 总的数据，做存储使用
      */
@@ -93,6 +95,21 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
         recyclerReport.setLayoutManager(new GridLayoutManager(mContext,2));
         recyclerReport.addItemDecoration(reportItemDecoration);
         recyclerReport.setAdapter(adapter);
+
+        swipeReport.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                switch (reportType){
+                    case Constants.REPORT_MINE :
+                        getReport();
+                        break;
+
+                    default:
+                        getPresenter().getReport(requestShareParentId,reportType,String.valueOf(System.currentTimeMillis()));
+                        break;
+                }
+            }
+        });
     }
 
     @Override
@@ -107,7 +124,7 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
      * 获取报告
      */
     private void getReport() {
-        getPresenter().getReport(reportType,String.valueOf(System.currentTimeMillis()));
+        getPresenter().getReport(requestModelParentId,reportType,String.valueOf(System.currentTimeMillis()));
     }
 
     @OnClick({R.id.img_left,R.id.tv_reportOfMine,R.id.tv_reportToShare,R.id.rel_folder})
@@ -139,7 +156,7 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
                 if (adapter != null){
                     adapter.setReportType(reportType);
                 }
-                getPresenter().getReport(reportType,String.valueOf(System.currentTimeMillis()));
+                getPresenter().getReport(requestModelParentId,reportType,String.valueOf(System.currentTimeMillis()));
                 break;
 
             case R.id.tv_reportToShare :
@@ -149,7 +166,7 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
                 if (adapter != null){
                     adapter.setReportType(reportType);
                 }
-                getPresenter().getReport(reportType,String.valueOf(System.currentTimeMillis()));
+                getPresenter().getReport(requestShareParentId,reportType,String.valueOf(System.currentTimeMillis()));
                 break;
 
             case R.id.rel_folder :
@@ -186,6 +203,9 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
      */
     @Override
     public void getReportSuccess(ReportListBean data) {
+        if(swipeReport.isRefreshing()){
+            swipeReport.setRefreshing(false);
+        }
         reportBeans.clear();
         reportBeans.addAll(data);
         reportDisPlayBeans.clear();

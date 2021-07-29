@@ -1,12 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="绩效"
-        android:textSize="28sp"
-        android:layout_centerInParent="true">
-    </TextView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H100">
+
+        <TextView
+            android:id="@+id/tv_pageTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_toRightOf="@id/tv_timeType"
+            android:textColor="@color/c_808080"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/W48">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_timeType"
+            android:layout_width="@dimen/W40"
+            android:layout_height="@dimen/H40"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_marginLeft="@dimen/W24"
+            android:layout_marginRight="@dimen/W20"
+            android:textColor="@color/c_808080"
+            android:background="@drawable/shape_dbdbdb_round">
+        </TextView>
+
+        <LinearLayout
+            android:layout_toRightOf="@id/tv_pageTime"
+            android:layout_marginLeft="@dimen/W60"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_orgName"
+                android:textSize="14sp"
+                android:visibility="gone"
+                android:gravity="center"
+                android:textColor="@color/c_808080"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+            </TextView>
+
+            <TextView
+                android:id="@+id/tv_proLine"
+                android:layout_width="@dimen/W4"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/H25"
+                android:visibility="gone"
+                android:layout_marginBottom="@dimen/H25"
+                android:background="@color/c_17263b">
+            </TextView>
+
+            <TextView
+                android:id="@+id/tv_proName"
+                android:textSize="14sp"
+                android:visibility="gone"
+                android:gravity="center"
+                android:textColor="@color/c_808080"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+            </TextView>
+
+            <TextView
+                android:id="@+id/tv_areaLine"
+                android:layout_width="@dimen/W4"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/H25"
+                android:layout_marginBottom="@dimen/H25"
+                android:background="@color/c_17263b">
+            </TextView>
+
+            <TextView
+                android:id="@+id/tv_areaName"
+                android:textSize="14sp"
+                android:visibility="gone"
+                android:gravity="center"
+                android:textColor="@color/c_808080"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+            </TextView>
+        </LinearLayout>
+    </RelativeLayout>
+
 </RelativeLayout>

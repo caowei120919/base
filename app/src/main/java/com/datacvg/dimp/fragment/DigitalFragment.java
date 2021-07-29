@@ -6,6 +6,8 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.Keep;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.datacvg.dimp.R;
@@ -16,10 +18,13 @@ import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.baseandroid.utils.ShareContentType;
 import com.datacvg.dimp.baseandroid.utils.ShareUtils;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
+import com.datacvg.dimp.bean.PageItemBean;
 import com.datacvg.dimp.event.AddIndexEvent;
+import com.datacvg.dimp.event.BudgetEvent;
 import com.datacvg.dimp.event.CompleteEvent;
 import com.datacvg.dimp.event.EditEvent;
 import com.datacvg.dimp.event.PageCompleteEvent;
+import com.datacvg.dimp.event.SelectPageEvent;
 import com.datacvg.dimp.event.SelectParamsEvent;
 import com.datacvg.dimp.event.ToAddIndexEvent;
 import com.datacvg.dimp.presenter.DigitalPresenter;
@@ -62,6 +67,7 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
     private FragmentTransaction fragmentTransaction;
     private BoardFragment boardFragment ;
     private BudgetFragment budgetFragment ;
+    private PageItemBean pageItemBean ;
 
     @Override
     protected int getLayoutId() {
@@ -128,7 +134,6 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
                             @Override
                             public void onNext(Boolean aBoolean) {
                                 super.onNext(aBoolean);
-                                PLog.e("分享");
                                 File file = screenshot() ;
                                 if(file != null){
                                     Uri mUri = Uri.fromFile(screenshot());
@@ -205,7 +210,7 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
                 if(null != budgetFragment){
                     fragmentTransaction.show(budgetFragment);
                 }else{
-                    budgetFragment = new BudgetFragment();
+                    budgetFragment = BudgetFragment.newInstance(pageItemBean);
                     fragmentTransaction.add(R.id.content,budgetFragment);
                 }
                 fragmentTransaction.commitAllowingStateLoss();
@@ -225,5 +230,10 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PageCompleteEvent event){
         statusTitle.showContent();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SelectPageEvent event){
+        pageItemBean = event.getPageItemBean();
     }
 }

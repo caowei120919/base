@@ -54,7 +54,7 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> 
             holder.tvTitle.setText(LanguageUtils.isZh(mContext)
                     ? bean.getRes_clname() : bean.getRes_flname());
 
-            String imgUrl = String.format(Constants.BASE_URL + Constants.IMG_URL,bean.getRes_imgpath());
+            String imgUrl = String.format(Constants.BASE_URL + Constants.IMG_TAB_URL,bean.getRes_imgpath());
             Glide.with(mContext).load(imgUrl)
                     .placeholder(R.mipmap.screen_default)
                     .error(R.mipmap.screen_default)

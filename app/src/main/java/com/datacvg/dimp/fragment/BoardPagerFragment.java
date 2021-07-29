@@ -29,6 +29,8 @@ import com.datacvg.dimp.bean.EChartListBean;
 import com.datacvg.dimp.bean.IndexChartBean;
 import com.datacvg.dimp.bean.PageItemBean;
 import com.datacvg.dimp.event.AddIndexEvent;
+import com.datacvg.dimp.event.BudgetEvent;
+import com.datacvg.dimp.event.BudgetItemEvent;
 import com.datacvg.dimp.event.CheckIndexEvent;
 import com.datacvg.dimp.event.CompleteEvent;
 import com.datacvg.dimp.event.DeletePageEvent;
@@ -561,6 +563,13 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
             Intent intent = new Intent(mContext, SelectFilterActivity.class);
             intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,pageItemBean);
             mContext.startActivity(intent);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(BudgetEvent event){
+        if(isFragmentVisible()){
+            EventBus.getDefault().post(new BudgetItemEvent(pageItemBean));
         }
     }
 

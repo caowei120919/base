@@ -5,6 +5,7 @@ import android.view.View;
 import androidx.fragment.app.Fragment;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.BoardPagerAdapter;
+import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.PageItemBean;
 import com.datacvg.dimp.event.AddPageEvent;
@@ -15,6 +16,7 @@ import com.datacvg.dimp.event.EmptyFragmentEvent;
 import com.datacvg.dimp.event.FilterEvent;
 import com.datacvg.dimp.event.PageCompleteEvent;
 import com.datacvg.dimp.event.SavePageEvent;
+import com.datacvg.dimp.event.SelectPageEvent;
 import com.datacvg.dimp.event.ToAddIndexEvent;
 import com.datacvg.dimp.presenter.BoardPresenter;
 import com.datacvg.dimp.view.BoardView;
@@ -116,6 +118,7 @@ public class BoardFragment extends BaseFragment<BoardView, BoardPresenter> imple
             circleNavigator.setCircleCount(pageFragments.size());
             magicIndicator.getNavigator().notifyDataSetChanged();
             vpBoard.setCurrentItem(0);
+            EventBus.getDefault().post(new SelectPageEvent(pageItemBeans.get(0)));
         }
 
         if(isAddEvent){
@@ -126,7 +129,7 @@ public class BoardFragment extends BaseFragment<BoardView, BoardPresenter> imple
 
     @Override
     public void onExtraPageSelected(int i) {
-
+        EventBus.getDefault().post(new SelectPageEvent(pageItemBeans.get(i)));
     }
 
     @Override

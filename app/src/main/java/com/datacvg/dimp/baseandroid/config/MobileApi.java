@@ -97,7 +97,8 @@ public interface MobileApi {
      * @return
      */
     @GET("api/dataengine/dataexporler/report/folder")
-    Observable<BaseBean<ReportListBean>> getReport(@Query("type") String reportType,
+    Observable<BaseBean<ReportListBean>> getReport(@Query("parentId") String parentId,
+                                                   @Query("type") String reportType,
                                                    @Query("_t") String t);
 
     /**

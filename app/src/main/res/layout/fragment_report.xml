@@ -94,12 +94,17 @@
         </TextView>
     </RelativeLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_report"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_report"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/rel_folder"
         android:layout_marginLeft="@dimen/W20"
         android:layout_marginBottom="@dimen/H20">
-    </androidx.recyclerview.widget.RecyclerView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_report"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </androidx.recyclerview.widget.RecyclerView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </RelativeLayout>

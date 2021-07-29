@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
+import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
@@ -71,6 +72,7 @@ public class TableDetailActivity extends BaseActivity<TableDetailView, TableDeta
      * 报表参数选择筛选条件拼接
      */
     private String paramArr = "" ;
+    private String serviceUrl = Constants.BASE_URL;
 
     @Override
     protected int getLayoutId() {
@@ -86,6 +88,26 @@ public class TableDetailActivity extends BaseActivity<TableDetailView, TableDeta
     protected void setupView() {
         StatusBarUtil.setStatusBarColor(this,mContext.getResources()
                 .getColor(R.color.c_FFFFFF));
+        initWebView();
+    }
+
+    /**
+     * 初始化web
+     */
+    private void initWebView() {
+        mAgentWeb = AgentWeb.with(this)
+                .setAgentWebParent(container, new LinearLayout.LayoutParams(-1, -1))
+                .useDefaultIndicator()
+                .setWebChromeClient(mWebChromeClient)
+                .setWebViewClient(mWebViewClient)
+                .setMainFrameErrorView(R.layout.agentweb_error_page, -1)
+                .setSecurityType(AgentWeb.SecurityType.STRICT_CHECK)
+                .setOpenOtherPageWays(DefaultWebClient.OpenOtherPageWays.DERECT)
+                .interceptUnkownUrl() //拦截找不到相关页面的Scheme
+                .createAgentWeb()
+                .ready()
+                .go("");
+        serviceUrl = serviceUrl + "api/dataengine/dataexporler" ;
     }
 
     @Override
@@ -143,13 +165,11 @@ public class TableDetailActivity extends BaseActivity<TableDetailView, TableDeta
                     commentIntent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,tableBean);
                     startActivity(commentIntent);
                 }else{
-                    PLog.e("默认报表");
                     showSetDefaultDialog();
                 }
                 break;
 
             case R.id.imgThree :
-                PLog.e("默认报表");
                 showSetDefaultDialog();
                 break;
         }
@@ -219,38 +239,18 @@ public class TableDetailActivity extends BaseActivity<TableDetailView, TableDeta
                 case "powerbi" :
                     Map<String,String> map = new HashMap<>();
                     map.put("authorization",resdata.getData().getToken());
-                    String url = "file:///android_asset/mobile.html";
-                    mAgentWeb = AgentWeb.with(this)
-                            .setAgentWebParent(container, new LinearLayout.LayoutParams(-1, -1))
-                            .useDefaultIndicator()
-                            .setWebChromeClient(mWebChromeClient)
-                            .setWebViewClient(mWebViewClient)
-                            .setMainFrameErrorView(R.layout.agentweb_error_page, -1)
-                            .setSecurityType(AgentWeb.SecurityType.STRICT_CHECK)
-                            .setOpenOtherPageWays(DefaultWebClient.OpenOtherPageWays.ASK)
-                            .interceptUnkownUrl() //拦截找不到相关页面的Scheme
-                            .createAgentWeb()
-                            .ready()
-                            .go(url);
+                    String url = "file:///android_asset/mobile.html?embedUrl=" + Uri.encode(resdata.getShowUrl()) + "&accessToken=" + Uri.encode(resdata.getData().getToken()) + "&reportId=" + Uri.encode(resdata.getData().getReportId());
+                    mAgentWeb.getUrlLoader().loadUrl(url);
                     break;
 
                 case "MODEL" :
-
+                    mAgentWeb.getUrlLoader().loadUrl(Constants.BASE_URL + "/dataexporler/mobile.html?" +"semf_lang=" + LanguageUtils.getLanguage(mContext)
+                            + "&userpkid=" + PreferencesHelper.get(Constants.USER_PKID,"") + "#/" + Uri.encode(serviceUrl) + "/" + tableBean.getRes_cuid() + "/" + Constants.token + "?"
+                            + paramArr + "&themeName=" + ((tableBean.getModel_screen().equals("screen")) ? "dark" : "dap"));
                     break;
 
                 default:
-                    mAgentWeb = AgentWeb.with(this)
-                            .setAgentWebParent(container, new LinearLayout.LayoutParams(-1, -1))
-                            .useDefaultIndicator()
-                            .setWebChromeClient(mWebChromeClient)
-                            .setWebViewClient(mWebViewClient)
-                            .setMainFrameErrorView(R.layout.agentweb_error_page, -1)
-                            .setSecurityType(AgentWeb.SecurityType.STRICT_CHECK)
-                            .setOpenOtherPageWays(DefaultWebClient.OpenOtherPageWays.ASK)
-                            .interceptUnkownUrl() //拦截找不到相关页面的Scheme
-                            .createAgentWeb()
-                            .ready()
-                            .go(resdata.getShowUrl());
+                    mAgentWeb.getUrlLoader().loadUrl(resdata.getShowUrl());
                     break;
             }
         }

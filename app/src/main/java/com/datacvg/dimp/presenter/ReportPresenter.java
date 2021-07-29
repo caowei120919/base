@@ -23,8 +23,8 @@ public class ReportPresenter extends BasePresenter<ReportView>{
         this.api = api ;
     }
 
-    public void getReport(String reportType, String _t) {
-        api.getReport(reportType,_t)
+    public void getReport(String parentId,String reportType, String _t) {
+        api.getReport(parentId,reportType,_t)
                 .compose(RxUtils.applySchedulersLifeCycle(getView()))
                 .subscribe(new RxObserver<BaseBean<ReportListBean>>(){
                     @Override
