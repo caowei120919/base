@@ -8,6 +8,8 @@
     <string name="use_vpn">使用VPN</string>
     <string name="login">登录</string>
     <string name="setting_up">配置</string>
+    <string name="big">大</string>
+    <string name="small">小</string>
     <string name="please_check_the_network">请检查网络</string>
     <string name="please_enter_the_user_name">请输入用户名</string>
     <string name="please_enter_your_password">请输入密码</string>

@@ -2,11 +2,13 @@ package com.datacvg.dimp.baseandroid.utils;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -14,8 +16,10 @@ import android.os.StrictMode;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.view.View;
 
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 
 import com.datacvg.dimp.baseandroid.utils.javaio.FastCharArrayWriter;
 import com.datacvg.dimp.baseandroid.utils.javaio.JoddIoDefault;
@@ -128,6 +132,32 @@ public class FileUtils {
         } catch (UnsupportedEncodingException e) {
             return null;
         }
+    }
+
+    public static File screenshot(Activity mContext) {
+        // 获取屏幕
+        View dView = mContext.getWindow().getDecorView();
+        dView.setDrawingCacheEnabled(true);
+        dView.buildDrawingCache();
+        Bitmap bmp = dView.getDrawingCache();
+        if (bmp != null)
+        {
+            try {
+                // 获取内置SD卡路径
+                String sdCardPath = Environment.getExternalStorageDirectory().getPath();
+                // 图片文件路径
+                String imagePath = sdCardPath + File.separator + "screenshot.png";
+                File file = new File(imagePath);
+                FileOutputStream os = new FileOutputStream(file);
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
+                os.flush();
+                os.close();
+                return file ;
+            } catch (Exception e) {
+                return null ;
+            }
+        }
+        return null ;
     }
 
     /**

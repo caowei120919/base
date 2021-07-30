@@ -18,6 +18,7 @@ import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.baseandroid.utils.ShareContentType;
 import com.datacvg.dimp.baseandroid.utils.ShareUtils;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
+import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.PageItemBean;
 import com.datacvg.dimp.event.AddIndexEvent;
 import com.datacvg.dimp.event.BudgetEvent;
@@ -134,15 +135,19 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
                             @Override
                             public void onNext(Boolean aBoolean) {
                                 super.onNext(aBoolean);
-                                File file = screenshot() ;
-                                if(file != null){
-                                    Uri mUri = Uri.fromFile(screenshot());
-                                    new ShareUtils
-                                            .Builder(getActivity())
-                                            .setContentType(ShareContentType.IMAGE)
-                                            .setShareFileUri(mUri)
-                                            .build()
-                                            .shareBySystem();
+                                if(aBoolean){
+                                    File file = FileUtils.screenshot(getActivity()) ;
+                                    if(file != null){
+                                        Uri mUri = Uri.fromFile(file);
+                                        new ShareUtils
+                                                .Builder(getActivity())
+                                                .setContentType(ShareContentType.IMAGE)
+                                                .setShareFileUri(mUri)
+                                                .build()
+                                                .shareBySystem();
+                                    }
+                                }else{
+                                    ToastUtils.showLongToast(resources.getString(R.string.dont_allow_permissions));
                                 }
                             }
                         });
@@ -152,32 +157,6 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
                 EventBus.getDefault().post(new SelectParamsEvent());
                 break;
         }
-    }
-
-    private File screenshot() {
-        // 获取屏幕
-        View dView = getActivity().getWindow().getDecorView();
-        dView.setDrawingCacheEnabled(true);
-        dView.buildDrawingCache();
-        Bitmap bmp = dView.getDrawingCache();
-        if (bmp != null)
-        {
-            try {
-                // 获取内置SD卡路径
-                String sdCardPath = Environment.getExternalStorageDirectory().getPath();
-                // 图片文件路径
-                String imagePath = sdCardPath + File.separator + "screenshot.png";
-                File file = new File(imagePath);
-                FileOutputStream os = new FileOutputStream(file);
-                bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
-                os.flush();
-                os.close();
-                return file ;
-            } catch (Exception e) {
-                return null ;
-            }
-        }
-        return null ;
     }
 
     /**

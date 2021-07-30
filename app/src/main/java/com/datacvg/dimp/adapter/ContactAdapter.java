@@ -142,14 +142,13 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(((ContactViewHolder) holder).imgAvatar);
             ((ContactViewHolder) holder).mTextView.setText(resultList.get(position).getName());
-            ((ContactViewHolder) holder).cbContact.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    ((ContactViewHolder) holder).cbContact.setChecked(b);
+            ((ContactViewHolder) holder).tvContact.setSelected(resultList.get(position).isChecked());
+            ((ContactViewHolder) holder).tvContact.setOnClickListener(view ->  {
+                    ((ContactViewHolder) holder).tvContact.setSelected(!((ContactViewHolder) holder).tvContact.isSelected());
                     ContactBean contactBean = resultList.get(position).getBean();
-                    contactBean.setChecked(b);
+                    contactBean.setChecked(((ContactViewHolder) holder).tvContact.isSelected());
+                    notifyDataSetChanged();
                     EventBus.getDefault().post(new ContactEvent(contactBean));
-                }
             });
         }
     }
@@ -172,8 +171,8 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         @BindView(R.id.img_avatar)
         CircleImageView imgAvatar ;
 
-        @BindView(R.id.cb_contact)
-        CheckBox cbContact ;
+        @BindView(R.id.tv_contact)
+        TextView tvContact ;
         public ContactViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);

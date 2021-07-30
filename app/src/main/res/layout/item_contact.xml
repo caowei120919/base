@@ -3,19 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/H107">
 
-    <CheckBox
-        android:id="@+id/cb_contact"
+    <TextView
+        android:id="@+id/tv_contact"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/W24"
-        android:button="@drawable/selector_select">
-    </CheckBox>
+        android:background="@drawable/selector_select">
+    </TextView>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_avatar"
         android:layout_width="@dimen/W68"
-        android:layout_toRightOf="@id/cb_contact"
+        android:layout_toRightOf="@id/tv_contact"
         android:layout_centerVertical="true"
         android:layout_height="@dimen/H68"
         android:layout_marginLeft="@dimen/W24"/>

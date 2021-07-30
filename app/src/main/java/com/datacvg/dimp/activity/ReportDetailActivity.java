@@ -1,5 +1,6 @@
 package com.datacvg.dimp.activity;
 
+import android.Manifest;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -25,9 +26,14 @@ import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
+import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.utils.AndroidUtils;
+import com.datacvg.dimp.baseandroid.utils.FileUtils;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
+import com.datacvg.dimp.baseandroid.utils.RxUtils;
+import com.datacvg.dimp.baseandroid.utils.ShareContentType;
+import com.datacvg.dimp.baseandroid.utils.ShareUtils;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.baseandroid.utils.TimeUtils;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
@@ -42,7 +48,9 @@ import com.just.agentweb.AgentWeb;
 import com.just.agentweb.DefaultWebClient;
 import com.just.agentweb.WebChromeClient;
 import com.just.agentweb.WebViewClient;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Calendar;
@@ -229,6 +237,37 @@ public class ReportDetailActivity extends BaseActivity<ReportDetailView, ReportD
                     }else{
                         initSelectParamsView();
                     }
+                break;
+
+            case R.id.img_right :
+                new RxPermissions(mContext)
+                        .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        .compose(RxUtils.applySchedulersLifeCycle(getMvpView()))
+                        .subscribe(new RxObserver<Boolean>(){
+                            @Override
+                            public void onComplete() {
+                                super.onComplete();
+                            }
+
+                            @Override
+                            public void onNext(Boolean aBoolean) {
+                                super.onNext(aBoolean);
+                                if(aBoolean){
+                                    File file = FileUtils.screenshot(ReportDetailActivity.this) ;
+                                    if(file != null){
+                                        Uri mUri = Uri.fromFile(file);
+                                        new ShareUtils
+                                                .Builder(mContext)
+                                                .setContentType(ShareContentType.IMAGE)
+                                                .setShareFileUri(mUri)
+                                                .build()
+                                                .shareBySystem();
+                                    }
+                                }else{
+                                    ToastUtils.showLongToast(resources.getString(R.string.dont_allow_permissions));
+                                }
+                            }
+                        });
                 break;
         }
     }

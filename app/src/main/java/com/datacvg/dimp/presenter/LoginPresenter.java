@@ -70,7 +70,20 @@ public class LoginPresenter extends BasePresenter<LoginView> {
      * @param password      密码
      */
     private void getServiceUrl(String companyCode, String userName, String password) {
-        String url = String.format(Constants.BASE_MERCHANT,companyCode);
+        String url = "";
+        switch (companyCode){
+            case Constants.DEV_CODE :
+                url = Constants.BASE_DEV_MERCHANT;
+                break;
+
+            case Constants.TEST_CODE :
+                url = Constants.BASE_TEST_MERCHANT;
+                break;
+
+            default:
+                url = String.format(Constants.BASE_MERCHANT,companyCode);
+                break;
+        }
         Constants.BASE_MOBILE_URL = url ;
         RetrofitUrlManager.getInstance().setRun(true);
         RetrofitUrlManager.getInstance()

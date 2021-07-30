@@ -1,15 +1,15 @@
 package com.datacvg.dimp.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.activity.IndexTreeActivity;
 import com.datacvg.dimp.adapter.BudgetIndexAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
@@ -17,14 +17,13 @@ import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.bean.ChatTypeRequestBean;
 import com.datacvg.dimp.bean.DimensionPositionBean;
 import com.datacvg.dimp.bean.IndexChartBean;
+import com.datacvg.dimp.bean.IndexTreeNeedBean;
 import com.datacvg.dimp.bean.PageItemBean;
 import com.datacvg.dimp.presenter.BudgetPresenter;
 import com.datacvg.dimp.view.BudgetView;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import butterknife.BindView;
 
 /**
@@ -32,7 +31,7 @@ import butterknife.BindView;
  * @Time : 2021-07-02
  * @Description : 指标绩效
  */
-public class BudgetFragment extends BaseFragment<BudgetView, BudgetPresenter> implements BudgetView {
+public class BudgetFragment extends BaseFragment<BudgetView, BudgetPresenter> implements BudgetView, BudgetIndexAdapter.IndexClickListener {
     @BindView(R.id.tv_pageTime)
     TextView tvPageTime ;
     @BindView(R.id.tv_timeType)
@@ -80,7 +79,7 @@ public class BudgetFragment extends BaseFragment<BudgetView, BudgetPresenter> im
     private void initAdapter() {
         GridLayoutManager manager = new GridLayoutManager(mContext,2);
         recycleBudget.setLayoutManager(manager);
-        adapter = new BudgetIndexAdapter(mContext,indexPositionBeans);
+        adapter = new BudgetIndexAdapter(mContext,indexPositionBeans,this);
         recycleBudget.setAdapter(adapter);
     }
 
@@ -251,5 +250,36 @@ public class BudgetFragment extends BaseFragment<BudgetView, BudgetPresenter> im
             }
         }
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void OnTitleClick(DimensionPositionBean.IndexPositionBean bean) {
+
+    }
+
+    @Override
+    public void OnItemClick(DimensionPositionBean.IndexPositionBean bean) {
+        IndexTreeNeedBean indexTreeNeedBean = new IndexTreeNeedBean();
+        indexTreeNeedBean.setAnalysisDimension(bean.getAnalysis_dimension());
+        indexTreeNeedBean.setOrgDimension(pageItemBean.getmOrgDimension());
+        indexTreeNeedBean.setFuName(pageItemBean.getmFuName());
+        indexTreeNeedBean.setpDimension(pageItemBean.getmPDimension());
+        indexTreeNeedBean.setIndexId(bean.getIndex_id());
+        indexTreeNeedBean.setOrgValue(pageItemBean.getmOrgValue());
+        indexTreeNeedBean.setpName(pageItemBean.getMpName());
+        indexTreeNeedBean.setFuValue(pageItemBean.getmFuValue());
+        indexTreeNeedBean.setFuDimension(pageItemBean.getmFuDimension());
+        indexTreeNeedBean.setpValue(pageItemBean.getMpValue());
+        indexTreeNeedBean.setOrgName(pageItemBean.getmOrgName());
+        indexTreeNeedBean.setTimeVal(pageItemBean.getTimeVal());
+        indexTreeNeedBean.setType("4");
+        Intent intent = new Intent(mContext, IndexTreeActivity.class);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,indexTreeNeedBean);
+        startActivity(intent);
+    }
+
+    @Override
+    public void OnIndexDeleteClick(DimensionPositionBean.IndexPositionBean bean) {
+
     }
 }

@@ -209,6 +209,11 @@ public class Constants {
     public static String BASE_URL = "https://datacvg.datacvg.com/" ;
 
     public static String BASE_MERCHANT = "https://"+ "%s" +".datacvg.com/";
+    public static String BASE_TEST_MERCHANT = "http://192.168.2.181/";
+    public static String BASE_DEV_MERCHANT = "https://datacvg.dev.datacvg.com/";
+
+    public final static String DEV_CODE = "datacvg.dev" ;
+    public final static String TEST_CODE = "datacvg.test" ;
 
     /**
      * 大屏展示链接服务器的url，登录获取api服务器地址的时候,使用返回值代替

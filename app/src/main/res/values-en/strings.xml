@@ -23,6 +23,8 @@
     <string name="permissions_not_to_down">The new version was checked, but your permission was denied, you could not use the storage space, and you could not download the latest version.</string>
     <string name="please_wait">Please later</string>
     <string name="confirm">Confirm</string>
+    <string name="big">big</string>
+    <string name="small">small</string>
     <string name="cancel">Cancel</string>
     <string name="screening">Screening</string>
     <string name="warm_prompt">Warm prompt</string>

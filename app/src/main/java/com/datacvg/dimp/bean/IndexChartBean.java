@@ -208,7 +208,7 @@ public class IndexChartBean implements Serializable {
         }
 
         public String getThreshold_value() {
-            return threshold_value;
+            return threshold_value.replaceAll(",","");
         }
 
         public void setThreshold_value(String threshold_value) {

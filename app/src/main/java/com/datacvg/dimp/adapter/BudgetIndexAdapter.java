@@ -48,10 +48,8 @@ import com.datacvg.dimp.bean.PieChartBaseBean;
 import com.datacvg.dimp.widget.BulletChart;
 import com.datacvg.dimp.widget.DashboardChart;
 import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -73,14 +71,14 @@ public class BudgetIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private Context mContext ;
     private LayoutInflater inflater ;
     private List<DimensionPositionBean.IndexPositionBean> chartBeans = new ArrayList<>();
-    private boolean mShake = false ;
-
+    private IndexClickListener listener ;
 
     public BudgetIndexAdapter(Context mContext
-            , List<DimensionPositionBean.IndexPositionBean> chartBeans) {
+            , List<DimensionPositionBean.IndexPositionBean> chartBeans,IndexClickListener listener) {
         this.mContext = mContext;
         this.inflater = LayoutInflater.from(mContext);
         this.chartBeans = chartBeans;
+        this.listener = listener ;
     }
 
     @NonNull
@@ -144,21 +142,8 @@ public class BudgetIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    public void setHolderShake(boolean isShake){
-        mShake = isShake ;
-        notifyDataSetChanged();
-    }
-
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if(mShake){
-            holder.itemView.setAnimation(AnimationUtils.loadAnimation(mContext,R.anim.shake));
-            holder.itemView.getAnimation().start();
-        }else{
-            if(holder.itemView.getAnimation() != null && holder.itemView.getAnimation().hasStarted()){
-                holder.itemView.getAnimation().cancel();
-            }
-        }
         if(holder instanceof TextHolder){
             onBindViewTextHolder((TextHolder) holder,position);
         }else if(holder instanceof LongTextHolder){
@@ -292,18 +277,9 @@ public class BudgetIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
         });
-        if (mShake){
-            holder.imgIndexForReport.setImageBitmap(BitmapFactory
-                    .decodeResource(mContext.getResources(),R.mipmap.dash_delete));
-            holder.imgDescribe.setVisibility(View.GONE);
-            holder.imgIndexForReport.setOnClickListener(view -> {
-                PLog.e("删除指标");
-            });
-        }else{
-            holder.imgIndexForReport.setImageBitmap(BitmapFactory
-                    .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
-            holder.imgDescribe.setVisibility(View.VISIBLE);
-        }
+        holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
+        holder.imgDescribe.setVisibility(View.VISIBLE);
         holder.tvDefaultValue.setText(dimensionPositionBean.getIndex_data() + "");
         holder.tvDefaultValue.setTextColor(Color.parseColor(dimensionPositionBean.getIndex_default_color()));
     }
@@ -330,18 +306,9 @@ public class BudgetIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
         });
-        if (mShake){
-            holder.imgIndexForReport.setImageBitmap(BitmapFactory
-                    .decodeResource(mContext.getResources(),R.mipmap.dash_delete));
-            holder.imgDescribe.setVisibility(View.GONE);
-            holder.imgIndexForReport.setOnClickListener(view -> {
-                PLog.e("删除指标");
-            });
-        }else{
-            holder.imgIndexForReport.setImageBitmap(BitmapFactory
-                    .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
-            holder.imgDescribe.setVisibility(View.VISIBLE);
-        }
+        holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
+        holder.imgDescribe.setVisibility(View.VISIBLE);
         holder.tvDefaultValue.setText(dimensionPositionBean.getIndex_data() + "");
         holder.tvDefaultValue.setTextColor(Color.parseColor(dimensionPositionBean
                 .getIndex_default_color()));
@@ -467,18 +434,9 @@ public class BudgetIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
         });
-        if (mShake){
-            holder.imgIndexForReport.setImageBitmap(BitmapFactory
-                    .decodeResource(mContext.getResources(),R.mipmap.dash_delete));
-            holder.imgDescribe.setVisibility(View.GONE);
-            holder.imgIndexForReport.setOnClickListener(view -> {
-                PLog.e("删除指标");
-            });
-        }else{
-            holder.imgIndexForReport.setImageBitmap(BitmapFactory
-                    .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
-            holder.imgDescribe.setVisibility(View.VISIBLE);
-        }
+        holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
+        holder.imgDescribe.setVisibility(View.VISIBLE);
         holder.tvDefaultValue.setText(dimensionPositionBean.getIndex_data() + "");
         holder.tvDefaultValue
                 .setTextColor(Color.parseColor(dimensionPositionBean.getIndex_default_color()));
@@ -536,6 +494,7 @@ public class BudgetIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
         holder.itemView.setOnClickListener(view -> {
             PLog.e("点击");
+            listener.OnItemClick(chartBeans.get(position));
         });
         holder.tvUnit.setText(dimensionPositionBean.getChart_unit());
         if(TextUtils.isEmpty(dimensionPositionBean.getChart_top_title())){
@@ -546,18 +505,9 @@ public class BudgetIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
         });
-        if (mShake){
-            holder.imgIndexForReport.setImageBitmap(BitmapFactory
-                    .decodeResource(mContext.getResources(),R.mipmap.dash_delete));
-            holder.imgDescribe.setVisibility(View.GONE);
-            holder.imgIndexForReport.setOnClickListener(view -> {
-                PLog.e("删除指标");
-            });
-        }else{
-            holder.imgIndexForReport.setImageBitmap(BitmapFactory
-                    .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
-            holder.imgDescribe.setVisibility(View.VISIBLE);
-        }
+        holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
+        holder.imgDescribe.setVisibility(View.VISIBLE);
         holder.dashBoardChart.drawData(dimensionPositionBean);
     }
 
@@ -573,6 +523,7 @@ public class BudgetIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
         holder.itemView.setOnClickListener(view -> {
             PLog.e("点击");
+            listener.OnItemClick(chartBeans.get(position));
         });
         if(TextUtils.isEmpty(dimensionPositionBean.getChart_top_title())){
             holder.tvName.setText(dimensionPositionBean.getName());
@@ -582,18 +533,9 @@ public class BudgetIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
         });
-        if (mShake){
-            holder.imgIndexForReport.setImageBitmap(BitmapFactory
-                    .decodeResource(mContext.getResources(),R.mipmap.dash_delete));
-            holder.imgDescribe.setVisibility(View.GONE);
-            holder.imgIndexForReport.setOnClickListener(view -> {
-                PLog.e("删除指标");
-            });
-        }else{
-            holder.imgIndexForReport.setImageBitmap(BitmapFactory
-                    .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
-            holder.imgDescribe.setVisibility(View.VISIBLE);
-        }
+        holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
+        holder.imgDescribe.setVisibility(View.VISIBLE);
         holder.bulletChart.setValues(dimensionPositionBean);
         holder.bulletChart.setmUnit(dimensionPositionBean.getChart_unit());
     }
@@ -619,18 +561,9 @@ public class BudgetIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
         });
-        if (mShake){
-            holder.imgIndexForReport.setImageBitmap(BitmapFactory
-                    .decodeResource(mContext.getResources(),R.mipmap.dash_delete));
-            holder.imgDescribe.setVisibility(View.GONE);
-            holder.imgIndexForReport.setOnClickListener(view -> {
-                PLog.e("删除指标");
-            });
-        }else{
-            holder.imgIndexForReport.setImageBitmap(BitmapFactory
-                    .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
-            holder.imgDescribe.setVisibility(View.VISIBLE);
-        }
+        holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
+        holder.imgDescribe.setVisibility(View.VISIBLE);
         String bottomValue = TextUtils.isEmpty(dimensionPositionBean.getChart_bottom_title())
                 ? "" : dimensionPositionBean.getChart_bottom_title()
                 + ((TextUtils.isEmpty(dimensionPositionBean.getBottom_value()))
@@ -662,18 +595,9 @@ public class BudgetIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
         });
-        if (mShake){
-            holder.imgIndexForReport.setImageBitmap(BitmapFactory
-                    .decodeResource(mContext.getResources(),R.mipmap.dash_delete));
-            holder.imgDescribe.setVisibility(View.GONE);
-            holder.imgIndexForReport.setOnClickListener(view -> {
-                PLog.e("删除指标");
-            });
-        }else{
-            holder.imgIndexForReport.setImageBitmap(BitmapFactory
-                    .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
-            holder.imgDescribe.setVisibility(View.VISIBLE);
-        }
+        holder.imgIndexForReport.setImageBitmap(BitmapFactory
+                .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
+        holder.imgDescribe.setVisibility(View.VISIBLE);
         String bottomValue = TextUtils.isEmpty(dimensionPositionBean.getChart_bottom_title())
                 ? "" : dimensionPositionBean.getChart_bottom_title()
                 + ((TextUtils.isEmpty(dimensionPositionBean.getBottom_value()))

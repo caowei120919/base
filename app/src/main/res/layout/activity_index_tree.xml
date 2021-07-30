@@ -31,7 +31,7 @@
             android:layout_gravity="center_vertical"
             android:paddingLeft="@dimen/W20"
             android:paddingRight="@dimen/W20"
-            android:text="小">
+            android:text="@string/small">
         </TextView>
 
         <TextView
@@ -44,7 +44,7 @@
             android:background="@drawable/shape_index_size_selected"
             android:paddingLeft="@dimen/W20"
             android:paddingRight="@dimen/W20"
-            android:text="中">
+            android:text="@string/middle">
         </TextView>
 
         <TextView
@@ -58,14 +58,23 @@
             android:layout_gravity="center_vertical"
             android:paddingLeft="@dimen/W20"
             android:paddingRight="@dimen/W20"
-            android:text="大">
+            android:text="@string/big">
         </TextView>
     </LinearLayout>
 
     <com.datacvg.dimp.widget.IndexTreeViewFlower
         android:id="@+id/indexTreeView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/lin_magic">
+        android:layout_below="@id/lin_magic"
+        android:layout_height="match_parent">
     </com.datacvg.dimp.widget.IndexTreeViewFlower>
+
+    <ImageView
+        android:layout_width="@dimen/W80"
+        android:layout_height="@dimen/H80"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        android:src="@mipmap/dash_index_report_up">
+    </ImageView>
 </RelativeLayout>
