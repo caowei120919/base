@@ -229,4 +229,6 @@
     <string name="cannot_duplicate_kanban_names">不可重复命名看板名称</string>
     <string name="kanban_name_cannot_be_set_to_blank">看板名称不能设置为空</string>
     <string name="save_success">保存成功</string>
+    <string name="report_list">报表列表</string>
+    <string name="note_the_details">备注详情</string>
 </resources>

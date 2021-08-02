@@ -5,13 +5,16 @@ import android.app.Activity;
 import com.datacvg.dimp.dragger.module.FragmentModule;
 import com.datacvg.dimp.dragger.scope.FragmentScope;
 import com.datacvg.dimp.fragment.ActionFragment;
+import com.datacvg.dimp.fragment.ActionListFragment;
 import com.datacvg.dimp.fragment.BoardFragment;
 import com.datacvg.dimp.fragment.BoardPagerFragment;
 import com.datacvg.dimp.fragment.BudgetFragment;
 import com.datacvg.dimp.fragment.DigitalFragment;
 import com.datacvg.dimp.fragment.EmptyBoardFragment;
 import com.datacvg.dimp.fragment.PersonalFragment;
+import com.datacvg.dimp.fragment.RemarkFragment;
 import com.datacvg.dimp.fragment.ReportFragment;
+import com.datacvg.dimp.fragment.ReportListFragment;
 import com.datacvg.dimp.fragment.ScreenFragment;
 import com.datacvg.dimp.fragment.TableFragment;
 
@@ -41,4 +44,10 @@ public interface FragmentComponent {
     void inject(BudgetFragment budgetFragment);
 
     void inject(EmptyBoardFragment emptyBoardFragment);
+
+    void inject(ReportListFragment reportListFragment);
+
+    void inject(ActionListFragment actionListFragment);
+
+    void inject(RemarkFragment remarkFragment);
 }

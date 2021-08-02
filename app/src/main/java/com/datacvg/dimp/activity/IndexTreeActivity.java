@@ -1,8 +1,10 @@
 package com.datacvg.dimp.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,8 +13,13 @@ import android.widget.TextView;
 
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
+import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
+import com.datacvg.dimp.baseandroid.utils.FileUtils;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
+import com.datacvg.dimp.baseandroid.utils.RxUtils;
+import com.datacvg.dimp.baseandroid.utils.ShareContentType;
+import com.datacvg.dimp.baseandroid.utils.ShareUtils;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.IndexTreeBean;
@@ -23,10 +30,12 @@ import com.datacvg.dimp.view.IndexTreeView;
 import com.datacvg.dimp.widget.IndexTreeViewFlower;
 import com.datacvg.dimp.widget.TitleNavigator;
 import com.google.gson.Gson;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import net.lucode.hackware.magicindicator.FragmentContainerHelper;
 import net.lucode.hackware.magicindicator.MagicIndicator;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -120,7 +129,7 @@ public class IndexTreeActivity extends BaseActivity<IndexTreeView, IndexTreePres
     }
 
     @OnClick({R.id.back,R.id.img_share,R.id.img_edit,R.id.img_create,R.id.tv_smallSize
-            ,R.id.tv_middleSize,R.id.tv_bigSize})
+            ,R.id.tv_middleSize,R.id.tv_bigSize,R.id.rel_detail})
     public void OnClick(View view){
         switch (view.getId()){
             case R.id.back :
@@ -131,7 +140,34 @@ public class IndexTreeActivity extends BaseActivity<IndexTreeView, IndexTreePres
              * 分享
              */
             case R.id.img_share :
+                new RxPermissions(mContext)
+                        .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        .compose(RxUtils.applySchedulersLifeCycle(getMvpView()))
+                        .subscribe(new RxObserver<Boolean>(){
+                            @Override
+                            public void onComplete() {
+                                super.onComplete();
+                            }
 
+                            @Override
+                            public void onNext(Boolean aBoolean) {
+                                super.onNext(aBoolean);
+                                if(aBoolean){
+                                    File file = FileUtils.screenshot(mContext) ;
+                                    if(file != null){
+                                        Uri mUri = Uri.fromFile(file);
+                                        new ShareUtils
+                                                .Builder(mContext)
+                                                .setContentType(ShareContentType.IMAGE)
+                                                .setShareFileUri(mUri)
+                                                .build()
+                                                .shareBySystem();
+                                    }
+                                }else{
+                                    ToastUtils.showLongToast(resources.getString(R.string.dont_allow_permissions));
+                                }
+                            }
+                        });
                 break;
 
             case R.id.img_edit :
@@ -198,6 +234,10 @@ public class IndexTreeActivity extends BaseActivity<IndexTreeView, IndexTreePres
                 tvSmallSize.setTextColor(resources.getColor(R.color.c_999999));
                 tvMiddleSize.setTextColor(resources.getColor(R.color.c_999999));
                 indexTreeView.drawIndexTree(indexTreeBean,1);
+                break;
+
+            case R.id.rel_detail :
+                mContext.startActivity(new Intent(mContext,IndexPopActivity.class));
                 break;
         }
     }

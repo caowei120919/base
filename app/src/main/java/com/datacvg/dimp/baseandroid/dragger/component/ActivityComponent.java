@@ -10,6 +10,7 @@ import com.datacvg.dimp.activity.ConfirmInfoActivity;
 import com.datacvg.dimp.activity.ContactActivity;
 import com.datacvg.dimp.activity.DepartmentActivity;
 import com.datacvg.dimp.activity.IndexDetailActivity;
+import com.datacvg.dimp.activity.IndexPopActivity;
 import com.datacvg.dimp.activity.IndexTreeActivity;
 import com.datacvg.dimp.activity.LanguageSettingActivity;
 import com.datacvg.dimp.activity.LoginActivity;
@@ -120,4 +121,6 @@ public interface ActivityComponent {
     void inject(SearchIndexActivity searchIndexActivity);
 
     void inject(SelectFilterActivity selectFilterActivity);
+
+    void inject(IndexPopActivity indexPopActivity);
 }
