@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.activity.AddIndexActivity;
 import com.datacvg.dimp.activity.AddIndexPageActivity;
+import com.datacvg.dimp.activity.IndexTreeActivity;
 import com.datacvg.dimp.activity.SelectFilterActivity;
 import com.datacvg.dimp.adapter.DimensionIndexAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
@@ -27,6 +28,7 @@ import com.datacvg.dimp.bean.DimensionBean;
 import com.datacvg.dimp.bean.DimensionPositionBean;
 import com.datacvg.dimp.bean.EChartListBean;
 import com.datacvg.dimp.bean.IndexChartBean;
+import com.datacvg.dimp.bean.IndexTreeNeedBean;
 import com.datacvg.dimp.bean.PageItemBean;
 import com.datacvg.dimp.event.AddIndexEvent;
 import com.datacvg.dimp.event.BudgetEvent;
@@ -65,7 +67,7 @@ import butterknife.OnClick;
  * @Description :
  */
 public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerPresenter>
-        implements BoardPagerView {
+        implements BoardPagerView, DimensionIndexAdapter.IndexClickListener {
 
     @BindView(R.id.tv_pageName)
     TextView tvPageName ;
@@ -108,7 +110,7 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
     private void initChartAdapter() {
         GridLayoutManager manager = new GridLayoutManager(mContext,2);
         recycleIndex.setLayoutManager(manager);
-        adapter = new DimensionIndexAdapter(mContext,indexPositionBeans);
+        adapter = new DimensionIndexAdapter(mContext,indexPositionBeans,this);
         recycleIndex.setAdapter(adapter);
     }
 
@@ -611,5 +613,48 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
                 }
             });
         }
+    }
+
+    /**
+     * 标题点击
+     * @param bean
+     */
+    @Override
+    public void OnTitleClick(DimensionPositionBean.IndexPositionBean bean) {
+
+    }
+
+    /**
+     * 指标点击
+     * @param bean
+     */
+    @Override
+    public void OnItemClick(DimensionPositionBean.IndexPositionBean bean) {
+        IndexTreeNeedBean indexTreeNeedBean = new IndexTreeNeedBean();
+        indexTreeNeedBean.setAnalysisDimension(bean.getAnalysis_dimension());
+        indexTreeNeedBean.setOrgDimension(pageItemBean.getmOrgDimension());
+        indexTreeNeedBean.setFuName(pageItemBean.getmFuName());
+        indexTreeNeedBean.setpDimension(pageItemBean.getmPDimension());
+        indexTreeNeedBean.setIndexId(bean.getIndex_id());
+        indexTreeNeedBean.setOrgValue(pageItemBean.getmOrgValue());
+        indexTreeNeedBean.setpName(pageItemBean.getMpName());
+        indexTreeNeedBean.setFuValue(pageItemBean.getmFuValue());
+        indexTreeNeedBean.setFuDimension(pageItemBean.getmFuDimension());
+        indexTreeNeedBean.setpValue(pageItemBean.getMpValue());
+        indexTreeNeedBean.setOrgName(pageItemBean.getmOrgName());
+        indexTreeNeedBean.setTimeVal(pageItemBean.getTimeVal());
+        indexTreeNeedBean.setType("4");
+        Intent intent = new Intent(mContext, IndexTreeActivity.class);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,indexTreeNeedBean);
+        startActivity(intent);
+    }
+
+    /**
+     * 删除指标
+     * @param bean
+     */
+    @Override
+    public void OnIndexDeleteClick(DimensionPositionBean.IndexPositionBean bean) {
+
     }
 }

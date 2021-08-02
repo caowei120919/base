@@ -5,7 +5,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/H760"
+        android:layout_height="@dimen/H960"
         android:layout_alignParentBottom="true"
         android:background="@drawable/shape_index">
         <RelativeLayout

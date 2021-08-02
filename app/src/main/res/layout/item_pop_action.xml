@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/H220"
+    android:background="@color/c_FFFFFF">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circle_head"
+        android:layout_width="@dimen/W100"
+        android:layout_height="@dimen/W100"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/W25"
+        android:src="@mipmap/img_default">
+    </de.hdodenhof.circleimageview.CircleImageView>
+
+    <ImageView
+        android:id="@+id/img_state"
+        android:layout_width="@dimen/W30"
+        android:layout_height="@dimen/W30"
+        android:layout_toRightOf="@id/circle_head"
+        android:layout_marginTop="@dimen/H50"
+        android:layout_marginLeft="@dimen/W30"
+        android:src="@mipmap/img_default">
+    </ImageView>
+
+    <TextView
+        android:id="@+id/tv_tittle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:maxLength="13"
+        android:textColor="@color/c_000000"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_alignBottom="@id/img_state"
+        android:layout_toRightOf="@id/img_state"
+        android:layout_marginLeft="@dimen/W30">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:maxLength="13"
+        android:textColor="@color/c_000000"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_alignLeft="@id/img_state"
+        android:layout_below="@id/tv_tittle"
+        android:layout_marginTop="@dimen/H30">
+    </TextView>
+
+    <ImageView
+        android:id="@+id/img_level"
+        android:layout_width="@dimen/W30"
+        android:layout_height="@dimen/W30"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/W25"
+        android:layout_marginTop="@dimen/H50"
+        android:layout_marginLeft="@dimen/W15"
+        android:src="@mipmap/img_default">
+    </ImageView>
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/circle_head"
+        android:gravity="center"
+        android:textSize="13sp"
+        android:textColor="@color/c_999999"
+        android:layout_marginTop="@dimen/H16"
+        android:layout_below="@id/circle_head">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_createTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/img_state"
+        android:layout_below="@id/tv_text"
+        android:layout_marginTop="@dimen/H30"
+        android:textSize="13sp"
+        android:textColor="@color/c_b5b5b5">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_endTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_text"
+        android:layout_toRightOf="@id/tv_createTime"
+        android:layout_marginTop="@dimen/H30"
+        android:layout_marginLeft="@dimen/W25"
+        android:textSize="13sp"
+        android:textColor="@color/c_b5b5b5">
+    </TextView>
+
+</RelativeLayout>

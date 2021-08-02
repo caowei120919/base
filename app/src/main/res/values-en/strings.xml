@@ -238,4 +238,6 @@
     <string name="save_success">Save success</string>
     <string name="report_list">Report list</string>
     <string name="note_the_details">Note the details</string>
+    <string name="there_is_no_associated_report">There is no associated report</string>
+    <string name="no_associated_course_of_action">No associated course of action</string>
 </resources>

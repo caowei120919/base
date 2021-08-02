@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_report"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </androidx.recyclerview.widget.RecyclerView>
+
     <TextView
+        android:id="@+id/tv_emptyView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="报表列表"
+        android:text="@string/there_is_no_associated_report"
         android:textColor="@color/c_303030"
         android:textSize="24sp"
         android:gravity="center">

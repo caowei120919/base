@@ -7,7 +7,9 @@ import android.widget.TextView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
+import com.datacvg.dimp.bean.IndexTreeBean;
 import com.datacvg.dimp.fragment.ActionListFragment;
 import com.datacvg.dimp.fragment.BoardFragment;
 import com.datacvg.dimp.fragment.BudgetFragment;
@@ -37,6 +39,7 @@ public class IndexPopActivity extends BaseActivity<IndexPopView, IndexPopPresent
     private ReportListFragment reportListFragment ;
     private ActionListFragment actionListFragment ;
     private RemarkFragment remarkFragment ;
+    private IndexTreeBean indexTreeBean ;
 
     @Override
     protected int getLayoutId() {
@@ -52,15 +55,19 @@ public class IndexPopActivity extends BaseActivity<IndexPopView, IndexPopPresent
     protected void setupView() {
         StatusBarUtil.setStatusBarColor(mContext
                 ,mContext.getResources().getColor(R.color.c_FFFFFF));
-        showFragment(R.id.tv_reportList);
-        tvReportList.setSelected(true);
-        tvAction.setSelected(false);
-        tvRemark.setSelected(false);
     }
 
     @Override
     protected void setupData(Bundle savedInstanceState) {
-
+        indexTreeBean = (IndexTreeBean) getIntent().getSerializableExtra(Constants.EXTRA_DATA_FOR_BEAN);
+        if(indexTreeBean == null){
+            finish();
+            return;
+        }
+        showFragment(R.id.tv_reportList);
+        tvReportList.setSelected(true);
+        tvAction.setSelected(false);
+        tvRemark.setSelected(false);
     }
 
     @OnClick({R.id.rel_detail,R.id.tv_reportList,R.id.tv_action,R.id.tv_remark})
@@ -102,7 +109,7 @@ public class IndexPopActivity extends BaseActivity<IndexPopView, IndexPopPresent
                 if(null != reportListFragment){
                     fragmentTransaction.show(reportListFragment);
                 }else{
-                    reportListFragment = new ReportListFragment();
+                    reportListFragment = ReportListFragment.newInstance(indexTreeBean.getIndex_id());
                     fragmentTransaction.add(R.id.content,reportListFragment);
                 }
                 fragmentTransaction.commitAllowingStateLoss();
@@ -112,7 +119,7 @@ public class IndexPopActivity extends BaseActivity<IndexPopView, IndexPopPresent
                 if(null != actionListFragment){
                     fragmentTransaction.show(actionListFragment);
                 }else{
-                    actionListFragment = new ActionListFragment();
+                    actionListFragment = ActionListFragment.newInstance(indexTreeBean.getIndex_pkid());
                     fragmentTransaction.add(R.id.content,actionListFragment);
                 }
                 fragmentTransaction.commitAllowingStateLoss();
@@ -122,7 +129,7 @@ public class IndexPopActivity extends BaseActivity<IndexPopView, IndexPopPresent
                 if(null != remarkFragment){
                     fragmentTransaction.show(remarkFragment);
                 }else{
-                    remarkFragment = new RemarkFragment();
+                    remarkFragment = RemarkFragment.newInstance(indexTreeBean.getIndex_id());
                     fragmentTransaction.add(R.id.content,remarkFragment);
                 }
                 fragmentTransaction.commitAllowingStateLoss();

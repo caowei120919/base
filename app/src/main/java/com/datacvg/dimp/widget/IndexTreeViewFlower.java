@@ -14,6 +14,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.utils.DisplayUtils;
+import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.bean.IndexTreeBean;
 import com.datacvg.dimp.bean.IndexTreeListBean;
 
@@ -53,13 +54,6 @@ public class IndexTreeViewFlower extends ViewGroup {
             }
         }
     }
-
-    /**
-     * 最大宽高
-     */
-    private int mMaxWidthPX;
-    private int mMaxHeightPX;
-
     /**
      * 纵向间隔与横向间隔
      */
@@ -80,10 +74,15 @@ public class IndexTreeViewFlower extends ViewGroup {
     private List<IndexTreeBean> parentBeans = new ArrayList<>();
     private List<IndexTreeBean> childBeans = new ArrayList<>();
     private OnClickChangeListener clickChangeListener ;
+    private OnItemClickListener onItemClickListener ;
 
     public void setType(IndexTreeType type) {
         this.type = type;
         invalidate();
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+        this.onItemClickListener = onItemClickListener ;
     }
 
     public void setClickChangeListener(OnClickChangeListener clickChangeListener) {
@@ -271,9 +270,6 @@ public class IndexTreeViewFlower extends ViewGroup {
                 heightLevel = indexTreeBean.getRes_level() ;
             }
         }
-        mMaxWidthPX = Math.max(DisplayUtils.getWidth()
-                ,(heightLevel - 1) * mMarginLeft + mItemWithPx);
-        mMaxHeightPX = Math.max(DisplayUtils.getHeight(),childBeans.size() * mItemHeightPx + mMarginTop);
     }
 
     /**
@@ -369,6 +365,9 @@ public class IndexTreeViewFlower extends ViewGroup {
                 }
             }
         });
+        smallView.setOnClickListener(view -> {
+            onItemClickListener.onItemClick(bean);
+        });
         this.addView(smallView);
         return smallView ;
     }
@@ -399,6 +398,9 @@ public class IndexTreeViewFlower extends ViewGroup {
                     clickChangeListener.OnClickChange(b,bean);
                 }
             }
+        });
+        midView.setOnClickListener(view -> {
+            onItemClickListener.onItemClick(bean);
         });
         this.addView(midView);
         return midView ;
@@ -447,11 +449,18 @@ public class IndexTreeViewFlower extends ViewGroup {
                 }
             }
         });
+        largeView.setOnClickListener(view -> {
+            onItemClickListener.onItemClick(bean);
+        });
         this.addView(largeView);
         return largeView;
     }
 
     public interface OnClickChangeListener{
         void OnClickChange(boolean isClick,IndexTreeBean bean);
+    }
+
+    public interface OnItemClickListener{
+        void onItemClick(IndexTreeBean bean);
     }
 }

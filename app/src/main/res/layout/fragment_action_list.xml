@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_action"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </androidx.recyclerview.widget.RecyclerView>
+
     <TextView
+        android:id="@+id/tv_emptyView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="行动方案"
+        android:text="@string/no_associated_course_of_action"
         android:textColor="@color/c_303030"
         android:textSize="24sp"
         android:gravity="center">

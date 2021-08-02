@@ -231,4 +231,6 @@
     <string name="save_success">保存成功</string>
     <string name="report_list">报表列表</string>
     <string name="note_the_details">备注详情</string>
+    <string name="there_is_no_associated_report">没有关联的报表</string>
+    <string name="no_associated_course_of_action">没有关联的行动方案</string>
 </resources>

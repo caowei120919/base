@@ -1,5 +1,6 @@
 package com.datacvg.dimp.baseandroid.config;
 import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
+import com.datacvg.dimp.bean.ActionForIndexBean;
 import com.datacvg.dimp.bean.ActionPlanIndexListBean;
 import com.datacvg.dimp.bean.ActionPlanListBean;
 import com.datacvg.dimp.bean.AllIndexBean;
@@ -402,4 +403,20 @@ public interface MobileApi {
 
     @POST("api/ddb/indexpad/position/budget")
     Observable<BaseBean<PerformanceBean>> getBudget(@Body Map params);
+
+    /**
+     * 根据指标获取关联报表
+     * @param indexId
+     * @return
+     */
+    @GET("api/mobile/indexpad/index/reports")
+    Observable<BaseBean<TableListBean>> getReportByIndexId(@Query("indexId") String indexId);
+
+    /**
+     * 获取指标关联行动方案
+     * @param params
+     * @return
+     */
+    @POST("api/ddb/actionplan/search")
+    Observable<BaseBean<ActionForIndexBean>> getActionForIndexId(@Body Map params);
 }

@@ -49,7 +49,7 @@ import butterknife.OnClick;
  * @Description : 指标树页面
  */
 public class IndexTreeActivity extends BaseActivity<IndexTreeView, IndexTreePresenter>
-        implements IndexTreeView, TitleNavigator.OnTabSelectedListener, IndexTreeViewFlower.OnClickChangeListener {
+        implements IndexTreeView, TitleNavigator.OnTabSelectedListener, IndexTreeViewFlower.OnClickChangeListener, IndexTreeViewFlower.OnItemClickListener {
     @BindView(R.id.img_create)
     ImageView imgCreate ;
     @BindView(R.id.img_edit)
@@ -125,6 +125,7 @@ public class IndexTreeActivity extends BaseActivity<IndexTreeView, IndexTreePres
         mFragmentContainerHelper.attachMagicIndicator(magicIndicator);
         mFragmentContainerHelper.handlePageSelected(otherIndex);
         indexTreeView.setClickChangeListener(this);
+        indexTreeView.setOnItemClickListener(this);
         getIndexTreeData() ;
     }
 
@@ -235,10 +236,6 @@ public class IndexTreeActivity extends BaseActivity<IndexTreeView, IndexTreePres
                 tvMiddleSize.setTextColor(resources.getColor(R.color.c_999999));
                 indexTreeView.drawIndexTree(indexTreeBean,1);
                 break;
-
-            case R.id.rel_detail :
-                mContext.startActivity(new Intent(mContext,IndexPopActivity.class));
-                break;
         }
     }
 
@@ -286,5 +283,19 @@ public class IndexTreeActivity extends BaseActivity<IndexTreeView, IndexTreePres
         }else{
             selectedIndexBeans.remove(bean);
         }
+    }
+
+    /**
+     * 指标树点击事件
+     * @param bean
+     */
+    @Override
+    public void onItemClick(IndexTreeBean bean) {
+        if (isEditStatus){
+            return;
+        }
+        Intent intent = new Intent(mContext,IndexPopActivity.class);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,bean);
+        mContext.startActivity(intent);
     }
 }
