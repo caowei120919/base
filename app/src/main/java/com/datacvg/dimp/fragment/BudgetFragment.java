@@ -277,9 +277,4 @@ public class BudgetFragment extends BaseFragment<BudgetView, BudgetPresenter> im
         intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,indexTreeNeedBean);
         startActivity(intent);
     }
-
-    @Override
-    public void OnIndexDeleteClick(DimensionPositionBean.IndexPositionBean bean) {
-
-    }
 }

@@ -240,4 +240,9 @@
     <string name="note_the_details">Note the details</string>
     <string name="there_is_no_associated_report">There is no associated report</string>
     <string name="no_associated_course_of_action">No associated course of action</string>
+    <string name="there_is_no_associated_remark">There is no associated remark</string>
+    <string name="publish_your_remarks">Publish your remarks</string>
+    <string name="organization">organization</string>
+    <string name="product">product</string>
+    <string name="region">region</string>
 </resources>

@@ -233,4 +233,9 @@
     <string name="note_the_details">备注详情</string>
     <string name="there_is_no_associated_report">没有关联的报表</string>
     <string name="no_associated_course_of_action">没有关联的行动方案</string>
+    <string name="there_is_no_associated_remark">没有关联的备注信息</string>
+    <string name="publish_your_remarks">发表你的备注说明</string>
+    <string name="organization">组织</string>
+    <string name="product">产品</string>
+    <string name="region">地区</string>
 </resources>

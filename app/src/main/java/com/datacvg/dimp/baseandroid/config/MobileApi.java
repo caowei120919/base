@@ -23,6 +23,7 @@ import com.datacvg.dimp.bean.ModuleListBean;
 import com.datacvg.dimp.bean.PerformanceBean;
 import com.datacvg.dimp.bean.ReadMessageBean;
 import com.datacvg.dimp.bean.RecommendIndexBean;
+import com.datacvg.dimp.bean.RemarkListBean;
 import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.bean.ReportParamsBean;
 import com.datacvg.dimp.bean.SavePageBean;
@@ -419,4 +420,12 @@ public interface MobileApi {
      */
     @POST("api/ddb/actionplan/search")
     Observable<BaseBean<ActionForIndexBean>> getActionForIndexId(@Body Map params);
+
+    /**
+     * 获取指标关联备注信息
+     * @param params
+     * @return
+     */
+    @POST("api/mobile/indexpad/index/remark/get")
+    Observable<BaseBean<RemarkListBean>> getRemark(@Body Map params);
 }

@@ -266,6 +266,7 @@ public class BudgetIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             return;
         }
         holder.itemView.setOnClickListener(view -> {
+            listener.OnItemClick(chartBeans.get(position));
             PLog.e("点击");
         });
         holder.tvUnit.setText(dimensionPositionBean.getChart_unit());
@@ -276,6 +277,7 @@ public class BudgetIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
+            listener.OnTitleClick(chartBeans.get(position));
         });
         holder.imgIndexForReport.setImageBitmap(BitmapFactory
                 .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
@@ -296,6 +298,7 @@ public class BudgetIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
         holder.itemView.setOnClickListener(view -> {
             PLog.e("点击");
+            listener.OnItemClick(chartBeans.get(position));
         });
         holder.tvUnit.setText(dimensionPositionBean.getChart_unit());
         if(TextUtils.isEmpty(dimensionPositionBean.getChart_top_title())){
@@ -305,6 +308,7 @@ public class BudgetIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
+            listener.OnTitleClick(chartBeans.get(position));
         });
         holder.imgIndexForReport.setImageBitmap(BitmapFactory
                 .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
@@ -424,6 +428,7 @@ public class BudgetIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
         holder.itemView.setOnClickListener(view -> {
             PLog.e("点击");
+            listener.OnItemClick(chartBeans.get(position));
         });
         holder.tvUnit.setText(dimensionPositionBean.getChart_unit());
         if(TextUtils.isEmpty(dimensionPositionBean.getChart_top_title())){
@@ -433,6 +438,7 @@ public class BudgetIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
+            listener.OnTitleClick(chartBeans.get(position));
         });
         holder.imgIndexForReport.setImageBitmap(BitmapFactory
                 .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
@@ -504,6 +510,7 @@ public class BudgetIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
+            listener.OnTitleClick(chartBeans.get(position));
         });
         holder.imgIndexForReport.setImageBitmap(BitmapFactory
                 .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
@@ -532,6 +539,7 @@ public class BudgetIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
+            listener.OnTitleClick(chartBeans.get(position));
         });
         holder.imgIndexForReport.setImageBitmap(BitmapFactory
                 .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
@@ -552,6 +560,7 @@ public class BudgetIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
         holder.itemView.setOnClickListener(view -> {
             PLog.e("点击");
+            listener.OnItemClick(chartBeans.get(position));
         });
         if(TextUtils.isEmpty(dimensionPositionBean.getChart_top_title())){
             holder.tvName.setText(dimensionPositionBean.getName());
@@ -560,6 +569,7 @@ public class BudgetIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
+            listener.OnTitleClick(chartBeans.get(position));
         });
         holder.imgIndexForReport.setImageBitmap(BitmapFactory
                 .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
@@ -586,6 +596,7 @@ public class BudgetIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
         holder.itemView.setOnClickListener(view -> {
             PLog.e("点击");
+            listener.OnItemClick(chartBeans.get(position));
         });
         if(TextUtils.isEmpty(dimensionPositionBean.getChart_top_title())){
             holder.tvName.setText(dimensionPositionBean.getName());
@@ -594,6 +605,7 @@ public class BudgetIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
         holder.tvName.setOnClickListener(view -> {
             PLog.e("标题被点击");
+            listener.OnTitleClick(chartBeans.get(position));
         });
         holder.imgIndexForReport.setImageBitmap(BitmapFactory
                 .decodeResource(mContext.getResources(),R.mipmap.icon_index_report));
@@ -783,6 +795,5 @@ public class BudgetIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public interface IndexClickListener{
         void OnTitleClick(DimensionPositionBean.IndexPositionBean bean);
         void OnItemClick(DimensionPositionBean.IndexPositionBean bean);
-        void OnIndexDeleteClick(DimensionPositionBean.IndexPositionBean bean);
     }
 }

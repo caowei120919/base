@@ -1,13 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H100"
+        android:id="@+id/rel_bottom"
+        android:layout_alignParentBottom="true">
+
+        <ImageView
+            android:id="@+id/img_send"
+            android:layout_width="@dimen/W100"
+            android:layout_height="match_parent"
+            android:padding="@dimen/W25"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/icon_comment_send">
+        </ImageView>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:layout_toLeftOf="@id/img_send"
+            android:hint="@string/publish_your_remarks">
+        </EditText>
+    </RelativeLayout>
 
     <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/H80"
+        android:drawableLeft="@mipmap/comment_time"
+        android:gravity="center_vertical"
+        android:drawablePadding="@dimen/W20"
+        android:visibility="gone"
+        android:textSize="16sp"
+        android:layout_marginLeft="@dimen/W25">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_orgName"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/H80"
+        android:drawableLeft="@mipmap/comment_location"
+        android:gravity="center_vertical"
+        android:visibility="gone"
+        android:drawablePadding="@dimen/W20"
+        android:textSize="16sp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/W25">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_proName"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/H80"
+        android:drawableLeft="@mipmap/comment_orgalization"
+        android:gravity="center_vertical"
+        android:drawablePadding="@dimen/W20"
+        android:layout_below="@id/tv_time"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/H25"
+        android:textSize="16sp"
+        android:layout_marginLeft="@dimen/W25">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_areaName"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/H80"
+        android:drawableLeft="@mipmap/comment_product"
+        android:layout_below="@id/tv_time"
+        android:layout_marginTop="@dimen/H25"
+        android:gravity="center_vertical"
+        android:visibility="gone"
+        android:drawablePadding="@dimen/W20"
+        android:textSize="16sp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/W25">
+    </TextView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_remark"
+        android:layout_below="@id/tv_areaName"
+        android:layout_above="@id/rel_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/tv_emptyView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="备注详情"
+        android:text="@string/there_is_no_associated_remark"
         android:textColor="@color/c_303030"
         android:textSize="24sp"
+        android:layout_above="@id/rel_bottom"
         android:gravity="center">
     </TextView>
 </RelativeLayout>

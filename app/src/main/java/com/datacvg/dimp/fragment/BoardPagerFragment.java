@@ -643,6 +643,8 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
         indexTreeNeedBean.setpValue(pageItemBean.getMpValue());
         indexTreeNeedBean.setOrgName(pageItemBean.getmOrgName());
         indexTreeNeedBean.setTimeVal(pageItemBean.getTimeVal());
+        indexTreeNeedBean.setDimension_clName(bean.getChartBean().getName());
+        indexTreeNeedBean.setDimension_flName(bean.getChartBean().getName());
         indexTreeNeedBean.setType("4");
         Intent intent = new Intent(mContext, IndexTreeActivity.class);
         intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,indexTreeNeedBean);

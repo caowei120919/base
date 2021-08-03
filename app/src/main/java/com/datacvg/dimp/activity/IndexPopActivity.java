@@ -10,6 +10,7 @@ import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.bean.IndexTreeBean;
+import com.datacvg.dimp.bean.IndexTreeNeedBean;
 import com.datacvg.dimp.fragment.ActionListFragment;
 import com.datacvg.dimp.fragment.BoardFragment;
 import com.datacvg.dimp.fragment.BudgetFragment;
@@ -40,6 +41,7 @@ public class IndexPopActivity extends BaseActivity<IndexPopView, IndexPopPresent
     private ActionListFragment actionListFragment ;
     private RemarkFragment remarkFragment ;
     private IndexTreeBean indexTreeBean ;
+    private IndexTreeNeedBean indexTreeNeedBean ;
 
     @Override
     protected int getLayoutId() {
@@ -60,6 +62,7 @@ public class IndexPopActivity extends BaseActivity<IndexPopView, IndexPopPresent
     @Override
     protected void setupData(Bundle savedInstanceState) {
         indexTreeBean = (IndexTreeBean) getIntent().getSerializableExtra(Constants.EXTRA_DATA_FOR_BEAN);
+        indexTreeNeedBean = (IndexTreeNeedBean) getIntent().getSerializableExtra(Constants.EXTRA_DATA_FOR_SCAN);
         if(indexTreeBean == null){
             finish();
             return;
@@ -129,7 +132,7 @@ public class IndexPopActivity extends BaseActivity<IndexPopView, IndexPopPresent
                 if(null != remarkFragment){
                     fragmentTransaction.show(remarkFragment);
                 }else{
-                    remarkFragment = RemarkFragment.newInstance(indexTreeBean.getIndex_id());
+                    remarkFragment = RemarkFragment.newInstance(indexTreeBean,indexTreeNeedBean);
                     fragmentTransaction.add(R.id.content,remarkFragment);
                 }
                 fragmentTransaction.commitAllowingStateLoss();

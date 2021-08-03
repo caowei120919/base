@@ -296,6 +296,7 @@ public class IndexTreeActivity extends BaseActivity<IndexTreeView, IndexTreePres
         }
         Intent intent = new Intent(mContext,IndexPopActivity.class);
         intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,bean);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,indexTreeNeedBean);
         mContext.startActivity(intent);
     }
 }
