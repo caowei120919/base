@@ -53,4 +53,32 @@ public class RemarkPresenter extends BasePresenter<RemarkView>{
                     }
                 });
     }
+
+    /**
+     * 发表备注信息
+     * @param params
+     */
+    public void sendRemark(Map<String, String> params) {
+        api.saveRemark(params)
+                .compose(RxUtils.applySchedulersLifeCycle(getView()))
+                .subscribe(new RxObserver<BaseBean>(){
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                    }
+
+                    @Override
+                    public void onNext(BaseBean bean) {
+                        if(checkJsonCode(bean)){
+                            getView().saveRemarkSuccess();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        PLog.e("TAG",e.getMessage());
+                    }
+                });
+    }
 }

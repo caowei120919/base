@@ -245,4 +245,5 @@
     <string name="organization">organization</string>
     <string name="product">product</string>
     <string name="region">region</string>
+    <string name="please_enter_remarks">Please enter remarks</string>
 </resources>

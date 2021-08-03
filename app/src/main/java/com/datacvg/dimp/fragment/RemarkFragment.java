@@ -1,8 +1,10 @@
 package com.datacvg.dimp.fragment;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,8 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.RemarkAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
+import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
+import com.datacvg.dimp.baseandroid.utils.DisplayUtils;
+import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.TimeUtils;
+import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.IndexTreeBean;
 import com.datacvg.dimp.bean.IndexTreeNeedBean;
 import com.datacvg.dimp.bean.RemarkBean;
@@ -27,6 +33,8 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 /**
  * @Author : T-Bag (茶包)
@@ -49,11 +57,14 @@ public class RemarkFragment extends BaseFragment<RemarkView, RemarkPresenter> im
     RecyclerView recyclerRemark ;
     @BindView(R.id.tv_emptyView)
     TextView tvEmptyView ;
+    @BindView(R.id.ed_remark)
+    EditText edRemark ;
 
     private IndexTreeBean indexTreeBean ;
     private IndexTreeNeedBean indexTreeNeedBean;
     private RemarkAdapter adapter ;
     private List<RemarkBean> remarkBeans = new ArrayList<>() ;
+    private String remark ;
 
     @Override
     protected int getLayoutId() {
@@ -86,6 +97,10 @@ public class RemarkFragment extends BaseFragment<RemarkView, RemarkPresenter> im
 
     @Override
     protected void setupData() {
+        getRemark();
+    }
+
+    private void getRemark() {
         Map<String,String> params = new HashMap<>();
         params.put("index_id",indexTreeBean.getIndex_id());
         params.put("rootid",indexTreeBean.getI_res_rootid());
@@ -125,6 +140,68 @@ public class RemarkFragment extends BaseFragment<RemarkView, RemarkPresenter> im
         RemarkFragment fragment = new RemarkFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    /**
+     * 备注输入监听
+     */
+    @OnTextChanged(value = R.id.ed_remark,callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void onRemarkTextChange(Editable editable){
+        remark = editable.toString().trim();
+    }
+
+    @OnClick({R.id.img_send})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.img_send :
+                    if(remark.isEmpty()){
+                        ToastUtils.showLongToast(resources.getString(R.string.please_enter_remarks));
+                        return;
+                    }
+                    Map<String,String> params = new HashMap<>();
+                    params.put("userid", PreferencesHelper.get(Constants.USER_ID,""));
+                    params.put("rootIndexId", indexTreeBean.getIndex_id());
+                    params.put("rootIndexName", indexTreeBean.getIndex_clname());
+                    params.put("time", indexTreeNeedBean.getTimeVal());
+                    params.put("splitMessage", "");
+                    params.put("orgvalue", TextUtils.isEmpty(indexTreeNeedBean.getOrgValue()) ? "" : indexTreeNeedBean.getOrgValue());
+                    params.put("pvalue", TextUtils.isEmpty(indexTreeNeedBean.getpValue()) ? "" : indexTreeNeedBean.getpValue());
+                    params.put("fuvalue", TextUtils.isEmpty(indexTreeNeedBean.getFuValue()) ? "" : indexTreeNeedBean.getFuValue());
+                    params.put("indexid", indexTreeBean.getIndex_id());
+                    params.put("type", indexTreeNeedBean.getType());
+                    params.put("lang", LanguageUtils.getLanguage(mContext));
+                    params.put("remark", remark);
+                    params.put("splitMessage", "");
+                    params.put("splitMessage", "");
+                    params.put("splitMessage", "");
+                    switch (indexTreeNeedBean.getType()){
+                        case "1" :
+                            params.put("dimention_one",indexTreeBean.getI_res_id());
+                            params.put("dimention_two",indexTreeNeedBean.getFuDimension());
+                            params.put("dimention_three",indexTreeNeedBean.getpDimension());
+                            break;
+
+                        case "2" :
+                            params.put("dimention_one",indexTreeNeedBean.getOrgDimension());
+                            params.put("dimention_two",indexTreeBean.getI_res_id());
+                            params.put("dimention_three",indexTreeNeedBean.getpDimension());
+                            break;
+
+                        case "3" :
+                            params.put("dimention_one",indexTreeNeedBean.getOrgDimension());
+                            params.put("dimention_two",indexTreeNeedBean.getFuDimension());
+                            params.put("dimention_three",indexTreeBean.getI_res_id());
+                            break;
+
+                        case "4" :
+                            params.put("dimention_one",indexTreeNeedBean.getOrgDimension());
+                            params.put("dimention_two",indexTreeNeedBean.getFuDimension());
+                            params.put("dimention_three",indexTreeNeedBean.getpDimension());
+                            break;
+                    }
+                    getPresenter().sendRemark(params);
+                break;
+        }
     }
 
     /**
@@ -174,5 +251,13 @@ public class RemarkFragment extends BaseFragment<RemarkView, RemarkPresenter> im
                 tvAreaName.setText(resources.getString(R.string.region) + " : " + indexTreeNeedBean.getpName());
             }
         }
+    }
+
+    @Override
+    public void saveRemarkSuccess() {
+        edRemark.setText("");
+        DisplayUtils.hideSoftInput(getActivity());
+        ToastUtils.showLongToast(resources.getString(R.string.save_success));
+        getRemark();
     }
 }

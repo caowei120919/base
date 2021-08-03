@@ -428,4 +428,12 @@ public interface MobileApi {
      */
     @POST("api/mobile/indexpad/index/remark/get")
     Observable<BaseBean<RemarkListBean>> getRemark(@Body Map params);
+
+    /**
+     * 发送备注信息
+     * @param params
+     * @return
+     */
+    @POST("api/mobile/indexpad/index/remark/save")
+    Observable<BaseBean> saveRemark(@Body Map params);
 }

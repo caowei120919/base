@@ -14,4 +14,9 @@ public interface RemarkView extends MvpView {
      * @param resdata
      */
     void getRemarkSuccess(RemarkListBean resdata);
+
+    /**
+     * 保存发送备注
+     */
+    void saveRemarkSuccess();
 }
