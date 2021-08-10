@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.datacvg.dimp.BuildConfig;
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.baseandroid.config.Constants;
+import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.CacheUtils;
 import com.datacvg.dimp.baseandroid.utils.FingerPrintUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
@@ -42,6 +44,9 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
     @BindView(R.id.switch_fingerprint)
     CheckBox switchFingerprint ;
 
+    @BindView(R.id.tv_serviceCode)
+    TextView tvServiceCode ;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_setting;
@@ -63,12 +68,20 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
     protected void setupData(Bundle savedInstanceState) {
         tvVersion.setText(BuildConfig.VERSION_NAME);
         tvCache.setText(CacheUtils.getTotalCacheSize(mContext));
-
+        tvServiceCode.setText(BuildConfig.SERVICE_CODE);
+        switchFingerprint.setChecked(PreferencesHelper.get(Constants.FINGERPRINT,false));
         switchFingerprint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (FingerPrintUtils.supportFingerprint(mContext)){
-
+                if (b){
+                    if (FingerPrintUtils.supportFingerprint(mContext)){
+                        PreferencesHelper.put(Constants.FINGERPRINT,true);
+                    }else{
+                        switchFingerprint.setChecked(false);
+                        PreferencesHelper.put(Constants.FINGERPRINT,false);
+                    }
+                }else{
+                    PreferencesHelper.put(Constants.FINGERPRINT,false);
                 }
             }
         });
@@ -87,6 +100,7 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
              */
             case R.id.rel_clearCache :
                     CacheUtils.clearAllCache(mContext);
+                    tvCache.setText(CacheUtils.getTotalCacheSize(mContext));
                 break;
 
             /**
@@ -103,10 +117,5 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
                 startActivity(new Intent(mContext,ModuleSettingActivity.class));
                 break;
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(RebuildTableEvent event){
-        PLog.e("caowei");
     }
 }

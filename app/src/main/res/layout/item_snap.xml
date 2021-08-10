@@ -2,13 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <TextView
+    <RelativeLayout
         android:id="@+id/tv_text"
         android:layout_width="match_parent"
         android:layout_height="@dimen/H800">
-    </TextView>
+
+        <com.datacvg.dimp.baseandroid.widget.ProgressBarView
+            android:id="@+id/progress_snap"
+            android:layout_width="@dimen/W20"
+            android:layout_height="match_parent"
+            app:progress_text_size="14sp"
+            app:progress_reach_color="@color/c_da3a16"
+            android:layout_marginLeft="@dimen/W160">
+        </com.datacvg.dimp.baseandroid.widget.ProgressBarView>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_lineToSnap"

@@ -123,11 +123,7 @@ public class BaseApplication extends Application {
 
     }
 
-    public static RefWatcher getRefWatcher(Context context) {
-        // LeakCanary: Detect all memory leaks!
-        // LeakCanary.install() returns a pre configured RefWatcher. It also
-        // installs an ActivityRefWatcher that automatically detects if an activity is
-        // leaking after Activity.onDestroy() has been called.
+    public static RefWatcher getRefWatcher() {
         return mRefWatcher;
     }
 

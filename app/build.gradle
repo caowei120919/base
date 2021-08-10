@@ -70,6 +70,7 @@ android {
             applicationId "com.datacvg.dimp"
             buildConfigField("boolean","APP_STAND","false")   //标准版改为true
             buildConfigField("int", "APP_ENV", "1")
+            buildConfigField("String","SERVICE_CODE","\"6.8.0\"")
             manifestPlaceholders = [
 //                    MTA_APPKEY   : "AT8VIEG74E9B",
 //                    MTA_CHANNEL  : "OFFICIAL_BB",
@@ -84,6 +85,7 @@ android {
             applicationId "com.datacvg.dimp"
             buildConfigField("boolean","APP_STAND","false")   //标准版改为true
             buildConfigField("int", "APP_ENV", "2")
+            buildConfigField("String","SERVICE_CODE","\"6.8.0\"")
             manifestPlaceholders = [
 //                    JPUSH_PKGNAME: applicationId,
 //                    JPUSH_APPKEY : "f36522785668ae98815658b6",

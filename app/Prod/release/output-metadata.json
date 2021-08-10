@@ -11,10 +11,10 @@
       "type": "SINGLE",
       "filters": [],
       "properties": [],
-      "versionCode": 3230,
-      "versionName": "3.2.3",
+      "versionCode": 1010,
+      "versionName": "1.0.0",
       "enabled": true,
-      "outputFile": "dimp-v3.2.3-prod.apk"
+      "outputFile": "dimp-v1.0.0-prod.apk"
     }
   ]
 }

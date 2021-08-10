@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.PLog;
+import com.datacvg.dimp.baseandroid.widget.ProgressBarView;
 import com.datacvg.dimp.bean.KpiPermissionDataBean;
 import com.datacvg.dimp.bean.TaskInfoBean;
 import com.datacvg.dimp.presenter.SnapPresenter;
@@ -52,6 +53,8 @@ public class SnapFragment extends BaseFragment<SnapView, SnapPresenter> implemen
     View viewSnap ;
     @BindView(R.id.view_none)
     View viewNone ;
+    @BindView(R.id.progress_snap)
+    ProgressBarView progressSnap ;
 
     private TaskInfoBean.FastPhotoOldBean fastPhotoOldBean ;
     private PopupWindow timeTypePop ;
@@ -114,7 +117,7 @@ public class SnapFragment extends BaseFragment<SnapView, SnapPresenter> implemen
             viewNone.setVisibility(View.GONE);
             viewSnap.setVisibility(View.VISIBLE);
         }
-
+        progressSnap.setProgress(60);
         if(!fastPhotoOldBean.getDemention_info().isEmpty()){
             for (TaskInfoBean.FastPhotoOldBean.DementionInfoBean bean : fastPhotoOldBean.getDemention_info()){
                 switch (bean.getType()){

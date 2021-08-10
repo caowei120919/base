@@ -48,6 +48,7 @@ public class Constants {
     public static final String USER_PKID = "USER_PKID";
     public static final String USER_PWD = "USER_PWD";
     public static final String USER_ORG_NAME = "USER_ORG_NAME";
+    public static final String FINGERPRINT = "USER_FINGERPRINT";
     public static final String USER_NAME = "USER_NAME";
     public static final String USER_DEFAULT_TIME = "USER_DEFAULT_TIME";
     public static final String USER_DEFAULT_MONTH = "USER_DEFAULT_MONTH";

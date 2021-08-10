@@ -27,7 +27,9 @@
         android:id="@+id/tv_createTime"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/W25"
         android:textSize="18sp">
     </TextView>

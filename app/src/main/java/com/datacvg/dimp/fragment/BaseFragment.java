@@ -110,7 +110,7 @@ public abstract class BaseFragment<V extends MvpView,P extends MvpPresenter<V>>
         mUnbinder.unbind();
         EventBus.getDefault().unregister(this);
         if (BaseApplication.DEBUGMODE) {
-            RefWatcher refWatcher = BaseApplication.getRefWatcher(getActivity());
+            RefWatcher refWatcher = BaseApplication.getRefWatcher();
             refWatcher.watch(this);
         }
     }

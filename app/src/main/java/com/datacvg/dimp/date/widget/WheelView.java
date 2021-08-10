@@ -555,15 +555,12 @@ public class WheelView extends View {
 			width = widthSize;
 		} else {
 			width += 2 * PADDING;
-
-			// Check against our minimum width
 			width = Math.max(width, getSuggestedMinimumWidth());
 
 			if (mode == MeasureSpec.AT_MOST && widthSize < width) {
 				width = widthSize;
 			}
 		}
-
 		itemsLayout.measure(MeasureSpec.makeMeasureSpec(width - 2 * PADDING, MeasureSpec.EXACTLY),
 				MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
 
@@ -576,22 +573,17 @@ public class WheelView extends View {
 		int heightMode = MeasureSpec.getMode(heightMeasureSpec);
 		int widthSize = MeasureSpec.getSize(widthMeasureSpec);
 		int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-
 		buildViewForMeasuring();
-
 		int width = calculateLayoutWidth(widthSize, widthMode);
-
 		int height;
 		if (heightMode == MeasureSpec.EXACTLY) {
 			height = heightSize;
 		} else {
 			height = getDesiredHeight(itemsLayout);
-
 			if (heightMode == MeasureSpec.AT_MOST) {
 				height = Math.min(height, heightSize);
 			}
 		}
-
 		setMeasuredDimension(width, height);
 	}
 
@@ -607,21 +599,17 @@ public class WheelView extends View {
 	 */
 	private void layout(int width, int height) {
 		int itemsWidth = width - 2 * PADDING;
-
 		itemsLayout.layout(0, 0, itemsWidth, height);
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-
 		if (viewAdapter != null && viewAdapter.getItemsCount() > 0) {
 			updateView();
-
 			drawItems(canvas);
 			drawCenterRect(canvas);
 		}
-
 		if (drawShadows){
             drawShadows(canvas);
         }
@@ -632,14 +620,9 @@ public class WheelView extends View {
 	 * @param canvas the canvas for drawing
 	 */
 	private void drawShadows(Canvas canvas) {
-		/*/ Modified by wulianghuan 2014-11-25
-		int height = (int)(1.5 * getItemHeight());
-		//*/
 		int height = (int)(3 * getItemHeight());
-		//*/
 		topShadow.setBounds(0, 0, getWidth(), height);
 		topShadow.draw(canvas);
-
 		bottomShadow.setBounds(0, getHeight() - height, getWidth(), getHeight());
 		bottomShadow.draw(canvas);
 	}
@@ -666,12 +649,6 @@ public class WheelView extends View {
 	private void drawCenterRect(Canvas canvas) {
 		int center = getHeight() / 2;
 		int offset = (int) (getItemHeight() / 2 * 1.2);
-		/*/ Remarked by wulianghuan 2014-11-27  使用自己的画线，而不是描边
-		Rect rect = new Rect(left, top, right, bottom)
-		centerDrawable.setBounds(bounds)
-		centerDrawable.setBounds(0, center - offset, getWidth(), center + offset);
-		centerDrawable.draw(canvas);
-		//*/
 
 		// TODO 画线
 		Paint paint = new Paint();
@@ -771,7 +748,6 @@ public class WheelView extends View {
 			invalidate();
 		}
 
-		// update offset
 		scrollingOffset = offset - count * itemHeight;
 		if (scrollingOffset > getHeight()) {
 			scrollingOffset = scrollingOffset % getHeight() + getHeight();
@@ -801,7 +777,7 @@ public class WheelView extends View {
 
 		while (count * getItemHeight() < getHeight()) {
 			first--;
-			count += 2; // top + bottom items
+			count += 2;
 		}
 
 		if (scrollingOffset != 0) {
@@ -809,8 +785,6 @@ public class WheelView extends View {
 				first--;
 			}
 			count++;
-
-			// process empty items above the first or below the second
 			int emptyItems = scrollingOffset / getItemHeight();
 			first -= emptyItems;
 			count += Math.asin(emptyItems);
@@ -834,11 +808,9 @@ public class WheelView extends View {
 			createItemsLayout();
 			updated = true;
 		}
-
 		if (!updated) {
 			updated = firstItem != range.getFirst() || itemsLayout.getChildCount() != range.getCount();
 		}
-
 		if (firstItem > range.getFirst() && firstItem <= range.getLast()) {
 			for (int i = firstItem - 1; i >= range.getFirst(); i--) {
 				if (!addViewItem(i, true)) {
@@ -849,7 +821,6 @@ public class WheelView extends View {
 		} else {
 			firstItem = range.getFirst();
 		}
-
 		int first = firstItem;
 		for (int i = itemsLayout.getChildCount(); i < range.getCount(); i++) {
 			if (!addViewItem(firstItem + i, false) && itemsLayout.getChildCount() == 0) {
@@ -857,7 +828,6 @@ public class WheelView extends View {
 			}
 		}
 		firstItem = first;
-
 		return updated;
 	}
 
@@ -885,14 +855,12 @@ public class WheelView extends View {
 	 * Builds view for measuring
 	 */
 	private void buildViewForMeasuring() {
-		// clear all items
 		if (itemsLayout != null) {
 			recycle.recycleItems(itemsLayout, firstItem, new ItemsRange());
 		} else {
 			createItemsLayout();
 		}
 
-		// add views
 		int addItems = visibleItems / 2;
 		for (int i = currentItem + addItems; i >= currentItem - addItems; i--) {
 			if (addViewItem(i, true)) {
@@ -949,7 +917,6 @@ public class WheelView extends View {
 				index = count + index;
 			}
 		}
-
 		index %= count;
 		return viewAdapter.getItem(index, recycle.getItem(), itemsLayout);
 	}

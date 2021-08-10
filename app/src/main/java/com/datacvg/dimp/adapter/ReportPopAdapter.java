@@ -1,6 +1,7 @@
 package com.datacvg.dimp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.activity.ReportDetailActivity;
+import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
+import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.bean.TableBean;
 
 import java.util.ArrayList;
@@ -50,6 +54,9 @@ public class ReportPopAdapter extends RecyclerView.Adapter<ReportPopAdapter.View
         }
         holder.tvReportName.setText(LanguageUtils.isZh(mContext) ? tableBean.getRes_clname()
                 : tableBean.getRes_flname());
+        holder.itemView.setOnClickListener(view -> {
+            PLog.e("==============>点击进入详情");
+        });
     }
 
     @Override
