@@ -199,7 +199,9 @@
                     android:id="@+id/flow_assistant"
                     android:layout_width="wrap_content"
                     android:layout_marginLeft="@dimen/W45"
+                    android:layout_marginRight="@dimen/W45"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/H20"
                     android:layout_marginBottom="@dimen/H10"
                     android:layout_toLeftOf="@id/img_addAssistant">
                 </com.datacvg.dimp.widget.FlowLayout>
@@ -262,7 +264,9 @@
                     android:layout_width="wrap_content"
                     android:layout_marginLeft="@dimen/W45"
                     android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/W45"
                     android:layout_marginBottom="@dimen/H10"
+                    android:layout_marginTop="@dimen/H20"
                     android:layout_toLeftOf="@id/img_addIndex">
                 </com.datacvg.dimp.widget.FlowLayout>
 
@@ -314,6 +318,7 @@
                     android:id="@+id/flow_dimension"
                     android:layout_width="wrap_content"
                     android:layout_marginLeft="@dimen/W45"
+                    android:layout_marginRight="@dimen/W45"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="@dimen/H10">
                 </com.datacvg.dimp.widget.FlowLayout>
@@ -412,6 +417,22 @@
                 android:layout_marginLeft="@dimen/W25"
                 android:layout_marginRight="@dimen/W25">
             </EditText>
+
+            <TextView
+                android:id="@+id/tv_theSnapshotComparison"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ed_taskDetails"
+                android:text="@string/the_snapshot_comparison"
+                android:textColor="@color/c_da3a16"
+                android:textSize="16sp"
+                android:visibility="gone"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:drawableRight="@mipmap/icon_red_next"
+                android:drawablePadding="@dimen/W40"
+                android:padding="@dimen/W25">
+            </TextView>
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

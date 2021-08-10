@@ -1,5 +1,6 @@
 package com.datacvg.dimp.activity;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -23,6 +24,7 @@ import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.baseandroid.utils.TimeUtils;
 import com.datacvg.dimp.bean.ActionPlanBean;
 import com.datacvg.dimp.bean.CreateTaskBean;
+import com.datacvg.dimp.bean.IndexTreeBean;
 import com.datacvg.dimp.bean.TaskInfoBean;
 import com.datacvg.dimp.presenter.TaskDetailPresenter;
 import com.datacvg.dimp.view.TaskDetailView;
@@ -68,6 +70,10 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
     ImageView imgAddAssistant ;
     @BindView(R.id.ed_taskDetails)
     EditText edTaskDetails ;
+    @BindView(R.id.flow_index)
+    FlowLayout flowIndex ;
+    @BindView(R.id.tv_theSnapshotComparison)
+    TextView tvTheSnapshotComparison ;
 
     TextView tvDate ;
     TextView tvActionTypeCommon ;
@@ -177,11 +183,20 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 , LanguageUtils.getLanguage(mContext));
     }
 
-    @OnClick({R.id.img_left})
+    @OnClick({R.id.img_left,R.id.tv_theSnapshotComparison})
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.img_left :
                     finish();
+                break;
+
+            /**
+             * 快照对比
+             */
+            case R.id.tv_theSnapshotComparison :
+                Intent intent = new Intent(mContext,SnapShotActivity.class) ;
+                intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,taskInfoBean);
+                mContext.startActivity(intent);
                 break;
         }
     }
@@ -247,6 +262,8 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             return;
         }
         taskInfoBean = resdata ;
+        tvTheSnapshotComparison.setVisibility((resdata.getPlan() != null
+                && resdata.getPlan().getPlan_flg().equals("T")) ? View.VISIBLE : View.GONE);
         if(resdata.getDetail() != null && resdata.getDetail().size() > 0){
             fillDetailDate(resdata.getDetail().get(0));
         }
@@ -272,6 +289,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                     .replace("#1",resdata.getBaseInfo().getCreate_time()));
             tvEndTime.setText(resources.getString(R.string.expiration_date)
                     .replace("#1",resdata.getBaseInfo().getTask_deadline()));
+            edTaskDetails.setText(resdata.getBaseInfo().getTask_text());
             statusTask.showContent();
         }
         if(resdata.getHandle() != null && resdata.getHandle().size() > 0){
@@ -308,6 +326,19 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 if(user.getType().equals("3")){
                     buildAssistantFlow(user,true);
                 }
+            }
+        }
+
+        /**
+         * 相关指标
+         */
+        if (!resdata.getIndexList().isEmpty()){
+            for (TaskInfoBean.IndexListBean bean : resdata.getIndexList()){
+                View view = LayoutInflater.from(mContext).inflate(R.layout.item_selected_user,null);
+                TextView tv_group = view.findViewById(R.id.tv_user);
+                tv_group.setText(bean.getIndex_name());
+                view.setTag(bean.getIndex_id());
+                flowIndex.addView(view);
             }
         }
     }
@@ -352,7 +383,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                     operateView.setGravity(Gravity.CENTER);
                     operateView.setTextColor(i == 0 ? resources.getColor(R.color.c_FFFFFF)
                             : resources.getColor(R.color.c_da3a16));
-                    operateView.setTextSize(10);
+                    operateView.setTextSize(14);
                     operateView.setMinWidth((int) resources.getDimension(R.dimen.W144));
                     operateView.setHeight((int) resources.getDimension(R.dimen.H50));
                     operateView.setBackground( i == 0 ? resources.getDrawable(R.drawable.shape_round_8_da3a16)

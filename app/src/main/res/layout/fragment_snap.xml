@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.enlogy.statusview.StatusRelativeLayout
+        android:id="@+id/status_snapTop"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H90"
+        android:layout_marginLeft="@dimen/W25"
+        android:layout_marginRight="@dimen/W25"
+        app:rContentView="@layout/view_dimension"
+        app:rExtendView="@layout/view_index">
+    </com.enlogy.statusview.StatusRelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H1070"
+        android:layout_below="@id/status_snapTop"
+        android:layout_marginLeft="@dimen/W25"
+        android:layout_marginRight="@dimen/W25"
+        android:background="@drawable/layer_background">
+
+        <com.enlogy.statusview.StatusRelativeLayout
+            android:id="@+id/status_snap"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/H90"
+            app:rContentView="@layout/view_dimension"
+            app:rExtendView="@layout/view_index">
+        </com.enlogy.statusview.StatusRelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/H2"
+            android:background="@color/c_E7E7E7"
+            android:layout_below="@id/status_snap"
+            android:layout_marginLeft="@dimen/W25"
+            android:layout_marginRight="@dimen/W25">
+        </TextView>
+
+        <include
+            android:id="@+id/view_snap"
+            layout="@layout/item_snap"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tv_line"/>
+
+        <include
+            android:id="@+id/view_none"
+            android:visibility="gone"
+            layout="@layout/item_without_permission"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tv_line"/>
+    </RelativeLayout>
+</RelativeLayout>

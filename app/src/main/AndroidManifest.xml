@@ -206,6 +206,7 @@
             android:theme="@style/ActivityDialogStyle"
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SnapShotActivity" />
     </application>
 
 </manifest>

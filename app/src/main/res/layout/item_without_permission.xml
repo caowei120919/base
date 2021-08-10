@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/img_withoutPermission"
+        android:layout_width="@dimen/W400"
+        android:layout_height="@dimen/H400"
+        android:scaleType="fitXY"
+        android:src="@mipmap/action_snapshot_nopermission"
+        android:layout_centerInParent="true">
+    </ImageView>
+
+    <TextView
+        android:id="@+id/tv_permission"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_withoutPermission"
+        android:text="@string/the_current_user_does_not_have_permission_for_the_metric_dimension"
+        android:textSize="20sp"
+        android:layout_marginTop="@dimen/H40"
+        android:layout_centerHorizontal="true">
+    </TextView>
+</RelativeLayout>

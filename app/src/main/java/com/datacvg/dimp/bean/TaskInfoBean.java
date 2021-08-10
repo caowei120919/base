@@ -907,10 +907,51 @@ public class TaskInfoBean implements Serializable {
         private String action_time;
         private String time;
         private String index_id;
+        private String tree_type;
+        private String index_unit;
+        private String fast_code ;
+        private String no_permission_name ;
+
+        public String getFast_code() {
+            return fast_code;
+        }
+
+        public void setFast_code(String fast_code) {
+            this.fast_code = fast_code;
+        }
+
+        public String getNo_permission_name() {
+            return no_permission_name;
+        }
+
+        public void setNo_permission_name(String no_permission_name) {
+            this.no_permission_name = no_permission_name;
+        }
+
+        public String getIndex_unit() {
+            return index_unit;
+        }
+
+        public void setIndex_unit(String index_unit) {
+            this.index_unit = index_unit;
+        }
+
         private String fudimension;
         private String save_data;
         private List<DementionInfoBean> demention_info;
         private Object newval;
+
+        public String getTree_type() {
+            return tree_type;
+        }
+
+        public void setTree_type(String tree_type) {
+            this.tree_type = tree_type;
+        }
+
+        public void setNewval(Object newval) {
+            this.newval = newval;
+        }
 
         public String getIndex_clname() {
             return index_clname;
@@ -1065,7 +1106,7 @@ public class TaskInfoBean implements Serializable {
         }
 
         @Keep
-        public static class DementionInfoBean {
+        public static class DementionInfoBean implements Serializable{
 
             /**
              * index_value_unit : 万元

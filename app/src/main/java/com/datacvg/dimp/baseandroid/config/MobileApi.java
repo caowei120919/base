@@ -18,6 +18,7 @@ import com.datacvg.dimp.bean.ImageResBean;
 import com.datacvg.dimp.bean.IndexBean;
 import com.datacvg.dimp.bean.IndexChartInfoBean;
 import com.datacvg.dimp.bean.IndexTreeListBean;
+import com.datacvg.dimp.bean.KpiPermissionDataBean;
 import com.datacvg.dimp.bean.MessageBean;
 import com.datacvg.dimp.bean.ModuleListBean;
 import com.datacvg.dimp.bean.PerformanceBean;
@@ -436,4 +437,11 @@ public interface MobileApi {
      */
     @POST("api/mobile/indexpad/index/remark/save")
     Observable<BaseBean> saveRemark(@Body Map params);
+
+    /**
+     * 获取自定义阈值名称
+     * @return
+     */
+    @GET("api/ddb/indexpad/kpi/permission")
+    Observable<BaseBean<KpiPermissionDataBean>> getPermissionName();
 }

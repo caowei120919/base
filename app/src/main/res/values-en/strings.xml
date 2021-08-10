@@ -246,4 +246,8 @@
     <string name="product">product</string>
     <string name="region">region</string>
     <string name="please_enter_remarks">Please enter remarks</string>
+    <string name="the_snapshot_comparison">The snapshot comparison</string>
+    <string name="unit">unit</string>
+    <string name="dimension_details">Dimension details</string>
+    <string name="the_current_user_does_not_have_permission_for_the_metric_dimension">The current user does not have permission for the metric dimension</string>
 </resources>

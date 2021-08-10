@@ -36,27 +36,26 @@ public class FlowLayout extends ViewGroup {
         //建议的高度
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
         //布局的宽度采用建议宽度（match_parent或者size），如果设置wrap_content也是match_parent的效果
-        int width = MeasureSpec.getSize(widthMeasureSpec);
+        int width = MeasureSpec.getSize(widthMeasureSpec) ;
 
         int height ;
         if (heightMode == MeasureSpec.EXACTLY) {
-            //如果高度模式为EXACTLY（match_perent或者size），则使用建议高度
             height = heightSize;
         } else {
             //其他情况下（AT_MOST、UNSPECIFIED）需要计算计算高度
             int childCount = getChildCount();
             if(childCount<=0){
-                height = 0;   //没有标签时，高度为0
+                height = 0;
             }else{
-                int row = 1;  // 标签行数
-                int widthSpace = width;// 当前行右侧剩余的宽度
+                int row = 1;
+                int widthSpace = width;
                 for(int i = 0;i<childCount; i++){
                     View view = getChildAt(i);
                     //获取标签宽度
                     int childW = view.getMeasuredWidth();
                     paddingBottom = view.getPaddingBottom() ;
                     paddingTop = view.getPaddingTop() ;
-                    if(widthSpace >= childW ){
+                    if(widthSpace >= childW){
                         //如果剩余的宽度大于此标签的宽度，那就将此标签放到本行
                         widthSpace -= childW;
                     }else{
@@ -81,8 +80,8 @@ public class FlowLayout extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int row = 0;
-        int right = 0;   // 标签相对于布局的右侧位置
-        int botom;       // 标签相对于布局的底部位置
+        int right = 0;
+        int botom;
         for (int i = 0; i < getChildCount(); i++) {
             View childView = getChildAt(i);
             int childW = childView.getMeasuredWidth();

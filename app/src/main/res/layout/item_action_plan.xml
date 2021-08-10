@@ -138,4 +138,10 @@
             android:gravity="center">
         </TextView>
     </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H2"
+        android:background="@color/c_F0F0F0">
+    </TextView>
 </LinearLayout>

@@ -81,4 +81,5 @@
     <color name="c_D0D0D0">#D0D0D0</color>
     <color name="login_button_normal">#169fff</color>
     <color name="login_button_pressed">#1073b9</color>
+    <color name="c_E7E7E7">#E7E7E7</color>
 </resources>

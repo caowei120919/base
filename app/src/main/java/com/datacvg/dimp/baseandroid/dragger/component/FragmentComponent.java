@@ -16,6 +16,7 @@ import com.datacvg.dimp.fragment.RemarkFragment;
 import com.datacvg.dimp.fragment.ReportFragment;
 import com.datacvg.dimp.fragment.ReportListFragment;
 import com.datacvg.dimp.fragment.ScreenFragment;
+import com.datacvg.dimp.fragment.SnapFragment;
 import com.datacvg.dimp.fragment.TableFragment;
 
 import dagger.Component;
@@ -50,4 +51,6 @@ public interface FragmentComponent {
     void inject(ActionListFragment actionListFragment);
 
     void inject(RemarkFragment remarkFragment);
+
+    void inject(SnapFragment snapFragment);
 }

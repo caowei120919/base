@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_text"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H800">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_lineToSnap"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H2"
+        android:background="@color/c_E7E7E7"
+        android:layout_marginLeft="@dimen/W25"
+        android:layout_marginRight="@dimen/W25">
+    </TextView>
+
+    <RelativeLayout
+        android:id="@+id/rel_target"
+        android:layout_width="match_parent"
+        android:minHeight="@dimen/H186"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_lineToSnap">
+
+        <TextView
+            android:id="@+id/tv_target"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:drawableRight="@mipmap/action_snapshot_threshold"
+            android:drawablePadding="@dimen/W25"
+            android:textColor="@color/c_303030"
+            android:visibility="gone"
+            android:layout_marginLeft="@dimen/W25"
+            android:layout_marginTop="@dimen/H10">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_targetValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_target"
+            android:textColor="@color/c_303030"
+            android:textStyle="bold"
+            android:layout_alignTop="@id/tv_target"
+            android:layout_marginLeft="@dimen/W25">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_targetDescribe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/tv_target"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/W25">
+        </TextView>
+
+
+        <TextView
+            android:id="@+id/tv_challenge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_below="@id/tv_target"
+            android:drawableRight="@mipmap/action_snapshot_threshold"
+            android:drawablePadding="@dimen/W25"
+            android:visibility="gone"
+            android:textColor="@color/c_303030"
+            android:layout_marginLeft="@dimen/W25"
+            android:layout_marginTop="@dimen/H10">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_challengeValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/c_303030"
+            android:textStyle="bold"
+            android:layout_toRightOf="@id/tv_challenge"
+            android:layout_alignTop="@id/tv_challenge"
+            android:layout_marginLeft="@dimen/W25">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_challengeDescribe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/tv_challenge"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/W25">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_minimum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_below="@id/tv_challenge"
+            android:drawableRight="@mipmap/action_snapshot_threshold"
+            android:drawablePadding="@dimen/W25"
+            android:visibility="gone"
+            android:textColor="@color/c_303030"
+            android:layout_marginLeft="@dimen/W25"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_marginBottom="@dimen/H10">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_minimumValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/c_303030"
+            android:textStyle="bold"
+            android:layout_toRightOf="@id/tv_minimum"
+            android:layout_alignTop="@id/tv_minimum"
+            android:layout_marginLeft="@dimen/W25">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_minimumDescribe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/tv_minimum"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/W25">
+        </TextView>
+    </RelativeLayout>
+</LinearLayout>

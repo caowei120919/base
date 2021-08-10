@@ -33,6 +33,7 @@ import com.datacvg.dimp.activity.SelectFilterActivity;
 import com.datacvg.dimp.activity.SelectTableParamActivity;
 import com.datacvg.dimp.activity.SettingActivity;
 import com.datacvg.dimp.activity.SettingVpnActivity;
+import com.datacvg.dimp.activity.SnapShotActivity;
 import com.datacvg.dimp.activity.SplashActivity;
 import com.datacvg.dimp.activity.TableCommentActivity;
 import com.datacvg.dimp.activity.TableDetailActivity;
@@ -123,4 +124,6 @@ public interface ActivityComponent {
     void inject(SelectFilterActivity selectFilterActivity);
 
     void inject(IndexPopActivity indexPopActivity);
+
+    void inject(SnapShotActivity snapShotActivity);
 }

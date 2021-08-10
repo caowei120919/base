@@ -239,4 +239,8 @@
     <string name="product">产品</string>
     <string name="region">地区</string>
     <string name="please_enter_remarks">请输入备注信息</string>
+    <string name="the_snapshot_comparison">快照对比</string>
+    <string name="unit">单位</string>
+    <string name="dimension_details">维度详情</string>
+    <string name="the_current_user_does_not_have_permission_for_the_metric_dimension">当前用户没有该指标维度权限</string>
 </resources>
