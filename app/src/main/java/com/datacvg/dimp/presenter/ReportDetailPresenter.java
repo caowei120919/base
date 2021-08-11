@@ -38,8 +38,10 @@ public class ReportDetailPresenter extends BasePresenter<ReportDetailView>{
 
                     @Override
                     public void onNext(BaseBean<ReportParamsBean> bean) {
-                        PLog.e(bean.getResdata().getParams() + "");
-                        getView().getParamsSuccess(bean.getResdata());
+                        if(checkJsonCode(bean)){
+                            PLog.e(bean.getResdata().getParams() + "");
+                            getView().getParamsSuccess(bean.getResdata());
+                        }
                     }
 
                     @Override

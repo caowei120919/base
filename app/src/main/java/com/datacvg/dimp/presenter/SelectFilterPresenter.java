@@ -34,7 +34,9 @@ public class SelectFilterPresenter extends BasePresenter<SelectFilterView>{
 
                     @Override
                     public void onNext(BaseBean<DimensionListBean> bean) {
-                        getView().getDimensionSuccess(bean.getData().getSelectDimension());
+                        if(checkJsonCode(bean)){
+                            getView().getDimensionSuccess(bean.getData().getSelectDimension());
+                        }
                     }
 
                     @Override
@@ -54,8 +56,10 @@ public class SelectFilterPresenter extends BasePresenter<SelectFilterView>{
 
                     @Override
                     public void onNext(BaseBean<DimensionListBean> bean) {
-                        getView().getOtherDimensionSuccess(bean.getData()
-                                .getSelectOtherDimension(),tag);
+                        if(checkJsonCode(bean)){
+                            getView().getOtherDimensionSuccess(bean.getData()
+                                    .getSelectOtherDimension(),tag);
+                        }
                     }
 
                     @Override

@@ -87,12 +87,14 @@ public class SplashPresenter extends BasePresenter<SplashView> {
 
                     @Override
                     public void onNext(BaseBean<TimeValueBean> timeValueBeanBaseBean) {
-                        PreferencesHelper.put(Constants.USER_DEFAULT_MONTH
-                                ,timeValueBeanBaseBean.getData().getDefaultTime().getMonth());
-                        PreferencesHelper.put(Constants.USER_DEFAULT_YEAR
-                                ,timeValueBeanBaseBean.getData().getDefaultTime().getYear());
-                        PreferencesHelper.put(Constants.USER_DEFAULT_DAY
-                                ,timeValueBeanBaseBean.getData().getDefaultTime().getDay());
+                        if(checkJsonCode(timeValueBeanBaseBean)){
+                            PreferencesHelper.put(Constants.USER_DEFAULT_MONTH
+                                    ,timeValueBeanBaseBean.getData().getDefaultTime().getMonth());
+                            PreferencesHelper.put(Constants.USER_DEFAULT_YEAR
+                                    ,timeValueBeanBaseBean.getData().getDefaultTime().getYear());
+                            PreferencesHelper.put(Constants.USER_DEFAULT_DAY
+                                    ,timeValueBeanBaseBean.getData().getDefaultTime().getDay());
+                        }
                     }
 
                     @Override

@@ -40,7 +40,9 @@ public class ActionPresenter extends BasePresenter<ActionView>{
 
                     @Override
                     public void onNext(BaseBean<ActionPlanListBean> baseBean) {
-                        getView().getActionPlanListSuccess(baseBean.getResdata());
+                        if(checkJsonCode(baseBean)){
+                            getView().getActionPlanListSuccess(baseBean.getResdata());
+                        }
                     }
 
                     @Override

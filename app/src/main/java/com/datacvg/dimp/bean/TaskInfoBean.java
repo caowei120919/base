@@ -1,7 +1,6 @@
 package com.datacvg.dimp.bean;
 
 import androidx.annotation.Keep;
-
 import java.io.Serializable;
 import java.util.List;
 

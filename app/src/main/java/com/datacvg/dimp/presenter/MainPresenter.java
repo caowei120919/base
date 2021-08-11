@@ -45,7 +45,9 @@ public class MainPresenter extends BasePresenter<MainView>{
 
                     @Override
                     public void onNext(BaseBean<ModuleListBean> stringBaseBean) {
-                        getView().getModuleSuccess(stringBaseBean.getResdata());
+                        if(checkJsonCode(stringBaseBean)){
+                            getView().getModuleSuccess(stringBaseBean.getResdata());
+                        }
                     }
 
                     @Override
@@ -71,6 +73,9 @@ public class MainPresenter extends BasePresenter<MainView>{
 
                     @Override
                     public void onNext(DefaultReportBean baseBean) {
+                        if(!checkJsonCode(baseBean)){
+                            return;
+                        }
                         if(baseBean != null){
                             ConstantReportBean reportBean
                                     = new ConstantReportBean(baseBean.getRes_id(),baseBean.getDefault_pkid());
@@ -123,7 +128,9 @@ public class MainPresenter extends BasePresenter<MainView>{
 
                     @Override
                     public void onNext(BaseBean<TableListBean> bean) {
-                        getView().getTableSuccess(bean.getResdata());
+                        if(checkJsonCode(bean)){
+                            getView().getTableSuccess(bean.getResdata());
+                        }
                     }
 
                     @Override

@@ -23,16 +23,7 @@ public class MyApplication extends BaseApplication {
         initMyAppInject();
         Api.setEnviroment(BuildConfig.APP_ENV);
         AndroidUtils.init(this);
-        initFlutterBoost();
     }
-
-    /**
-     * 初始化flutter启动引擎追踪
-     */
-    private void initFlutterBoost() {
-
-    }
-
 
     public void initMyAppInject() {
         mMyAppComponent = DaggerMyAppComponent.builder().

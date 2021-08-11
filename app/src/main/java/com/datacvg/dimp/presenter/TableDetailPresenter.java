@@ -73,7 +73,9 @@ public class TableDetailPresenter extends BasePresenter<TableDetailView>{
 
                     @Override
                     public void onNext(BaseBean<TableInfoBean> bean) {
-                        getView().getTableInfoSuccess(bean.getResdata());
+                        if (checkJsonCode(bean)){
+                            getView().getTableInfoSuccess(bean.getResdata());
+                        }
                     }
 
                     @Override
@@ -94,8 +96,10 @@ public class TableDetailPresenter extends BasePresenter<TableDetailView>{
                 .subscribe(new RxObserver<SetDefaultResBean>(){
                     @Override
                     public void onNext(SetDefaultResBean baseBean) {
-                        if(baseBean.getResult()){
-                            getView().setDefaultReportSuccess(baseBean);
+                        if(checkJsonCode(baseBean)){
+                            if(baseBean.getResult()){
+                                getView().setDefaultReportSuccess(baseBean);
+                            }
                         }
                     }
                 });
@@ -111,7 +115,9 @@ public class TableDetailPresenter extends BasePresenter<TableDetailView>{
                 .subscribe(new RxObserver<BaseBean>(){
                     @Override
                     public void onNext(BaseBean baseBean) {
-                        getView().cancelDefaultReportSuccess();
+                        if(checkJsonCode(baseBean)){
+                            getView().cancelDefaultReportSuccess();
+                        }
                     }
                 });
     }

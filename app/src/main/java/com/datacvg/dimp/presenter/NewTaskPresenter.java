@@ -44,7 +44,9 @@ public class NewTaskPresenter extends BasePresenter<NewTaskView> {
 
                     @Override
                     public void onNext(BaseBean<ActionPlanIndexListBean> bean) {
-                        getView().getIndexSuccess(bean.getResdata());
+                        if(checkJsonCode(bean)){
+                            getView().getIndexSuccess(bean.getResdata());
+                        }
                     }
 
                     @Override
@@ -71,6 +73,9 @@ public class NewTaskPresenter extends BasePresenter<NewTaskView> {
 
                     @Override
                     public void onNext(BaseBean bean) {
+                        if(!checkJsonCode(bean)){
+                            return;
+                        }
                         if(bean.getStatus() == Constants.SERVICE_CODE_SUCCESS_MOBILE){
                             getView().createTaskSuccess();
                         }else{

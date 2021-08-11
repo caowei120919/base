@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.datacvg.dimp">
+    package="com.datacvg.dimp"
+    tools:ignore="ImpliedTouchscreenHardware,MissingLeanbackLauncher,MissingLeanbackSupport">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -206,7 +207,9 @@
             android:theme="@style/ActivityDialogStyle"
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activity.SnapShotActivity" />
+        <activity android:name=".activity.SnapShotActivity"
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

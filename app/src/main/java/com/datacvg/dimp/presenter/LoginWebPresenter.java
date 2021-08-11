@@ -45,7 +45,9 @@ public class LoginWebPresenter extends BasePresenter<LoginWebView> {
 
                     @Override
                     public void onNext(BaseBean<String> baseBean) {
-                        getView().loginSuccess();
+                        if(checkJsonCode(baseBean)){
+                            getView().loginSuccess();
+                        }
                     }
 
                     @Override

@@ -37,7 +37,9 @@ public class ScreenPresenter extends BasePresenter<ScreenView>{
 
                     @Override
                     public void onNext(ScreenListBean bean) {
-                        getView().getScreenSuccess(bean.getData());
+                        if(checkJsonCode(bean)){
+                            getView().getScreenSuccess(bean.getData());
+                        }
                     }
 
                     @Override

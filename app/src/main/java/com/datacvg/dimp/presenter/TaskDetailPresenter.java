@@ -42,7 +42,9 @@ public class TaskDetailPresenter extends BasePresenter<TaskDetailView>{
 
                     @Override
                     public void onNext(BaseBean<TaskInfoBean> bean) {
-                        getView().getTaskInfoSuccess(bean.getResdata());
+                        if(checkJsonCode(bean)){
+                            getView().getTaskInfoSuccess(bean.getResdata());
+                        }
                     }
 
                     @Override

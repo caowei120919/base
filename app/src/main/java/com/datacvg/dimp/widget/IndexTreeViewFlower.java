@@ -13,11 +13,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import com.datacvg.dimp.R;
-import com.datacvg.dimp.baseandroid.utils.DisplayUtils;
-import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.bean.IndexTreeBean;
 import com.datacvg.dimp.bean.IndexTreeListBean;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +23,7 @@ import java.util.List;
  * @Time : 2020-12-11
  * @Description :
  */
-public class IndexTreeViewFlower extends ViewGroup {
+public class IndexTreeViewFlower extends ViewGroup{
 
     public enum IndexTreeType {
         INDEX_LARGE(1),

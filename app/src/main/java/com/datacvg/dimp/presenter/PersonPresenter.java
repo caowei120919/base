@@ -38,7 +38,9 @@ public class PersonPresenter extends BasePresenter<PersonView> {
 
                     @Override
                     public void onNext(BaseBean bean) {
-                        getView().loginOutSuccess();
+                        if(checkJsonCode(bean)){
+                            getView().loginOutSuccess();
+                        }
                     }
 
                     @Override
@@ -64,7 +66,9 @@ public class PersonPresenter extends BasePresenter<PersonView> {
 
                     @Override
                     public void onNext(BaseBean<UserJobsListBean> bean) {
-                        getView().getUseJobsSuccess(bean.getResdata());
+                        if(checkJsonCode(bean)){
+                            getView().getUseJobsSuccess(bean.getResdata());
+                        }
                     }
 
                     @Override
@@ -86,7 +90,9 @@ public class PersonPresenter extends BasePresenter<PersonView> {
 
                     @Override
                     public void onNext(BaseBean<MessageBean> bean) {
-                        getView().getMessageSuccess(bean.getResdata());
+                        if(checkJsonCode(bean)){
+                            getView().getMessageSuccess(bean.getResdata());
+                        }
                     }
 
                     @Override

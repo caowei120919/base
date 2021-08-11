@@ -39,7 +39,9 @@ public class ReportListPresenter extends BasePresenter<ReportListView> {
 
                     @Override
                     public void onNext(BaseBean<TableListBean> bean) {
-                        getView().getReportsSuccess(bean.getResdata());
+                        if(checkJsonCode(bean)){
+                            getView().getReportsSuccess(bean.getResdata());
+                        }
                     }
 
                     @Override

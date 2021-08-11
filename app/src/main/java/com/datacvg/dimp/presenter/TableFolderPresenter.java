@@ -37,8 +37,10 @@ public class TableFolderPresenter extends BasePresenter<TableFolderView> {
 
                     @Override
                     public void onNext(BaseBean<TableListBean> bean) {
-                        PLog.e("getTableList ==== " + bean.getResdata().size());
-                        getView().getTableSuccess(bean.getResdata());
+                        if(checkJsonCode(bean)){
+                            PLog.e("getTableList ==== " + bean.getResdata().size());
+                            getView().getTableSuccess(bean.getResdata());
+                        }
                     }
 
                     @Override

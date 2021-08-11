@@ -40,7 +40,9 @@ public class IndexTreePresenter extends BasePresenter<IndexTreeView>{
 
                     @Override
                     public void onNext(BaseBean<IndexTreeListBean> bean) {
-                        getView().getIndexTreeSuccess(bean.getResdata());
+                        if(checkJsonCode(bean)){
+                            getView().getIndexTreeSuccess(bean.getResdata());
+                        }
                     }
 
                     @Override

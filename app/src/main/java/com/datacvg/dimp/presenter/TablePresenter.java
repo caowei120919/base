@@ -38,7 +38,9 @@ public class TablePresenter extends BasePresenter<TableView>{
 
                     @Override
                     public void onNext(BaseBean<TableListBean> bean) {
-                        getView().getTableSuccess(bean.getResdata());
+                        if(checkJsonCode(bean)){
+                            getView().getTableSuccess(bean.getResdata());
+                        }
                     }
 
                     @Override

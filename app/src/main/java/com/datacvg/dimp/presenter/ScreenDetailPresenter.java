@@ -41,7 +41,9 @@ public class ScreenDetailPresenter extends BasePresenter<ScreenDetailView> {
 
                     @Override
                     public void onNext(BaseBean<ScreenDetailBean> bean) {
-                        getView().getScreenDetailSuccess(bean.getData());
+                        if(checkJsonCode(bean)){
+                            getView().getScreenDetailSuccess(bean.getData());
+                        }
                     }
 
                     @Override

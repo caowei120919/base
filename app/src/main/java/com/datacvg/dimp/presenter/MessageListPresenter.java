@@ -35,7 +35,9 @@ public class MessageListPresenter extends BasePresenter<MessageListView>{
 
                     @Override
                     public void onNext(BaseBean<MessageBean> bean) {
-                        getView().getMessageSuccess(bean.getResdata());
+                        if(checkJsonCode(bean)){
+                            getView().getMessageSuccess(bean.getResdata());
+                        }
                     }
 
                     @Override
@@ -64,7 +66,9 @@ public class MessageListPresenter extends BasePresenter<MessageListView>{
 
                     @Override
                     public void onNext(BaseBean<ReadMessageBean> bean) {
-                        getView().getMessageReadSuccess();
+                        if(checkJsonCode(bean)){
+                            getView().getMessageReadSuccess();
+                        }
                     }
 
                     @Override

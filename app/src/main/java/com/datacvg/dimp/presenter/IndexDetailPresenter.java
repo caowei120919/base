@@ -45,6 +45,9 @@ public class IndexDetailPresenter extends BasePresenter<IndexDetailView>{
 
                     @Override
                     public void onNext(BaseBean<ChartListBean> bean) {
+                        if(!checkJsonCode(bean)){
+                            return;
+                        }
                         PLog.e(new Gson().toJson(bean));
                         getView().getChartSuccess(bean.getResdata());
                         List<String> stringName = new ArrayList<>();

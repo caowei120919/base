@@ -34,7 +34,9 @@ public class MessageCentrePresenter extends BasePresenter<MessageCentreView>{
 
                     @Override
                     public void onNext(BaseBean<MessageBean> bean) {
-                        getView().getMessageSuccess(bean.getResdata());
+                        if(checkJsonCode(bean)){
+                            getView().getMessageSuccess(bean.getResdata());
+                        }
                     }
 
                     @Override

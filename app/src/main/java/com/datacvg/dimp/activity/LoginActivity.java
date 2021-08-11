@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-
 import com.datacvg.dimp.BuildConfig;
 import com.datacvg.dimp.MyApplication;
 import com.datacvg.dimp.R;
@@ -33,9 +32,7 @@ import com.datacvg.dimp.bean.UserLoginBean;
 import com.datacvg.dimp.presenter.LoginPresenter;
 import com.datacvg.dimp.view.LoginView;
 import com.tbruyelle.rxpermissions2.RxPermissions;
-
 import java.io.File;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;

@@ -6,22 +6,15 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
-
 import com.datacvg.dimp.BuildConfig;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.CacheUtils;
 import com.datacvg.dimp.baseandroid.utils.FingerPrintUtils;
-import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
-import com.datacvg.dimp.event.RebuildTableEvent;
 import com.datacvg.dimp.presenter.SettingPresenter;
 import com.datacvg.dimp.view.SettingView;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 

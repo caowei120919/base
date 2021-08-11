@@ -7,11 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.PLog;
-import com.datacvg.dimp.baseandroid.widget.ProgressBarView;
 import com.datacvg.dimp.bean.KpiPermissionDataBean;
 import com.datacvg.dimp.bean.TaskInfoBean;
 import com.datacvg.dimp.presenter.SnapPresenter;
@@ -54,7 +54,7 @@ public class SnapFragment extends BaseFragment<SnapView, SnapPresenter> implemen
     @BindView(R.id.view_none)
     View viewNone ;
     @BindView(R.id.progress_snap)
-    ProgressBarView progressSnap ;
+    SeekBar progressSnap ;
 
     private TaskInfoBean.FastPhotoOldBean fastPhotoOldBean ;
     private PopupWindow timeTypePop ;
@@ -117,7 +117,7 @@ public class SnapFragment extends BaseFragment<SnapView, SnapPresenter> implemen
             viewNone.setVisibility(View.GONE);
             viewSnap.setVisibility(View.VISIBLE);
         }
-        progressSnap.setProgress(60);
+        progressSnap.setProgress(600);
         if(!fastPhotoOldBean.getDemention_info().isEmpty()){
             for (TaskInfoBean.FastPhotoOldBean.DementionInfoBean bean : fastPhotoOldBean.getDemention_info()){
                 switch (bean.getType()){
@@ -219,27 +219,27 @@ public class SnapFragment extends BaseFragment<SnapView, SnapPresenter> implemen
         }
         switch (dimensions.size()){
             case 1 :
-                ((TextView) statusSnap.findViewById(R.id.tv_orgName)).setVisibility(View.VISIBLE);
+                statusSnap.findViewById(R.id.tv_orgName).setVisibility(View.VISIBLE);
                 ((TextView) statusSnap.findViewById(R.id.tv_orgName)).setText(resources.getString(R.string.organization) + ":" + dimensions.get(0));
                 break;
 
             case 2 :
-                ((TextView) statusSnap.findViewById(R.id.tv_orgName)).setVisibility(View.VISIBLE);
+                statusSnap.findViewById(R.id.tv_orgName).setVisibility(View.VISIBLE);
                 ((TextView) statusSnap.findViewById(R.id.tv_orgName)).setText(resources.getString(R.string.organization) + ":" + dimensions.get(0));
-                ((TextView) statusSnap.findViewById(R.id.tv_proLine)).setVisibility(View.VISIBLE);
-                ((TextView) statusSnap.findViewById(R.id.tv_proName)).setVisibility(View.VISIBLE);
+                statusSnap.findViewById(R.id.tv_proLine).setVisibility(View.VISIBLE);
+                statusSnap.findViewById(R.id.tv_proName).setVisibility(View.VISIBLE);
                 ((TextView) statusSnap.findViewById(R.id.tv_proName)).setText(resources.getString(R.string.region) + ":" + dimensions.get(1));
                 break;
 
             case 3 :
-                ((TextView) statusSnap.findViewById(R.id.tv_orgName)).setVisibility(View.VISIBLE);
+                statusSnap.findViewById(R.id.tv_orgName).setVisibility(View.VISIBLE);
                 ((TextView) statusSnap.findViewById(R.id.tv_orgName)).setText(resources.getString(R.string.organization) + ":" + dimensions.get(0));
-                ((TextView) statusSnap.findViewById(R.id.tv_proLine)).setVisibility(View.VISIBLE);
-                ((TextView) statusSnap.findViewById(R.id.tv_proName)).setVisibility(View.VISIBLE);
+                statusSnap.findViewById(R.id.tv_proLine).setVisibility(View.VISIBLE);
+                statusSnap.findViewById(R.id.tv_proName).setVisibility(View.VISIBLE);
                 ((TextView) statusSnap.findViewById(R.id.tv_proName)).setText(resources.getString(R.string.region) + ":" + dimensions.get(1));
 
-                ((TextView) statusSnap.findViewById(R.id.tv_areaLine)).setVisibility(View.VISIBLE);
-                ((TextView) statusSnap.findViewById(R.id.tv_areaName)).setVisibility(View.VISIBLE);
+                statusSnap.findViewById(R.id.tv_areaLine).setVisibility(View.VISIBLE);
+                statusSnap.findViewById(R.id.tv_areaName).setVisibility(View.VISIBLE);
                 ((TextView) statusSnap.findViewById(R.id.tv_areaName)).setText(resources.getString(R.string.product) + ":" + dimensions.get(2));
                 break;
         }
@@ -253,9 +253,9 @@ public class SnapFragment extends BaseFragment<SnapView, SnapPresenter> implemen
     /**
      * 改变背景颜色
      */
-    private void darkenBackground(Float bgcolor){
+    private void darkenBackground(Float bgColor){
         WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
-        lp.alpha = bgcolor;
+        lp.alpha = bgColor;
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         getActivity().getWindow().setAttributes(lp);
     }

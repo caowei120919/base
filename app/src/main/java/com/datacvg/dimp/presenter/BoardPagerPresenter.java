@@ -45,7 +45,9 @@ public class BoardPagerPresenter extends BasePresenter<BoardPagerView>{
 
                     @Override
                     public void onNext(BaseBean<DimensionPositionBean> bean) {
-                        getView().getIndexPositionSuccess(bean.getData().getIndexPosition());
+                        if(checkJsonCode(bean)){
+                            getView().getIndexPositionSuccess(bean.getData().getIndexPosition());
+                        }
                     }
 
                     @Override
@@ -113,8 +115,10 @@ public class BoardPagerPresenter extends BasePresenter<BoardPagerView>{
 
                     @Override
                     public void onNext(BaseBean<DimensionListBean> bean) {
-                        getView().getOtherDimensionSuccess(bean.getData()
-                                .getSelectOtherDimension(),tag);
+                        if(checkJsonCode(bean)){
+                            getView().getOtherDimensionSuccess(bean.getData()
+                                    .getSelectOtherDimension(),tag);
+                        }
                     }
 
                     @Override

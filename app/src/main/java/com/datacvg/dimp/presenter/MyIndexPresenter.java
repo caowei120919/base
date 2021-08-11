@@ -36,7 +36,9 @@ public class MyIndexPresenter extends BasePresenter<MyIndexView>{
 
                     @Override
                     public void onNext(BaseBean<IndexBean> bean) {
-                        getView().getIndexSuccess(bean.getResdata());
+                        if(checkJsonCode(bean)){
+                            getView().getIndexSuccess(bean.getResdata());
+                        }
                     }
 
                     @Override
@@ -62,7 +64,9 @@ public class MyIndexPresenter extends BasePresenter<MyIndexView>{
 
                     @Override
                     public void onNext(BaseBean<String> bean) {
-                        getView().changeIndexSuccess();
+                        if(checkJsonCode(bean)){
+                            getView().changeIndexSuccess();
+                        }
                     }
 
                     @Override

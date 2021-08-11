@@ -10,14 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/H800">
 
-        <com.datacvg.dimp.baseandroid.widget.ProgressBarView
+        <SeekBar
             android:id="@+id/progress_snap"
             android:layout_width="@dimen/W20"
             android:layout_height="match_parent"
-            app:progress_text_size="14sp"
-            app:progress_reach_color="@color/c_da3a16"
             android:layout_marginLeft="@dimen/W160">
-        </com.datacvg.dimp.baseandroid.widget.ProgressBarView>
+        </SeekBar>
     </RelativeLayout>
 
     <TextView

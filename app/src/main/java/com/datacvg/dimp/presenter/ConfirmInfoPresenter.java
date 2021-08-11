@@ -54,20 +54,22 @@ public class ConfirmInfoPresenter extends BasePresenter<ConfirmInfoView>{
 
                     @Override
                     public void onNext(BaseBean<String> bean) {
-                        switch (bean.getStatus()){
-                            /**
-                             * 投屏失败
-                             */
-                            case -1 :
+                        if(checkJsonCode(bean)) {
+                            switch (bean.getStatus()) {
+                                /**
+                                 * 投屏失败
+                                 */
+                                case -1:
                                     getView().forScreenFailed();
-                                break;
+                                    break;
 
-                            /**
-                             * 投屏成功
-                             */
-                            case 2000 :
-                                getView().forScreenSuccess();
-                                break;
+                                /**
+                                 * 投屏成功
+                                 */
+                                case 2000:
+                                    getView().forScreenSuccess();
+                                    break;
+                            }
                         }
                     }
 
