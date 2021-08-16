@@ -444,4 +444,12 @@ public interface MobileApi {
      */
     @GET("api/ddb/indexpad/kpi/permission")
     Observable<BaseBean<KpiPermissionDataBean>> getPermissionName();
+
+    /**
+     * 提交评论信息
+     * @param params
+     * @return
+     */
+    @POST("api/mobile/login/userfeedback")
+    Observable<BaseBean> submitFeedBack(@Body Map params);
 }

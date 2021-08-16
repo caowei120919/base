@@ -18,6 +18,4 @@ public class TestRealPresenter extends BasePresenter<TestRealView>{
     public TestRealPresenter(MobileApi api) {
         this.api = api ;
     }
-
-
 }

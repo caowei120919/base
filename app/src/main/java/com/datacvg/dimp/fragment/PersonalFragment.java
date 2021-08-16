@@ -13,6 +13,7 @@ import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.activity.ContactActivity;
+import com.datacvg.dimp.activity.FeedBackActivity;
 import com.datacvg.dimp.activity.MessageCentreActivity;
 import com.datacvg.dimp.activity.ScanActivity;
 import com.datacvg.dimp.activity.SettingActivity;
@@ -154,7 +155,7 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
                 break;
 
             case R.id.rel_feedback :
-                    mContext.startActivity(new Intent(mContext, ContactActivity.class));
+                    mContext.startActivity(new Intent(mContext, FeedBackActivity.class));
                 break;
         }
     }

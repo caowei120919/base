@@ -77,7 +77,6 @@ public class SystemBarTintManager {
         ViewGroup decorViewGroup = (ViewGroup) win.getDecorView();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            // check theme attrs
             int[] attrs = {android.R.attr.windowTranslucentStatus,
                     android.R.attr.windowTranslucentNavigation};
             TypedArray a = activity.obtainStyledAttributes(attrs);
@@ -88,7 +87,6 @@ public class SystemBarTintManager {
                 a.recycle();
             }
 
-            // check window flags
             WindowManager.LayoutParams winParams = win.getAttributes();
             int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
             if ((winParams.flags & bits) != 0) {
@@ -101,7 +99,6 @@ public class SystemBarTintManager {
         }
 
         mConfig = new SystemBarConfig(activity, mStatusBarAvailable, mNavBarAvailable);
-        // device might not have virtual navigation keys
         if (!mConfig.hasNavigtionBar()) {
             mNavBarAvailable = false;
         }

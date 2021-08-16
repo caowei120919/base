@@ -87,7 +87,8 @@ public class RxObserver<T> implements Observer <T>{
             if (((BaseBean) t).getStatus() == Constants.SERVICE_CODE_SUCCESS_FIS
                     || ((BaseBean) t).getStatus() == Constants.SERVICE_CODE_SUCCESS_MOBILE) {
                 return true ;
-            }else if(((BaseBean) t).getStatus() == Constants.SERVICE_CODE_FAIL_FOR_TOKEN){
+            }else if(((BaseBean) t).getStatus() == Constants.SERVICE_CODE_FAIL_FOR_TOKEN
+                    || ((BaseBean) t).getStatus() == Constants.SERVICE_CODE_FAILED_UNAUTHORIZED){
                 EventBus.getDefault().post(new RefreshTokenEvent());
                 return false ;
             }
@@ -96,5 +97,4 @@ public class RxObserver<T> implements Observer <T>{
         }
         return false ;
     }
-
 }

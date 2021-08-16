@@ -31,7 +31,7 @@ import java.lang.reflect.Method;
 public class StatusBarUtil {
     public final static int TYPE_MIUI = 0;
     public final static int TYPE_FLYME = 1;
-    public final static int TYPE_M = 3;//6.0
+    public final static int TYPE_M = 3;
 
     @IntDef({TYPE_MIUI,
             TYPE_FLYME,
@@ -75,7 +75,6 @@ public class StatusBarUtil {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.TRANSPARENT);
             //导航栏颜色也可以正常设置
-            //window.setNavigationBarColor(Color.TRANSPARENT);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window window = activity.getWindow();
             WindowManager.LayoutParams attributes = window.getAttributes();
@@ -131,7 +130,7 @@ public class StatusBarUtil {
     public static boolean setStatusBarFontIconDark(Activity activity, @ViewType int type, boolean dark) {
         switch (type) {
             case TYPE_MIUI:
-                return setMiuiUI(activity, dark);
+                return setMiUiUI(activity, dark);
             case TYPE_FLYME:
                 return setFlymeUI(activity, dark);
             case TYPE_M:
@@ -187,7 +186,7 @@ public class StatusBarUtil {
     }
 
     //设置MIUI 状态栏深色浅色切换
-    public static boolean setMiuiUI(Activity activity, boolean dark) {
+    public static boolean setMiUiUI(Activity activity, boolean dark) {
         try {
             Window window = activity.getWindow();
             Class<?> clazz = activity.getWindow().getClass();

@@ -34,13 +34,13 @@ public class PersonPresenter extends BasePresenter<PersonView> {
                     @Override
                     public void onComplete() {
                         super.onComplete();
+                        PLog.e("LoginOut is Complete");
+                        getView().loginOutSuccess();
                     }
 
                     @Override
                     public void onNext(BaseBean bean) {
-                        if(checkJsonCode(bean)){
-                            getView().loginOutSuccess();
-                        }
+
                     }
 
                     @Override

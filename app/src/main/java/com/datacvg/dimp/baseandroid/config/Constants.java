@@ -75,6 +75,7 @@ public class Constants {
     public final static int SERVICE_CODE_SUCCESS_MOBILE = 1 ;
     public final static int SERVICE_CODE_SUCCESS_FIS = 2000 ;
     public final static int SERVICE_CODE_FAIL_FOR_TOKEN = 401 ;
+    public final static int SERVICE_CODE_FAILED_UNAUTHORIZED = 4001 ;
 
     /**
      * 获取默认报表的rootId
