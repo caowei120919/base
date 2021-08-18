@@ -109,6 +109,9 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
             case R.id.rel_moduleSetting :
                 startActivity(new Intent(mContext,ModuleSettingActivity.class));
                 break;
+
+            default:
+                break;
         }
     }
 }

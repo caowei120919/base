@@ -3,12 +3,10 @@ package com.datacvg.dimp.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.ModuleAdapter;
 import com.datacvg.dimp.baseandroid.greendao.bean.ModuleInfo;
@@ -18,13 +16,10 @@ import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.event.RebuildTableEvent;
 import com.datacvg.dimp.presenter.ModuleSettingPresenter;
 import com.datacvg.dimp.view.ModuleSettingView;
-
 import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 

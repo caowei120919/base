@@ -452,4 +452,14 @@ public interface MobileApi {
      */
     @POST("api/mobile/login/userfeedback")
     Observable<BaseBean> submitFeedBack(@Body Map params);
+
+    /**
+     * 上传用户信息
+     * @param params
+     * @param userId
+     * @return
+     */
+    @POST("api/mobile/login/uploadheadimg")
+    Observable<BaseBean> uploadAvatar(@Query("userId") String userId
+            ,@Body Map params);
 }

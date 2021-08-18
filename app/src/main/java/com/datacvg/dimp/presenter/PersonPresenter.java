@@ -1,13 +1,18 @@
 package com.datacvg.dimp.presenter;
 
+import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.config.MobileApi;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
+import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
+import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.MessageBean;
 import com.datacvg.dimp.bean.UserJobsListBean;
 import com.datacvg.dimp.view.PersonView;
+
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -99,6 +104,33 @@ public class PersonPresenter extends BasePresenter<PersonView> {
                     public void onError(Throwable e) {
                         super.onError(e);
                         PLog.e("TAG",e.getMessage());
+                    }
+                });
+    }
+
+    /**
+     * 上传用户头像信息
+     * @param params
+     */
+    public void uploadAvatar(Map params) {
+        api.uploadAvatar(PreferencesHelper.get(Constants.USER_ID,""),params)
+                .compose(RxUtils.applySchedulersLifeCycle(getView()))
+                .subscribe(new RxObserver<BaseBean>(){
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                    }
+
+                    @Override
+                    public void onNext(BaseBean bean) {
+                        if(checkJsonCode(bean)){
+                            ToastUtils.showLongToast(bean.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
                     }
                 });
     }

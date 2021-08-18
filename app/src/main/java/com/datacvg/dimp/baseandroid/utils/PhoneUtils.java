@@ -60,7 +60,7 @@ public final class PhoneUtils {
      */
     public static String getMobileModel(Context context) {
         try {
-            String model = android.os.Build.MODEL; // 手机型号
+            String model = android.os.Build.MODEL;
             return model;
         } catch (Exception e) {
             return "未知";
@@ -75,7 +75,7 @@ public final class PhoneUtils {
      */
     public static String getMobileBrand(Context context) {
         try {
-            String brand = android.os.Build.BRAND; // android系统版本号
+            String brand = android.os.Build.BRAND;
             return brand;
         } catch (Exception e) {
             return "未知";
@@ -91,9 +91,9 @@ public final class PhoneUtils {
      */
     public static void toTakePhoto(int requestcode, Activity activity, String fileName) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra("camerasensortype", 2);// 调用前置摄像头
-        intent.putExtra("autofocus", true);// 自动对焦
-        intent.putExtra("fullScreen", false);// 全屏
+        intent.putExtra("camerasensortype", 2);
+        intent.putExtra("autofocus", true);
+        intent.putExtra("fullScreen", false);
         intent.putExtra("showActionIcons", false);
         //创建一个当前任务id的文件然后里面存放任务的照片的和路径！这主文件的名字是用uuid到时候在用任务id去查路径！
         try {

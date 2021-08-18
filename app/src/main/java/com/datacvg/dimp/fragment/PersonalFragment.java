@@ -2,13 +2,21 @@ package com.datacvg.dimp.fragment;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.core.content.FileProvider;
+
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
 import com.datacvg.dimp.R;
@@ -20,8 +28,12 @@ import com.datacvg.dimp.activity.SettingActivity;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
+import com.datacvg.dimp.baseandroid.utils.FileUtils;
+import com.datacvg.dimp.baseandroid.utils.GlideLoader;
+import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
+import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.MessageBean;
 import com.datacvg.dimp.bean.UserJobsBean;
 import com.datacvg.dimp.bean.UserJobsListBean;
@@ -31,16 +43,26 @@ import com.datacvg.dimp.presenter.PersonPresenter;
 import com.datacvg.dimp.view.PersonView;
 import com.datacvg.dimp.widget.CircleNumberView;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.lcw.library.imagepicker.ImagePicker;
+import com.mylhyl.superdialog.SuperDialog;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.jessyan.retrofiturlmanager.RetrofitUrlManager;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * @Author : T-Bag (茶包)
@@ -77,6 +99,9 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
     private String read_flag = "F" ;
     private List<String> permissions = new ArrayList<>();
     private int unReadMessage = 0 ;
+    private Uri imageUri ;
+    private File mTmpFile ;
+    private String changeAvatarPath;
 
     @Override
     protected int getLayoutId() {
@@ -105,12 +130,12 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
         GlideUrl imgUrl = new GlideUrl(Constants.BASE_MOBILE_URL + Constants.HEAD_IMG_URL
                 + PreferencesHelper.get(Constants.USER_PKID,"")
                 , new LazyHeaders.Builder().addHeader(Constants.AUTHORIZATION,Constants.token).build());
-        Glide.with(mContext).load(imgUrl).into(circleHead);
+        Glide.with(mContext).load(imgUrl).diskCacheStrategy(DiskCacheStrategy.NONE).into(circleHead);
         getPresenter().getJob(PreferencesHelper.get(Constants.USER_PKID,""));
         getPresenter().getMessage(pageIndex+ "",pageSize + "",module_id,read_flag);
     }
 
-    @OnClick({R.id.rel_setting,R.id.rel_logout,R.id.img_right,R.id.rel_message,R.id.rel_feedback})
+    @OnClick({R.id.rel_setting,R.id.rel_logout,R.id.img_right,R.id.rel_message,R.id.rel_feedback,R.id.circle_head})
     public void OnClick(View view){
         switch (view.getId()){
             /**
@@ -154,10 +179,86 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
                     mContext.startActivity(new Intent(mContext, MessageCentreActivity.class));
                 break;
 
+            /**
+             * 意见反馈
+             */
             case R.id.rel_feedback :
                     mContext.startActivity(new Intent(mContext, FeedBackActivity.class));
                 break;
+
+            /**
+             * 更换用户头像
+             */
+            case R.id.circle_head :
+                List<String> listButton = new ArrayList<>();
+                listButton.add(resources.getString(R.string.taking_pictures));
+                listButton.add(resources.getString(R.string.photo_album));
+                new SuperDialog.Builder(getActivity())
+                        .setCanceledOnTouchOutside(true)
+                        .setItems(listButton,resources.getColor(R.color.c_303030),24,80
+                                , new SuperDialog.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(int position) {
+                                        switch (position){
+                                            case 0 :
+                                                tackPhoto();
+                                                break;
+
+                                            case 1 :
+                                                chooseForAlbum();
+                                                break;
+                                        }
+                                    }
+                                })
+                        .setNegativeButton(resources.getString(R.string.cancel)
+                                ,resources.getColor(R.color.c_da3a16),24,80, null)
+                        .build();
+                break;
         }
+    }
+
+    /**
+     * 相册选取
+     */
+    private void chooseForAlbum() {
+        ImagePicker.getInstance()
+                .setTitle(mContext.getResources().getString(R.string.select_picture))//设置标题
+                .setImageLoader(new GlideLoader())
+                .showCamera(false)
+                .showImage(true)
+                .showVideo(false)
+                .setSingleType(true)
+                .setMaxCount(1)
+                .start(getActivity(), Constants.REQUEST_OPEN_CAMERA);
+    }
+
+    /**
+     * 拍照
+     */
+    private void tackPhoto() {
+        new RxPermissions(getActivity())
+                .request(Manifest.permission.CAMERA
+                        , Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .compose(RxUtils.applySchedulersLifeCycle(getMvpView()))
+                .subscribe(new RxObserver<Boolean>(){
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        if (aBoolean){      //授权通过拍摄照片
+                            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            if (cameraIntent.resolveActivity(mContext.getPackageManager()) != null){
+                                mTmpFile = FileUtils.createTmpFile(mContext);
+                                //通过FileProvider创建一个content类型的Uri
+                                imageUri = FileProvider.getUriForFile(mContext
+                                        , "com.datacvg.dimp.fileprovider", mTmpFile);
+                                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                                startActivityForResult(cameraIntent, Constants.REQUEST_TAKE_PHOTO);
+                            }
+                        }else{
+                            ToastUtils.showLongToast(mContext.getResources()
+                                    .getString(R.string.dont_allow_permissions));
+                        }
+                    }
+                });
     }
 
     /**
@@ -217,6 +318,39 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==RESULT_OK){
+            switch (requestCode) {
+                case Constants.REQUEST_TAKE_PHOTO :
+                    changeAvatarPath = mTmpFile.getAbsolutePath();
+                    Glide.with(mContext)
+                            .load(changeAvatarPath)
+                            .into(circleHead);
+                    uploadUserAvatar();
+                    break;
+
+                default :  //相册选取
+                    changeAvatarPath = data.getStringArrayListExtra(ImagePicker
+                            .EXTRA_SELECT_IMAGES).get(0) ;
+                    Glide.with(mContext)
+                            .load(changeAvatarPath)
+                            .into(circleHead);
+                    uploadUserAvatar();
+                    break;
+            }
+        }
+    }
+
+    /**
+     * 上传用户头像
+     */
+    private void uploadUserAvatar() {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        Bitmap bitmap = BitmapFactory.decodeFile(changeAvatarPath);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+        byte[] bytes = byteArrayOutputStream.toByteArray();
+        String avatarString = Base64.encodeToString(bytes,Base64.CRLF);
+        Map params = new HashMap();
+        params.put("image",avatarString);
+        getPresenter().uploadAvatar(params);
     }
 }

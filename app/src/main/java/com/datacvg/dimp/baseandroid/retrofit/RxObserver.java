@@ -63,7 +63,10 @@ public class RxObserver<T> implements Observer <T>{
             msg = "请求被服务器拒绝";
         } else if (httpException.code() == 307) {
             msg = "请求被重定向到其他页面";
-        } else {
+        } else if (httpException.code() == 401) {
+            msg = "" ;
+            EventBus.getDefault().post(new RefreshTokenEvent());
+        }else {
             msg = httpException.message();
         }
         return msg;
@@ -71,6 +74,7 @@ public class RxObserver<T> implements Observer <T>{
 
     @Override
     public void onComplete() {
+
     }
 
     /**

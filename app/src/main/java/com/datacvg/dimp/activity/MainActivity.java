@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -92,6 +93,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     private FragmentTransaction fragmentTransaction ;
     private long firstTime = 0;
     private List<ModuleInfo> moduleBeans = new ArrayList<>();
+    private FragmentManager fragmentManager ;
 
     @Override
     protected int getLayoutId() {
@@ -226,7 +228,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     }
 
     private void showFragment(String tag) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         hideFragment(fragmentTransaction);
         switch (tag){
@@ -235,7 +237,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                     fragmentTransaction.show(digitalFragment);
                 }else{
                     digitalFragment = new DigitalFragment();
-                    fragmentTransaction.add(R.id.content,digitalFragment);
+                    fragmentTransaction.add(R.id.content,digitalFragment,digitalFragment.getClass().getSimpleName());
                 }
                 fragmentTransaction.commitAllowingStateLoss();
                 break;
@@ -245,7 +247,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                     fragmentTransaction.show(reportFragment);
                 }else{
                     reportFragment = new ReportFragment();
-                    fragmentTransaction.add(R.id.content,reportFragment);
+                    fragmentTransaction.add(R.id.content,reportFragment,reportFragment.getClass().getSimpleName());
                 }
                 fragmentTransaction.commitAllowingStateLoss();
                 break;
@@ -255,7 +257,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                     fragmentTransaction.show(tableFragment);
                 }else{
                     tableFragment = new TableFragment();
-                    fragmentTransaction.add(R.id.content,tableFragment);
+                    fragmentTransaction.add(R.id.content,tableFragment,tableFragment.getClass().getSimpleName());
                 }
                 fragmentTransaction.commitAllowingStateLoss();
                 break;
@@ -265,7 +267,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                     fragmentTransaction.show(actionFragment);
                 }else{
                     actionFragment = new ActionFragment();
-                    fragmentTransaction.add(R.id.content,actionFragment);
+                    fragmentTransaction.add(R.id.content,actionFragment,actionFragment.getClass().getSimpleName());
                 }
                 fragmentTransaction.commitAllowingStateLoss();
                 break;
@@ -275,7 +277,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                     fragmentTransaction.show(screenFragment);
                 }else{
                     screenFragment = new ScreenFragment();
-                    fragmentTransaction.add(R.id.content,screenFragment);
+                    fragmentTransaction.add(R.id.content,screenFragment,screenFragment.getClass().getSimpleName());
                 }
                 fragmentTransaction.commitAllowingStateLoss();
                 break;
@@ -285,7 +287,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                     fragmentTransaction.show(personalFragment);
                 }else{
                     personalFragment = new PersonalFragment();
-                    fragmentTransaction.add(R.id.content,personalFragment);
+                    fragmentTransaction.add(R.id.content,personalFragment,personalFragment.getClass().getSimpleName());
                 }
                 fragmentTransaction.commitAllowingStateLoss();
                 break;
@@ -409,5 +411,13 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PageCompleteEvent event){
         tabModule.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        for (Fragment fragment : fragmentManager.getFragments()){
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }
