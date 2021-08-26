@@ -24,7 +24,6 @@ import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.kaopiz.kprogresshud.KProgressHUD;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -48,10 +47,6 @@ public abstract class BaseActivity<V extends MvpView,P extends MvpBasePresenter<
     protected Resources resources ;
     protected KProgressHUD mDialog ;
 
-    /**
-     * Instantiate a presenter instance
-     * @return The {@link com.datacvg.dimp.baseandroid.mvp.MvpPresenter} for this view
-     */
     @Override
     @NonNull
     public P createPresenter() {
@@ -96,19 +91,15 @@ public abstract class BaseActivity<V extends MvpView,P extends MvpBasePresenter<
         mUnbinder = ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         setup(savedInstanceState);
-        softActivity = new WeakReference<Activity>(this);
+        softActivity = new WeakReference(this);
         BaseApplication.getAppManager().addActivity(softActivity);
         mDoubleClickExitHelper = new BaseDoubleClickExitHelper(this);
         PLog.e(TAG);
     }
 
     private void setup(Bundle savedInstanceState) {
-        //当FitsSystemWindows设置 true 时，会在屏幕最上方预留出状态栏高度的 padding
         StatusBarUtil.setRootViewFitsSystemWindows(this,true);
-        //设置状态栏透明
         StatusBarUtil.setTranslucentStatus(this);
-        //一般的手机的状态栏文字和图标都是白色的, 可如果你的应用也是纯白色的, 或导致状态栏文字看不清
-        //所以如果你是这种情况,请使用以下代码, 设置状态使用深色文字图标风格, 否则你可以选择性注释掉这个if内容
         if (!StatusBarUtil.setStatusBarDarkTheme(this, true)) {
             StatusBarUtil.setStatusBarColor(this,mContext.getResources()
                     .getColor(R.color.c_FFFFFF));

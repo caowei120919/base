@@ -910,6 +910,15 @@ public class TaskInfoBean implements Serializable {
         private String index_unit;
         private String fast_code ;
         private String no_permission_name ;
+        private String deadline ;
+
+        public String getDeadline() {
+            return deadline;
+        }
+
+        public void setDeadline(String deadline) {
+            this.deadline = deadline;
+        }
 
         public String getFast_code() {
             return fast_code;
@@ -1332,6 +1341,15 @@ public class TaskInfoBean implements Serializable {
             private String index_data;
             private String value_unit;
             private String value_description;
+            private String goal_value ;
+
+            public String getGoal_value() {
+                return goal_value;
+            }
+
+            public void setGoal_value(String goal_value) {
+                this.goal_value = goal_value;
+            }
 
             public String getIndex_data() {
                 return index_data;

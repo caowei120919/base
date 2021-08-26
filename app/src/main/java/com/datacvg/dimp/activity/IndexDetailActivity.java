@@ -201,7 +201,6 @@ public class IndexDetailActivity extends BaseActivity<IndexDetailView, IndexDeta
      */
     @Override
     public void getChartSuccess(ChartListBean resdata) {
-        PLog.e("获取图表信息成功");
         if(resdata != null && resdata.size() >0){
             tvIndexName.setText(TextUtils.isEmpty(resdata.get(0).getChart_top_title())
                     ? resdata.get(0).getIndex_clname() : resdata.get(0).getChart_top_title());

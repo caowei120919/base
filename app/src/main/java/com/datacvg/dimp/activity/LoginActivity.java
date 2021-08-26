@@ -264,7 +264,7 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
         } else {
             //请求安装未知应用来源的权限
             new RxPermissions(mContext).request(Manifest.permission.REQUEST_INSTALL_PACKAGES)
-                    .compose(RxUtils.<Boolean>applySchedulersLifeCycle(getMvpView()))
+                    .compose(RxUtils.applySchedulersLifeCycle(getMvpView()))
                     .subscribe(new RxObserver<Boolean>() {
                         @Override
                         public void onNext(Boolean aBoolean) {

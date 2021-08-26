@@ -6,10 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.StrictMode;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.download.DownloadConfiguration;
@@ -25,14 +23,6 @@ import com.datacvg.dimp.baseandroid.utils.AndroidUtils;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.facebook.stetho.Stetho;
 import com.orhanobut.hawk.Hawk;
-import com.scwang.smart.refresh.footer.ClassicsFooter;
-import com.scwang.smart.refresh.header.ClassicsHeader;
-import com.scwang.smart.refresh.layout.SmartRefreshLayout;
-import com.scwang.smart.refresh.layout.api.RefreshFooter;
-import com.scwang.smart.refresh.layout.api.RefreshHeader;
-import com.scwang.smart.refresh.layout.api.RefreshLayout;
-import com.scwang.smart.refresh.layout.listener.DefaultRefreshFooterCreator;
-import com.scwang.smart.refresh.layout.listener.DefaultRefreshHeaderCreator;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -58,20 +48,12 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
         AndroidUtils.init(this);
-
         checkLanguage();
-
         initAppInject(this);
-
         initDownloader(this);
-
         Hawk.init(this).build();
-
         buildAppModule();
-
-        registerFlutter();
     }
 
     /**
@@ -116,36 +98,24 @@ public class BaseApplication extends Application {
         }
     }
 
-    /**
-     * 注册flutter
-     */
-    private void registerFlutter() {
-
-    }
-
     public static RefWatcher getRefWatcher() {
         return mRefWatcher;
     }
 
-    public static void setDebugMode(boolean debugmode) {
-        BaseApplication.DEBUGMODE = debugmode;
-
+    public static void setDebugMode(boolean debugMode) {
+        BaseApplication.DEBUGMODE = debugMode;
         if (BaseApplication.DEBUGMODE) {
             mRefWatcher = LeakCanary.install((Application) AndroidUtils.getContext());
-
             Stetho.initializeWithDefaults(AndroidUtils.getContext());
-
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads()
                     .detectDiskWrites()
                     .detectNetwork()
                     .penaltyLog()
                     .build());
-
             StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects()
                     .detectLeakedClosableObjects()
                     .penaltyLog()
                     .build());
-
         }
     }
 
@@ -183,22 +153,6 @@ public class BaseApplication extends Application {
 
     public static void exitApp() {
         mAppManager.exitApp();
-    }
-
-    static {
-        SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
-            @Override
-            public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
-                layout.setPrimaryColorsId(R.color.c_999999, android.R.color.white);//全局设置主题颜色
-                return new ClassicsHeader(context);
-            }
-        });
-        SmartRefreshLayout.setDefaultRefreshFooterCreator(new DefaultRefreshFooterCreator() {
-            @Override
-            public RefreshFooter createRefreshFooter(Context context, RefreshLayout layout) {
-                return new ClassicsFooter(context).setDrawableSize(20);
-            }
-        });
     }
 
     public static void restartApp(@NonNull Activity activity) {

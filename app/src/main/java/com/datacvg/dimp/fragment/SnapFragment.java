@@ -13,10 +13,13 @@ import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.bean.KpiPermissionDataBean;
+import com.datacvg.dimp.bean.SaveDataListBean;
 import com.datacvg.dimp.bean.TaskInfoBean;
 import com.datacvg.dimp.presenter.SnapPresenter;
 import com.datacvg.dimp.view.SnapView;
 import com.enlogy.statusview.StatusRelativeLayout;
+import com.google.gson.Gson;
+
 import java.util.Arrays;
 import java.util.List;
 import butterknife.BindView;
@@ -53,8 +56,12 @@ public class SnapFragment extends BaseFragment<SnapView, SnapPresenter> implemen
     View viewSnap ;
     @BindView(R.id.view_none)
     View viewNone ;
-    @BindView(R.id.progress_snap)
-    SeekBar progressSnap ;
+    @BindView(R.id.tv_startTime)
+    TextView tvStartTime ;
+    @BindView(R.id.tv_startValue)
+    TextView tvStartValue ;
+    @BindView(R.id.tv_endTime)
+    TextView tvEndTime ;
 
     private TaskInfoBean.FastPhotoOldBean fastPhotoOldBean ;
     private PopupWindow timeTypePop ;
@@ -117,7 +124,6 @@ public class SnapFragment extends BaseFragment<SnapView, SnapPresenter> implemen
             viewNone.setVisibility(View.GONE);
             viewSnap.setVisibility(View.VISIBLE);
         }
-        progressSnap.setProgress(600);
         if(!fastPhotoOldBean.getDemention_info().isEmpty()){
             for (TaskInfoBean.FastPhotoOldBean.DementionInfoBean bean : fastPhotoOldBean.getDemention_info()){
                 switch (bean.getType()){
@@ -168,6 +174,13 @@ public class SnapFragment extends BaseFragment<SnapView, SnapPresenter> implemen
                 }
             }
         }
+        tvStartTime.setText(TextUtils.isEmpty(fastPhotoOldBean.getAction_time()) ? "" : fastPhotoOldBean.getAction_time());
+        List<TaskInfoBean.FastPhotoOldBean.SaveDataBean> saveDataBeans = new Gson().fromJson(fastPhotoOldBean.getSave_data(), SaveDataListBean.class);
+        PLog.e(new Gson().toJson(saveDataBeans));
+        if (!saveDataBeans.isEmpty() && !TextUtils.isEmpty(saveDataBeans.get(0).getIndex_data())){
+            tvStartValue.setText(saveDataBeans.get(0).getIndex_data());
+        }
+        tvEndTime.setText(TextUtils.isEmpty(fastPhotoOldBean.getDeadline()) ? "" : fastPhotoOldBean.getDeadline());
     }
 
 

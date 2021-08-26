@@ -245,4 +245,12 @@
     <string name="the_current_user_does_not_have_permission_for_the_metric_dimension">当前用户没有该指标维度权限</string>
     <string name="submit">提交</string>
     <string name="please_input_feedback">请输入反馈信息</string>
+    <string name="review_the_task">审核任务</string>
+    <string name="whether_completed">是否完成 :</string>
+    <string name="is">是</string>
+    <string name="no_end_task">否(结束任务)</string>
+    <string name="no_do_not_finish_the_task">否(不结束任务)</string>
+    <string name="description_required">说明(*必填)</string>
+    <string name="the_initial">初始</string>
+    <string name="as_of">截止</string>
 </resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--注意上下左右方向问题-->
+    <!--这里思路相当于一个只显示一条边的矩形虚线边框-->
+    <item
+        android:bottom="-2dp"
+        android:right="-2dp"
+        android:top="-2dp">
+        <shape>
+            <!--设置背景透明-->
+            <solid android:color="@android:color/transparent" />
+            <stroke
+                android:width="@dimen/W3"
+                android:color="@color/c_da3a16"
+                android:dashWidth="@dimen/W10"
+                android:dashGap="@dimen/W10"/>
+            <size android:height="@dimen/W10" />
+        </shape>
+    </item>
+</layer-list>

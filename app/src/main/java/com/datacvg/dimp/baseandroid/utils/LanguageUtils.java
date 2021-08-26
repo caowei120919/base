@@ -9,6 +9,7 @@ import android.os.LocaleList;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import androidx.annotation.RequiresApi;
+import com.datacvg.dimp.baseandroid.config.Constants;
 import java.util.Locale;
 
 /**
@@ -17,9 +18,6 @@ import java.util.Locale;
  * @Description : 语言工具类
  */
 public class LanguageUtils {
-
-    private static final String TAG = "LanguageUtil";
-
     /**
      * @param context
      * @param newLanguage 想要切换的语言类型 比如 "en" ,"zh"
@@ -32,10 +30,8 @@ public class LanguageUtils {
         }
         Resources resources = context.getResources();
         Configuration configuration = resources.getConfiguration();
-        //获取想要切换的语言类型
         Locale locale = getLocaleByLanguage(newLanguage);
         configuration.setLocale(locale);
-        // updateConfiguration
         DisplayMetrics dm = resources.getDisplayMetrics();
         resources.updateConfiguration(configuration, dm);
     }
@@ -65,7 +61,6 @@ public class LanguageUtils {
     private static Context updateResources(Context context, String language) {
         Resources resources = context.getResources();
         Locale locale = LanguageUtils.getLocaleByLanguage(language);
-
         Configuration configuration = resources.getConfiguration();
         configuration.setLocale(locale);
         configuration.setLocales(new LocaleList(locale));
@@ -75,7 +70,7 @@ public class LanguageUtils {
     public static boolean isZh(Context context) {
         Locale locale = context.getResources().getConfiguration().locale;
         String language = locale.getLanguage();
-        if (language.endsWith("zh")){
+        if (language.endsWith(Constants.LANGUAGE_CHINESE)){
             return true;
         }else{
             return false;

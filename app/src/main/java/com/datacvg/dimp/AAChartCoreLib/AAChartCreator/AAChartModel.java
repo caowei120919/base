@@ -324,7 +324,7 @@ public class AAChartModel {
 
     public AAChartModel() {
         chartType             = AAChartType.Line;
-        animationDuration     = 500;//以毫秒为单位
+        animationDuration     = 500;
         animationType         = AAChartAnimationType.Linear;
         inverted              = false;
         stacking              = AAChartStackingType.False;
@@ -333,7 +333,7 @@ public class AAChartModel {
         zoomType              = AAChartZoomType.None;
         dataLabelsEnabled     = false;
         markerSymbolStyle     = AAChartSymbolStyleType.Normal;
-        colorsTheme           = new String[]{"#fe117c","#ffc069","#06caf4","#7dffc0"};//默认的颜色数组(必须要添加默认数组,否则就会出错)
+        colorsTheme           = new String[]{"#fe117c","#ffc069","#06caf4","#7dffc0"};
         tooltipCrosshairs     = true;
         gradientColorEnable   = false;
         polar                 = false;

@@ -12,7 +12,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
-
 import com.datacvg.dimp.BuildConfig;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;

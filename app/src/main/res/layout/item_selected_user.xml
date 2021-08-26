@@ -9,8 +9,6 @@
         android:layout_height="@dimen/H50"
         android:paddingLeft="@dimen/W10"
         android:paddingRight="@dimen/W10"
-        android:layout_marginLeft="@dimen/W10"
-        android:layout_marginRight="@dimen/W10"
         android:layout_marginTop="@dimen/H10"
         android:minWidth="@dimen/W120"
         android:gravity="center"

@@ -252,4 +252,12 @@
     <string name="the_current_user_does_not_have_permission_for_the_metric_dimension">The current user does not have permission for the metric dimension</string>
     <string name="submit">submit</string>
     <string name="please_input_feedback">Please input feedback</string>
+    <string name="review_the_task">Review the task</string>
+    <string name="whether_completed">Whether completed :</string>
+    <string name="is">is</string>
+    <string name="no_end_task">No (End task)</string>
+    <string name="no_do_not_finish_the_task">No (Do not finish the task)</string>
+    <string name="description_required">Description (* required)</string>
+    <string name="the_initial">The initial</string>
+    <string name="as_of">截止</string>
 </resources>

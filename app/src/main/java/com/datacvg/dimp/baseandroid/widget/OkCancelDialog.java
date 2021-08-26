@@ -5,9 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.StringRes;
-
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.utils.AndroidUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;

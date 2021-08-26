@@ -44,7 +44,8 @@ public class RxObserver<T> implements Observer <T>{
         } else if (e instanceof HttpException) {
             HttpException httpException = (HttpException) e;
             msg = convertStatusCode(httpException);
-        } else if (e instanceof JsonParseException || e instanceof ParseException || e instanceof JSONException || e instanceof JsonIOException) {
+        } else if (e instanceof JsonParseException || e instanceof ParseException
+                || e instanceof JSONException || e instanceof JsonIOException) {
             msg = "数据解析错误";
         }
 

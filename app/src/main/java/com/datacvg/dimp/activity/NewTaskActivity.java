@@ -502,7 +502,7 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
             view.setTag(contact.getBean().getId());
             flowAssistant.addView(view);
         }else{
-            for (int i = 0 ; i < flowAssistant.getChildCount() ; i++){
+            for (int i = 0 ; i < flowAssistant.getChildCount(); i++){
                 View view = flowAssistant.getChildAt(i);
                 if(view.getTag().equals(contact.getBean().getId())){
                     flowAssistant.removeView(view);

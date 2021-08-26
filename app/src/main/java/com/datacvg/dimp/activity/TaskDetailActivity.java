@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.appcompat.app.AlertDialog;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
@@ -24,7 +25,6 @@ import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.baseandroid.utils.TimeUtils;
 import com.datacvg.dimp.bean.ActionPlanBean;
 import com.datacvg.dimp.bean.CreateTaskBean;
-import com.datacvg.dimp.bean.IndexTreeBean;
 import com.datacvg.dimp.bean.TaskInfoBean;
 import com.datacvg.dimp.presenter.TaskDetailPresenter;
 import com.datacvg.dimp.view.TaskDetailView;
@@ -109,7 +109,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
     }
 
     private void setStatusClick() {
-        tvDate = statusTask.findViewById(R.id.tv_date) ;
+        tvDate = statusTask.findViewById(R.id.tv_date);
         tvActionTypeCommon = statusTask.findViewById(R.id.tv_actionTypeCommon);
         tvActionTypeSpecial = statusTask.findViewById(R.id.tv_actionTypeSpecial);
         tvPriorityHigh = statusTask.findViewById(R.id.tv_priorityHigh);
@@ -372,9 +372,14 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 case "do_edit" :
                 case "do_reject" :
                 case "do_cancel" :
-                case "do_commit" :
                 case "do_delete" :
                 case "do_delay" :
+                case "do_accept" :
+                case "do_commit" :
+                    if(taskInfoBean != null && taskInfoBean.getPlan().getPlan_status().equals("1")
+                            && taskInfoBean.getPlan().getUser_type().equals("2")){
+                        continue;
+                    }
                 case "do_confirm" :
                     TextView operateView = new TextView(mContext);
                     operateView.setText(handle.get(i).getDesc());
@@ -388,7 +393,8 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                             : resources.getDrawable(R.drawable.shape_ffffff_da3a16_8));
                     if(i != 0){
                         LinearLayout.LayoutParams params
-                                = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                                = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT
+                                , ViewGroup.LayoutParams.MATCH_PARENT);
                         params.leftMargin = (int) resources.getDimension(R.dimen.W16);
                         operateView.setLayoutParams(params);
                     }
@@ -398,7 +404,8 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                     });
                     linHandle.addView(operateView);
                     break;
-
+                case "do_flow" :
+                case "do_subtask" :
                 default:
                         continue;
             }
@@ -459,10 +466,31 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
 
                 break;
 
+            /**
+             * 审核
+             */
             case "do_confirm" :
-
+                showConfirmDialog();
                 break;
         }
+    }
+
+    /**
+     * 审核弹窗
+     */
+    private void showConfirmDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+        View containView = LayoutInflater.from(mContext).inflate(R.layout.item_task_detail_confirm
+                ,null,false);
+        dialog.setView(containView);
+        AlertDialog alertDialog = dialog.create();
+        alertDialog.show();
+        containView.findViewById(R.id.tv_cancel).setOnClickListener(v -> {
+            alertDialog.dismiss();
+        });
+        containView.findViewById(R.id.tv_confirm).setOnClickListener(v -> {
+            PLog.e("确定");
+        });
     }
 
     /**

@@ -23,6 +23,8 @@
     <color name="c_b5b5b5">#b5b5b5</color>
     <color name="c_daca16">#daca16</color>
     <color name="c_da3a16">#da3a16</color>
+    <color name="c_99da3a16">#99da3a16</color>
+    <color name="c_4dda3a16">#4dda3a16</color>
     <color name="c_d8d8d8">#d8d8d8</color>
     <color name="c_fafaf8">#fafaf8</color>
     <color name="c_ffeeeeee">#ffeeeeee</color>
@@ -82,4 +84,7 @@
     <color name="login_button_normal">#169fff</color>
     <color name="login_button_pressed">#1073b9</color>
     <color name="c_E7E7E7">#E7E7E7</color>
+    <color name="c_E47056">#E47056</color>
+    <color name="c_F4C3B8">#F4C3B8</color>
+    <color name="c_FBEBE7">#FBEBE7</color>
 </resources>
