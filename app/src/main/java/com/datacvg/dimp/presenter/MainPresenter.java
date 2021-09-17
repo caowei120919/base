@@ -1,6 +1,5 @@
 package com.datacvg.dimp.presenter;
 
-import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.config.MobileApi;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
@@ -12,10 +11,7 @@ import com.datacvg.dimp.bean.DefaultUserListBean;
 import com.datacvg.dimp.bean.ModuleListBean;
 import com.datacvg.dimp.bean.TableListBean;
 import com.datacvg.dimp.view.MainView;
-import com.google.gson.Gson;
-
 import java.util.Map;
-
 import javax.inject.Inject;
 
 /**

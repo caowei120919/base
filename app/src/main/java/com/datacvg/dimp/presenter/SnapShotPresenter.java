@@ -6,7 +6,6 @@ import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.bean.KpiPermissionDataBean;
 import com.datacvg.dimp.view.SnapShotView;
-
 import javax.inject.Inject;
 
 /**

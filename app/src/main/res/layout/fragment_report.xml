@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/rel_title"
@@ -9,102 +10,65 @@
         android:layout_height="?actionBarSize"
         android:background="@color/c_FFFFFF">
 
-        <ImageView
-            android:id="@+id/img_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:scaleType="center"
-            android:paddingLeft="@dimen/W30"
-            android:paddingRight="@dimen/W30">
-        </ImageView>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true">
-
-            <TextView
-                android:id="@+id/divider"
-                android:layout_width="@dimen/W2"
-                android:layout_height="match_parent"
-                android:background="@color/c_d8d8d8"
-                android:layout_marginTop="@dimen/H30"
-                android:layout_marginBottom="@dimen/H30"
-                android:layout_centerInParent="true">
-            </TextView>
-
-            <TextView
-                android:id="@+id/tv_reportOfMine"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:textSize="16sp"
-                android:text="@string/my_report"
-                android:paddingLeft="@dimen/W30"
-                android:paddingRight="@dimen/W30"
-                android:singleLine="true"
-                android:layout_toLeftOf="@id/divider"
-                android:textColor="@drawable/selector_999_000"
-                android:gravity="center">
-            </TextView>
-
-            <TextView
-                android:id="@+id/tv_reportToShare"
-                android:layout_toRightOf="@id/divider"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:textSize="16sp"
-                android:paddingLeft="@dimen/W30"
-                android:paddingRight="@dimen/W30"
-                android:singleLine="true"
-                android:text="@string/share_the_report"
-                android:textColor="@drawable/selector_999_000"
-                android:gravity="center">
-            </TextView>
-        </RelativeLayout>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rel_folder"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/H100"
-        android:layout_below="@id/rel_title">
-        <ImageView
-            android:id="@+id/img_folder"
-            android:layout_marginLeft="@dimen/W30"
-            android:layout_width="@dimen/W50"
-            android:layout_height="@dimen/H50"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/report_folder_open">
-        </ImageView>
-
         <TextView
-            android:id="@+id/tv_folderName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/W50"
-            android:layout_toRightOf="@id/img_folder"
+            android:gravity="center"
             android:layout_centerVertical="true"
-            android:layout_marginTop="@dimen/H20"
-            android:layout_marginBottom="@dimen/H20"
-            android:gravity="center">
+            android:textColor="@color/c_303030"
+            android:textSize="20sp"
+            android:text="@string/report"
+            android:layout_marginLeft="@dimen/W30">
         </TextView>
+
+        <ImageView
+            android:id="@+id/img_sort"
+            android:layout_width="@dimen/W32"
+            android:layout_height="@dimen/W32"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/icon_sort"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/W24"
+            android:layout_alignParentRight="true">
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/img_changeType"
+            android:layout_width="@dimen/W32"
+            android:layout_height="@dimen/W32"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/icon_grid"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/W24"
+            android:layout_toLeftOf="@id/img_sort">
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/img_search"
+            android:layout_width="@dimen/W32"
+            android:layout_height="@dimen/W32"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/icon_search_of_report"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/W24"
+            android:layout_toLeftOf="@id/img_changeType">
+        </ImageView>
     </RelativeLayout>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_report"
+    <net.lucode.hackware.magicindicator.MagicIndicator
+        android:id="@+id/magic_title"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_centerHorizontal="true"
+        android:background="@color/c_FFFFFF">
+    </net.lucode.hackware.magicindicator.MagicIndicator>
+
+    <FrameLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/rel_folder"
-        android:layout_marginLeft="@dimen/W20"
-        android:layout_marginBottom="@dimen/H20">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_report"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </androidx.recyclerview.widget.RecyclerView>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-</RelativeLayout>
+        android:layout_below="@id/status_title"
+        android:background="@color/c_f8f8fa">
+    </FrameLayout>
+</LinearLayout>

@@ -96,7 +96,7 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
      */
     private void initTitleMagicTitle() {
         List<String> titles = Arrays.asList(resources.getStringArray(R.array.digital_title));
-        titleNavigator = new TitleNavigator(mContext,titles);
+        titleNavigator = new TitleNavigator(mContext,titles,false);
         titleNavigator.setOnTabSelectedListener(this);
         magicTitle.setNavigator(titleNavigator);
         mTitleFragmentContainerHelper = new FragmentContainerHelper() ;

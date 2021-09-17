@@ -74,6 +74,12 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
     FlowLayout flowIndex ;
     @BindView(R.id.tv_theSnapshotComparison)
     TextView tvTheSnapshotComparison ;
+    @BindView(R.id.lin_actionPlan)
+    LinearLayout linActionPlan ;
+    @BindView(R.id.tv_actionStatus)
+    TextView tvActionStatus ;
+    @BindView(R.id.tv_actionPlan)
+    TextView tvActionPlan ;
 
     TextView tvDate ;
     TextView tvActionTypeCommon ;
@@ -106,6 +112,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
     protected void setupView() {
         StatusBarUtil.setStatusBarColor(mContext
                 ,mContext.getResources().getColor(R.color.c_FFFFFF));
+        tvActionStatus.setSelected(true);
     }
 
     private void setStatusClick() {
@@ -127,15 +134,12 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
         tvActionTypeCommon.setOnClickListener(view -> {
             tvActionTypeCommon.setSelected(true);
             tvActionTypeSpecial.setSelected(false);
-//                actionPlanInfoDTO.setTask_type("N");
         });
         tvActionTypeSpecial.setOnClickListener(view -> {
             tvActionTypeCommon.setSelected(false);
             tvActionTypeSpecial.setSelected(true);
-//                actionPlanInfoDTO.setTask_type("S");
         });
         tvPriorityHigh.setOnClickListener(view -> {
-//                actionPlanInfoDTO.setTask_priority("1");
             tvPriorityHigh.setSelected(true);
             tvPriorityMiddle.setSelected(false);
             tvPriorityLow.setSelected(false);
@@ -143,7 +147,6 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 ,R.mipmap.action_high));
         });
         tvPriorityMiddle.setOnClickListener(view -> {
-//                actionPlanInfoDTO.setTask_priority("2");
             tvPriorityHigh.setSelected(false);
             tvPriorityMiddle.setSelected(true);
             tvPriorityLow.setSelected(false);
@@ -151,7 +154,6 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 ,R.mipmap.action_mid));
         });
         tvPriorityLow.setOnClickListener(view -> {
-//                actionPlanInfoDTO.setTask_priority("3");
             tvPriorityHigh.setSelected(false);
             tvPriorityMiddle.setSelected(false);
             tvPriorityLow.setSelected(true);
@@ -183,7 +185,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 , LanguageUtils.getLanguage(mContext));
     }
 
-    @OnClick({R.id.img_left,R.id.tv_theSnapshotComparison})
+    @OnClick({R.id.img_left,R.id.tv_theSnapshotComparison,R.id.tv_actionStatus,R.id.tv_actionPlan})
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.img_left :
@@ -197,6 +199,22 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 Intent intent = new Intent(mContext,SnapShotActivity.class) ;
                 intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,taskInfoBean);
                 mContext.startActivity(intent);
+                break;
+
+            /**
+             * 行动状态记录
+             */
+            case R.id.tv_actionStatus :
+                tvActionStatus.setSelected(true);
+                tvActionPlan.setSelected(false);
+                break;
+
+            /**
+             * 行动计划
+             */
+            case R.id.tv_actionPlan :
+                tvActionStatus.setSelected(false);
+                tvActionPlan.setSelected(true);
                 break;
         }
     }
@@ -216,7 +234,6 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             public void onTimeSelect(Date date, View v) {
                 taskDate = TimeUtils.date2Str(date,TimeUtils.FORMAT_YMD);
                 tvDate.setText(resources.getString(R.string.expiration_date).replace("#1", taskDate));
-//                actionPlanInfoDTO.setTask_deadline(taskDate);
             }
         })
                 .setType(new boolean[]{true, true, true, false, false, false})
@@ -261,6 +278,8 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
         }
         taskInfoBean = resdata ;
         tvTheSnapshotComparison.setVisibility((resdata.getPlan() != null
+                && resdata.getPlan().getPlan_flg().equals("T")) ? View.VISIBLE : View.GONE);
+        tvActionPlan.setVisibility((resdata.getPlan() != null
                 && resdata.getPlan().getPlan_flg().equals("T")) ? View.VISIBLE : View.GONE);
         if(resdata.getDetail() != null && resdata.getDetail().size() > 0){
             fillDetailDate(resdata.getDetail().get(0));
@@ -415,12 +434,12 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
     /**
      * 行动操作
      * @param id
-     *             "do_edit",        //编辑
-     *             "do_reject",    //拒绝
-     *             "do_cancel",    //撤销
-     *             "do_commit",    //完成
-     *             "do_delete",    //删除
-     *             "do_delay",        //申请延期
+     *             "do_edit",     //编辑
+     *             "do_reject",   //拒绝
+     *             "do_cancel",   //撤销
+     *             "do_commit",   //完成
+     *             "do_delete",   //删除
+     *             "do_delay",    //申请延期
      *             "do_confirm",  //审核
      */
     private void taskOperate(View view ,String id) {
@@ -523,6 +542,5 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 break;
         }
         tvStateStatus.setText(detailBean.getState_desc());
-
     }
 }

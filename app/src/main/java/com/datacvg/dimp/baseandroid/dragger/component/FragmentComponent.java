@@ -15,6 +15,14 @@ import com.datacvg.dimp.fragment.PersonalFragment;
 import com.datacvg.dimp.fragment.RemarkFragment;
 import com.datacvg.dimp.fragment.ReportFragment;
 import com.datacvg.dimp.fragment.ReportListFragment;
+import com.datacvg.dimp.fragment.ReportListOfMineFragment;
+import com.datacvg.dimp.fragment.ReportListOfSharedFragment;
+import com.datacvg.dimp.fragment.ReportListOfTemplateFragment;
+import com.datacvg.dimp.fragment.ReportListOfTrashFragment;
+import com.datacvg.dimp.fragment.ReportOfMineGridFragment;
+import com.datacvg.dimp.fragment.ReportOfSharedGridFragment;
+import com.datacvg.dimp.fragment.ReportOfTemplateGridFragment;
+import com.datacvg.dimp.fragment.ReportOfTrashGridFragment;
 import com.datacvg.dimp.fragment.ScreenFragment;
 import com.datacvg.dimp.fragment.SnapFragment;
 import com.datacvg.dimp.fragment.TableFragment;
@@ -53,4 +61,20 @@ public interface FragmentComponent {
     void inject(RemarkFragment remarkFragment);
 
     void inject(SnapFragment snapFragment);
+
+    void inject(ReportOfMineGridFragment reportOfMineFragment);
+
+    void inject(ReportOfSharedGridFragment reportOfSharedFragment);
+
+    void inject(ReportOfTemplateGridFragment reportOfTemplateFragment);
+
+    void inject(ReportOfTrashGridFragment reportOfTrashFragment);
+
+    void inject(ReportListOfMineFragment reportListOfMineFragment);
+
+    void inject(ReportListOfSharedFragment reportListOfSharedFragment);
+
+    void inject(ReportListOfTemplateFragment reportListOfTemplateFragment);
+
+    void inject(ReportListOfTrashFragment reportListOfTrashFragment);
 }

@@ -16,6 +16,7 @@
         Enter your enterprise id or configure the SEMF service address
     </string>
     <string name="detail">detail</string>
+    <string name="report">report</string>
     <string name="to_generate_the_qr_code_you_need_read_and_write_permission_please_authorize_it_and_try_again">
         To generate the QR code, you need read and write permission. Please authorize it and try again
     </string>
@@ -260,4 +261,6 @@
     <string name="description_required">Description (* required)</string>
     <string name="the_initial">The initial</string>
     <string name="as_of">截止</string>
+    <string name="task_status_record">Task status record</string>
+    <string name="a_plan_of_action">A plan of action</string>
 </resources>

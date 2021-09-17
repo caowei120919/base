@@ -1,10 +1,7 @@
 package com.datacvg.dimp.baseandroid.utils;
 
 import android.os.Build;
-import android.text.TextUtils;
-
 import androidx.annotation.RequiresApi;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -162,12 +159,12 @@ public class TimeUtils {
     }
 
 
-    public static String date2Str(Date d) {// yyyy-MM-dd HH:mm:ss
+    public static String date2Str(Date d) {
         return date2Str(d, null);
     }
 
 
-    public static String date2Str(Date d, String format) {// yyyy-MM-dd HH:mm:ss
+    public static String date2Str(Date d, String format) {
         if (d == null) {
             return null;
         }
@@ -207,7 +204,7 @@ public class TimeUtils {
      * @return  格式到秒
      */
     //
-    public static String getMillon(long time) {
+    public static String getMillis(long time) {
 
         return new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(time);
 
@@ -232,10 +229,8 @@ public class TimeUtils {
      * @return 返回一个毫秒
      */
     // 格式到毫秒
-    public static String getSMillon(long time) {
-
+    public static String getSMillis(long time) {
         return new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS").format(time);
-
     }
 
     /**
@@ -647,6 +642,4 @@ public class TimeUtils {
         calendar.set(year,month,day);
         return calendar.getTime();
     }
-
-//    public static Date getWeekFirstDay(String )
 }

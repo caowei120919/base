@@ -103,7 +103,7 @@ public class TableDetailActivity extends BaseActivity<TableDetailView, TableDeta
                 .setMainFrameErrorView(R.layout.agentweb_error_page, -1)
                 .setSecurityType(AgentWeb.SecurityType.STRICT_CHECK)
                 .setOpenOtherPageWays(DefaultWebClient.OpenOtherPageWays.DERECT)
-                .interceptUnkownUrl() //拦截找不到相关页面的Scheme
+                .interceptUnkownUrl()
                 .createAgentWeb()
                 .ready()
                 .go("");
@@ -118,7 +118,7 @@ public class TableDetailActivity extends BaseActivity<TableDetailView, TableDeta
             return;
         }
         isDefaultReport = Constants.constantReportBean != null
-                && Constants.constantReportBean.getResId().equals(tableBean.getRes_id()) ;
+                && Constants.constantReportBean.getResId().equals(tableBean.getRes_id());
         tvTitle.setText(LanguageUtils.isZh(mContext)
                     ? tableBean.getRes_clname() : tableBean.getRes_flname());
         getResParamInfo();

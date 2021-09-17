@@ -178,8 +178,6 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
     public void loginSuccess(BaseBean<UserLoginBean> baseBean) {
         Constants.saveUser(baseBean.getResdata()
                 ,cbRememberUser.isChecked(),password,companyCode);
-        mContext.startActivity(new Intent(mContext, MainActivity.class));
-        finish();
     }
 
     @Override
@@ -209,6 +207,12 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
             AndroidUtils.installApk(new File(mDownLoadApkFolder, name));
             MyApplication.exitApp();
         }
+    }
+
+    @Override
+    public void getTimeValueSuccess() {
+        mContext.startActivity(new Intent(mContext, MainActivity.class));
+        finish();
     }
 
     private boolean updateCheck(CheckVersionBean bean) {
@@ -262,7 +266,6 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
             AndroidUtils.installApk(new File(mDownLoadApkFolder, name));
             MyApplication.exitApp();
         } else {
-            //请求安装未知应用来源的权限
             new RxPermissions(mContext).request(Manifest.permission.REQUEST_INSTALL_PACKAGES)
                     .compose(RxUtils.applySchedulersLifeCycle(getMvpView()))
                     .subscribe(new RxObserver<Boolean>() {

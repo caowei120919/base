@@ -149,7 +149,7 @@ public class MyIndexActivity extends BaseActivity<MyIndexView, MyIndexPresenter>
         if (titles.size() < 0){
             return;
         }
-        titleNavigator = new TitleNavigator(mContext,titles);
+        titleNavigator = new TitleNavigator(mContext,titles,false);
         titleNavigator.setOnTabSelectedListener(this);
         magicIndicator.setNavigator(titleNavigator);
         mFragmentContainerHelper.attachMagicIndicator(magicIndicator);

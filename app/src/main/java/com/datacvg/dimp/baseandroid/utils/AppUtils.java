@@ -2,7 +2,6 @@ package com.datacvg.dimp.baseandroid.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-
 import java.io.FileFilter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -13,7 +12,6 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.ComponentName;
@@ -26,9 +24,7 @@ import android.content.pm.Signature;
 import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
-
 import androidx.core.content.FileProvider;
-
 import javax.security.auth.x500.X500Principal;
 
 /**
@@ -71,7 +67,6 @@ public class AppUtils {
      * @return 最大内存
      */
     public static long getMaxMemory() {
-
         return Runtime.getRuntime().maxMemory() / 1024;
     }
 
@@ -110,21 +105,6 @@ public class AppUtils {
                 Uri.fromFile(file),"\"application/vnd.android.package-archive\"");
         context.startActivity(intent);
     }
-
-
-    /**
-     * 安装apk
-     *
-     * @param context 上下文
-     * @param file    APK文件uri
-     */
-    /*public static void installApk(Context context, Uri file) {
-        Intent intent = new Intent();
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.setDataAndType(file, "application/vnd.android.package-archive");
-        context.startActivity(intent);
-    }*/
 
 
     /**
@@ -536,17 +516,16 @@ public class AppUtils {
         if (version1 == null || version2 == null) {
             throw new Exception("compareVersion error:illegal params.");
         }
-        String[] versionArray1 = version1.split("\\.");//注意此处为正则匹配，不能用"."；
+        String[] versionArray1 = version1.split("\\.");
         String[] versionArray2 = version2.split("\\.");
         int idx = 0;
-        int minLength = Math.min(versionArray1.length, versionArray2.length);//取最小长度值
+        int minLength = Math.min(versionArray1.length, versionArray2.length);
         int diff = 0;
         while (idx < minLength
-                && (diff = versionArray1[idx].length() - versionArray2[idx].length()) == 0//先比较长度
-                && (diff = versionArray1[idx].compareTo(versionArray2[idx])) == 0) {//再比较字符
+                && (diff = versionArray1[idx].length() - versionArray2[idx].length()) == 0
+                && (diff = versionArray1[idx].compareTo(versionArray2[idx])) == 0) {
             ++idx;
         }
-        //如果已经分出大小，则直接返回，如果未分出大小，则再比较位数，有子版本的为大；
         diff = (diff != 0) ? diff : versionArray1.length - versionArray2.length;
         return diff;
     }

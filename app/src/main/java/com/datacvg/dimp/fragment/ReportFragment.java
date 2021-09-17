@@ -1,29 +1,18 @@
 package com.datacvg.dimp.fragment;
 
-import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.graphics.Rect;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import com.datacvg.dimp.R;
-import com.datacvg.dimp.activity.ReportDetailActivity;
-import com.datacvg.dimp.adapter.ReportAdapter;
-import com.datacvg.dimp.baseandroid.config.Constants;
-import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
-import com.datacvg.dimp.bean.ReportBean;
-import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.presenter.ReportPresenter;
 import com.datacvg.dimp.view.ReportView;
-import java.util.ArrayList;
+import com.datacvg.dimp.widget.TitleNavigator;
+import net.lucode.hackware.magicindicator.FragmentContainerHelper;
+import net.lucode.hackware.magicindicator.MagicIndicator;
+import java.util.Arrays;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -34,43 +23,30 @@ import butterknife.OnClick;
  * @Description : 管理画布
  */
 public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> implements ReportView
-        , ReportAdapter.OnReportClickListener {
-
-    @BindView(R.id.img_left)
-    ImageView imgLeft ;
-    @BindView(R.id.tv_reportOfMine)
-    TextView tvReportOfMine ;
-    @BindView(R.id.tv_reportToShare)
-    TextView tvReportToShare ;
-    @BindView(R.id.recycler_report)
-    RecyclerView recyclerReport ;
-    @BindView(R.id.rel_folder)
-    RelativeLayout relFolder ;
-    @BindView(R.id.tv_folderName)
-    TextView tvFolderName ;
-    @BindView(R.id.swipe_report)
-    SwipeRefreshLayout swipeReport ;
-
-    private String reportDisplayModel = Constants.REPORT_GRID;
-    private String reportType = Constants.REPORT_MINE ;
-    private ReportAdapter adapter ;
-    private int parentLevel = -1 ;
-    private String parentId =  "" ;
-    private final String requestModelParentId = "1000000000" ;
-    private final String requestShareParentId = "100000000" ;
+        , TitleNavigator.OnTabSelectedListener {
+    @BindView(R.id.magic_title)
+    MagicIndicator magicTitle ;
+    @BindView(R.id.img_changeType)
+    ImageView imgChangeType ;
 
     /**
-     * 总的数据，做存储使用
+     * 0 : 九宫格样式
+     * 1 : 列表样式
      */
-    private List<ReportBean> reportBeans = new ArrayList<>();
+    private static Integer showType = 0 ;
+    private static Integer selectPosition = 0 ;
+    private TitleNavigator titleNavigator ;
+    private FragmentContainerHelper mTitleFragmentContainerHelper ;
+    private FragmentTransaction fragmentTransaction;
 
-    /**
-     *
-     */
-    private List<ReportBean> reportDisPlayBeans = new ArrayList<>();
-    private LinearLayoutManager linearLayoutManager ;
-    private GridLayoutManager gridLayoutManager ;
-    private ReportItemDecoration reportItemDecoration ;
+    private ReportOfMineGridFragment reportOfMineFragment ;
+    private ReportListOfMineFragment reportOfMineListFragment ;
+    private ReportOfSharedGridFragment reportOfSharedFragment ;
+    private ReportListOfSharedFragment reportOfSharedListFragment ;
+    private ReportOfTemplateGridFragment reportOfTemplateFragment ;
+    private ReportListOfTemplateFragment reportOfTemplateListFragment ;
+    private ReportOfTrashGridFragment reportOfTrashFragment ;
+    private ReportListOfTrashFragment reportOfTrashListFragment ;
 
     @Override
     protected int getLayoutId() {
@@ -86,111 +62,156 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
     protected void setupView(View rootView) {
         StatusBarUtil.setStatusBarColor(getActivity()
                 ,mContext.getResources().getColor(R.color.c_FFFFFF));
+        initTitleMagicTitle();
+    }
 
-        linearLayoutManager = new LinearLayoutManager(mContext);
-        gridLayoutManager = new GridLayoutManager(mContext,2);
-        reportItemDecoration = new ReportItemDecoration();
-
-        adapter = new ReportAdapter(mContext,reportDisPlayBeans,reportType,this);
-        recyclerReport.setLayoutManager(new GridLayoutManager(mContext,2));
-        recyclerReport.addItemDecoration(reportItemDecoration);
-        recyclerReport.setAdapter(adapter);
-
-        swipeReport.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                switch (reportType){
-                    case Constants.REPORT_MINE :
-                        getReport();
-                        break;
-
-                    default:
-                        getPresenter().getReport(requestShareParentId,reportType,String.valueOf(System.currentTimeMillis()));
-                        break;
-                }
-            }
-        });
+    /**
+     * 初始化标题指示器
+     */
+    private void initTitleMagicTitle() {
+        List<String> titles = Arrays.asList(resources.getStringArray(R.array.report_title));
+        titleNavigator = new TitleNavigator(mContext,titles,true);
+        titleNavigator.setOnTabSelectedListener(this);
+        magicTitle.setNavigator(titleNavigator);
+        mTitleFragmentContainerHelper = new FragmentContainerHelper() ;
+        mTitleFragmentContainerHelper.attachMagicIndicator(magicTitle);
+        showFragment(0);
     }
 
     @Override
     protected void setupData() {
-        imgLeft.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.report_menu_grid));
-        tvReportOfMine.setSelected(true);
-        tvReportToShare.setSelected(false);
-        getReport();
+
+    }
+
+
+    @OnClick({R.id.img_changeType})
+    public void OnClick(View view){
+        switch (view.getId()){
+            case R.id.img_changeType :
+                if (showType == 0){
+                    showType = 1 ;
+                    imgChangeType.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_list));
+                }else{
+                    showType = 0 ;
+                    imgChangeType.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_grid));
+                }
+                showFragment(selectPosition);
+                break;
+        }
     }
 
     /**
-     * 获取报告
+     * 标题点击指示器点击监听
+     * @param position
      */
-    private void getReport() {
-        getPresenter().getReport(requestModelParentId,reportType,String.valueOf(System.currentTimeMillis()));
+    @Override
+    public void onTabSelected(int position) {
+        selectPosition = position ;
+        showFragment(position);
+        mTitleFragmentContainerHelper.handlePageSelected(position);
     }
 
-    @OnClick({R.id.img_left,R.id.tv_reportOfMine,R.id.tv_reportToShare,R.id.rel_folder})
-    public void OnClick(View view){
-        switch (view.getId()){
-            case R.id.img_left :
-                    reportDisPlayBeans.clear();
-                    if(reportDisplayModel.equals(Constants.REPORT_GRID)){
-                        imgLeft.setImageBitmap(BitmapFactory
-                                .decodeResource(resources,R.mipmap.report_menu_list));
-                        reportDisplayModel = Constants.REPORT_LIST ;
-                        adapter.setDisplayType(reportDisplayModel);
-                        recyclerReport.setLayoutManager(linearLayoutManager);
-                        relFolder.setVisibility(View.GONE);
-                    }else{
-                        imgLeft.setImageBitmap(BitmapFactory
-                                .decodeResource(resources,R.mipmap.report_menu_grid));
-                        reportDisplayModel = Constants.REPORT_GRID ;
-                        adapter.setDisplayType(reportDisplayModel);
-                        recyclerReport.setLayoutManager(gridLayoutManager);
-                    }
-                    displayReport();
-                break;
-
-            case R.id.tv_reportOfMine :
-                tvReportOfMine.setSelected(true);
-                tvReportToShare.setSelected(false);
-                reportType = Constants.REPORT_MINE ;
-                if (adapter != null){
-                    adapter.setReportType(reportType);
-                }
-                getPresenter().getReport(requestModelParentId,reportType,String.valueOf(System.currentTimeMillis()));
-                break;
-
-            case R.id.tv_reportToShare :
-                tvReportOfMine.setSelected(false);
-                tvReportToShare.setSelected(true);
-                reportType = Constants.REPORT_SHARE ;
-                if (adapter != null){
-                    adapter.setReportType(reportType);
-                }
-                getPresenter().getReport(requestShareParentId,reportType,String.valueOf(System.currentTimeMillis()));
-                break;
-
-            case R.id.rel_folder :
-                reportDisPlayBeans.clear();
-                if(parentLevel == 1){
-                    relFolder.setVisibility(View.GONE);
-                 }else{
-                    relFolder.setVisibility(View.VISIBLE);
-                }
-                switch (reportType){
-                    case Constants.REPORT_MINE :
-                        for (ReportBean bean : reportBeans){
-                            if(bean.getParent_id().equals(parentId)){
-                                reportDisPlayBeans.add(bean);
-                            }
+    /**
+     * 根据位置展示对应fragment
+     * @param position
+     */
+    private void showFragment(int position) {
+        FragmentManager fragmentManager = getChildFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        hideFragment(fragmentTransaction);
+        switch (position){
+            case 0 :
+                switch (showType){
+                    case 0 :
+                        if(null != reportOfMineFragment){
+                            fragmentTransaction.show(reportOfMineFragment);
+                        }else{
+                            reportOfMineFragment = new ReportOfMineGridFragment();
+                            fragmentTransaction.add(R.id.content,reportOfMineFragment);
                         }
-                    break;
+                        fragmentTransaction.commitAllowingStateLoss();
+                        break;
 
-                    case Constants.REPORT_SHARE :
-                        for (ReportBean bean : reportBeans){
-                            if(bean.getShare_parentid().equals(parentId)){
-                                reportDisPlayBeans.add(bean);
-                            }
+                    case 1 :
+                        if(null != reportOfMineListFragment){
+                            fragmentTransaction.show(reportOfMineListFragment);
+                        }else{
+                            reportOfMineListFragment = new ReportListOfMineFragment();
+                            fragmentTransaction.add(R.id.content,reportOfMineListFragment);
                         }
+                        fragmentTransaction.commitAllowingStateLoss();
+                        break;
+                }
+                break;
+
+            case 1 :
+                switch (showType){
+                    case 0 :
+                        if(null != reportOfSharedFragment){
+                            fragmentTransaction.show(reportOfSharedFragment);
+                        }else{
+                            reportOfSharedFragment = new ReportOfSharedGridFragment();
+                            fragmentTransaction.add(R.id.content,reportOfSharedFragment);
+                        }
+                        fragmentTransaction.commitAllowingStateLoss();
+                        break;
+
+                    case 1 :
+                        if(null != reportOfSharedListFragment){
+                            fragmentTransaction.show(reportOfSharedListFragment);
+                        }else{
+                            reportOfSharedListFragment = new ReportListOfSharedFragment();
+                            fragmentTransaction.add(R.id.content,reportOfSharedListFragment);
+                        }
+                        fragmentTransaction.commitAllowingStateLoss();
+                        break;
+                }
+                break;
+
+            case 2 :
+                switch (showType){
+                    case 0 :
+                        if(null != reportOfTemplateFragment){
+                            fragmentTransaction.show(reportOfTemplateFragment);
+                        }else{
+                            reportOfTemplateFragment = new ReportOfTemplateGridFragment();
+                            fragmentTransaction.add(R.id.content,reportOfTemplateFragment);
+                        }
+                        fragmentTransaction.commitAllowingStateLoss();
+                        break;
+
+                    case 1 :
+                        if(null != reportOfTemplateListFragment){
+                            fragmentTransaction.show(reportOfTemplateListFragment);
+                        }else{
+                            reportOfTemplateListFragment = new ReportListOfTemplateFragment();
+                            fragmentTransaction.add(R.id.content,reportOfTemplateListFragment);
+                        }
+                        fragmentTransaction.commitAllowingStateLoss();
+                        break;
+                }
+                break;
+
+            case 3 :
+                switch (showType){
+                    case 0 :
+                        if(null != reportOfTrashFragment){
+                            fragmentTransaction.show(reportOfTrashFragment);
+                        }else{
+                            reportOfTrashFragment = new ReportOfTrashGridFragment();
+                            fragmentTransaction.add(R.id.content,reportOfTrashFragment);
+                        }
+                        fragmentTransaction.commitAllowingStateLoss();
+                        break;
+
+                    case 1 :
+                        if(null != reportOfTrashListFragment){
+                            fragmentTransaction.show(reportOfTrashListFragment);
+                        }else{
+                            reportOfTrashListFragment = new ReportListOfTrashFragment();
+                            fragmentTransaction.add(R.id.content,reportOfTrashListFragment);
+                        }
+                        fragmentTransaction.commitAllowingStateLoss();
                         break;
                 }
                 break;
@@ -198,178 +219,33 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
     }
 
     /**
-     * 获取报告列表成功
-     * @param data
+     * 隐藏fragment
+     * @param fragmentTransaction
      */
-    @Override
-    public void getReportSuccess(ReportListBean data) {
-        if(swipeReport.isRefreshing()){
-            swipeReport.setRefreshing(false);
+    private void hideFragment(FragmentTransaction fragmentTransaction) {
+        if(null != reportOfMineFragment){
+            fragmentTransaction.hide(reportOfMineFragment);
         }
-        reportBeans.clear();
-        reportBeans.addAll(data);
-        reportDisPlayBeans.clear();
-        displayReport();
-    }
-
-    private void displayReport() {
-        String rootId = "" ;
-        switch (reportType){
-            case Constants.REPORT_MINE :
-                for (ReportBean bean : reportBeans){
-                    if(bean.getParent_id().equals("0")){
-                        rootId = bean.getModel_id() ;
-                    }
-                }
-                for (ReportBean bean : reportBeans){
-                    if(bean.getParent_id().equals(rootId)
-                            && !bean.getParent_id().equals("0")){
-                        bean.setLevel(1);
-                        reportDisPlayBeans.add(bean);
-                    }
-                }
-                break;
-
-            case Constants.REPORT_SHARE :
-                for (ReportBean bean : reportBeans){
-                    if(bean.getShare_parentid().equals("0")){
-                        rootId = bean.getShare_id() ;
-                    }
-                }
-                for (ReportBean bean : reportBeans){
-                    if(bean.getShare_parentid().equals(rootId)
-                            && !bean.getShare_parentid().equals("0")){
-                        bean.setLevel(1);
-                        reportDisPlayBeans.add(bean);
-                    }
-                }
-                break;
+        if(null != reportOfMineListFragment){
+            fragmentTransaction.hide(reportOfMineListFragment);
         }
-        adapter.notifyDataSetChanged();
-    }
-
-    /**
-     * 报告被点击
-     * @param reportBean
-     */
-    @Override
-    public void onReportClick(ReportBean reportBean) {
-        reportBean.setReport_type(reportType);
-        Intent intent = new Intent(mContext, ReportDetailActivity.class);
-        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportBean);
-        mContext.startActivity(intent);
-    }
-
-    /**
-     * 文件夹被点击
-     * @param reportBean
-     */
-    @Override
-    public void onGridFolderClick(ReportBean reportBean) {
-        String rootId = "" ;
-        parentLevel = reportBean.getLevel() ;
-        reportDisPlayBeans.clear();
-        switch (reportType){
-            case Constants.REPORT_MINE :
-                rootId = reportBean.getModel_id();
-                parentId = reportBean.getParent_id() ;
-                tvFolderName.setText(LanguageUtils.isZh(mContext)
-                        ? reportBean.getModel_clname() : reportBean.getModel_flname());
-                for (ReportBean bean : reportBeans){
-                    if(bean.getParent_id().equals(rootId)){
-                        bean.setLevel(parentLevel + 1);
-                        reportDisPlayBeans.add(bean);
-                    }
-                }
-                break;
-
-            case Constants.REPORT_SHARE :
-                rootId = reportBean.getShare_id();
-                parentId = reportBean.getShare_parentid() ;
-                tvFolderName.setText(LanguageUtils.isZh(mContext)
-                        ? reportBean.getShare_clname() : reportBean.getShare_flname());
-                for (ReportBean bean : reportBeans){
-                    if(bean.getShare_parentid().equals(rootId)){
-                        bean.setLevel(parentLevel + 1);
-                        reportDisPlayBeans.add(bean);
-                    }
-                }
-                break;
+        if(null != reportOfSharedFragment){
+            fragmentTransaction.hide(reportOfSharedFragment);
         }
-        adapter.notifyDataSetChanged();
-        relFolder.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onListReportClick(int position,ReportBean reportBean) {
-        String rootId = "" ;
-        parentLevel = reportBean.getLevel() ;
-        List<ReportBean> childReportBeans = new ArrayList<>();
-        if (reportBean.isOpen()){
-            childReportBeans.addAll(reportDisPlayBeans) ;
+        if(null != reportOfSharedListFragment){
+            fragmentTransaction.hide(reportOfSharedListFragment);
         }
-        switch (reportType){
-            case Constants.REPORT_MINE :
-                rootId = reportBean.getModel_id();
-                parentId = reportBean.getParent_id() ;
-                tvFolderName.setText(LanguageUtils.isZh(mContext)
-                        ? reportBean.getModel_clname() : reportBean.getModel_flname());
-                for (ReportBean bean : reportBeans){
-                    if(bean.getParent_id().equals(rootId)){
-                        bean.setLevel(parentLevel + 1);
-                        if(reportBean.isOpen()){
-                            childReportBeans.remove(bean);
-                        }else{
-                            childReportBeans.add(bean);
-                        }
-                    }
-                }
-                break;
-
-            case Constants.REPORT_SHARE :
-                rootId = reportBean.getShare_id();
-                parentId = reportBean.getShare_parentid() ;
-                tvFolderName.setText(LanguageUtils.isZh(mContext)
-                        ? reportBean.getShare_clname() : reportBean.getShare_flname());
-                for (ReportBean bean : reportBeans){
-                    if(bean.getShare_parentid().equals(rootId)){
-                        bean.setLevel(parentLevel + 1);
-                        if(reportBean.isOpen()){
-                            childReportBeans.remove(bean);
-                        }else{
-                            childReportBeans.add(bean);
-                        }
-                    }
-                }
-                break;
+        if(null != reportOfTemplateFragment){
+            fragmentTransaction.hide(reportOfTemplateFragment);
         }
-        if(reportBean.isOpen()){
-            reportDisPlayBeans.clear();
-            reportDisPlayBeans.addAll(childReportBeans);
-        }else{
-            reportDisPlayBeans.addAll(position + 1,childReportBeans);
+        if(null != reportOfTemplateListFragment){
+            fragmentTransaction.hide(reportOfTemplateListFragment);
         }
-        reportBean.setOpen(!reportBean.isOpen());
-        adapter.notifyDataSetChanged();
-    }
-
-    /**
-     * 区分展示形式而设置间距
-     */
-    private class ReportItemDecoration extends RecyclerView.ItemDecoration{
-            @Override
-            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view
-                    , @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                super.getItemOffsets(outRect, view, parent, state);
-                switch (reportDisplayModel){
-                    case Constants.REPORT_GRID :
-                        outRect.top = (int) resources.getDimension(R.dimen.W20);
-                        return;
-
-                    default:
-                        outRect.top = (int) resources.getDimension(R.dimen.W2);
-                        return;
-                }
-            }
+        if(null != reportOfTrashFragment){
+            fragmentTransaction.hide(reportOfTrashFragment);
+        }
+        if(null != reportOfTrashListFragment){
+            fragmentTransaction.hide(reportOfTrashListFragment);
+        }
     }
 }

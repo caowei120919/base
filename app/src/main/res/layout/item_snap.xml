@@ -76,6 +76,7 @@
         </ImageView>
 
         <TextView
+            android:id="@+id/tv_currentTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/img_initial"
@@ -84,10 +85,23 @@
             android:background="@drawable/shape_fbebe7_round"
             android:textColor="@color/c_da3a16"
             android:textSize="12sp"
+            android:text="2019.02.10"
             android:drawablePadding="@dimen/W20"
             android:paddingRight="@dimen/W20"
             android:gravity="center"
             android:drawableLeft="@drawable/list_concentric_circles">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/W25"
+            android:layout_alignTop="@id/tv_currentTime"
+            android:text="6789"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/H5"
+            android:textColor="@color/c_da3a16">
         </TextView>
 
         <TextView

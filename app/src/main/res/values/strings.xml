@@ -79,6 +79,7 @@
     <string name="digital_nervous">数字神经</string>
     <string name="my_report">我的报告</string>
     <string name="share_the_report">共享报告</string>
+    <string name="report">报告</string>
     <string name="action">行动</string>
     <string name="all_tasks">全部任务</string>
     <string name="has_been_issued">已下达</string>
@@ -253,4 +254,6 @@
     <string name="description_required">说明(*必填)</string>
     <string name="the_initial">初始</string>
     <string name="as_of">截止</string>
+    <string name="task_status_record">任务状态记录</string>
+    <string name="a_plan_of_action">行动计划</string>
 </resources>

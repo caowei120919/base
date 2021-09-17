@@ -1,7 +1,6 @@
 package com.datacvg.dimp.view;
 
 import com.datacvg.dimp.baseandroid.mvp.MvpView;
-import com.datacvg.dimp.bean.ReportListBean;
 
 /**
  * @Author : T-Bag (茶包)
@@ -9,9 +8,4 @@ import com.datacvg.dimp.bean.ReportListBean;
  * @Description :
  */
 public interface ReportView extends MvpView {
-    /**
-     * 获取报告列表成功
-     * @param data
-     */
-    void getReportSuccess(ReportListBean data);
 }

@@ -28,4 +28,9 @@ public interface LoginView extends MvpView {
      * @param name
      */
     void downloadCompleted(String name);
+
+    /**
+     * 获取时间权限信息成功
+     */
+    void getTimeValueSuccess();
 }

@@ -418,11 +418,43 @@
                 android:layout_marginRight="@dimen/W25">
             </EditText>
 
+            <LinearLayout
+                android:id="@+id/lin_actionPlan"
+                android:layout_width="@dimen/W500"
+                android:layout_height="@dimen/H80"
+                android:orientation="horizontal"
+                android:layout_below="@id/ed_taskDetails"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/H32"
+                android:background="@drawable/shape_f2f2f2_ffffff">
+
+                <TextView
+                    android:id="@+id/tv_actionStatus"
+                    android:layout_width="@dimen/W1"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/task_status_record"
+                    android:textColor="@drawable/selector_report">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/tv_actionPlan"
+                    android:layout_width="@dimen/W1"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:text="@string/a_plan_of_action"
+                    android:textColor="@drawable/selector_report">
+                </TextView>
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/tv_theSnapshotComparison"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/ed_taskDetails"
+                android:layout_below="@id/lin_actionPlan"
                 android:text="@string/the_snapshot_comparison"
                 android:textColor="@color/c_da3a16"
                 android:textSize="16sp"

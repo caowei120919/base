@@ -155,6 +155,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                                 ,timeValueBeanBaseBean.getData().getDefaultTime().getYear());
                         PreferencesHelper.put(Constants.USER_DEFAULT_DAY
                                 ,timeValueBeanBaseBean.getData().getDefaultTime().getDay());
+                        getView().getTimeValueSuccess();
                     }
 
                     @Override

@@ -31,10 +31,10 @@ public class TitleNavigator extends CommonNavigator {
     private OnTabSelectedListener mOnTabSelectedListener;
     private NavigatorAdapter adapter ;
 
-    public TitleNavigator(Context context,List<String> titles) {
+    public TitleNavigator(Context context,List<String> titles,boolean adJustMode) {
         super(context);
         mContext = context ;
-        setAdjustMode(false);
+        setAdjustMode(adJustMode);
         items = titles;
         adapter = new NavigatorAdapter();
         setAdapter(adapter);

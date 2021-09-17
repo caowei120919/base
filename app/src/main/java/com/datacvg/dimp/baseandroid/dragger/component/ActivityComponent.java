@@ -24,6 +24,7 @@ import com.datacvg.dimp.activity.MyIndexActivity;
 import com.datacvg.dimp.activity.NewTaskActivity;
 import com.datacvg.dimp.activity.QRCodeActivity;
 import com.datacvg.dimp.activity.ReportDetailActivity;
+import com.datacvg.dimp.activity.ReportFolderActivity;
 import com.datacvg.dimp.activity.ScanActivity;
 import com.datacvg.dimp.activity.ScreenDetailActivity;
 import com.datacvg.dimp.activity.ScreenResultActivity;
@@ -129,4 +130,6 @@ public interface ActivityComponent {
     void inject(SnapShotActivity snapShotActivity);
 
     void inject(FeedBackActivity feedBackActivity);
+
+    void inject(ReportFolderActivity reportFolderActivity);
 }

@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
@@ -19,7 +18,6 @@ import com.datacvg.dimp.presenter.SnapPresenter;
 import com.datacvg.dimp.view.SnapView;
 import com.enlogy.statusview.StatusRelativeLayout;
 import com.google.gson.Gson;
-
 import java.util.Arrays;
 import java.util.List;
 import butterknife.BindView;
@@ -135,7 +133,8 @@ public class SnapFragment extends BaseFragment<SnapView, SnapPresenter> implemen
                         if(kpiPermissionDataBean != null
                                 && kpiPermissionDataBean.getKpiPermission() != null
                                 && kpiPermissionDataBean.getKpiPermission().getThresholdName() != null){
-                            tvMinimum.setText(kpiPermissionDataBean.getKpiPermission().getThresholdName().getMinimum());
+                            tvMinimum.setText(kpiPermissionDataBean.getKpiPermission()
+                                    .getThresholdName().getMinimum());
                         }else{
                             tvMinimum.setText(resources.getString(R.string.guaranteed));
                         }

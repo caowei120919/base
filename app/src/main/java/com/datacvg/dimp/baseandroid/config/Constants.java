@@ -81,6 +81,7 @@ public class Constants {
      * 获取默认报表的rootId
      */
     public final static String REPORT_ROOT_ID = "141776322849763954" ;
+    public final static String REPORT_PARENT_ID = "1000000000" ;
     public static ConstantReportBean constantReportBean = null;
 
     /**

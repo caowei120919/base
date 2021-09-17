@@ -13,27 +13,35 @@ import java.io.Serializable;
 public class ReportBean implements Serializable {
 
     /**
-     * pkid : 908323600084178474662
-     * share_id : 908323589177929933184
-     * share_clname : 测试字体颜色（共享）-初始状态_副本_副本_副本
-     * share_flname : 测试字体颜色（共享）-初始状态_副本_副本_副本
-     * share_showtype : share_report
-     * share_parentid : 100000000
-     * share_rootid : 100000000
-     * update_user : 1691179324035185017442
-     * update_time : 2020-10-28 14:39:18
-     * res_level :
-     * level_sort :
-     * status : T
-     * combination_id :
-     * classify : screen
-     * sign : s
-     * model_id : 960280779015900852953
-     * model_clname : 1副本2020-11-03 14:58:50
-     * model_flname : 1副本2020-11-03 14:58:50
+     * pkid : 507195342673122960444
+     * model_id : 507195342671760185705
+     * model_clname : 其他控件百分比换算问题
+     * model_flname : 其他控件百分比换算问题
      * model_type : model_report
-     * parent_id : 1953619
-     * root_id : 1953619
+     * parent_id : 1000000000
+     * root_id : 1000000000
+     * thumbnail_path :
+     * update_user : 456463890261305951361
+     * update_time : 2021-07-19 15:25:30
+     * classify :
+     */
+
+    /**
+     * "pkid": "855975973892311026124",
+     * "share_id": "855975970134442152212",
+     * "share_clname": "测试",
+     * "share_flname": "测试",
+     * "share_showtype": "share_folder",
+     * "share_parentid": "100000000",
+     * "share_rootid": "100000000",
+     * "update_user": "456463890261305951361",
+     * "update_time": "2021-05-15 19:41:34",
+     * "res_level": "",
+     * "level_sort": "",
+     * "status": "T",
+     * "thumbnail_path": "",
+     * "classify": "",
+     * "sign": "p"
      */
 
     private String pkid;

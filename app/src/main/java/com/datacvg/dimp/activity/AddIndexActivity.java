@@ -21,7 +21,6 @@ import com.datacvg.dimp.bean.IndexDetailListBean;
 import com.datacvg.dimp.bean.SearchIndexBean;
 import com.datacvg.dimp.event.AddIndexEvent;
 import com.datacvg.dimp.event.AddOrRemoveIndexEvent;
-import com.datacvg.dimp.event.ChangeIndexEvent;
 import com.datacvg.dimp.event.SearchIndexBeanSuccessEvent;
 import com.datacvg.dimp.presenter.AddIndexPresenter;
 import com.datacvg.dimp.view.AddIndexView;

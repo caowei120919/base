@@ -118,7 +118,7 @@ public class IndexTreeActivity extends BaseActivity<IndexTreeView, IndexTreePres
         if (!TextUtils.isEmpty(indexTreeNeedBean.getpName())){
             titles.add(indexTreeNeedBean.getpName());
         }
-        titleNavigator = new TitleNavigator(mContext,titles);
+        titleNavigator = new TitleNavigator(mContext,titles,false);
         titleNavigator.setOnTabSelectedListener(this);
         magicIndicator.setNavigator(titleNavigator);
         mFragmentContainerHelper = new FragmentContainerHelper();

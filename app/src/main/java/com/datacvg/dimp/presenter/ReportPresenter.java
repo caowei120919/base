@@ -1,13 +1,7 @@
 package com.datacvg.dimp.presenter;
 
 import com.datacvg.dimp.baseandroid.config.MobileApi;
-import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
-import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
-import com.datacvg.dimp.baseandroid.utils.PLog;
-import com.datacvg.dimp.baseandroid.utils.RxUtils;
-import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.view.ReportView;
-
 import javax.inject.Inject;
 
 /**
@@ -23,27 +17,4 @@ public class ReportPresenter extends BasePresenter<ReportView>{
         this.api = api ;
     }
 
-    public void getReport(String parentId,String reportType, String _t) {
-        api.getReport(parentId,reportType,_t)
-                .compose(RxUtils.applySchedulersLifeCycle(getView()))
-                .subscribe(new RxObserver<BaseBean<ReportListBean>>(){
-                    @Override
-                    public void onComplete() {
-                        super.onComplete();
-                    }
-
-                    @Override
-                    public void onNext(BaseBean<ReportListBean> bean) {
-                        if(checkJsonCode(bean)){
-                            getView().getReportSuccess(bean.getData());
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        PLog.e("TAG",e.getMessage());
-                    }
-                });
-    }
 }

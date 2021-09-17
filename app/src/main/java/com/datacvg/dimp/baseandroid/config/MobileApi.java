@@ -38,11 +38,8 @@ import com.datacvg.dimp.bean.TaskInfoBean;
 import com.datacvg.dimp.bean.TimeValueBean;
 import com.datacvg.dimp.bean.UserJobsListBean;
 import com.datacvg.dimp.bean.UserLoginBean;
-
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.DoubleUnaryOperator;
-
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;

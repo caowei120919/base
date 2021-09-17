@@ -18,6 +18,7 @@
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:layout_marginLeft="@dimen/W30"
+        android:textColor="@color/c_303030"
         android:layout_toRightOf="@id/img_icon"
         android:text="@string/confirm"
         android:singleLine="true"
