@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/c_FFFFFF">
+
+        <TextView
+            android:id="@+id/tv_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:textColor="@color/c_303030"
+            android:textSize="20sp"
+            android:text="@string/the_editor"
+            android:paddingLeft="@dimen/W30">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_clear"
+            android:text="@string/empty"
+            android:layout_marginRight="@dimen/W24"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:textColor="@color/c_303030"
+            android:textSize="20sp">
+        </TextView>
+
+        <ImageView
+            android:id="@+id/img_trashChangeType"
+            android:layout_width="@dimen/W32"
+            android:layout_height="@dimen/W32"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/icon_grid"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/W24"
+            android:layout_toLeftOf="@id/tv_clear">
+        </ImageView>
+    </RelativeLayout>
+</RelativeLayout>

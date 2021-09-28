@@ -222,7 +222,7 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
      */
     private void chooseForAlbum() {
         ImagePicker.getInstance()
-                .setTitle(mContext.getResources().getString(R.string.select_picture))//设置标题
+                .setTitle(mContext.getResources().getString(R.string.select_picture))
                 .setImageLoader(new GlideLoader())
                 .showCamera(false)
                 .showImage(true)

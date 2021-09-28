@@ -81,7 +81,9 @@ public class Constants {
      * 获取默认报表的rootId
      */
     public final static String REPORT_ROOT_ID = "141776322849763954" ;
-    public final static String REPORT_PARENT_ID = "1000000000" ;
+    public final static String REPORT_MINE_PARENT_ID =  "1000000000" ;
+    public final static String REPORT_SHARE_PARENT_ID = "100000000" ;
+    public final static String REPORT_TEMPLATE_PARENT_ID = "10000000000" ;
     public static ConstantReportBean constantReportBean = null;
 
     /**
@@ -158,7 +160,11 @@ public class Constants {
     public final static String REPORT_GRID = "REPORT_GRID" ;
     public final static String REPORT_LIST = "REPORT_LIST" ;
     public static final String REPORT_MINE = "MODEL";
+    public static final String REPORT_MINE_TYPE = "model_report" ;
+    public static final String REPORT_SHARE_TYPE = "share_report" ;
+    public static final String REPORT_TEMPLATE_TYPE = "share_report" ;
     public static final String REPORT_SHARE = "SHARE";
+    public static final String REPORT_TEMPLATE = "TEMPLATE" ;
 
     /**
      * 消息权限类型

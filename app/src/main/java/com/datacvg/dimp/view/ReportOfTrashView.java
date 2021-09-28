@@ -1,6 +1,7 @@
 package com.datacvg.dimp.view;
 
 import com.datacvg.dimp.baseandroid.mvp.MvpView;
+import com.datacvg.dimp.bean.ReportTrashListBean;
 
 /**
  * @Author : T-Bag (茶包)
@@ -8,4 +9,5 @@ import com.datacvg.dimp.baseandroid.mvp.MvpView;
  * @Description :
  */
 public interface ReportOfTrashView extends MvpView {
+    void queryReportSuccess(ReportTrashListBean data);
 }

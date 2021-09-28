@@ -1,15 +1,22 @@
 package com.datacvg.dimp.fragment;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.view.View;
 import android.widget.ImageView;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.presenter.ReportPresenter;
 import com.datacvg.dimp.view.ReportView;
 import com.datacvg.dimp.widget.TitleNavigator;
+import com.enlogy.statusview.StatusRelativeLayout;
+
 import net.lucode.hackware.magicindicator.FragmentContainerHelper;
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import java.util.Arrays;
@@ -28,6 +35,8 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
     MagicIndicator magicTitle ;
     @BindView(R.id.img_changeType)
     ImageView imgChangeType ;
+    @BindView(R.id.status_report)
+    StatusRelativeLayout statusReport ;
 
     /**
      * 0 : 九宫格样式
@@ -38,6 +47,7 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
     private TitleNavigator titleNavigator ;
     private FragmentContainerHelper mTitleFragmentContainerHelper ;
     private FragmentTransaction fragmentTransaction;
+    private FragmentManager fragmentManager ;
 
     private ReportOfMineGridFragment reportOfMineFragment ;
     private ReportListOfMineFragment reportOfMineListFragment ;
@@ -116,11 +126,17 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
      * @param position
      */
     private void showFragment(int position) {
-        FragmentManager fragmentManager = getChildFragmentManager();
+        fragmentManager = getChildFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         hideFragment(fragmentTransaction);
         switch (position){
             case 0 :
+                statusReport.showContent();
+                if (showType == 0){
+                    imgChangeType.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_grid));
+                }else{
+                    imgChangeType.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_list));
+                }
                 switch (showType){
                     case 0 :
                         if(null != reportOfMineFragment){
@@ -145,6 +161,12 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
                 break;
 
             case 1 :
+                statusReport.showContent();
+                if (showType == 0){
+                    imgChangeType.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_grid));
+                }else{
+                    imgChangeType.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_list));
+                }
                 switch (showType){
                     case 0 :
                         if(null != reportOfSharedFragment){
@@ -169,6 +191,12 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
                 break;
 
             case 2 :
+                statusReport.showContent();
+                if (showType == 0){
+                    imgChangeType.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_grid));
+                }else{
+                    imgChangeType.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_list));
+                }
                 switch (showType){
                     case 0 :
                         if(null != reportOfTemplateFragment){
@@ -193,8 +221,24 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
                 break;
 
             case 3 :
+                statusReport.showExtendContent();
+                statusReport.findViewById(R.id.img_trashChangeType).setOnClickListener(v -> {
+                    PLog.e("改变展示形式" + showType);
+                    if(showType == 0){
+                        showType = 1;
+                        ((ImageView)statusReport.findViewById(R.id.img_trashChangeType)).setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_list));
+                    } else{
+                        showType = 0;
+                        ((ImageView)statusReport.findViewById(R.id.img_trashChangeType)).setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_grid));
+                    }
+                    showFragment(position);
+                });
+                statusReport.findViewById(R.id.tv_clear).setOnClickListener(v -> {
+                    PLog.e("清空");
+                });
                 switch (showType){
                     case 0 :
+                        ((ImageView)statusReport.findViewById(R.id.img_trashChangeType)).setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_grid));
                         if(null != reportOfTrashFragment){
                             fragmentTransaction.show(reportOfTrashFragment);
                         }else{
@@ -205,6 +249,7 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
                         break;
 
                     case 1 :
+                        ((ImageView)statusReport.findViewById(R.id.img_trashChangeType)).setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_list));
                         if(null != reportOfTrashListFragment){
                             fragmentTransaction.show(reportOfTrashListFragment);
                         }else{
@@ -246,6 +291,14 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
         }
         if(null != reportOfTrashListFragment){
             fragmentTransaction.hide(reportOfTrashListFragment);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        for (Fragment fragment : fragmentManager.getFragments()){
+            fragment.onActivityResult(requestCode, resultCode, data);
         }
     }
 }

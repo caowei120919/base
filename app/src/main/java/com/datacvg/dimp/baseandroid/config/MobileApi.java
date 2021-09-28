@@ -25,8 +25,11 @@ import com.datacvg.dimp.bean.PerformanceBean;
 import com.datacvg.dimp.bean.ReadMessageBean;
 import com.datacvg.dimp.bean.RecommendIndexBean;
 import com.datacvg.dimp.bean.RemarkListBean;
+import com.datacvg.dimp.bean.ReportBean;
 import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.bean.ReportParamsBean;
+import com.datacvg.dimp.bean.ReportTrashBean;
+import com.datacvg.dimp.bean.ReportTrashListBean;
 import com.datacvg.dimp.bean.SavePageBean;
 import com.datacvg.dimp.bean.ScreenDetailBean;
 import com.datacvg.dimp.bean.ScreenListBean;
@@ -40,11 +43,14 @@ import com.datacvg.dimp.bean.UserJobsListBean;
 import com.datacvg.dimp.bean.UserLoginBean;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.DoubleUnaryOperator;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
@@ -459,4 +465,42 @@ public interface MobileApi {
     @POST("api/mobile/login/uploadheadimg")
     Observable<BaseBean> uploadAvatar(@Query("userId") String userId
             ,@Body Map params);
+
+    /**
+     * 上传缩略图
+     * @param reportId
+     * @param params
+     * @return
+     */
+    @POST("api/dataengine/dataexporler/report/upload_thumbnails")
+    Observable<BaseBean> uploadModelThumb(@Query("reportId") String reportId
+            ,@Query("modelType") String type
+            ,@Body Map params);
+
+    /**
+     * 删除报告
+     * @param params
+     * @return
+     */
+    @HTTP(method = "DELETE",path = "api/dataengine/dataexporler/report/folder",hasBody = true)
+    Observable<Object> deleteReport(@Body Map params);
+
+    /**
+     * 获取文件资源
+     * @param reportId
+     * @param type
+     * @return
+     */
+    @GET("api/dataengine/dataexporler/report/export")
+    Observable<String> downReportFile(@Query("resId") String reportId
+            ,@Query("resType") String type);
+
+    /**
+     * 查询回收站所有资源文件
+     * @param reportType
+     * @param t
+     * @return
+     */
+    @GET("api/dataengine/dataexporler/model/recycle")
+    Observable<BaseBean<ReportTrashListBean>> queryReport(@Query("type") String reportType, @Query("_t") String t);
 }

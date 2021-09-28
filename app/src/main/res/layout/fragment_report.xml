@@ -2,58 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/rel_title"
+    <com.enlogy.statusview.StatusRelativeLayout
+        android:id="@+id/status_report"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:background="@color/c_FFFFFF">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_centerVertical="true"
-            android:textColor="@color/c_303030"
-            android:textSize="20sp"
-            android:text="@string/report"
-            android:layout_marginLeft="@dimen/W30">
-        </TextView>
-
-        <ImageView
-            android:id="@+id/img_sort"
-            android:layout_width="@dimen/W32"
-            android:layout_height="@dimen/W32"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/icon_sort"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/W24"
-            android:layout_alignParentRight="true">
-        </ImageView>
-
-        <ImageView
-            android:id="@+id/img_changeType"
-            android:layout_width="@dimen/W32"
-            android:layout_height="@dimen/W32"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/icon_grid"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/W24"
-            android:layout_toLeftOf="@id/img_sort">
-        </ImageView>
-
-        <ImageView
-            android:id="@+id/img_search"
-            android:layout_width="@dimen/W32"
-            android:layout_height="@dimen/W32"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/icon_search_of_report"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/W24"
-            android:layout_toLeftOf="@id/img_changeType">
-        </ImageView>
-    </RelativeLayout>
+        android:background="@color/c_FFFFFF"
+        app:rContentView="@layout/view_report"
+        app:rExtendView="@layout/view_trash">
+    </com.enlogy.statusview.StatusRelativeLayout>
 
     <net.lucode.hackware.magicindicator.MagicIndicator
         android:id="@+id/magic_title"

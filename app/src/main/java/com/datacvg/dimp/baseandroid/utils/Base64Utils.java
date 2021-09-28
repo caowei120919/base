@@ -279,8 +279,7 @@ public class Base64Utils {
             }
         }
 
-        // Pad and encode last bits if source isn't even 24 bits.
-        int left = sLen - eLen; // 0 - 2.
+        int left = sLen - eLen;
         if (left > 0) {
             // Prepare the int
             int i = ((sArr[eLen] & 0xff) << 10) | (left == 2 ? ((sArr[sLen - 1] & 0xff) << 2) : 0);

@@ -14,4 +14,15 @@ public interface ReportOfMineView extends MvpView {
      * @param reportBeans
      */
     void getReportOfMineSuccess(ReportListBean reportBeans);
+
+    /**
+     * 缩略图上传成功
+     */
+    void uploadSuccess();
+
+    /**
+     * 获取报告资源成功
+     * @param bean
+     */
+    void getReportSourceSuccess(String bean);
 }

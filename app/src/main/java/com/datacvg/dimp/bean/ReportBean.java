@@ -1,5 +1,7 @@
 package com.datacvg.dimp.bean;
 
+import android.text.TextUtils;
+
 import androidx.annotation.Keep;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import java.io.Serializable;
@@ -44,13 +46,30 @@ public class ReportBean implements Serializable {
      * "sign": "p"
      */
 
+    /**
+     * "template_id":"10000000001",
+     *  "template_clname":"布局模板",
+     *  "template_flname":"Layout Folders",
+     *  "template_showtype":"template_folder",
+     *  "template_parentid":"10000000000",
+     *      * 			"template_rootid":"10000000000",
+     */
+
     private String pkid;
     private String share_id;
     private String share_clname;
     private String share_flname;
-    private String share_showtype;
+    private String share_showtype = "";
     private String share_parentid;
     private String share_rootid;
+
+    private String template_id ;
+    private String template_clname ;
+    private String template_flname ;
+    private String template_showtype = "";
+    private String template_parentid ;
+    private String template_rootid ;
+
     private String update_user;
     private String update_time;
     private String res_level;
@@ -58,17 +77,73 @@ public class ReportBean implements Serializable {
     private String status;
     private String combination_id;
     private String classify = "";
-    private String sign;
+    private String sign = "p";
     private String model_id;
     private String model_clname;
     private String model_flname;
-    private String model_type;
+    private String model_type = "";
     private String parent_id;
     private String root_id;
     private String thumbnail_path ;
     private int level = -1;
     private boolean isOpen = false ;
     private String report_type = Constants.REPORT_MINE ;
+
+    public Boolean getFolder() {
+        return share_showtype.endsWith("_folder") || model_type.endsWith("_folder") || template_showtype.endsWith("_folder");
+    }
+
+    public Boolean isEditAble(){
+        return sign.equals("p");
+    }
+
+    public String getTemplate_id() {
+        return template_id;
+    }
+
+    public void setTemplate_id(String template_id) {
+        this.template_id = template_id;
+    }
+
+    public String getTemplate_clname() {
+        return template_clname;
+    }
+
+    public void setTemplate_clname(String template_clname) {
+        this.template_clname = template_clname;
+    }
+
+    public String getTemplate_flname() {
+        return template_flname;
+    }
+
+    public void setTemplate_flname(String template_flname) {
+        this.template_flname = template_flname;
+    }
+
+    public String getTemplate_showtype() {
+        return template_showtype;
+    }
+
+    public void setTemplate_showtype(String template_showtype) {
+        this.template_showtype = template_showtype;
+    }
+
+    public String getTemplate_parentid() {
+        return template_parentid;
+    }
+
+    public void setTemplate_parentid(String template_parentid) {
+        this.template_parentid = template_parentid;
+    }
+
+    public String getTemplate_rootid() {
+        return template_rootid;
+    }
+
+    public void setTemplate_rootid(String template_rootid) {
+        this.template_rootid = template_rootid;
+    }
 
     public String getThumbnail_path() {
         return thumbnail_path;

@@ -89,4 +89,10 @@
         <!--内容是否居中显示，默认右上角对齐-->
         <attr name="childLayoutCenter" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="SwipeMenuLayout">
+        <attr name="swipeEnable" format="boolean"/>
+        <attr name="ios" format="boolean"/>
+        <attr name="leftSwipe" format="boolean"/>
+    </declare-styleable>
 </resources>

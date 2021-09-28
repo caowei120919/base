@@ -2,7 +2,6 @@ package com.datacvg.dimp.baseandroid.utils;
 
 import android.app.Activity;
 import android.content.Context;
-
 import com.datacvg.dimp.baseandroid.manager.BaseAppManager;
 
 /**

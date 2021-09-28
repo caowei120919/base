@@ -3,6 +3,7 @@ package com.datacvg.dimp.baseandroid.retrofit;
 import android.net.ParseException;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
+import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.event.RefreshTokenEvent;
 import com.google.gson.JsonIOException;
@@ -29,12 +30,15 @@ public class RxObserver<T> implements Observer <T>{
 
     @Override
     public void onNext(T t) {
-
+        PLog.e("===============>" + t.toString());
     }
 
     @Override
     public void onError(Throwable e) {
         String msg = "";
+        if(e instanceof NullPointerException){
+            return;
+        }
         if (e instanceof ConnectException) {
                 msg = "网络不可用";
         } else if (e instanceof UnknownHostException) {
@@ -48,7 +52,6 @@ public class RxObserver<T> implements Observer <T>{
                 || e instanceof JSONException || e instanceof JsonIOException) {
             msg = "数据解析错误";
         }
-
         if (!msg.isEmpty()) {
             ToastUtils.showShortToastSafe(msg);
         }
@@ -57,7 +60,7 @@ public class RxObserver<T> implements Observer <T>{
     private String convertStatusCode(HttpException httpException) {
         String msg;
         if (httpException.code() == 500) {
-            msg = "服务器发生错误";
+            msg = httpException.message();
         } else if (httpException.code() == 404) {
             msg = "请求地址不存在";
         } else if (httpException.code() == 403) {

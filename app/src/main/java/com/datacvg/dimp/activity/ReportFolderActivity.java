@@ -6,6 +6,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.ReportListAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
@@ -16,6 +20,10 @@ import com.datacvg.dimp.bean.ReportBean;
 import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.presenter.ReportFolderPresenter;
 import com.datacvg.dimp.view.ReportFolderView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -25,15 +33,18 @@ import butterknife.OnClick;
  * @Description :管理画布文件夹详情
  */
 public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportFolderPresenter>
-        implements ReportFolderView {
+        implements ReportFolderView, ReportListAdapter.OnReportListener {
     @BindView(R.id.tv_title)
     TextView tvTitle ;
-    @BindView(R.id.img_right)
+    @BindView(R.id.img_sort)
     ImageView imgRight ;
-    @BindView(R.id.img_other)
+    @BindView(R.id.img_search)
     ImageView imgOther ;
+    @BindView(R.id.recycler_reportOfFolder)
+    RecyclerView recyclerReportOfFolder ;
 
     private ReportBean reportBean ;
+    private List<ReportBean> reportBeans = new ArrayList<>() ;
     private String folderType ;
     private ReportListAdapter adapter ;
 
@@ -66,6 +77,11 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
                         : reportBean.getModel_flname());
                 break;
         }
+
+        adapter = new ReportListAdapter(mContext,folderType,reportBeans,this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+        recyclerReportOfFolder.setLayoutManager(linearLayoutManager);
+        recyclerReportOfFolder.setAdapter(adapter);
     }
 
     @Override
@@ -79,14 +95,18 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
         }
     }
 
-    @OnClick({R.id.img_right,R.id.img_other})
+    @OnClick({R.id.img_sort,R.id.img_search,R.id.img_left})
     public void onClick(View view){
         switch (view.getId()){
-            case R.id.img_other :
+            case R.id.img_left :
+                finish();
+                break;
+
+            case R.id.img_search :
                 PLog.e("跳转到搜索");
                 break;
 
-            case R.id.img_right :
+            case R.id.img_sort :
                 PLog.e("排序");
                 break;
         }
@@ -94,6 +114,35 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
 
     @Override
     public void getReportSuccess(ReportListBean data) {
+        reportBeans.clear();
+        reportBeans.addAll(data);
+        adapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 报告被删除
+     * @param reportBean
+     */
+    @Override
+    public void onReportDelete(ReportBean reportBean) {
+
+    }
+
+    /**
+     * 报告被添加到大屏
+     * @param reportBean
+     */
+    @Override
+    public void onReportAddToScreen(ReportBean reportBean) {
+
+    }
+
+    /**
+     * 报告被下载
+     * @param reportBean
+     */
+    @Override
+    public void onReportDownload(ReportBean reportBean) {
 
     }
 }

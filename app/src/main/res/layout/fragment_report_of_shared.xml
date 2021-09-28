@@ -3,12 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_reportOfShare"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="共享"
-        android:gravity="center"
-        android:textSize="24sp"
-        android:textColor="@color/c_303030">
-    </TextView>
+        android:layout_marginRight="@dimen/W24"
+        android:layout_marginLeft="@dimen/W24"
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_reportOfShare"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/H24"
+            android:layout_marginBottom="@dimen/H24">
+        </androidx.recyclerview.widget.RecyclerView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </RelativeLayout>

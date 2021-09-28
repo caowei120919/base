@@ -24,7 +24,6 @@ public class NobodyConverterFactory extends Converter.Factory {
     private NobodyConverterFactory() {
     }
 
-    //将响应对象responseBody转成目标类型对象(也就是Call里给定的类型)
     @Override
     public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations,
                                                             Retrofit retrofit) {
@@ -43,7 +42,6 @@ public class NobodyConverterFactory extends Converter.Factory {
         return null;
     }
 
-    //其它两个方法我们不需要使用到.所以不需要重写.
     @Override
     public Converter<?, RequestBody> requestBodyConverter(Type type
             ,Annotation[] parameterAnnotations, Annotation[] methodAnnotations, Retrofit retrofit) {

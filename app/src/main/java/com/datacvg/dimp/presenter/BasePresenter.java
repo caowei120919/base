@@ -43,7 +43,6 @@ public class BasePresenter <V extends MvpView> extends MvpBasePresenter<V> {
             addSubscribe(retryCompletable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe());
-
         }
     }
 

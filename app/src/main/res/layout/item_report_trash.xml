@@ -32,7 +32,6 @@
                 android:layout_marginLeft="@dimen/W24"
                 android:textColor="@color/c_303030"
                 android:layout_toRightOf="@id/img_icon"
-                android:text="@string/confirm"
                 android:singleLine="true"
                 android:layout_marginRight="@dimen/W30"
                 android:textSize="16sp">
@@ -49,26 +48,11 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:layout_width="@dimen/W400"
+            android:layout_width="@dimen/W260"
             android:layout_height="match_parent"
             android:orientation="horizontal">
             <RelativeLayout
-                android:id="@+id/rel_addToScreen"
-                android:layout_width="@dimen/W1"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:background="@color/c_49a2cb">
-                <ImageView
-                    android:id="@+id/img_functionAdd"
-                    android:layout_width="@dimen/W50"
-                    android:layout_height="@dimen/W50"
-                    android:layout_centerInParent="true"
-                    android:src="@mipmap/icon_report_add_screen">
-                </ImageView>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rel_downLoad"
+                android:id="@+id/rel_restore"
                 android:layout_width="@dimen/W1"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -78,7 +62,7 @@
                     android:layout_width="@dimen/W50"
                     android:layout_height="@dimen/W50"
                     android:layout_centerInParent="true"
-                    android:src="@mipmap/icon_report_download">
+                    android:src="@mipmap/icon_report_restore">
                 </ImageView>
             </RelativeLayout>
 
