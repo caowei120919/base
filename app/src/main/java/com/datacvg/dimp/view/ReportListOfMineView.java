@@ -20,4 +20,11 @@ public interface ReportListOfMineView extends MvpView {
      * @param model_id
      */
     void deleteComplete(String model_id);
+
+    /**
+     * 报告资源下载完成
+     * @param bean
+     */
+    void getReportSourceSuccess(String bean);
+
 }

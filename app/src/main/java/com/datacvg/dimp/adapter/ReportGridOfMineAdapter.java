@@ -1,21 +1,33 @@
 package com.datacvg.dimp.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.engine.Resource;
+import com.bumptech.glide.load.resource.gif.GifDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.bean.ReportBean;
+
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -82,6 +94,21 @@ public class ReportGridOfMineAdapter extends RecyclerView.Adapter<ReportGridOfMi
         }else{
             String imgUrl = String.format(Constants.BASE_URL + Constants.IMG_REPORT_URL,bean.getThumbnail_path());
             Glide.with(mContext).load(imgUrl)
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            if (resource instanceof GifDrawable) {
+                                //加载一次
+                                ((GifDrawable)resource).setLoopCount(GifDrawable.LOOP_FOREVER);
+                            }
+                            return false;
+                        }
+                    })
                     .placeholder(R.mipmap.icon_report)
                     .error(R.mipmap.icon_report)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)

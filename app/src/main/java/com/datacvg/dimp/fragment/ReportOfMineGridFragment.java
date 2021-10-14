@@ -114,7 +114,6 @@ public class ReportOfMineGridFragment extends BaseFragment<ReportOfMineView, Rep
                 .getAbsolutePath();
         String mFileName = "dimp_" + reportBean.getModel_id() + ".canvas";
         FileUtils.writeTxtToFile(bean,mFolder,mFileName);
-
     }
 
     @Override
@@ -150,7 +149,7 @@ public class ReportOfMineGridFragment extends BaseFragment<ReportOfMineView, Rep
     }
 
     private void showMenuDialog() {
-        AlertDialog.Builder dialog = new androidx.appcompat.app.AlertDialog.Builder(mContext);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
         View containView = LayoutInflater.from(mContext).inflate(R.layout.item_report_grid_dialog
                 ,null,false);
         RelativeLayout relUploadThumb = containView.findViewById(R.id.rel_uploadThumb) ;
@@ -194,7 +193,7 @@ public class ReportOfMineGridFragment extends BaseFragment<ReportOfMineView, Rep
      */
     private void downloadFile() {
         new RxPermissions(getActivity()).request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .compose(RxUtils.<Boolean>applySchedulersLifeCycle(getMvpView()))
+                .compose(RxUtils.applySchedulersLifeCycle(getMvpView()))
                 .subscribe(new RxObserver<Boolean>() {
                     @Override
                     public void onNext(Boolean aBoolean) {
@@ -223,25 +222,9 @@ public class ReportOfMineGridFragment extends BaseFragment<ReportOfMineView, Rep
                 .start(getActivity(), MINE_REPORT_THUMB_REQUEST);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode==RESULT_OK){
-            switch (requestCode) {
-                case MINE_REPORT_THUMB_REQUEST :
-                    changeAvatarPath = data.getStringArrayListExtra(ImagePicker
-                            .EXTRA_SELECT_IMAGES).get(0) ;
-                    compressThumb(changeAvatarPath);
-                    break;
-                default:
-                    throw new IllegalStateException("Unexpected value: " + requestCode);
-            }
-        }
-    }
-
     private void compressThumb(String path) {
         Luban.with(mContext)
                 .load(path)
-                .ignoreBy(100)
                 .setCompressListener(new OnCompressListener() {
                     @Override
                     public void onStart() {
@@ -256,6 +239,21 @@ public class ReportOfMineGridFragment extends BaseFragment<ReportOfMineView, Rep
                     public void onError(Throwable e) {
                     }
                 }).launch();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode==RESULT_OK){
+            switch (requestCode) {
+                case MINE_REPORT_THUMB_REQUEST :
+                    changeAvatarPath = data.getStringArrayListExtra(ImagePicker
+                            .EXTRA_SELECT_IMAGES).get(0) ;
+                    compressThumb(changeAvatarPath);
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + requestCode);
+            }
+        }
     }
 
     private void upLoadAvatar(File file) {

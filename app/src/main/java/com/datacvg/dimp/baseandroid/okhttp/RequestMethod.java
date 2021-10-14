@@ -22,7 +22,8 @@ public enum RequestMethod {
     OPTIONS,
     TRACE;
 
-    public static final Set<String> METHODS = new LinkedHashSet<String>(Arrays.asList("OPTIONS", "GET", "HEAD", "POST", "PUT", "DELETE", "TRACE", "PATCH"));
+    public static final Set<String> METHODS
+            = new LinkedHashSet<String>(Arrays.asList("OPTIONS", "GET", "HEAD", "POST", "PUT", "DELETE", "TRACE", "PATCH"));
 
     public static boolean isValid(final String method) {
         return METHODS.contains(method);

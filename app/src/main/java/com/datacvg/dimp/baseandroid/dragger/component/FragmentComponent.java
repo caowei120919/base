@@ -2,8 +2,8 @@ package com.datacvg.dimp.baseandroid.dragger.component;
 
 import android.app.Activity;
 
-import com.datacvg.dimp.dragger.module.FragmentModule;
-import com.datacvg.dimp.dragger.scope.FragmentScope;
+import com.datacvg.dimp.baseandroid.dragger.module.FragmentModule;
+import com.datacvg.dimp.baseandroid.dragger.scope.FragmentScope;
 import com.datacvg.dimp.fragment.ActionFragment;
 import com.datacvg.dimp.fragment.ActionListFragment;
 import com.datacvg.dimp.fragment.BoardFragment;

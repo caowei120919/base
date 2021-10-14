@@ -267,4 +267,5 @@
     <string name="the_file_cannot_be_downloaded_because_the_permission_is_not_allowed">The file cannot be downloaded because the permission is not allowed</string>
     <string name="the_editor">The editor</string>
     <string name="empty">empty</string>
+    <string name="restore_successful">Restore successful </string>
 </resources>

@@ -82,7 +82,6 @@ public class MyOkhttpHelper {
         @Override
         public Response intercept(Chain chain) throws IOException {
             Request originalRequest = chain.request();
-
             Request.Builder newRequestBuilder = originalRequest.newBuilder();
             newRequestBuilder.addHeader(Constants.AUTHORIZATION, Constants.token);
             newRequestBuilder.addHeader(Constants.LANG,PreferencesHelper
@@ -99,8 +98,6 @@ public class MyOkhttpHelper {
                     }
                 }
             }
-
-
             Response response = chain.proceed(newRequestBuilder.build());
             MediaType mediaType = response.body().contentType();
             try {
@@ -110,8 +107,8 @@ public class MyOkhttpHelper {
                         .build();
             } catch (Exception e) {
                 return response.newBuilder()
-                        .body(ResponseBody.create(mediaType, ""))
-                        .build();
+                       .body(ResponseBody.create(mediaType, ""))
+                       .build();
             }
         }
     };
@@ -132,7 +129,6 @@ public class MyOkhttpHelper {
                 stringBuilder.deleteCharAt(last);
             }
         }
-
         return stringBuilder.toString();
     }
 

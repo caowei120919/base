@@ -8,6 +8,9 @@ import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.bean.ReportTrashListBean;
 import com.datacvg.dimp.view.ReportOfTrashView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.inject.Inject;
 
 /**
@@ -43,6 +46,88 @@ public class ReportOfTrashPresenter extends BasePresenter<ReportOfTrashView>{
                     public void onError(Throwable e) {
                         super.onError(e);
                         PLog.e("TAG",e.getMessage());
+                    }
+                });
+    }
+
+    /**
+     *
+     */
+    public void clearReport() {
+//        api.clearReportOnTrash(reportType,_t)
+//                .compose(RxUtils.applySchedulersLifeCycle(getView()))
+//                .subscribe(new RxObserver<BaseBean<ReportTrashListBean>>(){
+//                    @Override
+//                    public void onComplete() {
+//                        super.onComplete();
+//                    }
+//
+//                    @Override
+//                    public void onNext(BaseBean<ReportTrashListBean> bean) {
+//                        if(checkJsonCode(bean)){
+//                            getView().queryReportSuccess(bean.getData());
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        super.onError(e);
+//                        PLog.e("TAG",e.getMessage());
+//                    }
+//                });
+    }
+
+    public void deleteReportOnTrash(String reportType, String resId) {
+        Map params = new HashMap();
+        params.put("resId",resId);
+        params.put("type",reportType);
+        api.deleteReportOnTrash(params)
+                .compose(RxUtils.applySchedulersLifeCycle(getView()))
+                .subscribe(new RxObserver<Object>(){
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                        PLog.e("onComplete()");
+                    }
+
+                    @Override
+                    public void onNext(Object object) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        if(e instanceof NullPointerException){
+                            getView().deleteSuccess();
+                        }
+                        PLog.e("onError()" + e.getMessage());
+                    }
+                });
+    }
+
+    public void restoreOnTrash(String reportType, String resId) {
+        Map params = new HashMap();
+        params.put("resId",resId);
+        params.put("type",reportType);
+        api.restoreOnTrash(params)
+                .compose(RxUtils.applySchedulersLifeCycle(getView()))
+                .subscribe(new RxObserver<Object>(){
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                        PLog.e("onComplete()");
+                    }
+
+                    @Override
+                    public void onNext(Object object) {
+                        getView().restoreSuccess();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        PLog.e("onError()" + e.getMessage());
                     }
                 });
     }

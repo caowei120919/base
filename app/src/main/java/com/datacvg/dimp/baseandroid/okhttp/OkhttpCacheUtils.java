@@ -18,8 +18,8 @@ import okhttp3.Cache;
 
 public class OkhttpCacheUtils {
 
-    private static final int MIN_DISK_CACHE_SIZE = 16 * 1024 * 1024;    // 16MB
-    private static final int MAX_DISK_CACHE_SIZE = 32 * 1024 * 1024;    // 32MB
+    private static final int MIN_DISK_CACHE_SIZE = 16 * 1024 * 1024;
+    private static final int MAX_DISK_CACHE_SIZE = 32 * 1024 * 1024;
 
     private static final float MAX_AVAILABLE_SPACE_USE_FRACTION = 0.9f;
     private static final float MAX_TOTAL_SPACE_USE_FRACTION = 0.25f;

@@ -76,6 +76,16 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
                 tvTitle.setText(LanguageUtils.isZh(mContext) ? reportBean.getModel_clname()
                         : reportBean.getModel_flname());
                 break;
+
+            case Constants.REPORT_SHARE :
+                tvTitle.setText(LanguageUtils.isZh(mContext) ? reportBean.getShare_clname()
+                        : reportBean.getShare_flname());
+                break;
+
+            case Constants.REPORT_TEMPLATE :
+                tvTitle.setText(LanguageUtils.isZh(mContext) ? reportBean.getTemplate_clname()
+                        : reportBean.getTemplate_flname());
+                break;
         }
 
         adapter = new ReportListAdapter(mContext,folderType,reportBeans,this);
@@ -90,6 +100,18 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
             case Constants.REPORT_MINE :
                 getPresenter().getReportOnFolder(folderType
                         ,reportBean.getModel_id()
+                        ,String.valueOf(System.currentTimeMillis()));
+                break;
+
+            case Constants.REPORT_SHARE :
+                getPresenter().getReportOnFolder(folderType
+                        ,reportBean.getShare_id()
+                        ,String.valueOf(System.currentTimeMillis()));
+                break;
+
+            case Constants.REPORT_TEMPLATE :
+                getPresenter().getReportOnFolder(folderType
+                        ,reportBean.getTemplate_id()
                         ,String.valueOf(System.currentTimeMillis()));
                 break;
         }

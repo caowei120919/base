@@ -37,6 +37,7 @@ public class RxObserver<T> implements Observer <T>{
     public void onError(Throwable e) {
         String msg = "";
         if(e instanceof NullPointerException){
+            PLog.e("==============================>>>>>>>>>>>>>>>>>>>>>>>>>>");
             return;
         }
         if (e instanceof ConnectException) {

@@ -2,7 +2,6 @@ package com.datacvg.dimp.baseandroid.retrofit.helper;
 
 import android.content.Context;
 import android.os.Build;
-
 import com.datacvg.dimp.BuildConfig;
 import com.datacvg.dimp.baseandroid.BaseApplication;
 import com.datacvg.dimp.baseandroid.dragger.qualifier.ApplicationContext;
@@ -17,7 +16,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import javax.inject.Inject;
-
 import me.jessyan.retrofiturlmanager.RetrofitUrlManager;
 import okhttp3.Cookie;
 import okhttp3.HttpUrl;

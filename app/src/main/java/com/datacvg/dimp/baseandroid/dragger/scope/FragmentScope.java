@@ -1,4 +1,4 @@
-package com.datacvg.dimp.dragger.scope;
+package com.datacvg.dimp.baseandroid.dragger.scope;
 
 import java.lang.annotation.Retention;
 import javax.inject.Scope;

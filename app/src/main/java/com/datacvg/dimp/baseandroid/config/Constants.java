@@ -161,8 +161,11 @@ public class Constants {
     public final static String REPORT_LIST = "REPORT_LIST" ;
     public static final String REPORT_MINE = "MODEL";
     public static final String REPORT_MINE_TYPE = "model_report" ;
+    public static final String REPORT_MINE_FOLDER_TYPE = "model_folder" ;
     public static final String REPORT_SHARE_TYPE = "share_report" ;
-    public static final String REPORT_TEMPLATE_TYPE = "share_report" ;
+    public static final String REPORT_SHARE_FOLDER_TYPE = "share_folder" ;
+    public static final String REPORT_TEMPLATE_TYPE = "template_report" ;
+    public static final String REPORT_TEMPLATE_FOLDER_TYPE = "template_folder" ;
     public static final String REPORT_SHARE = "SHARE";
     public static final String REPORT_TEMPLATE = "TEMPLATE" ;
 

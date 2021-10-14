@@ -1,8 +1,10 @@
-package com.datacvg.dimp.dragger.module;
+package com.datacvg.dimp.baseandroid.dragger.module;
 
 import android.app.Activity;
 import androidx.fragment.app.Fragment;
-import com.datacvg.dimp.dragger.scope.FragmentScope;
+
+import com.datacvg.dimp.baseandroid.dragger.scope.FragmentScope;
+
 import dagger.Module;
 import dagger.Provides;
 

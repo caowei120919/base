@@ -88,4 +88,33 @@ public class ReportListOfMinePresenter extends BasePresenter<ReportListOfMineVie
                     }
                 });
     }
+
+    /**
+     * 下载画布文件
+     * @param reportId
+     * @param type
+     */
+    public void downloadFile(String reportId, String type) {
+        api.downReportFile(reportId,type)
+                .compose(RxUtils.applySchedulersLifeCycle(getView()))
+                .subscribe(new RxObserver<String>(){
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                        PLog.e("onComplete()");
+                    }
+
+                    @Override
+                    public void onNext(String bean) {
+                        PLog.e("onNext()===============>" + bean);
+                        getView().getReportSourceSuccess(bean);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        PLog.e("onError()");
+                    }
+                });
+    }
 }

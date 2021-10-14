@@ -503,4 +503,20 @@ public interface MobileApi {
      */
     @GET("api/dataengine/dataexporler/model/recycle")
     Observable<BaseBean<ReportTrashListBean>> queryReport(@Query("type") String reportType, @Query("_t") String t);
+
+    /**
+     * 回收站删除
+     * @param params
+     * @return
+     */
+    @HTTP(method = "DELETE",path = "api/dataengine/dataexporler/model/recycle",hasBody = true)
+    Observable<Object> deleteReportOnTrash(@Body Map params);
+
+    /**
+     * 回收站还原
+     * @param params
+     * @return
+     */
+    @HTTP(method = "PUT",path = "api/dataengine/dataexporler/model/recycle",hasBody = true)
+    Observable<Object> restoreOnTrash(@Body Map params);
 }

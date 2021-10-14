@@ -2,16 +2,22 @@ package com.datacvg.dimp.fragment;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.baseandroid.config.Constants;
+import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
+import com.datacvg.dimp.event.ClearAllReportEvent;
 import com.datacvg.dimp.presenter.ReportPresenter;
 import com.datacvg.dimp.view.ReportView;
 import com.datacvg.dimp.widget.TitleNavigator;
@@ -19,6 +25,9 @@ import com.enlogy.statusview.StatusRelativeLayout;
 
 import net.lucode.hackware.magicindicator.FragmentContainerHelper;
 import net.lucode.hackware.magicindicator.MagicIndicator;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Arrays;
 import java.util.List;
 import butterknife.BindView;
@@ -35,6 +44,10 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
     MagicIndicator magicTitle ;
     @BindView(R.id.img_changeType)
     ImageView imgChangeType ;
+    @BindView(R.id.img_sort)
+    ImageView imgSort ;
+    @BindView(R.id.img_search)
+    ImageView imgSearch ;
     @BindView(R.id.status_report)
     StatusRelativeLayout statusReport ;
 
@@ -48,6 +61,7 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
     private FragmentContainerHelper mTitleFragmentContainerHelper ;
     private FragmentTransaction fragmentTransaction;
     private FragmentManager fragmentManager ;
+    private PopupWindow sortPop ;
 
     private ReportOfMineGridFragment reportOfMineFragment ;
     private ReportListOfMineFragment reportOfMineListFragment ;
@@ -76,6 +90,20 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
     }
 
     /**
+     * 创建排序选择弹窗
+     */
+    private void createSortPopWindow() {
+        View contentView = LayoutInflater.from(mContext)
+                .inflate(R.layout.item_pup_sort, null);
+        sortPop = new PopupWindow(contentView,
+                (int) resources.getDimension(R.dimen.W228), ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        sortPop.setTouchable(true);
+        sortPop.setOutsideTouchable(false);
+        sortPop.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_bg_f8f8fa));
+        sortPop.showAsDropDown(imgSearch,20,20);
+    }
+
+    /**
      * 初始化标题指示器
      */
     private void initTitleMagicTitle() {
@@ -94,7 +122,7 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
     }
 
 
-    @OnClick({R.id.img_changeType})
+    @OnClick({R.id.img_changeType,R.id.img_sort})
     public void OnClick(View view){
         switch (view.getId()){
             case R.id.img_changeType :
@@ -106,6 +134,14 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
                     imgChangeType.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_grid));
                 }
                 showFragment(selectPosition);
+                break;
+
+            case R.id.img_sort :
+                    if (sortPop == null){
+                        createSortPopWindow();
+                    }else{
+                        sortPop.showAsDropDown(imgSort);
+                    }
                 break;
         }
     }
@@ -223,7 +259,6 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
             case 3 :
                 statusReport.showExtendContent();
                 statusReport.findViewById(R.id.img_trashChangeType).setOnClickListener(v -> {
-                    PLog.e("改变展示形式" + showType);
                     if(showType == 0){
                         showType = 1;
                         ((ImageView)statusReport.findViewById(R.id.img_trashChangeType)).setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_list));
@@ -234,7 +269,7 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
                     showFragment(position);
                 });
                 statusReport.findViewById(R.id.tv_clear).setOnClickListener(v -> {
-                    PLog.e("清空");
+                    EventBus.getDefault().post(new ClearAllReportEvent());
                 });
                 switch (showType){
                     case 0 :

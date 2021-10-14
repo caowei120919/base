@@ -17,6 +17,7 @@ import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
+import com.datacvg.dimp.bean.ReportBean;
 import com.datacvg.dimp.bean.ReportTrashBean;
 
 import java.util.ArrayList;
@@ -35,10 +36,13 @@ public class ReportGridOfTrashAdapter extends RecyclerView.Adapter<ReportGridOfT
     private Context mContext ;
     private LayoutInflater inflater ;
     private List<ReportTrashBean> reportTrashBeans = new ArrayList<>() ;
+    private OnReportTrashClickListener listener ;
 
-    public ReportGridOfTrashAdapter(Context mContext, List<ReportTrashBean> reportTrashBeans) {
+    public ReportGridOfTrashAdapter(Context mContext,OnReportTrashClickListener listener
+            , List<ReportTrashBean> reportTrashBeans) {
         this.mContext = mContext;
         this.inflater = LayoutInflater.from(mContext);
+        this.listener = listener ;
         this.reportTrashBeans = reportTrashBeans;
     }
 
@@ -70,6 +74,7 @@ public class ReportGridOfTrashAdapter extends RecyclerView.Adapter<ReportGridOfT
                 ? reportTrashBean.getRes_clname() : reportTrashBean.getRes_flname());
         holder.imgMenu.setOnClickListener(v -> {
             PLog.e("菜单点击处理");
+            listener.onMenuClick(reportTrashBean);
         });
 
     }
@@ -91,5 +96,16 @@ public class ReportGridOfTrashAdapter extends RecyclerView.Adapter<ReportGridOfT
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+    }
+
+    /**
+     * 回收站操作监听
+     */
+    public interface OnReportTrashClickListener{
+        /**
+         * 菜单栏点击监听
+         * @param reportBean
+         */
+        void onMenuClick(ReportTrashBean reportBean);
     }
 }

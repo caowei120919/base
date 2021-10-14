@@ -10,4 +10,8 @@ import com.datacvg.dimp.bean.ReportTrashListBean;
  */
 public interface ReportOfTrashView extends MvpView {
     void queryReportSuccess(ReportTrashListBean data);
+
+    void restoreSuccess();
+
+    void deleteSuccess();
 }

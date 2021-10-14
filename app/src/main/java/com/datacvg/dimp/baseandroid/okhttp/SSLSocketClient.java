@@ -17,7 +17,6 @@ import javax.net.ssl.X509TrustManager;
  */
 
 public class SSLSocketClient {
-    //获取这个SSLSocketFactory
     public static SSLSocketFactory getSSLSocketFactory() {
         try {
             SSLContext sslContext = SSLContext.getInstance("SSL");
@@ -28,7 +27,6 @@ public class SSLSocketClient {
         }
     }
 
-    //获取TrustManager
     private static TrustManager[] getTrustManager() {
         TrustManager[] trustAllCerts = new TrustManager[]{
                 new X509TrustManager() {
@@ -49,7 +47,6 @@ public class SSLSocketClient {
         return trustAllCerts;
     }
 
-    //获取HostnameVerifier
     public static HostnameVerifier getHostnameVerifier() {
         HostnameVerifier hostnameVerifier = new HostnameVerifier() {
             @Override

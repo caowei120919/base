@@ -119,7 +119,7 @@ public class ReportOfTemplateGridFragment extends BaseFragment<ReportOfTemplateV
     }
 
     private void showMenuDialog() {
-        AlertDialog.Builder dialog = new androidx.appcompat.app.AlertDialog.Builder(mContext);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
         View containView = LayoutInflater.from(mContext).inflate(R.layout.item_report_grid_dialog
                 ,null,false);
         RelativeLayout relUploadThumb = containView.findViewById(R.id.rel_uploadThumb) ;
@@ -207,7 +207,6 @@ public class ReportOfTemplateGridFragment extends BaseFragment<ReportOfTemplateV
     private void compressThumb(String path) {
         Luban.with(mContext)
                 .load(path)
-                .ignoreBy(100)
                 .setCompressListener(new OnCompressListener() {
                     @Override
                     public void onStart() {
