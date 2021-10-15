@@ -8,10 +8,8 @@ import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.view.ReportListOfMineView;
 import com.google.gson.Gson;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.inject.Inject;
 
 /**

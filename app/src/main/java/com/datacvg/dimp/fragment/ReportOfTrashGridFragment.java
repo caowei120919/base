@@ -4,7 +4,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.RelativeLayout;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,7 +11,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.ReportGridOfTrashAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
-import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.ReportTrashBean;
 import com.datacvg.dimp.bean.ReportTrashListBean;
