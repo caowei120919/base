@@ -13,6 +13,7 @@ import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.CacheUtils;
 import com.datacvg.dimp.baseandroid.utils.FingerPrintUtils;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
+import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.presenter.SettingPresenter;
 import com.datacvg.dimp.view.SettingView;
 import butterknife.BindView;
@@ -81,11 +82,15 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
     }
 
     @OnClick({R.id.img_left,R.id.rel_clearCache,R.id.rel_language
-            ,R.id.rel_moduleSetting})
+            ,R.id.rel_moduleSetting,R.id.rel_pwd})
     public void OnCLick(View view){
         switch (view.getId()){
             case R.id.img_left :
                 finish();
+                break;
+
+            case R.id.rel_pwd :
+                ToastUtils.showLongToast("功能开发中,请敬请期待......");
                 break;
 
             /**

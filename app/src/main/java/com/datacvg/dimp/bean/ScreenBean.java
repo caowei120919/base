@@ -13,18 +13,19 @@ import java.io.Serializable;
 public class ScreenBean implements Serializable {
 
     /**
-     * pkid : 415900908808246763024
-     * screen_id : 415900908808246763024
-     * screen_name : 大屏test
+     * pkid : 940103874207329786012
+     * screen_id : 940103874207329786012
+     * screen_name : 大屏123
      * screen_format : {"type":"16:9","size":"32","width":"2000","height":"2000","direction":"horizontal"}
-     * screen_attribute : {"animationMode":"circulation"}
-     * img_path : image_read/415905614246558320559_mini.jpg
-     * create_time : 2020-09-22 21:35:06
+     * screen_attribute : {"animationTime":300,"animationMode":"circulation","animationEffect":"moveLeft"}
+     * screen_thumbnail :
+     * img_path :
+     * create_time : 2021-09-03 17:35:22
      * sort_val :
-     * update_user : 1691179324035185017442
-     * update_time : 2020-09-22 21:37:12
+     * update_user : 456463890261305951361
+     * update_time : 2021-09-03 17:35:22
      * delete_flag : 1
-     * login_name : shuting
+     * login_name : windy
      * edit_flag : 1
      * view_flag : 1
      */
@@ -34,15 +35,16 @@ public class ScreenBean implements Serializable {
     private String screen_name;
     private String screen_format;
     private String screen_attribute;
+    private String screen_thumbnail;
     private String img_path;
     private String create_time;
     private String sort_val;
     private String update_user;
     private String update_time;
-    private int delete_flag;
+    private Integer delete_flag;
     private String login_name;
-    private int edit_flag;
-    private int view_flag;
+    private Integer edit_flag;
+    private Integer view_flag;
 
     public String getPkid() {
         return pkid;
@@ -82,6 +84,14 @@ public class ScreenBean implements Serializable {
 
     public void setScreen_attribute(String screen_attribute) {
         this.screen_attribute = screen_attribute;
+    }
+
+    public String getScreen_thumbnail() {
+        return screen_thumbnail;
+    }
+
+    public void setScreen_thumbnail(String screen_thumbnail) {
+        this.screen_thumbnail = screen_thumbnail;
     }
 
     public String getImg_path() {
@@ -124,11 +134,11 @@ public class ScreenBean implements Serializable {
         this.update_time = update_time;
     }
 
-    public int getDelete_flag() {
+    public Integer getDelete_flag() {
         return delete_flag;
     }
 
-    public void setDelete_flag(int delete_flag) {
+    public void setDelete_flag(Integer delete_flag) {
         this.delete_flag = delete_flag;
     }
 
@@ -140,19 +150,19 @@ public class ScreenBean implements Serializable {
         this.login_name = login_name;
     }
 
-    public int getEdit_flag() {
+    public Integer getEdit_flag() {
         return edit_flag;
     }
 
-    public void setEdit_flag(int edit_flag) {
+    public void setEdit_flag(Integer edit_flag) {
         this.edit_flag = edit_flag;
     }
 
-    public int getView_flag() {
+    public Integer getView_flag() {
         return view_flag;
     }
 
-    public void setView_flag(int view_flag) {
+    public void setView_flag(Integer view_flag) {
         this.view_flag = view_flag;
     }
 }

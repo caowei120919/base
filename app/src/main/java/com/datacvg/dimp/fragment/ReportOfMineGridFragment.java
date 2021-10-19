@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.RelativeLayout;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +30,9 @@ import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.presenter.ReportOfMinePresenter;
 import com.datacvg.dimp.view.ReportOfMineView;
 import com.lcw.library.imagepicker.ImagePicker;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import java.io.File;
 import java.util.ArrayList;
@@ -46,9 +51,9 @@ import static android.app.Activity.RESULT_OK;
  * @Description : 管理画布我的
  */
 public class ReportOfMineGridFragment extends BaseFragment<ReportOfMineView, ReportOfMinePresenter>
-        implements ReportOfMineView, SwipeRefreshLayout.OnRefreshListener, ReportGridOfMineAdapter.OnReportClickListener {
+        implements ReportOfMineView, ReportGridOfMineAdapter.OnReportClickListener, OnRefreshListener {
     @BindView(R.id.swipe_reportOfMine)
-    SwipeRefreshLayout swipeReportOfMine ;
+    SmartRefreshLayout swipeReportOfMine ;
     @BindView(R.id.recycler_reportOfMine)
     RecyclerView recyclerReportOfMine ;
 
@@ -71,7 +76,9 @@ public class ReportOfMineGridFragment extends BaseFragment<ReportOfMineView, Rep
 
     @Override
     protected void setupView(View rootView) {
+        swipeReportOfMine.setEnableAutoLoadMore(false);
         swipeReportOfMine.setOnRefreshListener(this);
+        swipeReportOfMine.setEnableRefresh(true);
         gridLayoutManager = new GridLayoutManager(mContext,2);
         reportAdapter = new ReportGridOfMineAdapter(mContext,Constants.REPORT_MINE,reportBeans,this);
         recyclerReportOfMine.setLayoutManager(gridLayoutManager);
@@ -88,7 +95,7 @@ public class ReportOfMineGridFragment extends BaseFragment<ReportOfMineView, Rep
     @Override
     public void getReportOfMineSuccess(ReportListBean reportBeans) {
         if(swipeReportOfMine.isRefreshing()){
-            swipeReportOfMine.setRefreshing(false);
+            swipeReportOfMine.finishRefresh();
         }
         this.reportBeans.clear();
         this.reportBeans.addAll(reportBeans);
@@ -114,13 +121,6 @@ public class ReportOfMineGridFragment extends BaseFragment<ReportOfMineView, Rep
                 .getAbsolutePath();
         String mFileName = "dimp_" + reportBean.getModel_id() + ".canvas";
         FileUtils.writeTxtToFile(bean,mFolder,mFileName);
-    }
-
-    @Override
-    public void onRefresh() {
-        getPresenter().getReportOfMine(Constants.REPORT_MINE
-                ,Constants.REPORT_MINE_PARENT_ID
-                ,String.valueOf(System.currentTimeMillis()));
     }
 
     @Override
@@ -260,5 +260,12 @@ public class ReportOfMineGridFragment extends BaseFragment<ReportOfMineView, Rep
         Map<String, String> options = new HashMap<>();
         final Map<String, RequestBody> params = MultipartUtil.getRequestBodyMap(options, "img", file);
         getPresenter().uploadModelThumb(params,reportBean.getModel_id(),Constants.REPORT_MINE);
+    }
+
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        getPresenter().getReportOfMine(Constants.REPORT_MINE
+                ,Constants.REPORT_MINE_PARENT_ID
+                ,String.valueOf(System.currentTimeMillis()));
     }
 }

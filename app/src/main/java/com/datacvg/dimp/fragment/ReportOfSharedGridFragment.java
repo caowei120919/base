@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +31,9 @@ import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.presenter.ReportOfSharedPresenter;
 import com.datacvg.dimp.view.ReportOfSharedView;
 import com.lcw.library.imagepicker.ImagePicker;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.io.File;
@@ -51,9 +55,9 @@ import static android.app.Activity.RESULT_OK;
  * @Description :管理画布共享
  */
 public class ReportOfSharedGridFragment extends BaseFragment<ReportOfSharedView, ReportOfSharedPresenter>
-        implements ReportOfSharedView, SwipeRefreshLayout.OnRefreshListener, ReportGridOfMineAdapter.OnReportClickListener {
+        implements ReportOfSharedView, ReportGridOfMineAdapter.OnReportClickListener, OnRefreshListener {
     @BindView(R.id.swipe_reportOfShare)
-    SwipeRefreshLayout swipeReportOfShare ;
+    SmartRefreshLayout swipeReportOfShare ;
     @BindView(R.id.recycler_reportOfShare)
     RecyclerView recyclerReportOfShare ;
 
@@ -76,7 +80,9 @@ public class ReportOfSharedGridFragment extends BaseFragment<ReportOfSharedView,
 
     @Override
     protected void setupView(View rootView) {
+        swipeReportOfShare.setEnableAutoLoadMore(false);
         swipeReportOfShare.setOnRefreshListener(this);
+        swipeReportOfShare.setEnableRefresh(true);
         gridLayoutManager = new GridLayoutManager(mContext,2);
         reportAdapter = new ReportGridOfMineAdapter(mContext,Constants.REPORT_SHARE,reportBeans,this);
         recyclerReportOfShare.setLayoutManager(gridLayoutManager);
@@ -85,13 +91,6 @@ public class ReportOfSharedGridFragment extends BaseFragment<ReportOfSharedView,
 
     @Override
     protected void setupData() {
-        getPresenter().getReportOfShare(Constants.REPORT_SHARE
-                ,Constants.REPORT_SHARE_PARENT_ID
-                ,String.valueOf(System.currentTimeMillis()));
-    }
-
-    @Override
-    public void onRefresh() {
         getPresenter().getReportOfShare(Constants.REPORT_SHARE
                 ,Constants.REPORT_SHARE_PARENT_ID
                 ,String.valueOf(System.currentTimeMillis()));
@@ -177,7 +176,7 @@ public class ReportOfSharedGridFragment extends BaseFragment<ReportOfSharedView,
     @Override
     public void getReportOfShareSuccess(ReportListBean data) {
         if(swipeReportOfShare.isRefreshing()){
-            swipeReportOfShare.setRefreshing(false);
+            swipeReportOfShare.finishRefresh();
         }
         this.reportBeans.clear();
         this.reportBeans.addAll(data);
@@ -252,5 +251,12 @@ public class ReportOfSharedGridFragment extends BaseFragment<ReportOfSharedView,
         Map<String, String> options = new HashMap<>();
         final Map<String, RequestBody> params = MultipartUtil.getRequestBodyMap(options, "img", file);
         getPresenter().uploadShareThumb(params,reportBean.getModel_id(),Constants.REPORT_MINE);
+    }
+
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        getPresenter().getReportOfShare(Constants.REPORT_SHARE
+                ,Constants.REPORT_SHARE_PARENT_ID
+                ,String.valueOf(System.currentTimeMillis()));
     }
 }

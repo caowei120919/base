@@ -1,17 +1,13 @@
 package com.datacvg.dimp.baseandroid.config;
 
 import androidx.annotation.Keep;
-
 import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.bean.ConstantReportBean;
-import com.datacvg.dimp.bean.DefaultReportBean;
 import com.datacvg.dimp.bean.ScreenBean;
 import com.datacvg.dimp.bean.UserLoginBean;
 import com.datacvg.dimp.bean.WebSocketLinkBean;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author : T-Bag (茶包)

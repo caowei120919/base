@@ -85,8 +85,27 @@ public class ReportGridOfMineAdapter extends RecyclerView.Adapter<ReportGridOfMi
             return;
         }
         if (bean.getModel_type().contains("folder")){
-            holder.imgPicture.setImageBitmap(BitmapFactory
-                    .decodeResource(mContext.getResources(),R.mipmap.icon_folder));
+            String imgUrl = String.format(Constants.BASE_URL + Constants.IMG_REPORT_URL,bean.getThumbnail_path());
+            Glide.with(mContext).load(imgUrl)
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            if (resource instanceof GifDrawable) {
+                                //加载一次
+                                ((GifDrawable)resource).setLoopCount(GifDrawable.LOOP_FOREVER);
+                            }
+                            return false;
+                        }
+                    })
+                    .placeholder(R.mipmap.icon_folder)
+                    .error(R.mipmap.icon_folder)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(holder.imgPicture);
             holder.itemView.setOnClickListener(view -> {
                 listener.onGridFolderClick(bean);
                 PLog.e("文件夹被点击，打开文件夹");
@@ -132,8 +151,12 @@ public class ReportGridOfMineAdapter extends RecyclerView.Adapter<ReportGridOfMi
             return;
         }
         if (bean.getShare_showtype().contains("folder")){
-            holder.imgPicture.setImageBitmap(BitmapFactory
-                    .decodeResource(mContext.getResources(),R.mipmap.icon_folder));
+            String imgUrl = String.format(Constants.BASE_URL + Constants.IMG_REPORT_URL,bean.getThumbnail_path());
+            Glide.with(mContext).load(imgUrl)
+                    .placeholder(R.mipmap.icon_folder)
+                    .error(R.mipmap.icon_folder)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(holder.imgPicture);
             holder.itemView.setOnClickListener(view -> {
                 listener.onGridFolderClick(bean);
                 PLog.e("文件夹被点击，打开文件夹");

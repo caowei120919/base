@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +31,9 @@ import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.presenter.ReportOfTemplatePresenter;
 import com.datacvg.dimp.view.ReportOfTemplateView;
 import com.lcw.library.imagepicker.ImagePicker;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.io.File;
@@ -51,9 +55,9 @@ import static android.app.Activity.RESULT_OK;
  * @Description :管理画布模板
  */
 public class ReportOfTemplateGridFragment extends BaseFragment<ReportOfTemplateView, ReportOfTemplatePresenter>
-        implements ReportOfTemplateView, SwipeRefreshLayout.OnRefreshListener, ReportGridOfMineAdapter.OnReportClickListener {
+        implements ReportOfTemplateView, ReportGridOfMineAdapter.OnReportClickListener, OnRefreshListener {
     @BindView(R.id.swipe_reportOfTemplate)
-    SwipeRefreshLayout swipeReportOfTemplate ;
+    SmartRefreshLayout swipeReportOfTemplate ;
     @BindView(R.id.recycler_reportOfTemplate)
     RecyclerView recyclerReportOfTemplate ;
 
@@ -76,7 +80,9 @@ public class ReportOfTemplateGridFragment extends BaseFragment<ReportOfTemplateV
 
     @Override
     protected void setupView(View rootView) {
+        swipeReportOfTemplate.setEnableAutoLoadMore(false);
         swipeReportOfTemplate.setOnRefreshListener(this);
+        swipeReportOfTemplate.setEnableRefresh(true);
         gridLayoutManager = new GridLayoutManager(mContext,2);
         reportAdapter = new ReportGridOfMineAdapter(mContext, Constants.REPORT_TEMPLATE,reportBeans,this);
         recyclerReportOfTemplate.setLayoutManager(gridLayoutManager);
@@ -90,12 +96,6 @@ public class ReportOfTemplateGridFragment extends BaseFragment<ReportOfTemplateV
                 ,String.valueOf(System.currentTimeMillis()));
     }
 
-    @Override
-    public void onRefresh() {
-        getPresenter().getReportOfTemplate(Constants.REPORT_TEMPLATE
-                ,Constants.REPORT_TEMPLATE_PARENT_ID
-                ,String.valueOf(System.currentTimeMillis()));
-    }
 
     @Override
     public void onReportClick(ReportBean reportBean) {
@@ -232,7 +232,7 @@ public class ReportOfTemplateGridFragment extends BaseFragment<ReportOfTemplateV
     @Override
     public void getReportOfTemplateSuccess(ReportListBean data) {
         if(swipeReportOfTemplate.isRefreshing()){
-            swipeReportOfTemplate.setRefreshing(false);
+            swipeReportOfTemplate.finishRefresh();
         }
         this.reportBeans.clear();
         this.reportBeans.addAll(data);
@@ -254,5 +254,12 @@ public class ReportOfTemplateGridFragment extends BaseFragment<ReportOfTemplateV
                 .getAbsolutePath();
         String mFileName = "dimp_" + reportBean.getTemplate_id() + ".canvas";
         FileUtils.writeTxtToFile(bean,mFolder,mFileName);
+    }
+
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        getPresenter().getReportOfTemplate(Constants.REPORT_TEMPLATE
+                ,Constants.REPORT_TEMPLATE_PARENT_ID
+                ,String.valueOf(System.currentTimeMillis()));
     }
 }

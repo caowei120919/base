@@ -52,7 +52,7 @@ public class ReportBean implements Serializable {
      *  "template_flname":"Layout Folders",
      *  "template_showtype":"template_folder",
      *  "template_parentid":"10000000000",
-     *      * 			"template_rootid":"10000000000",
+     *  "template_rootid":"10000000000",
      */
 
     private String pkid;

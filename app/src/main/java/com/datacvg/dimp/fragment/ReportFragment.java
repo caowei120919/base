@@ -7,27 +7,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
-
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.datacvg.dimp.R;
-import com.datacvg.dimp.baseandroid.config.Constants;
-import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
-import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.event.ClearAllReportEvent;
 import com.datacvg.dimp.presenter.ReportPresenter;
 import com.datacvg.dimp.view.ReportView;
 import com.datacvg.dimp.widget.TitleNavigator;
 import com.enlogy.statusview.StatusRelativeLayout;
-
 import net.lucode.hackware.magicindicator.FragmentContainerHelper;
 import net.lucode.hackware.magicindicator.MagicIndicator;
-
 import org.greenrobot.eventbus.EventBus;
-
 import java.util.Arrays;
 import java.util.List;
 import butterknife.BindView;

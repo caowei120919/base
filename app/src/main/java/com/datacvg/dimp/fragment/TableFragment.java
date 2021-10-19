@@ -1,8 +1,6 @@
 package com.datacvg.dimp.fragment;
 
 import android.content.Intent;
-import android.graphics.Rect;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -10,24 +8,18 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.datacvg.dimp.R;
-import com.datacvg.dimp.activity.ReportDetailActivity;
 import com.datacvg.dimp.activity.TableDetailActivity;
 import com.datacvg.dimp.activity.TableFolderActivity;
 import com.datacvg.dimp.adapter.TableAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
-import com.datacvg.dimp.baseandroid.utils.Base64Utils;
 import com.datacvg.dimp.baseandroid.utils.DisplayUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
-import com.datacvg.dimp.bean.ReportBean;
 import com.datacvg.dimp.bean.TableBean;
 import com.datacvg.dimp.bean.TableListBean;
 import com.datacvg.dimp.presenter.TablePresenter;
@@ -153,25 +145,25 @@ public class TableFragment extends BaseFragment<TableView, TablePresenter> imple
             case "MODEL" :
                     PLog.e("jump to model");
             case "CUSTOMJUMP" :
-                PLog.e("jump to customJump");
+                    PLog.e("jump to customJump");
             case "CUSTOMRPT" :
-                PLog.e("jump to customRpt");
+                    PLog.e("jump to customRpt");
             case "powerbi" :
-                PLog.e("jump to powerbi");
+                    PLog.e("jump to powerbi");
             case "powerbi_install" :
-                PLog.e("jump to powerbi_install");
+                    PLog.e("jump to powerbi_install");
             case "TABLEAU" :
-                PLog.e("jump to TABLEAU");
+                    PLog.e("jump to TABLEAU");
             case "BO_DASHBOARD" :
-                PLog.e("jump to BO_DASHBOARD");
-                Intent tableIntent = new Intent(mContext, TableDetailActivity.class);
-                tableIntent.putExtra(Constants
-                        .EXTRA_DATA_FOR_BEAN,tableBean);
-                mContext.startActivity(tableIntent);
+                    PLog.e("jump to BO_DASHBOARD");
+                    Intent tableIntent = new Intent(mContext, TableDetailActivity.class);
+                    tableIntent.putExtra(Constants
+                            .EXTRA_DATA_FOR_BEAN,tableBean);
+                    mContext.startActivity(tableIntent);
                 break;
 
             case "CX" :
-                PLog.e("jump to CX");
+                    PLog.e("jump to CX");
                 break;
 
             default:

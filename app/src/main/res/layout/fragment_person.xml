@@ -29,8 +29,7 @@
             android:layout_toRightOf="@id/circle_head"
             android:layout_marginLeft="@dimen/W80"
             android:textSize="20sp"
-            android:textColor="@color/c_000000"
-            tools:text="舒婷">
+            android:textColor="@color/c_000000">
         </TextView>
 
         <TextView
@@ -41,8 +40,7 @@
             android:layout_below="@id/tv_name"
             android:textSize="16sp"
             android:layout_marginTop="@dimen/H16"
-            android:textColor="@color/c_000000"
-            tools:text="舒婷">
+            android:textColor="@color/c_000000">
         </TextView>
 
         <TextView
@@ -55,8 +53,7 @@
             android:drawableRight="@mipmap/choose_job"
             android:drawablePadding="@dimen/W32"
             android:layout_marginTop="@dimen/H56"
-            android:textColor="@color/c_666666"
-            tools:text="舒婷">
+            android:textColor="@color/c_666666">
         </TextView>
     </RelativeLayout>
 

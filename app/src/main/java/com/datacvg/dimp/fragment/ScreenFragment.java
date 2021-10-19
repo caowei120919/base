@@ -3,7 +3,6 @@ package com.datacvg.dimp.fragment;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,10 +14,13 @@ import com.datacvg.dimp.R;
 import com.datacvg.dimp.activity.ScreenDetailActivity;
 import com.datacvg.dimp.adapter.ScreenAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
+import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.bean.ScreenBean;
+import com.datacvg.dimp.bean.ScreenListBean;
 import com.datacvg.dimp.presenter.ScreenPresenter;
 import com.datacvg.dimp.view.ScreenView;
+import com.google.gson.Gson;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
@@ -67,10 +69,6 @@ public class ScreenFragment extends BaseFragment<ScreenView, ScreenPresenter>
     protected void setupView(View rootView) {
         StatusBarUtil.setStatusBarColor(getActivity()
                 ,mContext.getResources().getColor(R.color.c_FFFFFF));
-    }
-
-    @Override
-    protected void setupData() {
         imgLeft.setVisibility(View.GONE);
         tvTitle.setText(resources.getString(R.string.screen));
         tvRight.setText(resources.getString(R.string.time_sequence));
@@ -89,7 +87,6 @@ public class ScreenFragment extends BaseFragment<ScreenView, ScreenPresenter>
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view
                     , @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                //不是第一个的格子都设一个左边和底部的间距
                 outRect.left = (int) resources.getDimension(R.dimen.W25);
                 if (parent.getChildLayoutPosition(view) % 2 ==0) {
                     outRect.left = 0;
@@ -97,12 +94,19 @@ public class ScreenFragment extends BaseFragment<ScreenView, ScreenPresenter>
             }
         });
         recyclerScreen.setAdapter(adapter);
+    }
 
+    @Override
+    protected void setupData() {
         getPresenter().getScreenList(screenType);
     }
 
     @Override
-    public void getScreenSuccess(List<ScreenBean> resdata) {
+    public void getScreenSuccess(ScreenListBean resdata) {
+        PLog.e(new Gson().toJson(resdata));
+        if(smartScreen.isRefreshing()){
+            smartScreen.finishRefresh();
+        }
         screenBeans.clear();
         screenBeans.addAll(resdata);
         adapter.notifyDataSetChanged();

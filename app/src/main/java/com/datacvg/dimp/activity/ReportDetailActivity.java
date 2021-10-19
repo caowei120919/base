@@ -87,7 +87,7 @@ public class ReportDetailActivity extends BaseActivity<ReportDetailView, ReportD
     private ReportBean bean ;
     private String reportId = "" ;
     private ReportParamsBean.ParamsResultBean paramsResultBean ;
-    private String serviceUrl = Constants.BASE_URL;
+    private String serviceUrl = Constants.BASE_MOBILE_URL;
     /**
      * 时间点的时间参数
      */
@@ -425,20 +425,20 @@ public class ReportDetailActivity extends BaseActivity<ReportDetailView, ReportD
     private void loadWebUrl() {
         String url = "" ;
         if(paramsResultBean == null){
-             url = Constants.BASE_URL + "/dataexporler/mobile.html#/" + serviceUrl + "/"  + reportId + "/" +Constants.token + "?lang=" + LanguageUtils.getLanguage(mContext) + (bean.getClassify().equals("screen") ? "&themeName=dark" : "&themeName=dap");
+             url = Constants.BASE_MOBILE_URL + "/dataexporler/mobile.html#/" + serviceUrl + "/"  + reportId + "/" +Constants.token + "?lang=" + LanguageUtils.getLanguage(mContext) + (bean.getClassify().equals("screen") ? "&themeName=dark" : "&themeName=dap");
             mAgentWeb.getUrlLoader().loadUrl(url);
             PLog.e(url);
             return;
         }
         switch (paramsResultBean.getTimeShow()){
             case TIME_OF_POINT :
-                url = Constants.BASE_URL +  "/dataexporler/mobile.html#/" + serviceUrl + "/"  + reportId  +"?lang=" + LanguageUtils.getLanguage(mContext)
+                url = Constants.BASE_MOBILE_URL +  "/dataexporler/mobile.html#/" + serviceUrl + "/"  + reportId  +"?lang=" + LanguageUtils.getLanguage(mContext)
                         + Constants.token + "?reportTime = "
                         + reportTime +  (bean.getClassify().equals("screen") ? "&themeName=dark" : "&themeName=dap");
                 break;
 
             case TIME_OF_PERIOD :
-                url = Constants.BASE_URL +  "/dataexporler/mobile.html#/" + serviceUrl + "/"  + reportId + "/" +Constants.token + "?lang=" + LanguageUtils.getLanguage(mContext) + "?beginTime="
+                url = Constants.BASE_MOBILE_URL +  "/dataexporler/mobile.html#/" + serviceUrl + "/"  + reportId + "/" +Constants.token + "?lang=" + LanguageUtils.getLanguage(mContext) + "?beginTime="
                         + beginTime + "&endTime="
                         + endTime +  (bean.getClassify().equals("screen") ? "&themeName=dark" : "&themeName=dap");
                 break;

@@ -2,6 +2,7 @@ package com.datacvg.dimp.fragment;
 
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -15,6 +16,9 @@ import com.datacvg.dimp.bean.ReportTrashBean;
 import com.datacvg.dimp.bean.ReportTrashListBean;
 import com.datacvg.dimp.presenter.ReportListOfTrashPresenter;
 import com.datacvg.dimp.view.ReportListOfTrashView;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +31,9 @@ import butterknife.BindView;
  * @Description : 回收站
  */
 public class ReportListOfTrashFragment extends BaseFragment<ReportListOfTrashView, ReportListOfTrashPresenter>
-        implements ReportListOfTrashView, SwipeRefreshLayout.OnRefreshListener {
+        implements ReportListOfTrashView, OnRefreshListener {
     @BindView(R.id.swipe_reportListOfTrash)
-    SwipeRefreshLayout swipeReportListOfTrash ;
+    SmartRefreshLayout swipeReportListOfTrash ;
     @BindView(R.id.recycler_reportListOfTrash)
     RecyclerView recyclerReportListOfTrash ;
 
@@ -49,7 +53,9 @@ public class ReportListOfTrashFragment extends BaseFragment<ReportListOfTrashVie
 
     @Override
     protected void setupView(View rootView) {
+        swipeReportListOfTrash.setEnableAutoLoadMore(false);
         swipeReportListOfTrash.setOnRefreshListener(this);
+        swipeReportListOfTrash.setEnableRefresh(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         adapter = new ReportListOfTrashAdapter(mContext, reportBeans);
         recyclerReportListOfTrash.setLayoutManager(linearLayoutManager);
@@ -70,12 +76,6 @@ public class ReportListOfTrashFragment extends BaseFragment<ReportListOfTrashVie
         getPresenter().queryReport(Constants.REPORT_TEMPLATE,System.currentTimeMillis() + "");
     }
 
-    @Override
-    public void onRefresh() {
-        reportBeans.clear();
-        queryReportOnTrash();
-    }
-
     /**
      * 报告查询成功
      * @param data
@@ -83,9 +83,15 @@ public class ReportListOfTrashFragment extends BaseFragment<ReportListOfTrashVie
     @Override
     public void queryReportSuccess(ReportTrashListBean data) {
         if(swipeReportListOfTrash.isRefreshing()){
-            swipeReportListOfTrash.setRefreshing(false);
+            swipeReportListOfTrash.finishRefresh();
         }
         reportBeans.addAll(data);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        reportBeans.clear();
+        queryReportOnTrash();
     }
 }

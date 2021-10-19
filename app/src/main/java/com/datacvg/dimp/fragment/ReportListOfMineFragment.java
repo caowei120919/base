@@ -4,27 +4,27 @@ import android.Manifest;
 import android.os.Environment;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.ReportListAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.utils.FileUtils;
-import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.ReportBean;
 import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.presenter.ReportListOfMinePresenter;
 import com.datacvg.dimp.view.ReportListOfMineView;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.tbruyelle.rxpermissions2.RxPermissions;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 
 /**
@@ -33,9 +33,9 @@ import butterknife.BindView;
  * @Description : 我的管理画布列表
  */
 public class ReportListOfMineFragment extends BaseFragment<ReportListOfMineView, ReportListOfMinePresenter>
-        implements ReportListOfMineView, SwipeRefreshLayout.OnRefreshListener, ReportListAdapter.OnReportListener {
-    @BindView(R.id.swipe_reportListOfMine)
-    SwipeRefreshLayout swipeReportListOfMine ;
+        implements ReportListOfMineView, ReportListAdapter.OnReportListener, OnRefreshListener {
+    @BindView(R.id.smart_reportOfMine)
+    SmartRefreshLayout smartReportOfMine ;
     @BindView(R.id.recycler_reportListOfMine)
     RecyclerView recyclerReportListOfMine ;
 
@@ -55,8 +55,11 @@ public class ReportListOfMineFragment extends BaseFragment<ReportListOfMineView,
 
     @Override
     protected void setupView(View rootView) {
-        swipeReportListOfMine.setOnRefreshListener(this);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+        smartReportOfMine.setEnableAutoLoadMore(false);
+        smartReportOfMine.setOnRefreshListener(this);
+        smartReportOfMine.setEnableRefresh(true);
+        LinearLayoutManager linearLayoutManager
+                = new LinearLayoutManager(mContext);
         adapter = new ReportListAdapter(mContext,Constants.REPORT_MINE,reportBeans,this);
         recyclerReportListOfMine.setLayoutManager(linearLayoutManager);
         recyclerReportListOfMine.setAdapter(adapter);
@@ -70,16 +73,9 @@ public class ReportListOfMineFragment extends BaseFragment<ReportListOfMineView,
     }
 
     @Override
-    public void onRefresh() {
-        getPresenter().getReportOfMine(Constants.REPORT_MINE
-                ,Constants.REPORT_MINE_PARENT_ID
-                ,String.valueOf(System.currentTimeMillis()));
-    }
-
-    @Override
     public void getReportOfMineSuccess(ReportListBean data) {
-        if(swipeReportListOfMine.isRefreshing()){
-            swipeReportListOfMine.setRefreshing(false);
+        if (smartReportOfMine.isRefreshing()){
+            smartReportOfMine.finishRefresh();
         }
         this.reportBeans.clear();
         this.reportBeans.addAll(data);
@@ -153,5 +149,12 @@ public class ReportListOfMineFragment extends BaseFragment<ReportListOfMineView,
                         }
                     }
                 });
+    }
+
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        getPresenter().getReportOfMine(Constants.REPORT_MINE
+                ,Constants.REPORT_MINE_PARENT_ID
+                ,String.valueOf(System.currentTimeMillis()));
     }
 }

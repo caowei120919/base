@@ -1,12 +1,9 @@
 package com.datacvg.dimp.baseandroid;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.StrictMode;
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
@@ -154,30 +151,4 @@ public class BaseApplication extends Application {
     public static void exitApp() {
         mAppManager.exitApp();
     }
-
-    public static void restartApp(@NonNull Activity activity) {
-        Intent intent = activity.getPackageManager()
-                .getLaunchIntentForPackage(activity.getPackageName());
-        Class<? extends Activity> resolvedActivityClass;
-        if (intent != null && intent.getComponent() != null) {
-            try {
-                resolvedActivityClass = (Class<? extends Activity>) Class.forName(intent.getComponent()
-                        .getClassName());
-                intent.setClass(activity, resolvedActivityClass);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-                if (intent.getComponent() != null) {
-                    intent.setAction(Intent.ACTION_MAIN);
-                    intent.addCategory(Intent.CATEGORY_LAUNCHER);
-                }
-                activity.finish();
-                activity.startActivity(intent);
-                exitApp();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-
 }

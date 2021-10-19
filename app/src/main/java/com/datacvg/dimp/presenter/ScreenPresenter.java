@@ -2,6 +2,7 @@ package com.datacvg.dimp.presenter;
 
 import com.datacvg.dimp.baseandroid.config.MobileApi;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
+import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.bean.ScreenListBean;
@@ -29,14 +30,14 @@ public class ScreenPresenter extends BasePresenter<ScreenView>{
     public void getScreenList(String screenType) {
         api.getScreenList(screenType)
                 .compose(RxUtils.applySchedulersLifeCycle(getView()))
-                .subscribe(new RxObserver<ScreenListBean>(){
+                .subscribe(new RxObserver<BaseBean<ScreenListBean>>(){
                     @Override
                     public void onComplete() {
                         super.onComplete();
                     }
 
                     @Override
-                    public void onNext(ScreenListBean bean) {
+                    public void onNext(BaseBean<ScreenListBean> bean) {
                         if(checkJsonCode(bean)){
                             getView().getScreenSuccess(bean.getData());
                         }

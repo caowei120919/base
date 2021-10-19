@@ -965,11 +965,8 @@ public class FileUtils {
     }
 
     public static void writeTxtToFile(String strcontent, String filePath, String fileName) {
-        //生成文件夹之后，再生成文件，不然会出错
         makeFilePath(filePath, fileName);
-
         String strFilePath = filePath+fileName;
-        // 每次写入时，都换行写
         String strContent = strcontent;
         try {
             File file = new File(strFilePath);

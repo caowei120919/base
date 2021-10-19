@@ -1,11 +1,9 @@
 package com.datacvg.dimp.fragment;
 
 import android.view.View;
-
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.ReportListAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
@@ -13,10 +11,11 @@ import com.datacvg.dimp.bean.ReportBean;
 import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.presenter.ReportListOfSharedPresenter;
 import com.datacvg.dimp.view.ReportListOfSharedView;
-
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 
 /**
@@ -25,9 +24,9 @@ import butterknife.BindView;
  * @Description : 共享管理画布列表
  */
 public class ReportListOfSharedFragment extends BaseFragment<ReportListOfSharedView, ReportListOfSharedPresenter>
-        implements ReportListOfSharedView, SwipeRefreshLayout.OnRefreshListener, ReportListAdapter.OnReportListener {
+        implements ReportListOfSharedView, ReportListAdapter.OnReportListener, OnRefreshListener {
     @BindView(R.id.swipe_reportListOfShare)
-    SwipeRefreshLayout swipeReportListOfShare ;
+    SmartRefreshLayout swipeReportListOfShare ;
     @BindView(R.id.recycler_reportListOfShare)
     RecyclerView recyclerReportListOfShare ;
 
@@ -46,7 +45,9 @@ public class ReportListOfSharedFragment extends BaseFragment<ReportListOfSharedV
 
     @Override
     protected void setupView(View rootView) {
+        swipeReportListOfShare.setEnableAutoLoadMore(false);
         swipeReportListOfShare.setOnRefreshListener(this);
+        swipeReportListOfShare.setEnableRefresh(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         adapter = new ReportListAdapter(mContext, Constants.REPORT_SHARE,reportBeans,this);
         recyclerReportListOfShare.setLayoutManager(linearLayoutManager);
@@ -61,16 +62,9 @@ public class ReportListOfSharedFragment extends BaseFragment<ReportListOfSharedV
     }
 
     @Override
-    public void onRefresh() {
-        getPresenter().getReportOfShare(Constants.REPORT_SHARE
-                ,Constants.REPORT_SHARE_PARENT_ID
-                ,String.valueOf(System.currentTimeMillis()));
-    }
-
-    @Override
     public void getReportOfShareSuccess(ReportListBean data) {
         if(swipeReportListOfShare.isRefreshing()){
-            swipeReportListOfShare.setRefreshing(false);
+            swipeReportListOfShare.finishRefresh();
         }
         this.reportBeans.clear();
         this.reportBeans.addAll(data);
@@ -102,5 +96,12 @@ public class ReportListOfSharedFragment extends BaseFragment<ReportListOfSharedV
     @Override
     public void onReportDownload(ReportBean reportBean) {
 
+    }
+
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        getPresenter().getReportOfShare(Constants.REPORT_SHARE
+                ,Constants.REPORT_SHARE_PARENT_ID
+                ,String.valueOf(System.currentTimeMillis()));
     }
 }

@@ -4,27 +4,30 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
-
 import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
 import com.datacvg.dimp.R;
-import com.datacvg.dimp.activity.ContactActivity;
 import com.datacvg.dimp.activity.FeedBackActivity;
 import com.datacvg.dimp.activity.MessageCentreActivity;
 import com.datacvg.dimp.activity.ScanActivity;
 import com.datacvg.dimp.activity.SettingActivity;
+import com.datacvg.dimp.adapter.JobAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
@@ -46,22 +49,17 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.lcw.library.imagepicker.ImagePicker;
 import com.mylhyl.superdialog.SuperDialog;
 import com.tbruyelle.rxpermissions2.RxPermissions;
-
 import org.greenrobot.eventbus.EventBus;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.jessyan.retrofiturlmanager.RetrofitUrlManager;
-
 import static android.app.Activity.RESULT_OK;
 
 /**
@@ -69,7 +67,7 @@ import static android.app.Activity.RESULT_OK;
  * @Time : 2020-09-29
  * @Description : 个人中心
  */
-public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> implements PersonView{
+public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> implements PersonView, JobAdapter.OnJobChangeListener {
 
     @BindView(R.id.tv_title)
     TextView tvTitle ;
@@ -93,6 +91,7 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
     private int pageSize = Constants.MAX_PAGE_SIZE ;
     private int pageIndex = 1;
     private String module_id = "" ;
+    private PopupWindow menuWindow ;
     /**
      * T for true and F for false
      */
@@ -135,7 +134,8 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
         getPresenter().getMessage(pageIndex+ "",pageSize + "",module_id,read_flag);
     }
 
-    @OnClick({R.id.rel_setting,R.id.rel_logout,R.id.img_right,R.id.rel_message,R.id.rel_feedback,R.id.circle_head})
+    @OnClick({R.id.rel_setting,R.id.rel_logout,R.id.img_right,R.id.rel_message
+            ,R.id.rel_feedback,R.id.circle_head,R.id.tv_jobName})
     public void OnClick(View view){
         switch (view.getId()){
             /**
@@ -211,10 +211,39 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
                                     }
                                 })
                         .setNegativeButton(resources.getString(R.string.cancel)
-                                ,resources.getColor(R.color.c_da3a16),24,80, null)
+                                ,resources.getColor(R.color.c_da3a16),24,80
+                                , null)
                         .build();
                 break;
+
+            case R.id.tv_jobName :
+                PLog.e("切换岗位");
+                showJobSelectPop();
+                break;
         }
+    }
+
+    /**
+     * 选择岗位弹窗
+     */
+    private void showJobSelectPop() {
+        View containView = LayoutInflater.from(mContext).inflate(R.layout.item_select_job,
+                null,false);
+        RecyclerView recycleJob = containView.findViewById(R.id.recycle_job);
+        JobAdapter jobAdapter = new JobAdapter(mContext,this,userJobsBeans);
+        LinearLayoutManager manager = new LinearLayoutManager(mContext);
+        recycleJob.setLayoutManager(manager);
+        recycleJob.setAdapter(jobAdapter);
+        menuWindow = new PopupWindow(containView, tvJobName.getWidth(), (int) resources.getDimension(R.dimen.H360));
+        menuWindow.setFocusable(true);
+        menuWindow.setBackgroundDrawable(new BitmapDrawable());
+        menuWindow.showAsDropDown(tvJobName);
+        menuWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                menuWindow=null;
+            }
+        });
     }
 
     /**
@@ -352,5 +381,14 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
         Map params = new HashMap();
         params.put("image",avatarString);
         getPresenter().uploadAvatar(params);
+    }
+
+    /**
+     * 岗位切换监听
+     * @param userJobsBean
+     */
+    @Override
+    public void onJobChangeListener(UserJobsBean userJobsBean) {
+        PLog.e("岗位切换操作....");
     }
 }

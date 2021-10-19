@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/swipe_reportGridOfTrash"
         android:layout_width="match_parent"
-        android:layout_marginRight="@dimen/W24"
-        android:layout_marginLeft="@dimen/W24"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:srlEnablePreviewInEditMode="true">
+
+    <com.scwang.smart.refresh.header.ClassicsHeader
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.scwang.smart.refresh.header.ClassicsHeader>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_reportGridOfTrash"
             android:layout_width="match_parent"
@@ -15,5 +22,5 @@
             android:layout_marginTop="@dimen/H24"
             android:layout_marginBottom="@dimen/H24">
         </androidx.recyclerview.widget.RecyclerView>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>>
 </RelativeLayout>

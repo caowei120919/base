@@ -4,6 +4,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.RelativeLayout;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +19,10 @@ import com.datacvg.dimp.bean.ReportTrashListBean;
 import com.datacvg.dimp.event.ClearAllReportEvent;
 import com.datacvg.dimp.presenter.ReportOfTrashPresenter;
 import com.datacvg.dimp.view.ReportOfTrashView;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
@@ -29,9 +35,9 @@ import butterknife.BindView;
  * @Description :
  */
 public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, ReportOfTrashPresenter>
-        implements ReportOfTrashView, SwipeRefreshLayout.OnRefreshListener, ReportGridOfTrashAdapter.OnReportTrashClickListener {
+        implements ReportOfTrashView, ReportGridOfTrashAdapter.OnReportTrashClickListener, OnRefreshListener {
     @BindView(R.id.swipe_reportGridOfTrash)
-    SwipeRefreshLayout swipeReportGridOfTrash ;
+    SmartRefreshLayout swipeReportGridOfTrash ;
     @BindView(R.id.recycler_reportGridOfTrash)
     RecyclerView recyclerReportGridOfTrash ;
 
@@ -51,7 +57,9 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
 
     @Override
     protected void setupView(View rootView) {
+        swipeReportGridOfTrash.setEnableAutoLoadMore(false);
         swipeReportGridOfTrash.setOnRefreshListener(this);
+        swipeReportGridOfTrash.setEnableRefresh(true);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext,2);
         adapter = new ReportGridOfTrashAdapter(mContext,this,reportTrashBeans);
         recyclerReportGridOfTrash.setLayoutManager(gridLayoutManager);
@@ -73,15 +81,9 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
     }
 
     @Override
-    public void onRefresh() {
-        reportTrashBeans.clear();
-        queryReportOnTrash();
-    }
-
-    @Override
     public void queryReportSuccess(ReportTrashListBean data) {
         if(swipeReportGridOfTrash.isRefreshing()){
-            swipeReportGridOfTrash.setRefreshing(false);
+            swipeReportGridOfTrash.finishRefresh();
         }
         reportTrashBeans.addAll(data);
         adapter.notifyDataSetChanged();
@@ -175,5 +177,11 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
             alertDialog.dismiss();
         });
         alertDialog.show();
+    }
+
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        reportTrashBeans.clear();
+        queryReportOnTrash();
     }
 }

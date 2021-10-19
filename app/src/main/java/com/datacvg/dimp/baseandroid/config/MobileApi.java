@@ -114,7 +114,7 @@ public interface MobileApi {
      * @return
      */
     @GET("api/dataengine/largescreen/list")
-    Observable<ScreenListBean> getScreenList(@Query("sortVal") String screenType);
+    Observable<BaseBean<ScreenListBean>> getScreenList(@Query("sortVal") String screenType);
 
     /**
      * 获取指标列表
@@ -159,7 +159,7 @@ public interface MobileApi {
      * @return
      */
     @Headers({"Domain-Name: fis_api"})
-    @GET("largescreen/{id}")
+    @GET("api/dataengine/largescreen/{id}")
     Observable<BaseBean<ScreenDetailBean>> getScreenDetail(@Path("id") String screen_id);
 
     /**

@@ -1,9 +1,7 @@
 package com.datacvg.dimp.view;
 
 import com.datacvg.dimp.baseandroid.mvp.MvpView;
-import com.datacvg.dimp.bean.ScreenBean;
-
-import java.util.List;
+import com.datacvg.dimp.bean.ScreenListBean;
 
 /**
  * @Author : T-Bag (茶包)
@@ -11,5 +9,5 @@ import java.util.List;
  * @Description :
  */
 public interface ScreenView extends MvpView {
-    void getScreenSuccess(List<ScreenBean> resdata);
+    void getScreenSuccess(ScreenListBean resdata);
 }
