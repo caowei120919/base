@@ -4,10 +4,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +28,7 @@ import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
+import com.datacvg.dimp.baseandroid.utils.PopupWindowUtil;
 import com.datacvg.dimp.bean.ReportBean;
 
 import java.security.MessageDigest;
@@ -67,20 +71,20 @@ public class ReportGridOfMineAdapter extends RecyclerView.Adapter<ReportGridOfMi
         ReportBean bean = reportBeans.get(position) ;
         switch (reportType){
             case Constants.REPORT_MINE :
-                holderMineViewHolder(holder,bean);
+                holderMineViewHolder(holder,bean,position);
                 break;
 
             case Constants.REPORT_SHARE :
-                holderShareViewHolder(holder,bean);
+                holderShareViewHolder(holder,bean,position);
                 break;
 
             case Constants.REPORT_TEMPLATE :
-                holderTemplateViewHolder(holder,bean);
+                holderTemplateViewHolder(holder,bean,position);
                 break;
         }
     }
 
-    private void holderMineViewHolder(GridViewHolder holder, ReportBean bean) {
+    private void holderMineViewHolder(GridViewHolder holder, ReportBean bean,int position) {
         if(bean == null){
             return;
         }
@@ -142,11 +146,48 @@ public class ReportGridOfMineAdapter extends RecyclerView.Adapter<ReportGridOfMi
         holder.imgMenu.setVisibility((bean.isEditAble() || !bean.getFolder()) ? View.VISIBLE : View.GONE);
         holder.imgMenu.setOnClickListener(v -> {
             PLog.e("菜单点击处理");
-            listener.onMenuClick(bean);
+            showMenuPop(holder.imgMenu,bean,position);
         });
     }
 
-    private void holderShareViewHolder(GridViewHolder holder, ReportBean bean) {
+    /**
+     * 创建选择弹窗
+     * @param bean
+     * @param
+     */
+    private void showMenuPop(View view,ReportBean bean,int position) {
+        View containView = LayoutInflater.from(mContext).inflate(R.layout.item_report_grid_dialog
+                ,null,false);
+        RelativeLayout relUploadThumb = containView.findViewById(R.id.rel_uploadThumb) ;
+        RelativeLayout relAddScreen = containView.findViewById(R.id.rel_addScreen) ;
+        RelativeLayout relDelete = containView.findViewById(R.id.rel_delete) ;
+        RelativeLayout relDownLoad = containView.findViewById(R.id.rel_downLoad) ;
+        relAddScreen.setVisibility(!bean.getFolder() ?  View.VISIBLE : View.GONE);
+        relDownLoad.setVisibility((bean.isEditAble() && !bean.getFolder()) ? View.VISIBLE : View.GONE);
+        relDelete.setVisibility(bean.isEditAble() ? View.VISIBLE : View.GONE );
+        relUploadThumb.setOnClickListener(v -> {
+            PLog.e("上传缩略图");
+            listener.uploadThumb(bean);
+        });
+        relAddScreen.setOnClickListener(v -> {
+            PLog.e("添加到大屏");
+            listener.addToScreen(bean);
+        });
+        relDelete.setOnClickListener(v -> {
+            PLog.e("删除报告");
+            listener.deleteReport(bean);
+        });
+        relDownLoad.setOnClickListener(v -> {
+            PLog.e("下载报告");
+            listener.downloadReport(bean);
+        });
+        PopupWindow popupWindow = new PopupWindow(containView,
+                (int) mContext.getResources().getDimension(R.dimen.W260), ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        int windowPos[] = PopupWindowUtil.calculatePopWindowPos(view, containView);
+        popupWindow.showAtLocation(view, Gravity.TOP | Gravity.START, position%2 == 0 ? 200 : windowPos[0] - 100, windowPos[1]);
+    }
+
+    private void holderShareViewHolder(GridViewHolder holder, ReportBean bean,int position) {
         if(bean == null){
             return;
         }
@@ -178,11 +219,11 @@ public class ReportGridOfMineAdapter extends RecyclerView.Adapter<ReportGridOfMi
         holder.imgMenu.setVisibility((bean.isEditAble() || !bean.getFolder()) ? View.VISIBLE : View.GONE);
         holder.imgMenu.setOnClickListener(v -> {
             PLog.e("菜单点击处理");
-            listener.onMenuClick(bean);
+            showMenuPop(holder.imgMenu,bean,position);
         });
     }
 
-    private void holderTemplateViewHolder(GridViewHolder holder, ReportBean bean) {
+    private void holderTemplateViewHolder(GridViewHolder holder, ReportBean bean,int position) {
         if(bean == null){
             return;
         }
@@ -210,7 +251,7 @@ public class ReportGridOfMineAdapter extends RecyclerView.Adapter<ReportGridOfMi
         holder.imgMenu.setVisibility((bean.isEditAble() || !bean.getFolder())? View.VISIBLE : View.GONE);
         holder.imgMenu.setOnClickListener(v -> {
             PLog.e("菜单点击处理");
-            listener.onMenuClick(bean);
+            showMenuPop(holder.imgMenu,bean,position);
         });
     }
 
@@ -249,9 +290,27 @@ public class ReportGridOfMineAdapter extends RecyclerView.Adapter<ReportGridOfMi
         void onGridFolderClick(ReportBean reportBean);
 
         /**
-         * 菜单栏点击监听
-         * @param reportBean
+         * 上传缩略图
+         * @param bean
          */
-        void onMenuClick(ReportBean reportBean);
+        void uploadThumb(ReportBean bean);
+
+        /**
+         * 添加到大屏
+         * @param bean
+         */
+        void addToScreen(ReportBean bean);
+
+        /**
+         * 删除报告
+         * @param bean
+         */
+        void deleteReport(ReportBean bean);
+
+        /**
+         * 下载报告
+         * @param bean
+         */
+        void downloadReport(ReportBean bean);
     }
 }

@@ -4,12 +4,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.RelativeLayout;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.ReportGridOfTrashAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
@@ -17,12 +15,12 @@ import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.ReportTrashBean;
 import com.datacvg.dimp.bean.ReportTrashListBean;
 import com.datacvg.dimp.event.ClearAllReportEvent;
+import com.datacvg.dimp.event.ReportRefreshEvent;
 import com.datacvg.dimp.presenter.ReportOfTrashPresenter;
 import com.datacvg.dimp.view.ReportOfTrashView;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
-
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
@@ -183,5 +181,13 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         reportTrashBeans.clear();
         queryReportOnTrash();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ReportRefreshEvent event){
+        reportTrashBeans.clear();
+        getPresenter().queryReport(Constants.REPORT_MINE,System.currentTimeMillis() + "");
+        getPresenter().queryReport(Constants.REPORT_SHARE,System.currentTimeMillis() + "");
+        getPresenter().queryReport(Constants.REPORT_TEMPLATE,System.currentTimeMillis() + "");
     }
 }

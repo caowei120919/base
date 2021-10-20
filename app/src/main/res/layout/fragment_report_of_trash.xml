@@ -8,6 +8,7 @@
         android:id="@+id/swipe_reportGridOfTrash"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/W40"
         app:srlEnablePreviewInEditMode="true">
 
     <com.scwang.smart.refresh.header.ClassicsHeader
@@ -22,5 +23,5 @@
             android:layout_marginTop="@dimen/H24"
             android:layout_marginBottom="@dimen/H24">
         </androidx.recyclerview.widget.RecyclerView>
-    </com.scwang.smart.refresh.layout.SmartRefreshLayout>>
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </RelativeLayout>

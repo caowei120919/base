@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/W456"
+    android:layout_width="@dimen/W228"
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"
     android:layout_gravity="center"
@@ -27,7 +27,7 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/img_thumb"
             android:gravity="center"
-            android:text="上传缩略图"
+            android:text="@string/upload_thumbnails"
             android:layout_centerInParent="true"
             android:textColor="@color/c_FFFFFF"
             android:textSize="20sp"
@@ -54,7 +54,7 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/img_add"
             android:gravity="center"
-            android:text="添加到大屏"
+            android:text="@string/add_to_large_screen"
             android:layout_centerInParent="true"
             android:textColor="@color/c_FFFFFF"
             android:textSize="20sp"
@@ -88,7 +88,7 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/img_delete"
             android:gravity="center"
-            android:text="删除报告"
+            android:text="@string/delete"
             android:layout_centerInParent="true"
             android:textColor="@color/c_FFFFFF"
             android:textSize="20sp"
@@ -113,7 +113,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:src="@mipmap/icon_report_thumb"
+            android:src="@mipmap/icon_report_download"
             android:layout_marginLeft="@dimen/W25">
         </ImageView>
 
@@ -122,7 +122,7 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/img_download"
             android:gravity="center"
-            android:text="下载报告"
+            android:text="@string/download_the_report"
             android:layout_centerInParent="true"
             android:textColor="@color/c_FFFFFF"
             android:textSize="20sp"

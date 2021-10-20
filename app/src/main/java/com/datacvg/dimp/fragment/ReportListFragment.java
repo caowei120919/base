@@ -3,23 +3,18 @@ package com.datacvg.dimp.fragment;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.ReportPopAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.PLog;
-import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.bean.TableBean;
 import com.datacvg.dimp.bean.TableListBean;
 import com.datacvg.dimp.presenter.ReportListPresenter;
 import com.datacvg.dimp.view.ReportListView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 
 /**

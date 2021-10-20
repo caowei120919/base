@@ -23,6 +23,7 @@ import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
+import com.datacvg.dimp.event.RefreshTokenEvent;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -158,7 +159,7 @@ public abstract class BaseActivity<V extends MvpView,P extends MvpBasePresenter<
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(String str){
-
+    public void onEvent(RefreshTokenEvent event){
+        mContext.startActivity(new Intent(mContext,LoginActivity.class));
     }
 }

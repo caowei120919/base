@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -43,6 +44,7 @@ import butterknife.OnTextChanged;
  */
 public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> implements LoginView {
 
+    private final int INTERVAL_TIME = 2000 ;
     private String companyCode = "" ;
     private String userName = "" ;
     private String password = "" ;
@@ -69,6 +71,7 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
      * apk下载文件夹
      */
     private String mDownLoadApkFolder;
+    private long firstTime = 0;
 
     @Override
     protected int getLayoutId() {
@@ -282,5 +285,25 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
                         }
                     });
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            long secondTime = System.currentTimeMillis();
+            if (secondTime - firstTime > INTERVAL_TIME) {
+                ToastUtils.showLongToast(mContext.getResources()
+                        .getString(R.string.click_again_exit_app));
+                firstTime = secondTime;
+            } else {
+                //执行返回桌面
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                startActivity(intent);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

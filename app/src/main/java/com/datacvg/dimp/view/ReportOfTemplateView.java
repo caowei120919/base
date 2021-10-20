@@ -18,4 +18,9 @@ public interface ReportOfTemplateView extends MvpView {
     void uploadSuccess();
 
     void getReportSourceSuccess(String bean);
+
+    /**
+     * 删除成功
+     */
+    void deleteSuccess();
 }

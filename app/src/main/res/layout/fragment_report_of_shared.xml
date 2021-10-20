@@ -8,6 +8,7 @@
         android:id="@+id/swipe_reportOfShare"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/W40"
         app:srlEnablePreviewInEditMode="true">
 
     <com.scwang.smart.refresh.header.ClassicsHeader

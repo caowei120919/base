@@ -143,7 +143,6 @@ public class DisplayUtils {
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
-    // editTextView.setFilters(new InputFilter[]{new InputFilter.LengthFilter(max)});
     public static final InputFilter emojiFilter = new InputFilter() {
 
         Pattern emoji = Pattern.compile("[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\u2600-\u27ff]", Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
@@ -162,6 +161,14 @@ public class DisplayUtils {
 
     public static float dp2px(float dp) {
         return dp * AndroidUtils.getDisplayMetrics().density;
+    }
+
+    public static int getScreenHeight(){
+        return AndroidUtils.getDisplayMetrics().heightPixels;
+    }
+
+    public static int getScreenWidth(){
+        return AndroidUtils.getDisplayMetrics().widthPixels;
     }
 
     public static int dp2px(int dp) {

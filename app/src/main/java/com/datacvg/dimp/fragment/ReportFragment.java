@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.activity.SearchReportActivity;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.event.ClearAllReportEvent;
 import com.datacvg.dimp.presenter.ReportPresenter;
@@ -89,11 +90,11 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
         View contentView = LayoutInflater.from(mContext)
                 .inflate(R.layout.item_pup_sort, null);
         sortPop = new PopupWindow(contentView,
-                (int) resources.getDimension(R.dimen.W228), ViewGroup.LayoutParams.WRAP_CONTENT, true);
+                (int) resources.getDimension(R.dimen.W260), ViewGroup.LayoutParams.WRAP_CONTENT, true);
         sortPop.setTouchable(true);
         sortPop.setOutsideTouchable(false);
         sortPop.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_bg_f8f8fa));
-        sortPop.showAsDropDown(imgSearch,20,20);
+        sortPop.showAsDropDown(imgSearch,-100,20);
     }
 
     /**
@@ -115,7 +116,7 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
     }
 
 
-    @OnClick({R.id.img_changeType,R.id.img_sort})
+    @OnClick({R.id.img_changeType,R.id.img_sort,R.id.img_search})
     public void OnClick(View view){
         switch (view.getId()){
             case R.id.img_changeType :
@@ -135,6 +136,10 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
                     }else{
                         sortPop.showAsDropDown(imgSort);
                     }
+                break;
+
+            case R.id.img_search :
+                mContext.startActivity(new Intent(mContext, SearchReportActivity.class));
                 break;
         }
     }

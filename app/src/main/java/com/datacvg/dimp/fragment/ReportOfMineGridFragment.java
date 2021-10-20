@@ -3,16 +3,10 @@ package com.datacvg.dimp.fragment;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Environment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.widget.RelativeLayout;
-
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.activity.ReportDetailActivity;
 import com.datacvg.dimp.activity.ReportFolderActivity;
@@ -22,11 +16,11 @@ import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.utils.FileUtils;
 import com.datacvg.dimp.baseandroid.utils.GlideLoader;
 import com.datacvg.dimp.baseandroid.utils.MultipartUtil;
-import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.ReportBean;
 import com.datacvg.dimp.bean.ReportListBean;
+import com.datacvg.dimp.event.ReportRefreshEvent;
 import com.datacvg.dimp.presenter.ReportOfMinePresenter;
 import com.datacvg.dimp.view.ReportOfMineView;
 import com.lcw.library.imagepicker.ImagePicker;
@@ -34,6 +28,7 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,7 +75,8 @@ public class ReportOfMineGridFragment extends BaseFragment<ReportOfMineView, Rep
         swipeReportOfMine.setOnRefreshListener(this);
         swipeReportOfMine.setEnableRefresh(true);
         gridLayoutManager = new GridLayoutManager(mContext,2);
-        reportAdapter = new ReportGridOfMineAdapter(mContext,Constants.REPORT_MINE,reportBeans,this);
+        reportAdapter = new ReportGridOfMineAdapter(mContext,
+                Constants.REPORT_MINE,reportBeans,this);
         recyclerReportOfMine.setLayoutManager(gridLayoutManager);
         recyclerReportOfMine.setAdapter(reportAdapter);
     }
@@ -124,6 +120,16 @@ public class ReportOfMineGridFragment extends BaseFragment<ReportOfMineView, Rep
     }
 
     @Override
+    public void deleteSuccess() {
+        ToastUtils.showLongToast(resources.getString(R.string.delete_the_success));
+        EventBus.getDefault().post(new ReportRefreshEvent());
+        getPresenter().getReportOfMine(Constants.REPORT_MINE
+                ,Constants.REPORT_MINE_PARENT_ID
+                ,String.valueOf(System.currentTimeMillis()));
+
+    }
+
+    @Override
     public void onReportClick(ReportBean reportBean) {
         Intent intent = new Intent(mContext, ReportDetailActivity.class) ;
         intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportBean);
@@ -138,54 +144,28 @@ public class ReportOfMineGridFragment extends BaseFragment<ReportOfMineView, Rep
         mContext.startActivity(intent);
     }
 
-    /**
-     * 菜单点击监听
-     * @param reportBean
-     */
     @Override
-    public void onMenuClick( ReportBean reportBean) {
-        this.reportBean = reportBean ;
-        showMenuDialog();
+    public void uploadThumb(ReportBean bean) {
+        this.reportBean = bean ;
+        choosePicture();
     }
 
-    private void showMenuDialog() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
-        View containView = LayoutInflater.from(mContext).inflate(R.layout.item_report_grid_dialog
-                ,null,false);
-        RelativeLayout relUploadThumb = containView.findViewById(R.id.rel_uploadThumb) ;
-        RelativeLayout relAddScreen = containView.findViewById(R.id.rel_addScreen) ;
-        RelativeLayout relDelete = containView.findViewById(R.id.rel_delete) ;
-        RelativeLayout relDownLoad = containView.findViewById(R.id.rel_downLoad) ;
+    @Override
+    public void addToScreen(ReportBean bean) {
+        this.reportBean = bean ;
+        ToastUtils.showLongToast("功能开发中,请敬请期待......");
+    }
 
-        relAddScreen.setVisibility(!reportBean.getFolder() ?  View.VISIBLE : View.GONE);
-        relDownLoad.setVisibility((reportBean.isEditAble() && !reportBean.getFolder()) ? View.VISIBLE : View.GONE);
-        relDelete.setVisibility(reportBean.isEditAble() ? View.VISIBLE : View.GONE );
-        dialog.setView(containView);
-        AlertDialog alertDialog = dialog.create();
-        Window window = alertDialog.getWindow();
-        if(window != null){
-            window.setBackgroundDrawableResource(android.R.color.transparent);
-        }
-        relUploadThumb.setOnClickListener(v -> {
-            PLog.e("上传缩略图");
-            choosePicture();
-            alertDialog.dismiss();
-        });
-        relAddScreen.setOnClickListener(v -> {
-            PLog.e("添加到大屏");
-            ToastUtils.showLongToast("功能开发中,请敬请期待.......");
-            alertDialog.dismiss();
-        });
-        relDelete.setOnClickListener(v -> {
-            PLog.e("删除报告");
-            alertDialog.dismiss();
-        });
-        relDownLoad.setOnClickListener(v -> {
-            PLog.e("下载报告");
-            downloadFile();
-            alertDialog.dismiss();
-        });
-        alertDialog.show();
+    @Override
+    public void deleteReport(ReportBean bean) {
+        this.reportBean = bean ;
+        getPresenter().deleteReport(bean.getModel_id(),Constants.REPORT_MINE_TYPE);
+    }
+
+    @Override
+    public void downloadReport(ReportBean bean) {
+        this.reportBean = bean ;
+        downloadFile();
     }
 
     /**

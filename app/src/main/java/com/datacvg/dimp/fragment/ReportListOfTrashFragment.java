@@ -14,11 +14,15 @@ import com.datacvg.dimp.bean.ReportBean;
 import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.bean.ReportTrashBean;
 import com.datacvg.dimp.bean.ReportTrashListBean;
+import com.datacvg.dimp.event.ReportRefreshEvent;
 import com.datacvg.dimp.presenter.ReportListOfTrashPresenter;
 import com.datacvg.dimp.view.ReportListOfTrashView;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,5 +97,13 @@ public class ReportListOfTrashFragment extends BaseFragment<ReportListOfTrashVie
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         reportBeans.clear();
         queryReportOnTrash();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ReportRefreshEvent event){
+        reportBeans.clear();
+        getPresenter().queryReport(Constants.REPORT_MINE,System.currentTimeMillis() + "");
+        getPresenter().queryReport(Constants.REPORT_SHARE,System.currentTimeMillis() + "");
+        getPresenter().queryReport(Constants.REPORT_TEMPLATE,System.currentTimeMillis() + "");
     }
 }

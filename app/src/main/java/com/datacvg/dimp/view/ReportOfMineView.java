@@ -25,4 +25,9 @@ public interface ReportOfMineView extends MvpView {
      * @param bean
      */
     void getReportSourceSuccess(String bean);
+
+    /**
+     * 删除成功
+     */
+    void deleteSuccess();
 }

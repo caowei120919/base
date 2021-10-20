@@ -11,6 +11,7 @@ import com.datacvg.dimp.bean.ReportParamsBean;
 import com.datacvg.dimp.view.ReportOfMineView;
 import com.google.gson.Gson;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -114,6 +115,34 @@ public class ReportOfMinePresenter extends BasePresenter<ReportOfMineView>{
                     public void onError(Throwable e) {
                         super.onError(e);
                         PLog.e("onError()");
+                    }
+                });
+    }
+
+    public void deleteReport(String resId, String reportType) {
+        HashMap params = new HashMap();
+        params.put("resId",resId);
+        params.put("type",reportType);
+        api.deleteReport(params)
+                .compose(RxUtils.applySchedulersLifeCycle(getView()))
+                .subscribe(new RxObserver<BaseBean>(){
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                        PLog.e("onComplete()");
+                    }
+
+                    @Override
+                    public void onNext(BaseBean bean) {
+                        PLog.e("onNext()===============>" + bean);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        if (e instanceof NullPointerException){
+                            getView().deleteSuccess();
+                        }
                     }
                 });
     }

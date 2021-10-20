@@ -30,6 +30,7 @@ import com.datacvg.dimp.activity.ScreenDetailActivity;
 import com.datacvg.dimp.activity.ScreenResultActivity;
 import com.datacvg.dimp.activity.ScreenSettingActivity;
 import com.datacvg.dimp.activity.SearchIndexActivity;
+import com.datacvg.dimp.activity.SearchReportActivity;
 import com.datacvg.dimp.activity.SelectDimensionActivity;
 import com.datacvg.dimp.activity.SelectFilterActivity;
 import com.datacvg.dimp.activity.SelectTableParamActivity;
@@ -132,4 +133,6 @@ public interface ActivityComponent {
     void inject(FeedBackActivity feedBackActivity);
 
     void inject(ReportFolderActivity reportFolderActivity);
+
+    void inject(SearchReportActivity searchReportActivity);
 }

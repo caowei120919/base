@@ -260,7 +260,7 @@
     <string name="no_do_not_finish_the_task">No (Do not finish the task)</string>
     <string name="description_required">Description (* required)</string>
     <string name="the_initial">The initial</string>
-    <string name="as_of">截止</string>
+    <string name="as_of">As of</string>
     <string name="task_status_record">Task status record</string>
     <string name="a_plan_of_action">A plan of action</string>
     <string name="delete_ok">delete ok </string>
@@ -268,4 +268,8 @@
     <string name="the_editor">The editor</string>
     <string name="empty">empty</string>
     <string name="restore_successful">Restore successful </string>
+    <string name="upload_thumbnails">Upload thumbnails</string>
+    <string name="add_to_large_screen">Add to large screen</string>
+    <string name="delete">delete</string>
+    <string name="download_the_report">Download the report</string>
 </resources>

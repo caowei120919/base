@@ -28,6 +28,7 @@ import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.ReportBean;
 import com.datacvg.dimp.bean.ReportListBean;
+import com.datacvg.dimp.event.ReportRefreshEvent;
 import com.datacvg.dimp.presenter.ReportOfSharedPresenter;
 import com.datacvg.dimp.view.ReportOfSharedView;
 import com.lcw.library.imagepicker.ImagePicker;
@@ -35,6 +36,8 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -112,49 +115,27 @@ public class ReportOfSharedGridFragment extends BaseFragment<ReportOfSharedView,
     }
 
     @Override
-    public void onMenuClick(ReportBean reportBean) {
-        this.reportBean = reportBean ;
-        showMenuDialog();
+    public void uploadThumb(ReportBean bean) {
+        this.reportBean = bean ;
+        choosePicture();
     }
 
-    private void showMenuDialog() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
-        View containView = LayoutInflater.from(mContext).inflate(R.layout.item_report_grid_dialog
-                ,null,false);
-        RelativeLayout relUploadThumb = containView.findViewById(R.id.rel_uploadThumb) ;
-        RelativeLayout relAddScreen = containView.findViewById(R.id.rel_addScreen) ;
-        RelativeLayout relDelete = containView.findViewById(R.id.rel_delete) ;
-        RelativeLayout relDownLoad = containView.findViewById(R.id.rel_downLoad) ;
+    @Override
+    public void addToScreen(ReportBean bean) {
+        this.reportBean = bean ;
+        ToastUtils.showLongToast("功能开发中,请敬请期待.......");
+    }
 
-        relAddScreen.setVisibility(!reportBean.getFolder() ?  View.VISIBLE : View.GONE);
-        relDownLoad.setVisibility((reportBean.isEditAble() && !reportBean.getFolder()) ? View.VISIBLE : View.GONE);
-        relDelete.setVisibility(reportBean.isEditAble() ? View.VISIBLE : View.GONE );
-        dialog.setView(containView);
-        AlertDialog alertDialog = dialog.create();
-        Window window = alertDialog.getWindow();
-        if(window != null){
-            window.setBackgroundDrawableResource(android.R.color.transparent);
-        }
-        relUploadThumb.setOnClickListener(v -> {
-            PLog.e("上传缩略图");
-            choosePicture();
-            alertDialog.dismiss();
-        });
-        relAddScreen.setOnClickListener(v -> {
-            PLog.e("添加到大屏");
-            ToastUtils.showLongToast("功能开发中,请敬请期待.......");
-            alertDialog.dismiss();
-        });
-        relDelete.setOnClickListener(v -> {
-            PLog.e("删除报告");
-            alertDialog.dismiss();
-        });
-        relDownLoad.setOnClickListener(v -> {
-            PLog.e("下载报告");
-            downloadFile();
-            alertDialog.dismiss();
-        });
-        alertDialog.show();
+    @Override
+    public void deleteReport(ReportBean bean) {
+        this.reportBean = bean ;
+        getPresenter().deleteReport(bean.getShare_id(),Constants.REPORT_SHARE_TYPE);
+    }
+
+    @Override
+    public void downloadReport(ReportBean bean) {
+        this.reportBean = bean ;
+        downloadFile();
     }
 
     private void downloadFile() {
@@ -198,6 +179,15 @@ public class ReportOfSharedGridFragment extends BaseFragment<ReportOfSharedView,
                 .getAbsolutePath();
         String mFileName = "dimp_" + reportBean.getShare_id() + ".canvas";
         FileUtils.writeTxtToFile(bean,mFolder,mFileName);
+    }
+
+    @Override
+    public void deleteSuccess() {
+        reportBean = null ;
+        EventBus.getDefault().post(new ReportRefreshEvent());
+        getPresenter().getReportOfShare(Constants.REPORT_SHARE
+                ,Constants.REPORT_SHARE_PARENT_ID
+                ,String.valueOf(System.currentTimeMillis()));
     }
 
     @Override

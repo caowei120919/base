@@ -1,6 +1,7 @@
 package com.datacvg.dimp.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import com.datacvg.dimp.MyApplication;
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.activity.LoginActivity;
 import com.datacvg.dimp.baseandroid.BaseApplication;
 import com.datacvg.dimp.baseandroid.dragger.component.DaggerFragmentComponent;
 import com.datacvg.dimp.baseandroid.dragger.component.FragmentComponent;
@@ -20,6 +22,7 @@ import com.datacvg.dimp.baseandroid.mvp.MvpView;
 import com.datacvg.dimp.baseandroid.mvp.OnFragmentVisibilityChangedListener;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
+import com.datacvg.dimp.event.RefreshTokenEvent;
 import com.squareup.leakcanary.RefWatcher;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -116,8 +119,8 @@ public abstract class BaseFragment<V extends MvpView,P extends MvpPresenter<V>>
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(String event){
-
+    public void onEvent(RefreshTokenEvent event){
+        mContext.startActivity(new Intent(mContext,LoginActivity.class));
     }
 
     @Override

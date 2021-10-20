@@ -33,6 +33,7 @@ import com.datacvg.dimp.bean.ReportTrashListBean;
 import com.datacvg.dimp.bean.SavePageBean;
 import com.datacvg.dimp.bean.ScreenDetailBean;
 import com.datacvg.dimp.bean.ScreenListBean;
+import com.datacvg.dimp.bean.SearchListReportBean;
 import com.datacvg.dimp.bean.SetDefaultResBean;
 import com.datacvg.dimp.bean.TableInfoBean;
 import com.datacvg.dimp.bean.TableListBean;
@@ -483,7 +484,7 @@ public interface MobileApi {
      * @return
      */
     @HTTP(method = "DELETE",path = "api/dataengine/dataexporler/report/folder",hasBody = true)
-    Observable<Object> deleteReport(@Body Map params);
+    Observable<BaseBean> deleteReport(@Body Map params);
 
     /**
      * 获取文件资源
@@ -519,4 +520,12 @@ public interface MobileApi {
      */
     @HTTP(method = "PUT",path = "api/dataengine/dataexporler/model/recycle",hasBody = true)
     Observable<Object> restoreOnTrash(@Body Map params);
+
+    /**
+     * 根据关键字查询报告
+     * @param searchText
+     * @return
+     */
+    @GET("api/portal/user/search_reports")
+    Observable<BaseBean<SearchListReportBean>> searchReport(@Query("clname") String searchText);
 }
