@@ -14,4 +14,15 @@ public interface ReportListOfSharedView extends MvpView {
      * @param data
      */
     void getReportOfShareSuccess(ReportListBean data);
+
+    /**
+     * 删除成功
+     */
+    void deleteSuccess();
+
+    /**
+     * 报表资源获取成功
+     * @param bean
+     */
+    void getReportSourceSuccess(String bean);
 }

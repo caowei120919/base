@@ -57,15 +57,15 @@ public class ReportBean implements Serializable {
 
     private String pkid;
     private String share_id;
-    private String share_clname;
-    private String share_flname;
+    private String share_clname = "";
+    private String share_flname = "";
     private String share_showtype = "";
     private String share_parentid;
     private String share_rootid;
 
     private String template_id ;
-    private String template_clname ;
-    private String template_flname ;
+    private String template_clname = "";
+    private String template_flname = "";
     private String template_showtype = "";
     private String template_parentid ;
     private String template_rootid ;
@@ -79,8 +79,8 @@ public class ReportBean implements Serializable {
     private String classify = "";
     private String sign = "p";
     private String model_id;
-    private String model_clname;
-    private String model_flname;
+    private String model_clname = "";
+    private String model_flname = "";
     private String model_type = "";
     private String parent_id;
     private String root_id;

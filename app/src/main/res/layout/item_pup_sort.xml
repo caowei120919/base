@@ -6,7 +6,7 @@
     android:background="@drawable/shape_303030">
 
     <RelativeLayout
-        android:id="@+id/rel_uploadThumb"
+        android:id="@+id/rel_bySystemDefault"
         android:layout_width="match_parent"
         android:layout_height="@dimen/H80">
 
@@ -24,16 +24,16 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/img_thumb"
             android:gravity="center"
-            android:text="按系统默认"
+            android:text="@string/by_system_default"
             android:layout_centerInParent="true"
             android:textColor="@color/c_FFFFFF"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:layout_gravity="center">
         </TextView>
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/rel_addScreen"
+        android:id="@+id/rel_accordingToTheName"
         android:layout_width="match_parent"
         android:layout_height="@dimen/H80">
 
@@ -51,10 +51,10 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/img_add"
             android:gravity="center"
-            android:text="按名称"
+            android:text="@string/according_to_the_name"
             android:layout_centerInParent="true"
             android:textColor="@color/c_FFFFFF"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:layout_gravity="center">
         </TextView>
 

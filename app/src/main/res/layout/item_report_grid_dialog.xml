@@ -30,7 +30,7 @@
             android:text="@string/upload_thumbnails"
             android:layout_centerInParent="true"
             android:textColor="@color/c_FFFFFF"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:layout_gravity="center">
         </TextView>
     </RelativeLayout>
@@ -57,7 +57,7 @@
             android:text="@string/add_to_large_screen"
             android:layout_centerInParent="true"
             android:textColor="@color/c_FFFFFF"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:layout_gravity="center">
         </TextView>
 
@@ -91,7 +91,7 @@
             android:text="@string/delete"
             android:layout_centerInParent="true"
             android:textColor="@color/c_FFFFFF"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:layout_gravity="center">
         </TextView>
 
@@ -125,7 +125,7 @@
             android:text="@string/download_the_report"
             android:layout_centerInParent="true"
             android:textColor="@color/c_FFFFFF"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:layout_gravity="center">
         </TextView>
 

@@ -16,15 +16,13 @@ public interface ReportListOfMineView extends MvpView {
     void getReportOfMineSuccess(ReportListBean data);
 
     /**
-     * 删除操作完成
-     * @param model_id
-     */
-    void deleteComplete(String model_id);
-
-    /**
      * 报告资源下载完成
      * @param bean
      */
     void getReportSourceSuccess(String bean);
 
+    /**
+     * 删除成功
+     */
+    void deleteSuccess();
 }

@@ -6,11 +6,13 @@ import com.datacvg.dimp.baseandroid.dragger.module.FragmentModule;
 import com.datacvg.dimp.baseandroid.dragger.scope.FragmentScope;
 import com.datacvg.dimp.fragment.ActionFragment;
 import com.datacvg.dimp.fragment.ActionListFragment;
+import com.datacvg.dimp.fragment.AddToScreenFragment;
 import com.datacvg.dimp.fragment.BoardFragment;
 import com.datacvg.dimp.fragment.BoardPagerFragment;
 import com.datacvg.dimp.fragment.BudgetFragment;
 import com.datacvg.dimp.fragment.DigitalFragment;
 import com.datacvg.dimp.fragment.EmptyBoardFragment;
+import com.datacvg.dimp.fragment.NewScreenFragment;
 import com.datacvg.dimp.fragment.PersonalFragment;
 import com.datacvg.dimp.fragment.RemarkFragment;
 import com.datacvg.dimp.fragment.ReportFragment;
@@ -77,4 +79,8 @@ public interface FragmentComponent {
     void inject(ReportListOfTemplateFragment reportListOfTemplateFragment);
 
     void inject(ReportListOfTrashFragment reportListOfTrashFragment);
+
+    void inject(NewScreenFragment newScreenFragment);
+
+    void inject(AddToScreenFragment addToScreenFragment);
 }

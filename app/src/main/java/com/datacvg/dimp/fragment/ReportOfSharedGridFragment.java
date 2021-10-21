@@ -29,6 +29,8 @@ import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.ReportBean;
 import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.event.ReportRefreshEvent;
+import com.datacvg.dimp.event.SortForNameEvent;
+import com.datacvg.dimp.event.SortForSystemEvent;
 import com.datacvg.dimp.presenter.ReportOfSharedPresenter;
 import com.datacvg.dimp.view.ReportOfSharedView;
 import com.lcw.library.imagepicker.ImagePicker;
@@ -38,6 +40,8 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -248,5 +252,15 @@ public class ReportOfSharedGridFragment extends BaseFragment<ReportOfSharedView,
         getPresenter().getReportOfShare(Constants.REPORT_SHARE
                 ,Constants.REPORT_SHARE_PARENT_ID
                 ,String.valueOf(System.currentTimeMillis()));
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SortForSystemEvent event){
+        PLog.e("按系统排序");
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SortForNameEvent event){
+        PLog.e("按名称排序");
     }
 }

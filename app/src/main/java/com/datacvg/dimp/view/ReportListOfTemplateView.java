@@ -14,4 +14,15 @@ public interface ReportListOfTemplateView extends MvpView {
      * @param data
      */
     void getReportOfTemplateSuccess(ReportListBean data);
+
+    /**
+     * 删除成功
+     */
+    void deleteSuccess();
+
+    /**
+     * 报告资源获取成功
+     * @param bean
+     */
+    void getReportSourceSuccess(String bean);
 }

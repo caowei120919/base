@@ -1,13 +1,9 @@
 package com.datacvg.dimp.fragment;
 import android.Manifest;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Environment;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import androidx.annotation.Keep;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.datacvg.dimp.R;
@@ -20,8 +16,6 @@ import com.datacvg.dimp.baseandroid.utils.ShareUtils;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.PageItemBean;
-import com.datacvg.dimp.event.AddIndexEvent;
-import com.datacvg.dimp.event.BudgetEvent;
 import com.datacvg.dimp.event.CompleteEvent;
 import com.datacvg.dimp.event.EditEvent;
 import com.datacvg.dimp.event.PageCompleteEvent;
@@ -35,13 +29,10 @@ import com.enlogy.statusview.StatusRelativeLayout;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import net.lucode.hackware.magicindicator.FragmentContainerHelper;
 import net.lucode.hackware.magicindicator.MagicIndicator;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.List;
 import butterknife.BindView;

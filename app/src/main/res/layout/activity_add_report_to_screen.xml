@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/c_FFFFFF">
+
+        <ImageView
+            android:id="@+id/img_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/img_back"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/W30"
+            android:paddingRight="@dimen/W30">
+        </ImageView>
+
+        <TextView
+            android:id="@+id/tv_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/confirm"
+            android:textColor="@color/c_303030"
+            android:textSize="16sp"
+            android:paddingLeft="@dimen/W24"
+            android:paddingRight="@dimen/W24"
+            android:layout_alignParentRight="true"
+            android:gravity="center">
+        </TextView>
+
+        <net.lucode.hackware.magicindicator.MagicIndicator
+            android:id="@+id/magic_title"
+            android:layout_width="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true">
+        </net.lucode.hackware.magicindicator.MagicIndicator>
+    </RelativeLayout>
+</RelativeLayout>

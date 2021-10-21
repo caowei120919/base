@@ -67,7 +67,7 @@ public class ReportListOfMinePresenter extends BasePresenter<ReportListOfMineVie
         params.put("type",type);
         api.deleteReport(params)
                 .compose(RxUtils.applySchedulersLifeCycle(getView()))
-                .subscribe(new RxObserver<Object>(){
+                .subscribe(new RxObserver<BaseBean>(){
                     @Override
                     public void onComplete() {
                         super.onComplete();
@@ -75,14 +75,16 @@ public class ReportListOfMinePresenter extends BasePresenter<ReportListOfMineVie
                     }
 
                     @Override
-                    public void onNext(Object object) {
+                    public void onNext(BaseBean object) {
 
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
-                        PLog.e("onError()" + e.getMessage());
+                        if (e instanceof NullPointerException){
+                            getView().deleteSuccess();
+                        }
                     }
                 });
     }

@@ -7,14 +7,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.activity.SearchReportActivity;
+import com.datacvg.dimp.baseandroid.config.Constants;
+import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.event.ClearAllReportEvent;
+import com.datacvg.dimp.event.SortForNameEvent;
+import com.datacvg.dimp.event.SortForSystemEvent;
 import com.datacvg.dimp.presenter.ReportPresenter;
 import com.datacvg.dimp.view.ReportView;
 import com.datacvg.dimp.widget.TitleNavigator;
@@ -56,6 +62,7 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
     private FragmentTransaction fragmentTransaction;
     private FragmentManager fragmentManager ;
     private PopupWindow sortPop ;
+    private String reportType = Constants.REPORT_MINE;
 
     private ReportOfMineGridFragment reportOfMineFragment ;
     private ReportListOfMineFragment reportOfMineListFragment ;
@@ -89,12 +96,28 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
     private void createSortPopWindow() {
         View contentView = LayoutInflater.from(mContext)
                 .inflate(R.layout.item_pup_sort, null);
+        RelativeLayout relBySystemDefault = contentView.findViewById(R.id.rel_bySystemDefault);
+        RelativeLayout relAccordingToTheName = contentView.findViewById(R.id.rel_accordingToTheName);
+        relBySystemDefault.setOnClickListener(v -> {
+            PLog.e("按系统排序");
+            EventBus.getDefault().post(new SortForSystemEvent());
+            if(sortPop != null && sortPop.isShowing()){
+                sortPop.dismiss();
+            }
+        });
+        relAccordingToTheName.setOnClickListener(v -> {
+            PLog.e("按名称排序");
+            EventBus.getDefault().post(new SortForNameEvent());
+            if(sortPop != null && sortPop.isShowing()){
+                sortPop.dismiss();
+            }
+        });
         sortPop = new PopupWindow(contentView,
                 (int) resources.getDimension(R.dimen.W260), ViewGroup.LayoutParams.WRAP_CONTENT, true);
         sortPop.setTouchable(true);
         sortPop.setOutsideTouchable(false);
         sortPop.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_bg_f8f8fa));
-        sortPop.showAsDropDown(imgSearch,-100,20);
+        sortPop.showAsDropDown(imgSearch,-150,20);
     }
 
     /**
@@ -134,12 +157,14 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
                     if (sortPop == null){
                         createSortPopWindow();
                     }else{
-                        sortPop.showAsDropDown(imgSort);
+                        sortPop.showAsDropDown(imgSort,-150,20);
                     }
                 break;
 
             case R.id.img_search :
-                mContext.startActivity(new Intent(mContext, SearchReportActivity.class));
+                Intent intent = new Intent(mContext, SearchReportActivity.class) ;
+                intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportType);
+                mContext.startActivity(intent);
                 break;
         }
     }
@@ -165,6 +190,7 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
         hideFragment(fragmentTransaction);
         switch (position){
             case 0 :
+                reportType = Constants.REPORT_MINE ;
                 statusReport.showContent();
                 if (showType == 0){
                     imgChangeType.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_grid));
@@ -195,6 +221,7 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
                 break;
 
             case 1 :
+                reportType = Constants.REPORT_SHARE ;
                 statusReport.showContent();
                 if (showType == 0){
                     imgChangeType.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_grid));
@@ -225,6 +252,7 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
                 break;
 
             case 2 :
+                reportType = Constants.REPORT_TEMPLATE ;
                 statusReport.showContent();
                 if (showType == 0){
                     imgChangeType.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_grid));

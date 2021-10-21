@@ -272,4 +272,6 @@
     <string name="add_to_large_screen">Add to large screen</string>
     <string name="delete">delete</string>
     <string name="download_the_report">Download the report</string>
+    <string name="by_system_default">By system default</string>
+    <string name="according_to_the_name">According to the name</string>
 </resources>

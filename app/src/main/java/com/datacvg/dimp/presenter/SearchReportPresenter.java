@@ -5,7 +5,7 @@ import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
-import com.datacvg.dimp.bean.SearchListReportBean;
+import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.view.SearchReportView;
 import com.google.gson.Gson;
 
@@ -24,32 +24,27 @@ public class SearchReportPresenter extends BasePresenter<SearchReportView>{
         this.api = api;
     }
 
-    /**
-     * 根据名称搜索报告信息
-     * @param searchText
-     */
-    public void searchReportForName(String searchText) {
-        api.searchReport(searchText)
+    public void getReport(String type, String parentId, String _t) {
+        api.getReport(parentId,type,_t)
                 .compose(RxUtils.applySchedulersLifeCycle(getView()))
-                .subscribe(new RxObserver<BaseBean<SearchListReportBean>>(){
+                .subscribe(new RxObserver<BaseBean<ReportListBean>>(){
                     @Override
                     public void onComplete() {
                         super.onComplete();
-                        PLog.e("onComplete()");
                     }
 
                     @Override
-                    public void onNext(BaseBean<SearchListReportBean> bean) {
-                        if(checkJsonCode(bean)){
-                            getView().getSearchReportListSuccess(bean.getData());
+                    public void onNext(BaseBean<ReportListBean> bean) {
+                        if(RxObserver.checkJsonCode(bean)){
+                            PLog.e(new Gson().toJson(bean.getData()));
+                            getView().getReportSuccess(bean.getData());
                         }
-                        PLog.e(new Gson().toJson(bean));
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
-                        PLog.e("onError()" + e.getMessage());
+                        PLog.e("TAG",e.getMessage());
                     }
                 });
     }

@@ -5,6 +5,7 @@ import android.app.Activity;
 
 import com.datacvg.dimp.activity.AddIndexActivity;
 import com.datacvg.dimp.activity.AddIndexPageActivity;
+import com.datacvg.dimp.activity.AddReportToScreenActivity;
 import com.datacvg.dimp.activity.ChartDetailActivity;
 import com.datacvg.dimp.activity.ConfirmInfoActivity;
 import com.datacvg.dimp.activity.ContactActivity;
@@ -135,4 +136,6 @@ public interface ActivityComponent {
     void inject(ReportFolderActivity reportFolderActivity);
 
     void inject(SearchReportActivity searchReportActivity);
+
+    void inject(AddReportToScreenActivity addReportToScreenActivity);
 }

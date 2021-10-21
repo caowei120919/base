@@ -44,7 +44,6 @@
             android:paddingLeft="@dimen/W15"
             android:paddingRight="@dimen/W15"
             android:textSize="14sp"
-            android:imeOptions="actionSearch"
             android:layout_toLeftOf="@id/rel_clear"
             android:layout_toRightOf="@id/img_search"
             android:singleLine="true"

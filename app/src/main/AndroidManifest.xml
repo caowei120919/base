@@ -219,6 +219,9 @@
         <activity android:name=".activity.SearchReportActivity"
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait"/>
+        <activity android:name=".activity.AddReportToScreenActivity"
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

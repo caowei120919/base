@@ -1,6 +1,7 @@
 package com.datacvg.dimp.fragment;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Environment;
 import android.view.View;
 
@@ -9,20 +10,29 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.activity.AddReportToScreenActivity;
 import com.datacvg.dimp.adapter.ReportListAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.utils.FileUtils;
+import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.ReportBean;
 import com.datacvg.dimp.bean.ReportListBean;
+import com.datacvg.dimp.event.ReportRefreshEvent;
+import com.datacvg.dimp.event.SortForSystemEvent;
 import com.datacvg.dimp.presenter.ReportListOfMinePresenter;
 import com.datacvg.dimp.view.ReportListOfMineView;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -83,23 +93,24 @@ public class ReportListOfMineFragment extends BaseFragment<ReportListOfMineView,
     }
 
     @Override
-    public void deleteComplete(String model_id) {
-        for (ReportBean reportBean : reportBeans){
-            if(reportBean.getModel_id().equals(model_id)){
-                reportBeans.remove(reportBean);
-                adapter.notifyDataSetChanged();
-                return;
-            }
-        }
-    }
-
-    @Override
     public void getReportSourceSuccess(String bean) {
         String mFolder = Environment
                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
                 .getAbsolutePath();
         String mFileName = "dimp_" + reportBean.getModel_id() + ".canvas";
         FileUtils.writeTxtToFile(bean,mFolder,mFileName);
+    }
+
+    @Override
+    public void deleteSuccess() {
+        EventBus.getDefault().post(new ReportRefreshEvent());
+        for (ReportBean reportBean : reportBeans){
+            if(reportBean.getModel_id().equals(this.reportBean.getModel_id())){
+                reportBeans.remove(reportBean);
+                adapter.notifyDataSetChanged();
+                return;
+            }
+        }
     }
 
     /**
@@ -120,6 +131,7 @@ public class ReportListOfMineFragment extends BaseFragment<ReportListOfMineView,
     public void onReportAddToScreen(ReportBean reportBean) {
         this.reportBean = reportBean ;
         ToastUtils.showLongToast("功能开发中,请敬请期待.......");
+        mContext.startActivity(new Intent(mContext, AddReportToScreenActivity.class));
     }
 
     /**
@@ -156,5 +168,10 @@ public class ReportListOfMineFragment extends BaseFragment<ReportListOfMineView,
         getPresenter().getReportOfMine(Constants.REPORT_MINE
                 ,Constants.REPORT_MINE_PARENT_ID
                 ,String.valueOf(System.currentTimeMillis()));
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SortForSystemEvent event){
+        PLog.e("按系统排序");
     }
 }
