@@ -1,6 +1,327 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent">
 
-</RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rel_chooseScreen"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H100"
+        android:layout_marginLeft="@dimen/W24"
+        android:layout_marginRight="@dimen/W24"
+        android:layout_marginTop="@dimen/H24"
+        android:background="@drawable/shape_ffffff">
+
+        <TextView
+            android:id="@+id/tv_select"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="@dimen/W24"
+            android:text="@string/time_to_choose"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/c_000000">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_selectLine"
+            android:layout_width="@dimen/W2"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/H30"
+            android:layout_marginBottom="@dimen/H30"
+            android:layout_toRightOf="@id/tv_select"
+            android:layout_marginLeft="@dimen/W24"
+            android:background="@color/c_dbdbdb">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_selectName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/tv_selectLine"
+            android:layout_marginLeft="@dimen/W24"
+            android:layout_marginRight="@dimen/W24"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textSize="14sp"
+            android:gravity="center_vertical"
+            android:textColor="@color/c_303030"
+            android:drawableEnd="@mipmap/icon_push_down">
+        </TextView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H400"
+        android:layout_marginLeft="@dimen/W24"
+        android:layout_marginRight="@dimen/W24"
+        android:layout_marginTop="@dimen/H24"
+        android:background="@drawable/shape_ffffff">
+
+        <TextView
+            android:id="@+id/tv_basicTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="@dimen/W24"
+            android:layout_marginTop="@dimen/H24"
+            android:text="@string/basic_properties"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/c_000000">
+        </TextView>
+
+        <RelativeLayout
+            android:id="@+id/rel_basicStayTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_below="@id/tv_basicTitle"
+            android:layout_marginTop="@dimen/H42">
+
+            <TextView
+                android:id="@+id/tv_basicStayTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/report_stay_time"
+                android:textColor="@color/c_303030"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/W24">
+            </TextView>
+
+            <EditText
+                android:id="@+id/edit_stayTime"
+                android:layout_width="@dimen/W200"
+                android:layout_height="@dimen/H60"
+                android:layout_toRightOf="@id/tv_basicStayTime"
+                android:layout_marginLeft="@dimen/W170"
+                android:hint="15"
+                android:paddingLeft="@dimen/W24"
+                android:textColor="@color/c_303030"
+                android:textColorHint="@color/c_303030"
+                android:singleLine="true"
+                android:inputType="number"
+                android:background="@drawable/shape_round_8_f2f2f2">
+            </EditText>
+
+            <TextView
+                android:id="@+id/tv_stayTimeUnit"
+                android:layout_width="match_parent"
+                android:layout_toRightOf="@id/edit_stayTime"
+                android:layout_height="@dimen/H60"
+                android:layout_alignParentRight="true"
+                android:text="@string/second"
+                android:textColor="@color/c_303030"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/W24"
+                android:paddingRight="@dimen/W24"
+                android:drawableEnd="@mipmap/icon_push_down">
+            </TextView>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rel_basicPreviewTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_below="@id/rel_basicStayTime"
+            android:layout_marginTop="@dimen/H50">
+            <TextView
+                android:id="@+id/tv_basicPreviewTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/report_pre_load_time"
+                android:textColor="@color/c_303030"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/W24">
+            </TextView>
+
+            <EditText
+                android:id="@+id/edit_previewTime"
+                android:layout_width="@dimen/W200"
+                android:layout_height="@dimen/H60"
+                android:layout_toRightOf="@id/tv_basicPreviewTime"
+                android:layout_marginLeft="@dimen/W170"
+                android:hint="5"
+                android:textColorHint="@color/c_303030"
+                android:textColor="@color/c_303030"
+                android:paddingLeft="@dimen/W24"
+                android:singleLine="true"
+                android:inputType="number"
+                android:background="@drawable/shape_round_8_f2f2f2">
+            </EditText>
+
+            <TextView
+                android:id="@+id/tv_previewTimeUnit"
+                android:layout_width="match_parent"
+                android:layout_toRightOf="@id/edit_previewTime"
+                android:layout_height="@dimen/H60"
+                android:layout_alignParentRight="true"
+                android:text="@string/second"
+                android:textColor="@color/c_303030"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/W24"
+                android:paddingRight="@dimen/W24"
+                android:drawableEnd="@mipmap/icon_push_down">
+            </TextView>
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/H2"
+            android:background="@color/c_f2f2f2"
+            android:layout_below="@id/rel_basicPreviewTime"
+            android:layout_marginTop="@dimen/H35">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_basicPrompt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/rel_basicPreviewTime"
+            android:layout_marginTop="@dimen/H37"
+            android:gravity="center_vertical|left"
+            android:paddingLeft="@dimen/W24"
+            android:paddingRight="@dimen/W24"
+            android:text="@string/set_the_prompt">
+        </TextView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H380"
+        android:layout_marginTop="@dimen/H24"
+        android:layout_marginLeft="@dimen/W24"
+        android:layout_marginRight="@dimen/W24"
+        android:background="@drawable/shape_ffffff">
+        <TextView
+            android:id="@+id/tv_globalTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="@dimen/W24"
+            android:layout_marginTop="@dimen/H24"
+            android:text="@string/global_properties"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/c_000000">
+        </TextView>
+
+        <RelativeLayout
+            android:id="@+id/rel_globalAnimation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/H35"
+            android:layout_below="@id/tv_globalTitle">
+
+            <TextView
+                android:id="@+id/tv_globalAnimation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/report_animation_effect"
+                android:textColor="@color/c_303030"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/W24">
+            </TextView>
+
+            <TextView
+                android:id="@+id/tv_animationStyle"
+                android:layout_width="@dimen/W340"
+                android:layout_height="@dimen/H60"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/W24"
+                android:background="@drawable/shape_round_8_f2f2f2"
+                android:text="@string/fade_in_fade_out"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/W24"
+                android:drawableEnd="@mipmap/icon_push_down"
+                android:paddingRight="@dimen/W24"
+                android:textColor="@color/c_303030">
+            </TextView>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rel_animationTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/H35"
+            android:layout_below="@id/rel_globalAnimation">
+
+            <TextView
+                android:id="@+id/tv_globalAnimationTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dynamic_effect_of_time"
+                android:textColor="@color/c_303030"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/W24">
+            </TextView>
+
+            <RelativeLayout
+                android:layout_width="@dimen/W340"
+                android:layout_height="@dimen/H60"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/W24"
+                android:background="@drawable/shape_round_8_f2f2f2"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/W24"
+                android:paddingRight="@dimen/W24">
+
+                <TextView
+                    android:id="@+id/tv_globalTimeUnit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/millisecond"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/c_808080"
+                    android:layout_alignParentRight="true">
+                </TextView>
+
+                <EditText
+                    android:id="@+id/edit_animationTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@id/tv_globalTimeUnit"
+                    android:background="@null"
+                    android:inputType="number"
+                    android:gravity="center_vertical|left"
+                    android:paddingLeft="@dimen/W24">
+                </EditText>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/H60"
+            android:layout_marginTop="@dimen/H35"
+            android:layout_below="@id/rel_animationTime">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/report_playing_mode"
+                android:textColor="@color/c_303030"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="@dimen/W24">
+            </TextView>
+
+            <CheckBox
+                android:id="@+id/cb_circulation"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:button="@drawable/selector_check_button"
+                android:layout_alignParentRight="true"
+                android:text="@string/circulation"
+                android:gravity="center"
+                android:textColor="@color/c_303030"
+                android:paddingLeft="@dimen/W20"
+                android:layout_marginRight="@dimen/W24">
+            </CheckBox>
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>

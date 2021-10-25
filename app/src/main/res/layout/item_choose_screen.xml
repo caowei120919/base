@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/H100">
+
+    <TextView
+        android:id="@+id/tv_screen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="14sp"
+        android:gravity="center_vertical"
+        android:textColor="@color/c_303030"
+        android:paddingLeft="@dimen/W24">
+    </TextView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H3"
+        android:background="@color/c_f2f2f2"
+        android:layout_alignParentBottom="true">
+    </TextView>
+</RelativeLayout>

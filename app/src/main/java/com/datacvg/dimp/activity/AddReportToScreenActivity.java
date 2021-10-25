@@ -2,9 +2,10 @@ package com.datacvg.dimp.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
@@ -13,13 +14,10 @@ import com.datacvg.dimp.fragment.NewScreenFragment;
 import com.datacvg.dimp.presenter.AddReportToScreenPresenter;
 import com.datacvg.dimp.view.AddReportToScreenView;
 import com.datacvg.dimp.widget.TitleNavigator;
-
 import net.lucode.hackware.magicindicator.FragmentContainerHelper;
 import net.lucode.hackware.magicindicator.MagicIndicator;
-
 import java.util.Arrays;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -51,6 +49,7 @@ public class AddReportToScreenActivity extends BaseActivity<AddReportToScreenVie
 
     @Override
     protected void setupView() {
+        StatusBarUtil.setRootViewFitsSystemWindows(mContext,true);
         StatusBarUtil.setStatusBarColor(mContext
                 ,mContext.getResources().getColor(R.color.c_FFFFFF));
         initTitleMagicTitle();
@@ -71,7 +70,39 @@ public class AddReportToScreenActivity extends BaseActivity<AddReportToScreenVie
         magicTitle.setNavigator(titleNavigator);
         mTitleFragmentContainerHelper = new FragmentContainerHelper() ;
         mTitleFragmentContainerHelper.attachMagicIndicator(magicTitle);
-//        showFragment(0);
+        showFragment(0);
+    }
+
+    private void showFragment(int position) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        hideFragment(fragmentTransaction);
+        switch (position){
+            case 0 :
+                if(null != addToScreenFragment){
+                    fragmentTransaction.show(addToScreenFragment);
+                }else{
+                    addToScreenFragment = new AddToScreenFragment();
+                    fragmentTransaction.add(R.id.content,addToScreenFragment);
+                }
+                fragmentTransaction.commitAllowingStateLoss();
+                break;
+
+            case 1 :
+                newScreenFragment = new NewScreenFragment();
+                fragmentTransaction.add(R.id.content,newScreenFragment);
+                fragmentTransaction.commitAllowingStateLoss();
+                break;
+        }
+    }
+
+    private void hideFragment(FragmentTransaction fragmentTransaction) {
+        if(null != addToScreenFragment){
+            fragmentTransaction.hide(addToScreenFragment);
+        }
+        if(null != newScreenFragment){
+            fragmentTransaction.hide(newScreenFragment);
+        }
     }
 
     @OnClick({R.id.img_left,R.id.tv_confirm})
@@ -89,6 +120,7 @@ public class AddReportToScreenActivity extends BaseActivity<AddReportToScreenVie
 
     @Override
     public void onTabSelected(int position) {
-
+        mTitleFragmentContainerHelper.handlePageSelected(position);
+        showFragment(position);
     }
 }

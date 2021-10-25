@@ -43,7 +43,6 @@ public class StatusBarUtil {
      * @param colorId 颜色
      */
     public static void setStatusBarColor(Activity activity, int colorId) {
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = activity.getWindow();
             window.setStatusBarColor(colorId);

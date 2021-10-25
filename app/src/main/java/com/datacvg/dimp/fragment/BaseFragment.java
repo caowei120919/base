@@ -89,7 +89,7 @@ public abstract class BaseFragment<V extends MvpView,P extends MvpPresenter<V>>
     }
 
     private void setup(Bundle savedInstanceState, View rootView) {
-        StatusBarUtil.setRootViewFitsSystemWindows(getActivity(),false);
+        StatusBarUtil.setRootViewFitsSystemWindows(getActivity(),true);
         StatusBarUtil.setTranslucentStatus(getActivity());
         if (!StatusBarUtil.setStatusBarDarkTheme(getActivity(), true)) {
             StatusBarUtil.setStatusBarColor(getActivity(),mContext.getResources()

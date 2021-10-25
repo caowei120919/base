@@ -110,8 +110,8 @@
     <string name="report_animation_effect">报表动画效果</string>
     <string name="time">时间</string>
     <string name="global_properties">全局属性</string>
-    <string name="report_playing_mode">报表播放方式</string>
-    <string name="set_the_prompt">(ps:当前报表停留时间剩余#1开始，预加载下一张报表，设置最后一张报表时，下张报表默认为第一张)</string>
+    <string name="report_playing_mode">报表播放模式</string>
+    <string name="set_the_prompt">当前报表停留时间剩余#1开始，预加载下一张报表，设置最后一张报表时，下张报表默认为第一张</string>
     <string name="my_indicators">我的指标</string>
     <string name="search">搜索</string>
     <string name="the_action_plan">行动方案</string>
@@ -267,4 +267,18 @@
     <string name="download_the_report">下载报告</string>
     <string name="by_system_default">按系统默认</string>
     <string name="according_to_the_name">按名称</string>
+    <string name="time_to_choose">大屏选择</string>
+    <string name="dynamic_effect_of_time">动效时间</string>
+    <string name="millisecond">毫秒</string>
+    <string name="circulation">循环</string>
+    <string name="fade_in_fade_out">淡入淡出</string>
+    <string name="the_level_of_translation">水平平移</string>
+    <string name="basic_information">基础信息</string>
+    <string name="screen_name">屏幕名称:</string>
+    <string name="please_enter_a_screen_name">请输入屏幕名称</string>
+    <string name="orientation">方向 :</string>
+    <string name="the_screen_size">屏幕尺寸 :</string>
+    <string name="wide">宽 :</string>
+    <string name="high_">高 :</string>
+    <string name="the_custom">自定义</string>
 </resources>

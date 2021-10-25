@@ -274,4 +274,18 @@
     <string name="download_the_report">Download the report</string>
     <string name="by_system_default">By system default</string>
     <string name="according_to_the_name">According to the name</string>
+    <string name="time_to_choose">Time to choose</string>
+    <string name="dynamic_effect_of_time">Dynamic effect of time</string>
+    <string name="millisecond">millisecond</string>
+    <string name="circulation">circulation</string>
+    <string name="fade_in_fade_out">The fading</string>
+    <string name="the_level_of_translation">The level of translation</string>
+    <string name="basic_information">Basic information</string>
+    <string name="screen_name">Screen name:</string>
+    <string name="please_enter_a_screen_name">Please enter a screen name</string>
+    <string name="orientation">orientation :</string>
+    <string name="the_screen_size">The screen size :</string>
+    <string name="wide">wide :</string>
+    <string name="high_">high :</string>
+    <string name="the_custom">The custom</string>
 </resources>

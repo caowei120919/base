@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content" android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/lin_screenType"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H70"
+        android:layout_marginTop="@dimen/H25"
+        android:background="@color/c_FFFFFF"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginLeft="@dimen/W24"
+            android:layout_marginRight="@dimen/W24">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_gravity="center_vertical"
+                android:text="@string/the_screen_size"
+                android:textColor="@color/c_303030">
+            </TextView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/W24"
+                android:orientation="horizontal"
+                android:background="@drawable/shape_bg_f8f8fa">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:textColor="@color/c_303030"
+                    android:layout_marginLeft="@dimen/W24"
+                    android:text="@string/wide">
+                </TextView>
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:inputType="number"
+                    android:layout_marginLeft="@dimen/W15">
+                </EditText>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:textColor="@color/c_303030"
+                    android:layout_marginLeft="@dimen/W24"
+                    android:layout_marginRight="@dimen/W24"
+                    android:text="px">
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/W24"
+                android:orientation="horizontal"
+                android:background="@drawable/shape_bg_f8f8fa">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:textColor="@color/c_303030"
+                    android:layout_marginLeft="@dimen/W24"
+                    android:text="@string/high_">
+                </TextView>
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:inputType="number"
+                    android:layout_marginLeft="@dimen/W15">
+                </EditText>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:textColor="@color/c_303030"
+                    android:layout_marginLeft="@dimen/W24"
+                    android:layout_marginRight="@dimen/W24"
+                    android:text="px">
+                </TextView>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
