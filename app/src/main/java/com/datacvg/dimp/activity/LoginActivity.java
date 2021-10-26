@@ -32,6 +32,7 @@ import com.datacvg.dimp.bean.CheckVersionBean;
 import com.datacvg.dimp.bean.UserLoginBean;
 import com.datacvg.dimp.presenter.LoginPresenter;
 import com.datacvg.dimp.view.LoginView;
+import com.google.gson.Gson;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import java.io.File;
 import butterknife.BindView;
@@ -177,8 +178,9 @@ public class LoginActivity extends BaseActivity<LoginView, LoginPresenter> imple
      * @param baseBean
      */
     @Override
-    public void loginSuccess(BaseBean<UserLoginBean> baseBean) {
-        Constants.saveUser(baseBean.getResdata()
+    public void loginSuccess(BaseBean baseBean) {
+        UserLoginBean userLoginBean = new Gson().fromJson(new Gson().toJson(baseBean.getResdata()),UserLoginBean.class);
+        Constants.saveUser(userLoginBean
                 ,cbRememberUser.isChecked(),password,companyCode);
     }
 

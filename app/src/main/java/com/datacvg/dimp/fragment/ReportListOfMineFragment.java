@@ -130,8 +130,10 @@ public class ReportListOfMineFragment extends BaseFragment<ReportListOfMineView,
     @Override
     public void onReportAddToScreen(ReportBean reportBean) {
         this.reportBean = reportBean ;
-        ToastUtils.showLongToast("功能开发中,请敬请期待.......");
-        mContext.startActivity(new Intent(mContext, AddReportToScreenActivity.class));
+        this.reportBean.setReport_type(Constants.REPORT_MINE);
+        Intent intent = new Intent(mContext, AddReportToScreenActivity.class) ;
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,this.reportBean);
+        mContext.startActivity(intent);
     }
 
     /**

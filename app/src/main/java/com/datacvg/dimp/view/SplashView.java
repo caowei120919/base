@@ -16,6 +16,6 @@ public interface SplashView extends MvpView {
      * 登录成功
      * @param baseBean
      */
-    void loginSuccess(BaseBean<UserLoginBean> baseBean);
+    void loginSuccess(BaseBean baseBean);
 
 }

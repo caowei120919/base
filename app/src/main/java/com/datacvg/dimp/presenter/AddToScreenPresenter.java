@@ -5,8 +5,12 @@ import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
+import com.datacvg.dimp.bean.AddToScreenRequestBean;
 import com.datacvg.dimp.bean.ScreenListBean;
 import com.datacvg.dimp.view.AddToScreenView;
+import com.google.gson.Gson;
+
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -40,6 +44,34 @@ public class AddToScreenPresenter extends BasePresenter<AddToScreenView>{
                     public void onNext(BaseBean<ScreenListBean> bean) {
                         if(checkJsonCode(bean)){
                             getView().getScreenSuccess(bean.getData());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        PLog.e("TAG",e.getMessage());
+                    }
+                });
+    }
+
+    /**
+     * 添加到大屏请求
+     * @param requestBean
+     */
+    public void addToScreenRequest(AddToScreenRequestBean requestBean) {
+        api.addToScreenRequest(new Gson().fromJson(new Gson().toJson(requestBean), Map.class))
+                .compose(RxUtils.applySchedulersLifeCycle(getView()))
+                .subscribe(new RxObserver<BaseBean>(){
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                    }
+
+                    @Override
+                    public void onNext(BaseBean bean) {
+                        if(checkJsonCode(bean)){
+                            getView().addToScreenSuccess();
                         }
                     }
 

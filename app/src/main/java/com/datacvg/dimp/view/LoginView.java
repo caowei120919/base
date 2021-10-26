@@ -15,7 +15,7 @@ public interface LoginView extends MvpView {
      * 登录成功
      * @param baseBean
      */
-    void loginSuccess(BaseBean<UserLoginBean> baseBean);
+    void loginSuccess(BaseBean baseBean);
 
     /**
      * 检查更新

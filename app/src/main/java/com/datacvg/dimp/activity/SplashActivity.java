@@ -15,6 +15,7 @@ import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.bean.UserLoginBean;
 import com.datacvg.dimp.presenter.SplashPresenter;
 import com.datacvg.dimp.view.SplashView;
+import com.google.gson.Gson;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import me.jessyan.retrofiturlmanager.RetrofitUrlManager;
 
@@ -131,8 +132,9 @@ public class SplashActivity extends BaseActivity<SplashView, SplashPresenter> im
 
 
     @Override
-    public void loginSuccess(BaseBean<UserLoginBean> baseBean) {
-        Constants.saveUser(baseBean.getResdata()
+    public void loginSuccess(BaseBean baseBean) {
+        UserLoginBean userLoginBean = new Gson().fromJson(new Gson().toJson(baseBean.getResdata()),UserLoginBean.class);
+        Constants.saveUser(userLoginBean
                 ,REMEMBER_USER,password,companyCode);
         mContext.startActivity(new Intent(mContext, MainActivity.class));
         finish();

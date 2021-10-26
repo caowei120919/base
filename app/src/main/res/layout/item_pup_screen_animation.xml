@@ -17,7 +17,7 @@
         android:layout_height="@dimen/H66"
         android:gravity="center"
         android:textSize="13sp"
-        android:text="@string/hour"
+        android:text="@string/fade_in_fade_out"
         android:singleLine="true"
         android:textColor="@color/c_000000"
         android:background="@drawable/shape_bg_f8f8fa">
@@ -35,25 +35,7 @@
         android:layout_height="@dimen/H66"
         android:gravity="center"
         android:textSize="13sp"
-        android:text="@string/minute"
-        android:singleLine="true"
-        android:textColor="@color/c_000000"
-        android:background="@drawable/shape_bg_f8f8fa">
-    </TextView>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/H2"
-        android:background="@color/c_FFFFFF">
-    </TextView>
-
-    <TextView
-        android:id="@+id/tv_second"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/H66"
-        android:gravity="center"
-        android:textSize="13sp"
-        android:text="@string/second"
+        android:text="@string/the_level_of_translation"
         android:singleLine="true"
         android:textColor="@color/c_000000"
         android:background="@drawable/shape_bg_f8f8fa">

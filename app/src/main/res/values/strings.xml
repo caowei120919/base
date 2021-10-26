@@ -111,7 +111,7 @@
     <string name="time">时间</string>
     <string name="global_properties">全局属性</string>
     <string name="report_playing_mode">报表播放模式</string>
-    <string name="set_the_prompt">当前报表停留时间剩余#1开始，预加载下一张报表，设置最后一张报表时，下张报表默认为第一张</string>
+    <string name="set_the_prompt">当前报表停留时间剩余5秒开始，预加载下一张报表，设置最后一张报表时，下张报表默认为第一张</string>
     <string name="my_indicators">我的指标</string>
     <string name="search">搜索</string>
     <string name="the_action_plan">行动方案</string>
@@ -281,4 +281,5 @@
     <string name="wide">宽 :</string>
     <string name="high_">高 :</string>
     <string name="the_custom">自定义</string>
+    <string name="description_added_to_the_large_screen_successfully">添加到大屏成功</string>
 </resources>

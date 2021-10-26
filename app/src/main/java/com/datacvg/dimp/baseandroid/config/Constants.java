@@ -23,6 +23,9 @@ public class Constants {
     public static final String DIMENSION_FIRST = "DIMENSION_FIRST";
     public static final String DIMENSION_SECOND = "DIMENSION_SECOND";
     public static final String DIMENSION_THIRD = "DIMENSION_THIRD";
+    public static final String SECOND = "second" ;
+    public static final String MINUTE = "minute" ;
+    public static final String HOUR = "hour" ;
     public static final int INSTALL_APK = 0x00008;
 
     /**
@@ -238,6 +241,14 @@ public class Constants {
      * 分页默认每页数量
      */
     public static int DEFAULT_PAGE_SIZE = 20 ;
+
+    /**
+     * 大屏动画方式
+     *      淡入淡出
+     *      水平平移
+     */
+    public static final String SCREEN_FADE_IN_AND_OUT = "fadeInAndOut" ;
+    public static final String SCREEN_PAN_HORIZONTAL = "panHorizontal" ;
 
 
     /**

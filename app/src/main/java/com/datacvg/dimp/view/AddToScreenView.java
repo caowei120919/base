@@ -14,4 +14,9 @@ public interface AddToScreenView extends MvpView {
      * @param data
      */
     void getScreenSuccess(ScreenListBean data);
+
+    /**
+     * 添加到大屏成功
+     */
+    void addToScreenSuccess();
 }

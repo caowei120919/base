@@ -7,8 +7,12 @@ import android.widget.TextView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
+import com.datacvg.dimp.bean.ReportBean;
+import com.datacvg.dimp.event.AddToScreenEvent;
+import com.datacvg.dimp.event.AddToScreenSuccessEvent;
 import com.datacvg.dimp.fragment.AddToScreenFragment;
 import com.datacvg.dimp.fragment.NewScreenFragment;
 import com.datacvg.dimp.presenter.AddReportToScreenPresenter;
@@ -16,6 +20,11 @@ import com.datacvg.dimp.view.AddReportToScreenView;
 import com.datacvg.dimp.widget.TitleNavigator;
 import net.lucode.hackware.magicindicator.FragmentContainerHelper;
 import net.lucode.hackware.magicindicator.MagicIndicator;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.Arrays;
 import java.util.List;
 import butterknife.BindView;
@@ -36,6 +45,7 @@ public class AddReportToScreenActivity extends BaseActivity<AddReportToScreenVie
     private FragmentTransaction fragmentTransaction;
     private AddToScreenFragment addToScreenFragment ;
     private NewScreenFragment newScreenFragment ;
+    private ReportBean reportBean ;
 
     @Override
     protected int getLayoutId() {
@@ -57,7 +67,11 @@ public class AddReportToScreenActivity extends BaseActivity<AddReportToScreenVie
 
     @Override
     protected void setupData(Bundle savedInstanceState) {
-
+        reportBean = (ReportBean) getIntent().getSerializableExtra(Constants.EXTRA_DATA_FOR_BEAN);
+        if(reportBean == null){
+            finish();
+            return;
+        }
     }
 
     /**
@@ -113,7 +127,7 @@ public class AddReportToScreenActivity extends BaseActivity<AddReportToScreenVie
                 break;
 
             case R.id.tv_confirm :
-                PLog.e("确定");
+                EventBus.getDefault().post(new AddToScreenEvent(reportBean));
                 break;
         }
     }
@@ -122,5 +136,10 @@ public class AddReportToScreenActivity extends BaseActivity<AddReportToScreenVie
     public void onTabSelected(int position) {
         mTitleFragmentContainerHelper.handlePageSelected(position);
         showFragment(position);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(AddToScreenSuccessEvent event){
+        finish();
     }
 }

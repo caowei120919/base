@@ -74,7 +74,7 @@ public interface MobileApi {
      * @return
      */
     @POST("api/mobile/login/userlogin")
-    Observable<BaseBean<UserLoginBean>> login(@Body Map<String, String> params);
+    Observable<BaseBean> login(@Body Map<String, String> params);
 
     /**
      * 获取用户模块
@@ -528,4 +528,7 @@ public interface MobileApi {
      */
     @GET("api/portal/user/search_reports")
     Observable<BaseBean<SearchListReportBean>> searchReport(@Query("clname") String searchText);
+
+    @POST("api/dataengine/dataexporler/report/screen")
+    Observable<BaseBean> addToScreenRequest(@Body Map params);
 }
