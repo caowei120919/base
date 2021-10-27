@@ -29,16 +29,16 @@
             </TextView>
 
             <TextView
+                android:id="@+id/tv_screenSizeValue"
                 android:layout_width="@dimen/W170"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/W24"
                 android:layout_weight="1"
                 android:drawableEnd="@mipmap/icon_push_down"
-                android:text="30"
                 android:gravity="center_vertical"
-                android:textColor="@color/c_303030"
                 android:paddingLeft="@dimen/W24"
-                android:layout_marginRight="@dimen/W24">
-            </TextView>
+                android:text="30"
+                android:textColor="@color/c_303030"></TextView>
         </LinearLayout>
     </LinearLayout>
 

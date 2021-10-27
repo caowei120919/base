@@ -250,6 +250,9 @@ public class Constants {
     public static final String SCREEN_FADE_IN_AND_OUT = "fadeInAndOut" ;
     public static final String SCREEN_PAN_HORIZONTAL = "panHorizontal" ;
 
+    public static final String SCREEN_HORIZONTAL = "horizontal" ;
+    public static final String SCREEN_VERTICAL = "vertical" ;
+
 
     /**
      *

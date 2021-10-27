@@ -25,6 +25,24 @@ public class AddToScreenRequestBean implements Serializable {
     private String screenId;
     private String screenName;
     private String basicAttr;
+    private String screenFormat;
+    private String type ;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getScreenFormat() {
+        return screenFormat;
+    }
+
+    public void setScreenFormat(String screenFormat) {
+        this.screenFormat = screenFormat;
+    }
 
     public String getReportType() {
         return reportType;

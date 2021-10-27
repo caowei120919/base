@@ -282,4 +282,5 @@
     <string name="high_">高 :</string>
     <string name="the_custom">自定义</string>
     <string name="description_added_to_the_large_screen_successfully">添加到大屏成功</string>
+    <string name="please_enter_a_large_screen_name">请输入大屏名称</string>
 </resources>

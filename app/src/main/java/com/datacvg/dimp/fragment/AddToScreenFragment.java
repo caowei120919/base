@@ -164,7 +164,7 @@ public class AddToScreenFragment extends BaseFragment<AddToScreenView, AddToScre
         });
         stayTimePop = new PopupWindow(stayContentView,
                 (int) resources.getDimension(R.dimen.W200), ViewGroup.LayoutParams.WRAP_CONTENT, true);
-        stayTimePop.setTouchable(false);
+        stayTimePop.setTouchable(true);
         stayTimePop.setOutsideTouchable(false);
         stayTimePop.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_bg_f8f8fa));
 
@@ -193,7 +193,7 @@ public class AddToScreenFragment extends BaseFragment<AddToScreenView, AddToScre
         });
         previewTimePop = new PopupWindow(previewContentView,
                 (int) resources.getDimension(R.dimen.W200), ViewGroup.LayoutParams.WRAP_CONTENT, true);
-        previewTimePop.setTouchable(false);
+        previewTimePop.setTouchable(true);
         previewTimePop.setOutsideTouchable(false);
         previewTimePop.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_bg_f8f8fa));
 
@@ -215,7 +215,7 @@ public class AddToScreenFragment extends BaseFragment<AddToScreenView, AddToScre
         });
         animationPop = new PopupWindow(animationContentView,
                 (int) resources.getDimension(R.dimen.W350), ViewGroup.LayoutParams.WRAP_CONTENT, true);
-        animationPop.setTouchable(false);
+        animationPop.setTouchable(true);
         animationPop.setOutsideTouchable(false);
         animationPop.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_bg_f8f8fa));
     }

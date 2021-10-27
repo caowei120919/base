@@ -58,4 +58,14 @@
         <item>en</item>
     </string-array>
 
+    <string-array name="screen_size">
+        <item>32</item>
+        <item>42</item>
+        <item>50</item>
+        <item>55</item>
+        <item>60</item>
+        <item>65</item>
+        <item>100</item>
+    </string-array>
+
 </resources>
