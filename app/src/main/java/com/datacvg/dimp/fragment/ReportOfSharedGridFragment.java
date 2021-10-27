@@ -15,8 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.activity.AddReportToScreenActivity;
 import com.datacvg.dimp.activity.ReportDetailActivity;
 import com.datacvg.dimp.activity.ReportFolderActivity;
+import com.datacvg.dimp.activity.ReportGridOnFolderActivity;
 import com.datacvg.dimp.adapter.ReportGridOfMineAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
@@ -112,8 +114,9 @@ public class ReportOfSharedGridFragment extends BaseFragment<ReportOfSharedView,
 
     @Override
     public void onGridFolderClick(ReportBean reportBean) {
-        Intent intent = new Intent(mContext, ReportFolderActivity.class);
+        Intent intent = new Intent(mContext, ReportGridOnFolderActivity.class);
         intent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,Constants.REPORT_SHARE);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_ALBUM,Constants.REPORT_GRID);
         intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportBean);
         mContext.startActivity(intent);
     }
@@ -127,7 +130,10 @@ public class ReportOfSharedGridFragment extends BaseFragment<ReportOfSharedView,
     @Override
     public void addToScreen(ReportBean bean) {
         this.reportBean = bean ;
-        ToastUtils.showLongToast("功能开发中,请敬请期待.......");
+        this.reportBean.setReport_type(Constants.REPORT_SHARE);
+        Intent intent = new Intent(mContext, AddReportToScreenActivity.class) ;
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,this.reportBean);
+        mContext.startActivity(intent);
     }
 
     @Override

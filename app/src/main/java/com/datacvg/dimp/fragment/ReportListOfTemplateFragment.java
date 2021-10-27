@@ -1,6 +1,7 @@
 package com.datacvg.dimp.fragment;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Environment;
 import android.view.View;
 
@@ -10,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.activity.ReportDetailActivity;
+import com.datacvg.dimp.activity.ReportFolderActivity;
 import com.datacvg.dimp.adapter.ReportListAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
@@ -134,7 +137,6 @@ public class ReportListOfTemplateFragment extends BaseFragment<ReportListOfTempl
     @Override
     public void onReportAddToScreen(ReportBean reportBean) {
         this.reportBean = reportBean ;
-        PLog.e("功能开发中,请敬请期待......");
     }
 
     /**
@@ -171,6 +173,22 @@ public class ReportListOfTemplateFragment extends BaseFragment<ReportListOfTempl
         getPresenter().getReportOfTemplate(Constants.REPORT_TEMPLATE
                 ,Constants.REPORT_TEMPLATE_PARENT_ID
                 ,String.valueOf(System.currentTimeMillis()));
+    }
+
+    @Override
+    public void onListFolderClick(ReportBean reportBean) {
+        Intent intent = new Intent(mContext, ReportFolderActivity.class);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,Constants.REPORT_TEMPLATE);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_ALBUM,Constants.REPORT_LIST);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportBean);
+        mContext.startActivity(intent);
+    }
+
+    @Override
+    public void onReportClick(ReportBean reportBean) {
+        Intent intent = new Intent(mContext, ReportDetailActivity.class) ;
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportBean);
+        mContext.startActivity(intent);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

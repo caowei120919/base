@@ -11,6 +11,7 @@
         android:clickable="true">
 
         <RelativeLayout
+            android:id="@+id/rel_item"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

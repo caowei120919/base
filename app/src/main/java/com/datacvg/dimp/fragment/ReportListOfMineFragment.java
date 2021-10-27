@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.activity.AddReportToScreenActivity;
+import com.datacvg.dimp.activity.ReportDetailActivity;
+import com.datacvg.dimp.activity.ReportFolderActivity;
 import com.datacvg.dimp.adapter.ReportListAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
@@ -144,6 +146,22 @@ public class ReportListOfMineFragment extends BaseFragment<ReportListOfMineView,
     public void onReportDownload(ReportBean reportBean) {
         this.reportBean = reportBean ;
         downloadFile(reportBean);
+    }
+
+    @Override
+    public void onListFolderClick(ReportBean reportBean) {
+        Intent intent = new Intent(mContext, ReportFolderActivity.class);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,Constants.REPORT_MINE);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_ALBUM,Constants.REPORT_LIST);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportBean);
+        mContext.startActivity(intent);
+    }
+
+    @Override
+    public void onReportClick(ReportBean reportBean) {
+        Intent intent = new Intent(mContext, ReportDetailActivity.class) ;
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportBean);
+        mContext.startActivity(intent);
     }
 
     /**

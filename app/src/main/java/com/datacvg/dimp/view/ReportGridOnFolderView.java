@@ -5,17 +5,17 @@ import com.datacvg.dimp.bean.ReportListBean;
 
 /**
  * @Author : T-Bag (茶包)
- * @Time : 2021-09-17
+ * @Time : 2021-10-27
  * @Description :
  */
-public interface ReportFolderView extends MvpView {
-    /**
-     * 获取管理画布列表成功
-     * @param data
-     */
+public interface ReportGridOnFolderView extends MvpView {
     void getReportSuccess(ReportListBean data);
 
     void getReportSourceSuccess(String bean);
 
     void deleteSuccess();
+
+    void uploadSuccess();
+
+    void getReportOfMineSuccess(ReportListBean data);
 }

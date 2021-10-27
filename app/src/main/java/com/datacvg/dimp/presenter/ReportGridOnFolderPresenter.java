@@ -1,29 +1,33 @@
 package com.datacvg.dimp.presenter;
 
 import com.datacvg.dimp.baseandroid.config.MobileApi;
+import com.datacvg.dimp.baseandroid.config.UploadApi;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.bean.ReportListBean;
-import com.datacvg.dimp.view.ReportFolderView;
+import com.datacvg.dimp.view.ReportGridOnFolderView;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 /**
  * @Author : T-Bag (茶包)
- * @Time : 2021-09-17
+ * @Time : 2021-10-27
  * @Description :
  */
-public class ReportFolderPresenter extends BasePresenter<ReportFolderView>{
+public class ReportGridOnFolderPresenter extends BasePresenter<ReportGridOnFolderView>{
     MobileApi api ;
+    UploadApi uploadApi ;
 
     @Inject
-    public ReportFolderPresenter(MobileApi api) {
+    public ReportGridOnFolderPresenter(MobileApi api,UploadApi uploadApi) {
         this.api = api;
+        this.uploadApi = uploadApi ;
     }
 
     /**
@@ -105,6 +109,65 @@ public class ReportFolderPresenter extends BasePresenter<ReportFolderView>{
                         if (e instanceof NullPointerException){
                             getView().deleteSuccess();
                         }
+                    }
+                });
+    }
+
+    /**
+     * 上传我的管理画布缩略图
+     * @param params
+     */
+    public void uploadModelThumb(Map params, String reportId, String reportType) {
+        uploadApi.uploadFile(reportId,reportType,params)
+                .compose(RxUtils.applySchedulersLifeCycle(getView()))
+                .subscribe(new RxObserver<BaseBean>(){
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                    }
+
+                    @Override
+                    public void onNext(BaseBean bean) {
+                        if(checkJsonCode(bean)){
+                            getView().uploadSuccess();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        PLog.e("TAG",e.getMessage());
+                    }
+                });
+    }
+
+    /**
+     *
+     * @param type  类型
+     * @param parentId  父id
+     * @param _t 时间戳
+     */
+    public void getReportOfMine(String type, String parentId, String _t) {
+        api.getReport(parentId,type,_t)
+                .compose(RxUtils.applySchedulersLifeCycle(getView()))
+                .subscribe(new RxObserver<BaseBean<ReportListBean>>(){
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                    }
+
+                    @Override
+                    public void onNext(BaseBean<ReportListBean> bean) {
+                        if(RxObserver.checkJsonCode(bean)){
+                            PLog.e(new Gson().toJson(bean.getData()));
+                            getView().getReportOfMineSuccess(bean.getData());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        PLog.e("TAG",e.getMessage());
                     }
                 });
     }

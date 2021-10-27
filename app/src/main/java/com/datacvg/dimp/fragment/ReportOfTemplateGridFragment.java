@@ -17,6 +17,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.activity.ReportDetailActivity;
 import com.datacvg.dimp.activity.ReportFolderActivity;
+import com.datacvg.dimp.activity.ReportGridOnFolderActivity;
 import com.datacvg.dimp.adapter.ReportGridOfMineAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
@@ -113,9 +114,10 @@ public class ReportOfTemplateGridFragment extends BaseFragment<ReportOfTemplateV
 
     @Override
     public void onGridFolderClick(ReportBean reportBean) {
-        Intent intent = new Intent(mContext, ReportFolderActivity.class);
+        Intent intent = new Intent(mContext, ReportGridOnFolderActivity.class);
         intent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,Constants.REPORT_TEMPLATE);
         intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportBean);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_ALBUM,Constants.REPORT_GRID);
         mContext.startActivity(intent);
     }
 

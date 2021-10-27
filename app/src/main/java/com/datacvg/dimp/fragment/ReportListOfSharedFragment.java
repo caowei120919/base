@@ -1,12 +1,16 @@
 package com.datacvg.dimp.fragment;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Environment;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.activity.AddReportToScreenActivity;
+import com.datacvg.dimp.activity.ReportDetailActivity;
+import com.datacvg.dimp.activity.ReportFolderActivity;
 import com.datacvg.dimp.adapter.ReportListAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
@@ -126,7 +130,10 @@ public class ReportListOfSharedFragment extends BaseFragment<ReportListOfSharedV
     @Override
     public void onReportAddToScreen(ReportBean reportBean) {
         this.reportBean = reportBean ;
-        ToastUtils.showLongToast("功能开发中,请敬请期待......");
+        this.reportBean.setReport_type(Constants.REPORT_SHARE);
+        Intent intent = new Intent(mContext, AddReportToScreenActivity.class) ;
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,this.reportBean);
+        mContext.startActivity(intent);
     }
 
     /**
@@ -160,6 +167,22 @@ public class ReportListOfSharedFragment extends BaseFragment<ReportListOfSharedV
         getPresenter().getReportOfShare(Constants.REPORT_SHARE
                 ,Constants.REPORT_SHARE_PARENT_ID
                 ,String.valueOf(System.currentTimeMillis()));
+    }
+
+    @Override
+    public void onListFolderClick(ReportBean reportBean) {
+        Intent intent = new Intent(mContext, ReportFolderActivity.class);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,Constants.REPORT_SHARE);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_ALBUM,Constants.REPORT_LIST);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportBean);
+        mContext.startActivity(intent);
+    }
+
+    @Override
+    public void onReportClick(ReportBean reportBean) {
+        Intent intent = new Intent(mContext, ReportDetailActivity.class) ;
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportBean);
+        mContext.startActivity(intent);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -1,7 +1,10 @@
 package com.datacvg.dimp.activity;
 
+import android.Manifest;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,15 +14,24 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.adapter.ReportGridOfMineAdapter;
 import com.datacvg.dimp.adapter.ReportListAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
+import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
+import com.datacvg.dimp.baseandroid.utils.FileUtils;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
+import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
+import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.ReportBean;
 import com.datacvg.dimp.bean.ReportListBean;
+import com.datacvg.dimp.event.ReportRefreshEvent;
 import com.datacvg.dimp.presenter.ReportFolderPresenter;
 import com.datacvg.dimp.view.ReportFolderView;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +58,9 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
     private ReportBean reportBean ;
     private List<ReportBean> reportBeans = new ArrayList<>() ;
     private String folderType ;
+    private ReportGridOfMineAdapter gridAdapter ;
     private ReportListAdapter adapter ;
+    private String listType ;
 
     @Override
     protected int getLayoutId() {
@@ -65,7 +79,8 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
 
         reportBean = (ReportBean) getIntent().getSerializableExtra(Constants.EXTRA_DATA_FOR_BEAN);
         folderType = getIntent().getStringExtra(Constants.EXTRA_DATA_FOR_SCAN);
-        if(reportBean == null || TextUtils.isEmpty(folderType)){
+        listType = getIntent().getStringExtra(Constants.EXTRA_DATA_FOR_ALBUM);
+        if(reportBean == null || TextUtils.isEmpty(folderType) || TextUtils.isEmpty(listType)){
             finish();
             return;
         }
@@ -126,6 +141,9 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
 
             case R.id.img_search :
                 PLog.e("跳转到搜索");
+                Intent intent = new Intent(mContext, SearchReportActivity.class) ;
+                intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,folderType);
+                mContext.startActivity(intent);
                 break;
 
             case R.id.img_sort :
@@ -147,7 +165,45 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
      */
     @Override
     public void onReportDelete(ReportBean reportBean) {
+        this.reportBean = reportBean ;
+        switch (folderType){
+            case Constants.REPORT_MINE :
+                getPresenter().deleteReport(reportBean.getModel_id(),Constants.REPORT_MINE_TYPE);
+                break;
 
+            case Constants.REPORT_SHARE :
+                getPresenter().deleteReport(reportBean.getShare_id(),Constants.REPORT_SHARE_TYPE);
+                break;
+
+            case Constants.REPORT_TEMPLATE :
+                getPresenter().deleteReport(reportBean.getTemplate_id(),Constants.REPORT_TEMPLATE_TYPE);
+                break;
+        }
+    }
+
+    @Override
+    public void deleteSuccess() {
+        reportBean = null ;
+        EventBus.getDefault().post(new ReportRefreshEvent());
+        switch (folderType){
+            case Constants.REPORT_MINE :
+                getPresenter().getReportOnFolder(folderType
+                        ,reportBean.getModel_id()
+                        ,String.valueOf(System.currentTimeMillis()));
+                break;
+
+            case Constants.REPORT_SHARE :
+                getPresenter().getReportOnFolder(folderType
+                        ,reportBean.getShare_id()
+                        ,String.valueOf(System.currentTimeMillis()));
+                break;
+
+            case Constants.REPORT_TEMPLATE :
+                getPresenter().getReportOnFolder(folderType
+                        ,reportBean.getTemplate_id()
+                        ,String.valueOf(System.currentTimeMillis()));
+                break;
+        }
     }
 
     /**
@@ -156,7 +212,11 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
      */
     @Override
     public void onReportAddToScreen(ReportBean reportBean) {
-
+        this.reportBean = reportBean ;
+        this.reportBean.setReport_type(folderType);
+        Intent intent = new Intent(mContext, AddReportToScreenActivity.class) ;
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,this.reportBean);
+        mContext.startActivity(intent);
     }
 
     /**
@@ -165,6 +225,48 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
      */
     @Override
     public void onReportDownload(ReportBean reportBean) {
+        this.reportBean = reportBean ;
+        downloadFile();
+    }
 
+    private void downloadFile() {
+        new RxPermissions(mContext).request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .compose(RxUtils.<Boolean>applySchedulersLifeCycle(getMvpView()))
+                .subscribe(new RxObserver<Boolean>() {
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        if (aBoolean) {
+                            getPresenter().downloadFile(reportBean.getShare_id(),Constants.REPORT_SHARE_TYPE);
+                        } else {
+                            ToastUtils.showShortToast(mContext.getResources()
+                                    .getString(R.string.the_file_cannot_be_downloaded_because_the_permission_is_not_allowed));
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void getReportSourceSuccess(String bean) {
+        String mFolder = Environment
+                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                .getAbsolutePath();
+        String mFileName = "dimp_" + reportBean.getShare_id() + ".canvas";
+        FileUtils.writeTxtToFile(bean,mFolder,mFileName);
+    }
+
+    @Override
+    public void onListFolderClick(ReportBean reportBean) {
+        Intent intent = new Intent(mContext, ReportFolderActivity.class);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,folderType);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_ALBUM,listType);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportBean);
+        mContext.startActivity(intent);
+    }
+
+    @Override
+    public void onReportClick(ReportBean reportBean) {
+        Intent intent = new Intent(mContext, ReportDetailActivity.class) ;
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportBean);
+        mContext.startActivity(intent);
     }
 }

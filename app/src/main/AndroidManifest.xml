@@ -222,6 +222,9 @@
         <activity android:name=".activity.AddReportToScreenActivity"
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait" />
+        <activity android:name=".activity.ReportGridOnFolderActivity"
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait"  />
     </application>
 
 </manifest>

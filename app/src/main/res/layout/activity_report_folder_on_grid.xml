@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/c_FFFFFF">
+
+        <ImageView
+            android:id="@+id/img_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/img_back"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/W30"
+            android:paddingRight="@dimen/W30">
+        </ImageView>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:textColor="@color/c_303030"
+            android:textSize="18sp"
+            android:layout_marginLeft="@dimen/W30">
+        </TextView>
+
+        <ImageView
+            android:id="@+id/img_sort"
+            android:layout_width="@dimen/W32"
+            android:layout_height="@dimen/W32"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/icon_sort"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/W24"
+            android:layout_alignParentRight="true">
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/img_search"
+            android:layout_width="@dimen/W32"
+            android:layout_height="@dimen/W32"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/icon_search_of_report"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/W24"
+            android:layout_toLeftOf="@id/img_sort">
+        </ImageView>
+    </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_report"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/W40"
+        android:layout_marginTop="@dimen/H24"
+        android:layout_marginBottom="@dimen/H24">
+    </androidx.recyclerview.widget.RecyclerView>
+</LinearLayout>

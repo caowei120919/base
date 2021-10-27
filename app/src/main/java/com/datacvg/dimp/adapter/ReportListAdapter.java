@@ -94,6 +94,13 @@ public class ReportListAdapter extends RecyclerView.Adapter<ReportListAdapter.Vi
         holder.relDownLoad.setOnClickListener(v -> {
             listener.onReportDownload(reportBean);
         });
+        holder.relItem.setOnClickListener(v -> {
+            if(reportBean.getFolder()){
+                listener.onListFolderClick(reportBean);
+            }else{
+                listener.onReportClick(reportBean);
+            }
+        });
     }
 
     @Override
@@ -122,6 +129,8 @@ public class ReportListAdapter extends RecyclerView.Adapter<ReportListAdapter.Vi
         SwipeMenuLayout swipeMine ;
         @BindView(R.id.tv_confirmDelete)
         TextView tvConfirmDelete ;
+        @BindView(R.id.rel_item)
+        RelativeLayout relItem ;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -133,5 +142,7 @@ public class ReportListAdapter extends RecyclerView.Adapter<ReportListAdapter.Vi
         void onReportDelete(ReportBean reportBean);
         void onReportAddToScreen(ReportBean reportBean);
         void onReportDownload(ReportBean reportBean);
+        void onListFolderClick(ReportBean reportBean);
+        void onReportClick(ReportBean reportBean);
     }
 }
