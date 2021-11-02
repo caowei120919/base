@@ -3,6 +3,8 @@ package com.datacvg.dimp.bean;
 import androidx.annotation.Keep;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author : T-Bag (茶包)
@@ -21,8 +23,42 @@ public class ActionPlanIndexBean implements Serializable {
      * index_id : 15341079964696855071
      */
 
+
+
     private String relation_i_id;
     private String rootid;
+    private String name;
+    private boolean checked;
+    private Integer level = 0 ;
+    private Boolean isSpread = false ;
+    private String pid;
+    private String id;
+    private String index_id;
+    private List<ActionPlanIndexBean> childBeans = new ArrayList<>() ;
+
+    public Boolean getSpread() {
+        return isSpread;
+    }
+
+    public void setSpread(Boolean spread) {
+        isSpread = spread;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
+    public List<ActionPlanIndexBean> getChildBeans() {
+        return childBeans;
+    }
+
+    public void setChildBeans(List<ActionPlanIndexBean> childBeans) {
+        this.childBeans = childBeans;
+    }
 
     public String getRelation_i_id() {
         return relation_i_id;
@@ -79,10 +115,4 @@ public class ActionPlanIndexBean implements Serializable {
     public void setIndex_id(String index_id) {
         this.index_id = index_id;
     }
-
-    private String name;
-    private boolean checked;
-    private String pid;
-    private String id;
-    private String index_id;
 }

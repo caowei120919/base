@@ -1,7 +1,6 @@
 package com.datacvg.dimp.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.view.Gravity;
@@ -17,10 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.load.engine.Resource;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
@@ -30,8 +27,6 @@ import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.PopupWindowUtil;
 import com.datacvg.dimp.bean.ReportBean;
-
-import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -89,7 +84,7 @@ public class ReportGridOfMineAdapter extends RecyclerView.Adapter<ReportGridOfMi
             return;
         }
         if (bean.getModel_type().contains("folder")){
-            String imgUrl = String.format(Constants.BASE_URL + Constants.IMG_REPORT_URL,bean.getThumbnail_path());
+            String imgUrl = String.format(Constants.BASE_MOBILE_URL + Constants.IMG_REPORT_URL,bean.getThumbnail_path());
             Glide.with(mContext).load(imgUrl)
                     .listener(new RequestListener<Drawable>() {
                         @Override
@@ -115,7 +110,8 @@ public class ReportGridOfMineAdapter extends RecyclerView.Adapter<ReportGridOfMi
                 PLog.e("文件夹被点击，打开文件夹");
             });
         }else{
-            String imgUrl = String.format(Constants.BASE_URL + Constants.IMG_REPORT_URL,bean.getThumbnail_path());
+            String imgUrl = String.format(Constants.BASE_MOBILE_URL + Constants.IMG_REPORT_URL,bean.getThumbnail_path());
+            PLog.e(imgUrl);
             Glide.with(mContext).load(imgUrl)
                     .listener(new RequestListener<Drawable>() {
                         @Override

@@ -2,10 +2,13 @@ package com.datacvg.dimp.adapter;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +20,7 @@ import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
+import com.datacvg.dimp.baseandroid.utils.PopupWindowUtil;
 import com.datacvg.dimp.bean.ReportBean;
 import com.datacvg.dimp.bean.ReportTrashBean;
 
@@ -74,9 +78,32 @@ public class ReportGridOfTrashAdapter extends RecyclerView.Adapter<ReportGridOfT
                 ? reportTrashBean.getRes_clname() : reportTrashBean.getRes_flname());
         holder.imgMenu.setOnClickListener(v -> {
             PLog.e("菜单点击处理");
-            listener.onMenuClick(reportTrashBean);
+//            listener.onMenuClick(reportTrashBean);
+            showMenuPop(holder.imgMenu,reportTrashBean,position);
         });
 
+    }
+
+    /**
+     * 创建选择弹窗
+     * @param bean
+     * @param
+     */
+    private void showMenuPop(View view,ReportTrashBean bean,int position) {
+        View containView = LayoutInflater.from(mContext).inflate(R.layout.item_report_trash_dialog
+                ,null,false);
+        RelativeLayout relDelete = containView.findViewById(R.id.rel_delete) ;
+        RelativeLayout relRestore = containView.findViewById(R.id.rel_restore) ;
+        relDelete.setOnClickListener(v -> {
+            listener.deleteReport(bean);
+        });
+        relRestore.setOnClickListener(v -> {
+            listener.restoreReport(bean);
+        });
+        PopupWindow popupWindow = new PopupWindow(containView,
+                (int) mContext.getResources().getDimension(R.dimen.W260), ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        int windowPos[] = PopupWindowUtil.calculatePopWindowPos(view, containView);
+        popupWindow.showAtLocation(view, Gravity.TOP | Gravity.START, position%2 == 0 ? 200 : windowPos[0] - 100, windowPos[1]);
     }
 
     @Override
@@ -102,10 +129,9 @@ public class ReportGridOfTrashAdapter extends RecyclerView.Adapter<ReportGridOfT
      * 回收站操作监听
      */
     public interface OnReportTrashClickListener{
-        /**
-         * 菜单栏点击监听
-         * @param reportBean
-         */
-        void onMenuClick(ReportTrashBean reportBean);
+
+        void deleteReport(ReportTrashBean bean);
+
+        void restoreReport(ReportTrashBean bean);
     }
 }

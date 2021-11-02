@@ -1,11 +1,7 @@
 package com.datacvg.dimp.fragment;
 
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.dimp.R;
@@ -41,7 +37,6 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
 
     private List<ReportTrashBean>reportTrashBeans = new ArrayList<>() ;
     private ReportGridOfTrashAdapter adapter ;
-    private ReportTrashBean reportTrashBean ;
 
     @Override
     protected int getLayoutId() {
@@ -106,76 +101,6 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
         getPresenter().clearReport();
     }
 
-    /**
-     * 菜单栏点击处理
-     * @param reportBean
-     */
-    @Override
-    public void onMenuClick(ReportTrashBean reportBean) {
-        this.reportTrashBean = reportBean ;
-        showMenuDialog();
-    }
-
-    /**
-     * 展示菜单弹窗
-     */
-    private void showMenuDialog() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
-        View containView = LayoutInflater.from(mContext).inflate(R.layout.item_report_trash_dialog
-                ,null,false);
-        RelativeLayout relDelete = containView.findViewById(R.id.rel_delete) ;
-        RelativeLayout relRestore = containView.findViewById(R.id.rel_restore) ;
-
-        dialog.setView(containView);
-        AlertDialog alertDialog = dialog.create();
-        Window window = alertDialog.getWindow();
-        if(window != null){
-            window.setBackgroundDrawableResource(android.R.color.transparent);
-        }
-        relDelete.setOnClickListener(v -> {
-            String type = "" ;
-            switch (reportTrashBean.getRes_type()){
-                case Constants.REPORT_TEMPLATE_TYPE :
-                case Constants.REPORT_TEMPLATE_FOLDER_TYPE :
-                    type = "TEMPLATE" ;
-                    break;
-
-                case Constants.REPORT_MINE_TYPE :
-                case Constants.REPORT_MINE_FOLDER_TYPE :
-                    type = "MODEL" ;
-                    break;
-
-                case Constants.REPORT_SHARE_TYPE :
-                case Constants.REPORT_SHARE_FOLDER_TYPE :
-                    type = "SHARE" ;
-                    break;
-            }
-            getPresenter().deleteReportOnTrash(type,reportTrashBean.getRes_id());
-            alertDialog.dismiss();
-        });
-        relRestore.setOnClickListener(v -> {
-            String type = "" ;
-            switch (reportTrashBean.getRes_type()){
-                case Constants.REPORT_TEMPLATE_TYPE :
-                case Constants.REPORT_TEMPLATE_FOLDER_TYPE :
-                    type = "TEMPLATE" ;
-                    break;
-
-                case Constants.REPORT_MINE_TYPE :
-                case Constants.REPORT_MINE_FOLDER_TYPE :
-                    type = "MODEL" ;
-                    break;
-
-                case Constants.REPORT_SHARE_TYPE :
-                case Constants.REPORT_SHARE_FOLDER_TYPE :
-                    type = "SHARE" ;
-                    break;
-            }
-            getPresenter().restoreOnTrash(type,reportTrashBean.getRes_id());
-            alertDialog.dismiss();
-        });
-        alertDialog.show();
-    }
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
@@ -189,5 +114,49 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
         getPresenter().queryReport(Constants.REPORT_MINE,System.currentTimeMillis() + "");
         getPresenter().queryReport(Constants.REPORT_SHARE,System.currentTimeMillis() + "");
         getPresenter().queryReport(Constants.REPORT_TEMPLATE,System.currentTimeMillis() + "");
+    }
+
+    @Override
+    public void deleteReport(ReportTrashBean bean) {
+        String type = "" ;
+        switch (bean.getRes_type()){
+            case Constants.REPORT_TEMPLATE_TYPE :
+            case Constants.REPORT_TEMPLATE_FOLDER_TYPE :
+                type = "TEMPLATE" ;
+                break;
+
+            case Constants.REPORT_MINE_TYPE :
+            case Constants.REPORT_MINE_FOLDER_TYPE :
+                type = "MODEL" ;
+                break;
+
+            case Constants.REPORT_SHARE_TYPE :
+            case Constants.REPORT_SHARE_FOLDER_TYPE :
+                type = "SHARE" ;
+                break;
+        }
+        getPresenter().deleteReportOnTrash(type,bean.getRes_id());
+    }
+
+    @Override
+    public void restoreReport(ReportTrashBean bean) {
+        String type = "" ;
+        switch (bean.getRes_type()){
+            case Constants.REPORT_TEMPLATE_TYPE :
+            case Constants.REPORT_TEMPLATE_FOLDER_TYPE :
+                type = "TEMPLATE" ;
+                break;
+
+            case Constants.REPORT_MINE_TYPE :
+            case Constants.REPORT_MINE_FOLDER_TYPE :
+                type = "MODEL" ;
+                break;
+
+            case Constants.REPORT_SHARE_TYPE :
+            case Constants.REPORT_SHARE_FOLDER_TYPE :
+                type = "SHARE" ;
+                break;
+        }
+        getPresenter().restoreOnTrash(type,bean.getRes_id());
     }
 }

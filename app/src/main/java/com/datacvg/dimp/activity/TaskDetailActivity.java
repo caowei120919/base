@@ -450,6 +450,8 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                     PLog.e("重新保存");
                 }else{
                     ((TextView)view).setText(resources.getString(R.string.save));
+                    linHandle.removeAllViews();
+                    drawEditView();
                     edTaskDetails.setEnabled(true);
                     imgAddAssistant.setVisibility(View.VISIBLE);
                     statusTask.showExtendContent();
@@ -491,6 +493,38 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             case "do_confirm" :
                 showConfirmDialog();
                 break;
+        }
+    }
+
+    private void drawEditView() {
+        for (int i = 0 ; i <= 1 ; i++){
+            TextView operateView = new TextView(mContext);
+            operateView.setText(i == 0 ? resources.getString(R.string.save) : resources.getString(R.string.cancel));
+            operateView.setGravity(Gravity.CENTER);
+            operateView.setTextColor(i == 0 ? resources.getColor(R.color.c_FFFFFF)
+                    : resources.getColor(R.color.c_da3a16));
+            operateView.setTextSize(14);
+            operateView.setMinWidth((int) resources.getDimension(R.dimen.W144));
+            operateView.setHeight((int) resources.getDimension(R.dimen.H50));
+            operateView.setBackground( i == 0 ? resources.getDrawable(R.drawable.shape_round_8_da3a16)
+                    : resources.getDrawable(R.drawable.shape_ffffff_da3a16_8));
+            if(i != 0){
+                LinearLayout.LayoutParams params
+                        = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT
+                        , ViewGroup.LayoutParams.MATCH_PARENT);
+                params.leftMargin = (int) resources.getDimension(R.dimen.W16);
+                operateView.setLayoutParams(params);
+            }
+            int finalI = i;
+            operateView.setOnClickListener(view -> {
+                if(finalI == 0){
+                    PLog.e("保存");
+                }else{
+                    PLog.e("取消");
+                    recreate();
+                }
+            });
+            linHandle.addView(operateView);
         }
     }
 

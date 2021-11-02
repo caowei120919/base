@@ -98,7 +98,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     protected void setupData(Bundle savedInstanceState) {
         getPresenter().getPermissionModule();
         getDefaultReport();
-//        getPresenter().getDepartmentAndContact();
     }
 
     private void getDefaultReport() {

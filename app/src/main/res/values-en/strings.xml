@@ -290,4 +290,5 @@
     <string name="the_custom">The custom</string>
     <string name="description_added_to_the_large_screen_successfully">Description Added to the large screen successfully</string>
     <string name="please_enter_a_large_screen_name">Please enter a large screen name</string>
+    <string name="please_enter_your_search_content">Please enter your search content</string>
 </resources>

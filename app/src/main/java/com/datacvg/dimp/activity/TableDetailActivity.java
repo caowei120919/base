@@ -29,6 +29,7 @@ import com.datacvg.dimp.bean.TableParamInfoBean;
 import com.datacvg.dimp.event.RefreshTableEvent;
 import com.datacvg.dimp.presenter.TableDetailPresenter;
 import com.datacvg.dimp.view.TableDetailView;
+import com.google.gson.Gson;
 import com.just.agentweb.AgentWeb;
 import com.just.agentweb.DefaultWebClient;
 import com.just.agentweb.WebChromeClient;

@@ -27,6 +27,7 @@ import com.datacvg.dimp.view.TableView;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
+import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import butterknife.OnTextChanged;
 
@@ -190,6 +191,15 @@ public class TableFragment extends BaseFragment<TableView, TablePresenter> imple
             tableBeans.clear();
             tableBeans.addAll(showTables);
             adapter.notifyDataSetChanged();
+        }
+    }
+
+    @OnClick({R.id.edit_delete})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.edit_delete :
+                edSearch.setText("");
+                break;
         }
     }
 

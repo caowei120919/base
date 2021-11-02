@@ -9,6 +9,8 @@ import com.datacvg.dimp.bean.SetDefaultResBean;
 import com.datacvg.dimp.bean.TableInfoBean;
 import com.datacvg.dimp.bean.TableParamInfoListBean;
 import com.datacvg.dimp.view.TableDetailView;
+import com.google.gson.Gson;
+
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
@@ -96,10 +98,9 @@ public class TableDetailPresenter extends BasePresenter<TableDetailView>{
                 .subscribe(new RxObserver<SetDefaultResBean>(){
                     @Override
                     public void onNext(SetDefaultResBean baseBean) {
-                        if(checkJsonCode(baseBean)){
-                            if(baseBean.getResult()){
-                                getView().setDefaultReportSuccess(baseBean);
-                            }
+                        PLog.e("===========>" + new Gson().toJson(baseBean));
+                        if(baseBean.getResult()){
+                            getView().setDefaultReportSuccess(baseBean);
                         }
                     }
                 });
@@ -115,9 +116,7 @@ public class TableDetailPresenter extends BasePresenter<TableDetailView>{
                 .subscribe(new RxObserver<BaseBean>(){
                     @Override
                     public void onNext(BaseBean baseBean) {
-                        if(checkJsonCode(baseBean)){
                             getView().cancelDefaultReportSuccess();
-                        }
                     }
                 });
     }

@@ -1,22 +1,31 @@
 package com.datacvg.dimp.activity;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.adapter.TaskIndexAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
+import com.datacvg.dimp.baseandroid.utils.StringUtils;
 import com.datacvg.dimp.baseandroid.utils.TimeUtils;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.ActionPlanIndexBean;
@@ -37,7 +46,11 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import butterknife.BindView;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
@@ -236,7 +249,6 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
 
     @OnCheckedChanged(R.id.switch_task)
     public void onCheckChanged(boolean checked){
-        PLog.e("测试 ====" + checked);
         createTaskBean.setPlanFlg(checked ? "T" : "F");
     }
 
@@ -289,6 +301,7 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
 
             case R.id.img_addHead :
                     PLog.e("选择联系人");
+                    chooseContacts();
                 break;
 
             case R.id.img_addAssistant :
@@ -297,6 +310,7 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
 
             case R.id.img_addIndex :
                     PLog.e("选择指标");
+                    chooseIndex();
                 break;
 
             case R.id.tv_right :
@@ -351,9 +365,103 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
         }
     }
 
+    /**
+     * 选择指标
+     */
+    private void chooseIndex() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        View view = LayoutInflater.from(mContext)
+                .inflate(R.layout.item_index_selected,null,false);
+        EditText editIndexName = view.findViewById(R.id.edit_indexName);
+        RecyclerView recyclerIndex = view.findViewById(R.id.recycler_index) ;
+        LinearLayoutManager manager = new LinearLayoutManager(mContext);
+        TaskIndexAdapter adapter = new TaskIndexAdapter(mContext,actionPlanIndexBeans);
+        recyclerIndex.setLayoutManager(manager);
+        recyclerIndex.setAdapter(adapter);
+        editIndexName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (TextUtils.isEmpty(s.toString().trim())){
+
+                }
+            }
+        });
+        builder.setView(view);
+        builder.create();
+        builder.show();
+    }
+
+    /**
+     * 弹出选择联系人弹窗
+     */
+    private void chooseContacts() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_cocntact,null,false);
+        builder.setView(view);
+        builder.create();
+        builder.show();
+    }
+
     @Override
     public void getIndexSuccess(ActionPlanIndexListBean resdata) {
         actionPlanIndexBeans.addAll(resdata);
+        resetIndexList();
+    }
+
+    /**
+     * 重组指标信息组织成指标树
+     */
+    private void resetIndexList() {
+        List<ActionPlanIndexBean> results = new ArrayList<>() ;
+        for (ActionPlanIndexBean actionPlanIndexBean : actionPlanIndexBeans){
+            if(actionPlanIndexBean.getPid().equals("0")){
+                actionPlanIndexBean.setLevel(0);
+                results.add(actionPlanIndexBean);
+            }
+        }
+
+        actionPlanIndexBeans.removeAll(results);
+        searchChild(results);
+        actionPlanIndexBeans.clear();
+        actionPlanIndexBeans.addAll(results);
+    }
+
+    private void searchChild(List<ActionPlanIndexBean> results) {
+        List<ActionPlanIndexBean> childBeans = new ArrayList<>() ;
+        for (ActionPlanIndexBean actionPlanIndexBean : results){
+            String id = actionPlanIndexBean.getId() ;
+            childBeans.clear();
+            for (ActionPlanIndexBean child : actionPlanIndexBeans){
+                if(child.getPid().equals(id)){
+                    child.setLevel(actionPlanIndexBean.getLevel() + 1);
+                    childBeans.add(child);
+                }
+            }
+            actionPlanIndexBeans.removeAll(childBeans);
+            actionPlanIndexBean.getChildBeans().addAll(childBeans);
+        }
+
+        if(actionPlanIndexBeans.isEmpty()){
+            return;
+        }else{
+            for (ActionPlanIndexBean actionPlanIndexBean : results){
+                if(actionPlanIndexBean.getChildBeans().isEmpty()){
+                    continue;
+                }else{
+                    searchChild(actionPlanIndexBean.getChildBeans());
+                }
+            }
+        }
     }
 
     @Override
@@ -370,14 +478,12 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void OnEvent(ActionPlanIndexBean bean){
-        PLog.e(bean.getName() + "---" + bean.isChecked());
         if(bean.isChecked()){
             taskIndexBeans.add(bean);
         }else{
             taskIndexBeans.remove(bean);
         }
         buildIndexFlow(bean);
-        PLog.e("测试:指标选择" + taskIndexBeans.size() + "");
     }
 
     /**

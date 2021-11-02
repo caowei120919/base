@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/W600"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:layout_gravity="center"
+    android:background="@color/c_FFFFFF">
+
+    <RelativeLayout
+        android:id="@+id/rel_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/c_f2f2f2">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/index_of_correlation"
+            android:textColor="@color/c_303030"
+            android:textSize="16sp"
+            android:layout_marginLeft="@dimen/W12"
+            android:layout_marginTop="@dimen/H12"
+            android:layout_marginBottom="@dimen/H12">
+        </TextView>
+
+        <EditText
+            android:id="@+id/edit_indexName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_ffffff"
+            android:layout_toRightOf="@id/tv_title"
+            android:layout_marginLeft="@dimen/W24"
+            android:layout_marginRight="@dimen/W24"
+            android:layout_marginTop="@dimen/H12"
+            android:layout_marginBottom="@dimen/H12"
+            android:hint="@string/please_enter_your_search_content"
+            android:paddingLeft="@dimen/W12"
+            android:paddingRight="@dimen/W12"
+            android:singleLine="true"
+            android:textColor="@color/c_303030"
+            android:textColorHint="@color/c_BCBCBC">
+        </EditText>
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_index"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H500"
+        android:layout_below="@id/rel_title">
+    </androidx.recyclerview.widget.RecyclerView>
+</RelativeLayout>

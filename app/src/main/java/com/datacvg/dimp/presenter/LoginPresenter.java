@@ -85,6 +85,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                 break;
         }
         Constants.BASE_MOBILE_URL = url ;
+        Constants.BASE_URL = url ;
         RetrofitUrlManager.getInstance().setRun(true);
         RetrofitUrlManager.getInstance()
                 .setGlobalDomain(url);

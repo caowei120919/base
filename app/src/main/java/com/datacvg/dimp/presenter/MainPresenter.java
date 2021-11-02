@@ -69,9 +69,6 @@ public class MainPresenter extends BasePresenter<MainView>{
 
                     @Override
                     public void onNext(DefaultReportBean baseBean) {
-                        if(!checkJsonCode(baseBean)){
-                            return;
-                        }
                         if(baseBean != null){
                             ConstantReportBean reportBean
                                     = new ConstantReportBean(baseBean.getRes_id(),baseBean.getDefault_pkid());
