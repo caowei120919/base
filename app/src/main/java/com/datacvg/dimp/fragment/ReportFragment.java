@@ -155,7 +155,7 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
                     if (sortPop == null){
                         createSortPopWindow();
                     }else{
-                        sortPop.showAsDropDown(imgSort,-150,20);
+                        sortPop.showAsDropDown(imgSearch,-150,20);
                     }
                 break;
 

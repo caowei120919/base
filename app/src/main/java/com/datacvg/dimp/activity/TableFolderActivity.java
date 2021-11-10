@@ -8,6 +8,8 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.TableAdapter;
+import com.datacvg.dimp.adapter.TableGridAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.Base64Utils;
 import com.datacvg.dimp.baseandroid.utils.DisplayUtils;
@@ -43,18 +46,18 @@ import butterknife.OnTextChanged;
  * @Description : 报表文件夹页面
  */
 public class TableFolderActivity extends BaseActivity<TableFolderView, TableFolderPresenter>
-        implements TableFolderView ,TableAdapter.OnItemClickListener{
+        implements TableFolderView ,TableGridAdapter.OnItemClickListener{
     @BindView(R.id.tv_title)
     TextView tvTitle ;
     @BindView(R.id.ed_search)
     EditText edSearch ;
-    @BindView(R.id.recycler_table)
-    RecyclerView recyclerTable ;
+    @BindView(R.id.grid_tableOfFolder)
+    GridView recyclerTable ;
 
     private List<TableBean> tableBeans = new ArrayList<>();
     private List<TableBean> allTableBeans = new ArrayList<>() ;
     private List<TableBean> showTables = new ArrayList<>() ;
-    private TableAdapter adapter ;
+    private TableGridAdapter adapter ;
     private TableBean rootBean ;
 
     @Override
@@ -82,19 +85,7 @@ public class TableFolderActivity extends BaseActivity<TableFolderView, TableFold
         tvTitle.setText(LanguageUtils.isZh(mContext)
                 ? rootBean.getRes_clname() : rootBean.getRes_flname());
         getTableList();
-        adapter = new TableAdapter(mContext,tableBeans,this);
-        recyclerTable.setLayoutManager(new GridLayoutManager(mContext,2));
-        recyclerTable.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view
-                    , @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                //不是第一个的格子都设一个左边和底部的间距
-                outRect.left = (int) resources.getDimension(R.dimen.W25);
-                if (parent.getChildLayoutPosition(view) % 2 ==0) {
-                    outRect.left = 0;
-                }
-            }
-        });
+        adapter = new TableGridAdapter(mContext,tableBeans,this);
         recyclerTable.setAdapter(adapter);
     }
 
@@ -112,11 +103,11 @@ public class TableFolderActivity extends BaseActivity<TableFolderView, TableFold
     @Override
     public void getTableSuccess(TableListBean tableBeans) {
         allTableBeans.clear();
-        allTableBeans.addAll(tableBeans);
         showTables.clear();
         for (TableBean childBean : tableBeans){
             if(childBean.getRes_parentid().equals(rootBean.getRes_id())){
                 this.showTables.add(childBean);
+                this.allTableBeans.add(childBean);
             }
         }
         this.tableBeans.clear();
@@ -170,6 +161,7 @@ public class TableFolderActivity extends BaseActivity<TableFolderView, TableFold
             return false ;
         }
         searchForTab(edSearch.getText().toString());
+        edSearch.setCursorVisible(false);
         return true;
     }
 
@@ -182,11 +174,16 @@ public class TableFolderActivity extends BaseActivity<TableFolderView, TableFold
         }
     }
 
-    @OnClick({R.id.img_left})
+    @OnClick({R.id.img_left,R.id.edit_delete})
     public void OnClick(View view){
         switch (view.getId()){
             case R.id.img_left :
                     finish();
+                break;
+
+            case R.id.edit_delete :
+                edSearch.setText("");
+                edSearch.setCursorVisible(false);
                 break;
         }
     }

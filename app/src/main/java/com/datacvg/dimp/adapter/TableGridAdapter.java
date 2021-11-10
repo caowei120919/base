@@ -14,6 +14,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
+import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.bean.TableBean;
 
 import java.util.ArrayList;
@@ -68,7 +69,7 @@ public class TableGridAdapter extends BaseAdapter {
         }
         viewHolder.tvTitle.setText(LanguageUtils.isZh(mContext)
                 ? tableBeans.get(position).getRes_clname() : tableBeans.get(position).getRes_flname());
-        String imgUrl = String.format(Constants.BASE_URL + Constants.IMG_TAB_URL,tableBeans.get(position).getRes_imgpath());
+        String imgUrl = String.format(Constants.BASE_MOBILE_URL + Constants.IMG_TAB_URL,tableBeans.get(position).getRes_imgpath());
         Glide.with(mContext).load(imgUrl)
                 .placeholder(R.mipmap.screen_default)
                 .error(R.mipmap.screen_default)

@@ -10,10 +10,19 @@
     <include
         layout="@layout/view_search"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_table"
+    <GridView
+        android:id="@+id/grid_tableOfFolder"
+        android:layout_marginLeft="@dimen/W24"
+        android:layout_marginRight="@dimen/W24"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="match_parent"
+        android:fadeScrollbars="true"
+        android:fastScrollEnabled="true"
+        android:verticalSpacing="@dimen/H20"
+        android:scrollbars="none"
+        android:horizontalSpacing="@dimen/W20"
+        android:numColumns="2"
+        android:layout_marginTop="@dimen/H24"
+        android:layout_marginBottom="@dimen/H24">
+    </GridView>
 </LinearLayout>

@@ -183,6 +183,7 @@ public class TableFragment extends BaseFragment<TableView, TablePresenter> imple
             return false ;
         }
         searchForTab(edSearch.getText().toString());
+        edSearch.setCursorVisible(false);
         return true;
     }
 
@@ -200,6 +201,7 @@ public class TableFragment extends BaseFragment<TableView, TablePresenter> imple
         switch (view.getId()){
             case R.id.edit_delete :
                 edSearch.setText("");
+                edSearch.setCursorVisible(false);
                 break;
         }
     }
