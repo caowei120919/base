@@ -1,0 +1,835 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rel_title"
+        android:layout_width="match_parent"
+        android:background="@color/c_FFFFFF"
+        android:layout_height="?actionBarSize">
+        <ImageView
+            android:id="@+id/img_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/img_back"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/W30"
+            android:paddingRight="@dimen/W30">
+        </ImageView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="账单"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/c_303030"
+                    android:gravity="center">
+                </TextView>
+                <TextView
+                    android:layout_width="@dimen/W60"
+                    android:layout_height="@dimen/H6"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/c_f1a347">
+                </TextView>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="@dimen/W120"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="统计"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/c_4c4c4c"
+                    android:gravity="center">
+                </TextView>
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/lin_style"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H60"
+        android:layout_below="@id/rel_title"
+        android:background="@color/c_FFFFFF"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="全部类型"
+            android:drawableRight="@mipmap/expend_down"
+            android:gravity="center">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="全部日期"
+            android:drawableRight="@mipmap/expend_down"
+            android:gravity="center">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="到账情况"
+            android:drawableRight="@mipmap/expend_down"
+            android:gravity="center">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4">
+        </TextView>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:background="@color/c_f2f2f2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H15"
+            android:layout_height="wrap_content"
+            android:textColor="@color/c_303030"
+            android:text="2021-11-09">
+        </TextView>
+
+        <TextView
+            android:layout_below="@id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/H15"
+            android:text="收入 ¥  0.00  支出 ¥  4351.00">
+        </TextView>
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_time1"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H15"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/c_303030"
+            android:text="提现手续费">
+        </TextView>
+
+        <TextView
+            android:layout_below="@id/tv_time1"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/H15"
+            android:text="11-09 09:53">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_time2"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H15"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/c_fead3d"
+            android:text="- 1.00"
+            android:layout_marginRight="@dimen/W24">
+        </TextView>
+
+        <TextView
+            android:layout_below="@id/tv_time1"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/W24"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/H15"
+            android:text="已扣款">
+        </TextView>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H4"
+        android:background="@color/c_f2f2f2"
+        android:layout_marginLeft="@dimen/W40">
+    </TextView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_time3"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H15"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/c_303030"
+            android:text="提现">
+        </TextView>
+
+        <TextView
+            android:layout_below="@id/tv_time3"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/H15"
+            android:text="11-09 09:53">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_time4"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H15"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/c_fead3d"
+            android:text="- 4350.00"
+            android:layout_marginRight="@dimen/W24">
+        </TextView>
+
+        <TextView
+            android:layout_below="@id/tv_time4"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/W24"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/H15"
+            android:text="提现中">
+        </TextView>
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H4"
+        android:background="@color/c_f2f2f2"
+        android:layout_marginLeft="@dimen/W40">
+    </TextView>
+    <RelativeLayout
+        android:background="@color/c_f2f2f2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_time5"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H15"
+            android:layout_height="wrap_content"
+            android:textColor="@color/c_303030"
+            android:text="2021-11-07">
+        </TextView>
+
+        <TextView
+            android:layout_below="@id/tv_time5"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/H15"
+            android:text="收入 ¥  197.10  支出 ¥  9.30">
+        </TextView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_time11"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H15"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/c_303030"
+            android:text="配送收入-#16-貂蝉花甲">
+        </TextView>
+
+        <TextView
+            android:layout_below="@id/tv_time11"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/H15"
+            android:text="11-07 23:56">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_time21"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H15"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/c_303030"
+            android:text="+ 7.30"
+            android:layout_marginRight="@dimen/W24">
+        </TextView>
+
+        <TextView
+            android:layout_below="@id/tv_time21"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/W24"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/H15"
+            android:text="已到账">
+        </TextView>
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H4"
+        android:background="@color/c_f2f2f2"
+        android:layout_marginLeft="@dimen/W40">
+    </TextView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_time31"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H15"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/c_303030"
+            android:text="配送收入-#12-辰豆豆老长沙臭豆腐(新...">
+        </TextView>
+
+        <TextView
+            android:layout_below="@id/tv_time31"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/H15"
+            android:text="11-07 23:54">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_time41"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H15"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/c_303030"
+            android:text="+ 10.70"
+            android:layout_marginRight="@dimen/W24">
+        </TextView>
+
+        <TextView
+            android:layout_below="@id/tv_time41"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/W24"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/H15"
+            android:text="已到账">
+        </TextView>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H4"
+        android:background="@color/c_f2f2f2"
+        android:layout_marginLeft="@dimen/W40">
+    </TextView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_time38"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H15"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/c_303030"
+            android:text="配送收入-#15-美人蹄烤猪蹄(国定路店...">
+        </TextView>
+
+        <TextView
+            android:layout_below="@id/tv_time38"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/H15"
+            android:text="11-07 23:53">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_time48"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H15"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/c_303030"
+            android:text="+ 5.30"
+            android:layout_marginRight="@dimen/W24">
+        </TextView>
+
+        <TextView
+            android:layout_below="@id/tv_time48"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/W24"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/H15"
+            android:text="已到账">
+        </TextView>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H4"
+        android:background="@color/c_f2f2f2"
+        android:layout_marginLeft="@dimen/W40">
+    </TextView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_time51"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H15"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/c_303030"
+            android:text="配送收入-#128-茶百道(国定路店)">
+        </TextView>
+
+        <TextView
+            android:layout_below="@id/tv_time51"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/H15"
+            android:text="11-07 23:18">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_time52"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H15"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/c_303030"
+            android:text="+ 4.80"
+            android:layout_marginRight="@dimen/W24">
+        </TextView>
+
+        <TextView
+            android:layout_below="@id/tv_time52"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/W24"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/H15"
+            android:text="已到账">
+        </TextView>
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H4"
+        android:background="@color/c_f2f2f2"
+        android:layout_marginLeft="@dimen/W40">
+    </TextView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_time53"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H15"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/c_303030"
+            android:text="配送收入-#80-切果乐(财经大学店)">
+        </TextView>
+
+        <TextView
+            android:layout_below="@id/tv_time53"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/H15"
+            android:text="11-07 23:16">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_time54"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H15"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/c_303030"
+            android:text="+ 6.80"
+            android:layout_marginRight="@dimen/W24">
+        </TextView>
+
+        <TextView
+            android:layout_below="@id/tv_time54"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/W24"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/H15"
+            android:text="已到账">
+        </TextView>
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H4"
+        android:background="@color/c_f2f2f2"
+        android:layout_marginLeft="@dimen/W40">
+    </TextView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_time36"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H15"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/c_303030"
+            android:text="配送收入-#20-光明便利">
+        </TextView>
+
+        <TextView
+            android:layout_below="@id/tv_time36"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/H15"
+            android:text="11-07 23:12">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_time46"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H15"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/c_303030"
+            android:text="+ 5.10"
+            android:layout_marginRight="@dimen/W24">
+        </TextView>
+
+        <TextView
+            android:layout_below="@id/tv_time46"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/W24"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/H15"
+            android:text="已到账">
+        </TextView>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H4"
+        android:background="@color/c_f2f2f2"
+        android:layout_marginLeft="@dimen/W40">
+    </TextView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_time170"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H15"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/c_303030"
+            android:text="配送收入-#82-河间驴肉火烧(杨浦老店...">
+        </TextView>
+
+        <TextView
+            android:layout_below="@id/tv_time170"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/H15"
+            android:text="11-07 22:45">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_time270"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H15"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/c_303030"
+            android:text="+ 4.50"
+            android:layout_marginRight="@dimen/W24">
+        </TextView>
+
+        <TextView
+            android:layout_below="@id/tv_time270"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/W24"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/H15"
+            android:text="已到账">
+        </TextView>
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H4"
+        android:background="@color/c_f2f2f2"
+        android:layout_marginLeft="@dimen/W40">
+    </TextView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_time37"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H15"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/c_303030"
+            android:text="到取货处超时扣款-#10-久久丫">
+        </TextView>
+
+        <TextView
+            android:layout_below="@id/tv_time37"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/H15"
+            android:text="11-07 22:44">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_time47"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H15"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/c_fead3d"
+            android:text="- 3.20"
+            android:layout_marginRight="@dimen/W24">
+        </TextView>
+
+        <TextView
+            android:layout_below="@id/tv_time47"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/W24"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/H15"
+            android:text="已扣款">
+        </TextView>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H4"
+        android:background="@color/c_f2f2f2"
+        android:layout_marginLeft="@dimen/W40">
+    </TextView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_time17"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H15"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/c_303030"
+            android:text="配送收入-#10-久久丫">
+        </TextView>
+
+        <TextView
+            android:layout_below="@id/tv_time17"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/H15"
+            android:text="11-07 22:36">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_time27"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H15"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/c_303030"
+            android:text="+ 9.50"
+            android:layout_marginRight="@dimen/W24">
+        </TextView>
+
+        <TextView
+            android:layout_below="@id/tv_time27"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/W24"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/H15"
+            android:text="已到账">
+        </TextView>
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H4"
+        android:background="@color/c_f2f2f2"
+        android:layout_marginLeft="@dimen/W40">
+    </TextView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_time370"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H15"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/c_303030"
+            android:text="送达超时扣款-#44-东北烤冷面">
+        </TextView>
+
+        <TextView
+            android:layout_below="@id/tv_time370"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/H15"
+            android:text="11-07 22:44">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_time470"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H15"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/c_fead3d"
+            android:text="- 0.50"
+            android:layout_marginRight="@dimen/W24">
+        </TextView>
+
+        <TextView
+            android:layout_below="@id/tv_time470"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/W40"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/W24"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/H15"
+            android:text="已扣款">
+        </TextView>
+    </RelativeLayout>
+</LinearLayout>

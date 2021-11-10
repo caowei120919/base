@@ -27,7 +27,7 @@ public class IndexTreeBean implements Serializable {
      * orgname : 数聚股份
      * index_value_initial : 2414324.1268
      * value_unit : 万元
-     * thresholdTarget : 225
+     * thresholdTarget: 225
      * index_id : IBI-ex-cost_MONTH
      * index_flname : Cost (Before allocation)
      * thresholdMinimum : 245

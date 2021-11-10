@@ -11,6 +11,7 @@ import com.datacvg.dimp.activity.ConfirmInfoActivity;
 import com.datacvg.dimp.activity.ContactActivity;
 import com.datacvg.dimp.activity.DepartmentActivity;
 import com.datacvg.dimp.activity.FeedBackActivity;
+import com.datacvg.dimp.activity.InComeDetailActivity;
 import com.datacvg.dimp.activity.IndexDetailActivity;
 import com.datacvg.dimp.activity.IndexPopActivity;
 import com.datacvg.dimp.activity.IndexTreeActivity;
@@ -141,4 +142,6 @@ public interface ActivityComponent {
     void inject(AddReportToScreenActivity addReportToScreenActivity);
 
     void inject(ReportGridOnFolderActivity reportGridOnFolderActivity);
+
+    void inject(InComeDetailActivity inComeDetailActivity);
 }

@@ -284,4 +284,5 @@
     <string name="description_added_to_the_large_screen_successfully">添加到大屏成功</string>
     <string name="please_enter_a_large_screen_name">请输入大屏名称</string>
     <string name="please_enter_your_search_content">请输入搜索内容</string>
+    <string name="management_of_the_canvas">管理画布</string>
 </resources>

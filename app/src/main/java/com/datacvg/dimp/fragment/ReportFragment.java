@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -63,7 +62,6 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
     private FragmentManager fragmentManager ;
     private PopupWindow sortPop ;
     private String reportType = Constants.REPORT_MINE;
-
     private ReportOfMineGridFragment reportOfMineFragment ;
     private ReportListOfMineFragment reportOfMineListFragment ;
     private ReportOfSharedGridFragment reportOfSharedFragment ;
@@ -163,7 +161,7 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
 
             case R.id.img_search :
                 Intent intent = new Intent(mContext, SearchReportActivity.class) ;
-                intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportType);
+                intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportType) ;
                 mContext.startActivity(intent);
                 break;
         }

@@ -16,7 +16,7 @@
             android:layout_centerVertical="true"
             android:textColor="@color/c_303030"
             android:textSize="20sp"
-            android:text="@string/report"
+            android:text="@string/management_of_the_canvas"
             android:layout_marginLeft="@dimen/W30">
         </TextView>
 

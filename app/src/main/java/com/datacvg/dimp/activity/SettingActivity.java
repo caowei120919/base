@@ -90,7 +90,8 @@ public class SettingActivity extends BaseActivity<SettingView, SettingPresenter>
                 break;
 
             case R.id.rel_pwd :
-                ToastUtils.showLongToast("功能开发中,请敬请期待......");
+                ToastUtils.showLongToast("功能开发中,请敬请期待....");
+//                startActivity(new Intent(mContext,InComeDetailActivity.class));
                 break;
 
             /**

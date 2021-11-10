@@ -11,10 +11,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
@@ -25,7 +23,6 @@ import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
-import com.datacvg.dimp.baseandroid.utils.StringUtils;
 import com.datacvg.dimp.baseandroid.utils.TimeUtils;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.ActionPlanIndexBean;
@@ -46,11 +43,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import butterknife.BindView;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
@@ -372,9 +365,9 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.item_index_selected,null,false);
-        EditText editIndexName = view.findViewById(R.id.edit_indexName);
+        EditText editIndexName = view.findViewById(R.id.edit_indexName) ;
         RecyclerView recyclerIndex = view.findViewById(R.id.recycler_index) ;
-        LinearLayoutManager manager = new LinearLayoutManager(mContext);
+        LinearLayoutManager manager = new LinearLayoutManager(mContext) ;
         TaskIndexAdapter adapter = new TaskIndexAdapter(mContext,actionPlanIndexBeans);
         recyclerIndex.setLayoutManager(manager);
         recyclerIndex.setAdapter(adapter);
