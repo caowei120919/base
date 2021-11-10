@@ -140,6 +140,12 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @Override
     public void getModuleSuccess(ModuleListBean resdata) {
         PLog.e(new Gson().toJson(resdata));
+        List<ModuleInfo> moduleInfos = DbModuleInfoController.getInstance(mContext).getModuleList();
+        for (ModuleInfo moduleInfo : moduleInfos){
+            moduleInfo.setModule_permission(moduleInfo.getModule_res_id().equals("00000000000000001"));
+            DbModuleInfoController.getInstance(mContext).updateModuleInfo(moduleInfo);
+        }
+
         for (ModuleBean moduleBean : resdata){
             ModuleInfo moduleInfo = DbModuleInfoController.getInstance(mContext)
                     .getModule(moduleBean.getRes_pkid());

@@ -47,23 +47,23 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            TableBean bean = tableBeans.get(position);
-            if (bean == null){
-                return;
-            }
-            holder.tvTitle.setText(LanguageUtils.isZh(mContext)
-                    ? bean.getRes_clname() : bean.getRes_flname());
+        TableBean bean = tableBeans.get(position);
+        if (bean == null){
+            return;
+        }
+        holder.tvTitle.setText(LanguageUtils.isZh(mContext)
+                ? bean.getRes_clname() : bean.getRes_flname());
 
-            String imgUrl = String.format(Constants.BASE_URL + Constants.IMG_TAB_URL,bean.getRes_imgpath());
-            Glide.with(mContext).load(imgUrl)
-                    .placeholder(R.mipmap.screen_default)
-                    .error(R.mipmap.screen_default)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(holder.imgPicture);
+        String imgUrl = String.format(Constants.BASE_URL + Constants.IMG_TAB_URL,bean.getRes_imgpath());
+        Glide.with(mContext).load(imgUrl)
+                .placeholder(R.mipmap.screen_default)
+                .error(R.mipmap.screen_default)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(holder.imgPicture);
 
-            holder.itemView.setOnClickListener(view -> {
-                listener.onItemClick(bean);
-            });
+        holder.itemView.setOnClickListener(view -> {
+            listener.onItemClick(bean);
+        });
     }
 
     @Override

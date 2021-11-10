@@ -6,15 +6,16 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import androidx.annotation.NonNull;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.activity.TableDetailActivity;
 import com.datacvg.dimp.activity.TableFolderActivity;
 import com.datacvg.dimp.adapter.TableAdapter;
+import com.datacvg.dimp.adapter.TableGridAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.DisplayUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
@@ -24,6 +25,10 @@ import com.datacvg.dimp.bean.TableBean;
 import com.datacvg.dimp.bean.TableListBean;
 import com.datacvg.dimp.presenter.TablePresenter;
 import com.datacvg.dimp.view.TableView;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -36,23 +41,23 @@ import butterknife.OnTextChanged;
  * @Time : 2020-09-29
  * @Description : 主题报表
  */
-public class TableFragment extends BaseFragment<TableView, TablePresenter> implements TableView, TableAdapter.OnItemClickListener {
+public class TableFragment extends BaseFragment<TableView, TablePresenter> implements TableView, TableGridAdapter.OnItemClickListener, OnRefreshListener {
 
     @BindView(R.id.img_left)
     ImageView imgLeft ;
     @BindView(R.id.tv_title)
     TextView tvTitle ;
-    @BindView(R.id.recycler_table)
-    RecyclerView recyclerTable ;
+    @BindView(R.id.recycler_reportOfMine)
+    GridView recyclerTable ;
     @BindView(R.id.ed_search)
     EditText edSearch ;
     @BindView(R.id.swipe_tab)
-    SwipeRefreshLayout swipeTab ;
+    SmartRefreshLayout swipeTab ;
 
     private List<TableBean> tableBeans = new ArrayList<>();
     private List<TableBean> allTableBeans = new ArrayList<>() ;
     private List<TableBean> showTables = new ArrayList<>() ;
-    private TableAdapter adapter ;
+    private TableGridAdapter adapter ;
 
     @Override
     protected int getLayoutId() {
@@ -71,19 +76,15 @@ public class TableFragment extends BaseFragment<TableView, TablePresenter> imple
         imgLeft.setVisibility(View.GONE);
         tvTitle.setText(resources.getString(R.string.the_theme_report));
 
-        swipeTab.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getTableList();
-            }
-        });
+        swipeTab.setEnableAutoLoadMore(false);
+        swipeTab.setOnRefreshListener(this);
+        swipeTab.setEnableRefresh(true);
     }
 
     @Override
     protected void setupData() {
         getTableList();
-        adapter = new TableAdapter(mContext,tableBeans,this);
-        recyclerTable.setLayoutManager(new GridLayoutManager(mContext,2));
+        adapter = new TableGridAdapter(mContext,tableBeans,this);
         recyclerTable.setAdapter(adapter);
     }
 
@@ -101,7 +102,7 @@ public class TableFragment extends BaseFragment<TableView, TablePresenter> imple
     @Override
     public void getTableSuccess(TableListBean tableBeans) {
         if (swipeTab.isRefreshing()){
-            swipeTab.setRefreshing(false);
+            swipeTab.finishRefresh();
         }
         List<TableBean> rootBeans = new ArrayList<>();
         allTableBeans.clear();
@@ -216,5 +217,10 @@ public class TableFragment extends BaseFragment<TableView, TablePresenter> imple
             }
         }
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        getTableList();
     }
 }

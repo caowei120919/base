@@ -1,36 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_marginTop="@dimen/H55"
-    android:layout_marginLeft="@dimen/W20"
-    android:layout_marginRight="@dimen/W20"
+    android:layout_marginTop="@dimen/H20"
     android:background="@color/c_f2f2f2"
     android:layout_height="wrap_content">
 
     <RelativeLayout
         android:id="@+id/rel_screen"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/img_picture"
-            android:layout_width="@dimen/W315"
+            android:layout_width="match_parent"
             android:src="@mipmap/screen_default"
             android:scaleType="centerCrop"
-            android:layout_height="@dimen/H215">
+            android:layout_height="@dimen/H200">
         </ImageView>
 
         <TextView
             android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/img_picture"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="@dimen/W20"
             android:text="@string/action"
+            android:gravity="center"
             android:singleLine="true"
             android:ellipsize="end"
-            android:layout_marginTop="@dimen/H20"
-            android:layout_marginBottom="@dimen/H20"
+            android:layout_marginTop="@dimen/H10"
+            android:layout_marginBottom="@dimen/H10"
             android:textColor="@color/c_666666"
             android:textSize="14sp">
         </TextView>
