@@ -4,22 +4,31 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.GridView;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.CommentListAdapter;
+import com.datacvg.dimp.adapter.PhotoAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
+import com.datacvg.dimp.baseandroid.utils.GlideLoader;
 import com.datacvg.dimp.baseandroid.utils.PLog;
+import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.CommentBean;
 import com.datacvg.dimp.bean.CommentListBean;
 import com.datacvg.dimp.bean.TableBean;
+import com.datacvg.dimp.event.DeletePhotoEvent;
 import com.datacvg.dimp.event.SelectChooseContactEvent;
 import com.datacvg.dimp.presenter.TableCommentPresenter;
 import com.datacvg.dimp.view.TableCommentView;
+import com.lcw.library.imagepicker.ImagePicker;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -42,13 +51,17 @@ public class TableCommentActivity extends BaseActivity<TableCommentView, TableCo
     RecyclerView recycleComment ;
     @BindView(R.id.ed_comment)
     EditText edComment ;
+    @BindView(R.id.grid_photo)
+    GridView gridPhoto ;
 
 
     private TableBean tableBean ;
     private String params = "{}" ;
     private List<CommentBean> commentBeans = new ArrayList<>() ;
     private CommentListAdapter adapter ;
+    private PhotoAdapter photoAdapter ;
     protected final String AT = "@" ;
+    private List<String> photoPaths = new ArrayList<>() ;
 
     @Override
     protected int getLayoutId() {
@@ -75,6 +88,8 @@ public class TableCommentActivity extends BaseActivity<TableCommentView, TableCo
             finish();
             return;
         }
+        photoAdapter = new PhotoAdapter(mContext,photoPaths);
+        gridPhoto.setAdapter(photoAdapter);
         getPresenter().getTableComment(tableBean.getRes_id(), Uri.encode(params));
     }
 
@@ -86,11 +101,28 @@ public class TableCommentActivity extends BaseActivity<TableCommentView, TableCo
                 break;
 
             case R.id.img_submit :
-                PLog.e("发送");
+                if(TextUtils.isEmpty(edComment.getText().toString())){
+                    ToastUtils.showLongToast(resources.getString(R.string.comments_cannot_be_empty));
+                    return;
+                }
                 break;
 
             case R.id.img_addPicture :
                 PLog.e("添加图片");
+
+                if(photoPaths.size() >= 5){
+                    ToastUtils.showLongToast(resources.getString(R.string.upload_up_to_six_images));
+                }else{
+                    ImagePicker.getInstance()
+                            .setTitle(mContext.getResources().getString(R.string.select_picture))
+                            .setImageLoader(new GlideLoader())
+                            .showCamera(false)
+                            .showImage(true)
+                            .showVideo(false)
+                            .setSingleType(true)
+                            .setMaxCount(6)
+                            .start(mContext, Constants.REQUEST_OPEN_CAMERA);
+                }
                 break;
 
             case R.id.img_at :
@@ -109,6 +141,14 @@ public class TableCommentActivity extends BaseActivity<TableCommentView, TableCo
     public void onUserNameTextChange(CharSequence s ,int start,int before,int count){
         if(start==s.length()-1 && s.toString().endsWith(AT)){
             startActivity(new Intent(mContext, ContactActivity.class));
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(DeletePhotoEvent event){
+        if(event!= null){
+            photoPaths.remove(event.getPosition());
+            photoAdapter.notifyDataSetChanged();
         }
     }
 
@@ -134,6 +174,20 @@ public class TableCommentActivity extends BaseActivity<TableCommentView, TableCo
             }
         }
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case Constants.REQUEST_OPEN_CAMERA:
+                    photoPaths.addAll(data
+                            .getStringArrayListExtra(ImagePicker.EXTRA_SELECT_IMAGES));
+                    photoAdapter.notifyDataSetChanged();
+                    break;
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

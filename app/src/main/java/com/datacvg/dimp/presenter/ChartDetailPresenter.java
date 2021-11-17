@@ -38,8 +38,10 @@ public class ChartDetailPresenter extends BasePresenter<ChartDetailView>{
 
                     @Override
                     public void onNext(BaseBean<EChartListBean> bean) {
-                        if (bean.getData().getIndexChart().size() > 0){
-                            getView().getChartSuccess(bean.getData().getIndexChart().get(0));
+                        if(checkJsonCode(bean)){
+                            if (bean.getData().getIndexChart().size() > 0){
+                                getView().getChartSuccess(bean.getData().getIndexChart().get(0));
+                            }
                         }
                     }
 

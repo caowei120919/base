@@ -74,11 +74,15 @@ public class ContactActivity extends BaseActivity<ContactView, ContactPresenter>
     protected void setupData(Bundle savedInstanceState) {
         tvTitle.setText(resources.getString(R.string.the_contact));
 
-        for (ContactBean contactBean : DbContactController.getInstance(mContext).queryCheckedContacts()){
+        contactBeans = DbContactController.getInstance(mContext).queryContactList();
+        if(contactBeans.isEmpty()){
+            finish();
+            return;
+        }
+        for (ContactBean contactBean : contactBeans){
             contactBean.setChecked(false);
             DbContactController.getInstance(mContext).updateContact(contactBean);
         }
-        contactBeans = DbContactController.getInstance(mContext).queryContactList();
         layoutManager = new LinearLayoutManager(this);
         adapter = new ContactAdapter(this, contactBeans);
         recycleContacts.setLayoutManager(layoutManager);

@@ -285,4 +285,7 @@
     <string name="please_enter_a_large_screen_name">请输入大屏名称</string>
     <string name="please_enter_your_search_content">请输入搜索内容</string>
     <string name="management_of_the_canvas">管理画布</string>
+    <string name="please_enter_comments">请输入评论内容</string>
+    <string name="comments_cannot_be_empty">评论内容不能为空</string>
+    <string name="upload_up_to_six_images">最多上传六张图片</string>
 </resources>

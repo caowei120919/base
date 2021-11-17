@@ -11,6 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
+        android:singleLine="true"
+        android:ellipsize="end"
         android:textColor="@color/c_666666"
         tools:text="测试">
     </TextView>

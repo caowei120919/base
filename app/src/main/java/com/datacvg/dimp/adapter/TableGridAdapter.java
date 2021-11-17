@@ -29,14 +29,12 @@ public class TableGridAdapter extends BaseAdapter {
 
     private Context mContext ;
     private List<TableBean> tableBeans = new ArrayList<>();
-    private LayoutInflater inflater ;
     private OnItemClickListener listener ;
 
     public TableGridAdapter(Context mContext, List<TableBean> tableBeans , OnItemClickListener listener) {
         this.mContext = mContext;
         this.tableBeans = tableBeans;
         this.listener = listener ;
-        inflater = LayoutInflater.from(mContext);
     }
 
     @Override

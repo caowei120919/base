@@ -6,8 +6,10 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/H1200"
+        android:layout_height="@dimen/H960"
         android:background="@drawable/shape_comment"
+        android:layout_marginLeft="@dimen/W24"
+        android:layout_marginRight="@dimen/W24"
         android:layout_alignParentBottom="true">
 
         <ImageView
@@ -15,19 +17,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:paddingRight="@dimen/W40"
+            android:layout_marginRight="@dimen/W15"
             android:src="@mipmap/icon_comment_close"
-            android:paddingTop="@dimen/H40"
-            android:paddingLeft="@dimen/W40"
-            android:paddingBottom="@dimen/H40">
+            android:layout_marginTop="@dimen/H15"
+            android:layout_marginLeft="@dimen/W15"
+            android:layout_marginBottom="@dimen/H15">
         </ImageView>
+
+        <GridView
+            android:id="@+id/grid_photo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/H20"
+            android:layout_marginBottom="@dimen/H20"
+            android:layout_alignParentBottom="true"
+            android:numColumns="3">
+        </GridView>
+
 
         <RelativeLayout
             android:id="@+id/rel_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="@dimen/H120"
-            android:layout_alignParentBottom="true">
+            android:layout_above="@id/grid_photo">
 
             <TextView
                 android:layout_width="match_parent"
@@ -75,9 +89,9 @@
             <EditText
                 android:id="@+id/ed_comment"
                 android:layout_width="match_parent"
+                android:layout_alignBottom="@id/img_at"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/img_at"
-                android:layout_centerVertical="true">
+                android:layout_toLeftOf="@id/img_at">
             </EditText>
         </RelativeLayout>
 

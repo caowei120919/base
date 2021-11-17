@@ -42,6 +42,7 @@ import com.datacvg.dimp.bean.UserJobsBean;
 import com.datacvg.dimp.bean.UserJobsListBean;
 import com.datacvg.dimp.event.ChangeUnReadMessageEvent;
 import com.datacvg.dimp.event.LoginOutEvent;
+import com.datacvg.dimp.event.SwitchUserEvent;
 import com.datacvg.dimp.presenter.PersonPresenter;
 import com.datacvg.dimp.view.PersonView;
 import com.datacvg.dimp.widget.CircleNumberView;
@@ -101,6 +102,7 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
     private Uri imageUri ;
     private File mTmpFile ;
     private String changeAvatarPath;
+    private UserJobsBean userJobsBean = null ;
 
     @Override
     protected int getLayoutId() {
@@ -345,6 +347,15 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
         }
     }
 
+    /**
+     * 岗位切换成功
+     */
+    @Override
+    public void switchJobSuccess() {
+        tvJobName.setText(userJobsBean.getPost_clname());
+        EventBus.getDefault().post(new SwitchUserEvent());
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode==RESULT_OK){
@@ -389,6 +400,20 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
      */
     @Override
     public void onJobChangeListener(UserJobsBean userJobsBean) {
-        PLog.e("岗位切换操作....");
+        this.userJobsBean = userJobsBean ;
+        if(menuWindow != null && menuWindow.isShowing()){
+            menuWindow.dismiss();
+        }
+        tvJobName.setText(userJobsBean.getPost_clname());
+        judgeJobAvailability(userJobsBean);
+    }
+
+    /**
+     * 判选择岗位是否可用
+     * @param userJobsBean
+     */
+    private void judgeJobAvailability(UserJobsBean userJobsBean) {
+        getPresenter().judgeJobAvailability(PreferencesHelper.get(Constants.USER_PKID,"")
+                ,userJobsBean.getUser_pkid(),userJobsBean.getUser_id());
     }
 }

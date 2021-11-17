@@ -73,7 +73,7 @@ public class TableDetailActivity extends BaseActivity<TableDetailView, TableDeta
      * 报表参数选择筛选条件拼接
      */
     private String paramArr = "" ;
-    private String serviceUrl = Constants.BASE_URL;
+    private String serviceUrl = Constants.BASE_MOBILE_URL;
 
     @Override
     protected int getLayoutId() {
@@ -245,7 +245,7 @@ public class TableDetailActivity extends BaseActivity<TableDetailView, TableDeta
                     break;
 
                 case "MODEL" :
-                    mAgentWeb.getUrlLoader().loadUrl(Constants.BASE_URL + "/dataexporler/mobile.html?" +"semf_lang=" + LanguageUtils.getLanguage(mContext)
+                    mAgentWeb.getUrlLoader().loadUrl(Constants.BASE_MOBILE_URL + "/dataexporler/mobile.html?" +"semf_lang=" + LanguageUtils.getLanguage(mContext)
                             + "&userpkid=" + PreferencesHelper.get(Constants.USER_PKID,"") + "#/" + Uri.encode(serviceUrl) + "/" + tableBean.getRes_cuid() + "/" + Constants.token + "?"
                             + paramArr + "&themeName=" + ((tableBean.getModel_screen().equals("screen")) ? "dark" : "dap"));
                     break;

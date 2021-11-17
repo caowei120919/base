@@ -14,7 +14,10 @@
 
     <include
         android:layout_width="match_parent"
-        android:layout_height="@dimen/H106"
+        android:layout_height="@dimen/H86"
+        android:layout_marginLeft="@dimen/W24"
+        android:layout_marginRight="@dimen/W24"
+        android:layout_marginBottom="@dimen/H20"
         layout="@layout/view_search"/>
 
     <TextView

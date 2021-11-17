@@ -27,6 +27,7 @@ public class Constants {
     public static final String MINUTE = "minute" ;
     public static final String HOUR = "hour" ;
     public static final int INSTALL_APK = 0x00008;
+    public static final String JUDGE_SUCCESS = "200";
 
     /**
      * 选择联系人类型
@@ -55,6 +56,8 @@ public class Constants {
     public static final String USER_DEFAULT_YEAR = "USER_DEFAULT_YEAR";
     public static final String USER_ORG_EN_NAME = "USER_ORG_EN_NAME";
     public static final String USER_ID = "USER_ID";
+    public static final String USER_LOGIN_NAME = "USER_LOGIN_NAME";
+    public static final String USER_LOGIN_PASSWORD = "USER_LOGIN_PASSWORD";
     public static final String USER_COMPANY_CODE = "USER_COMPANY_CODE";
     public static final String USER_CHECK_REMEMBER = "USER_CHECK_REMEMBER";
     public static final String LANG = "LANG";
@@ -269,9 +272,11 @@ public class Constants {
         PreferencesHelper.put(USER_DEFAULT_TIME,user.getDefaulttime());
         PreferencesHelper.put(USER_ORG_EN_NAME,user.getOrgEnName());
         PreferencesHelper.put(USER_ID,user.getUserId());
+        PreferencesHelper.put(USER_LOGIN_NAME,user.getUserId());
         if(checked){
             PreferencesHelper.put(USER_COMPANY_CODE,companyCode);
             PreferencesHelper.put(USER_PWD,password);
+            PreferencesHelper.put(USER_LOGIN_PASSWORD,password);
         }
         PreferencesHelper.put(USER_CHECK_REMEMBER,checked);
     }

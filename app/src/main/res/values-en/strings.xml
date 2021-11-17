@@ -292,4 +292,7 @@
     <string name="please_enter_a_large_screen_name">Please enter a large screen name</string>
     <string name="please_enter_your_search_content">Please enter your search content</string>
     <string name="management_of_the_canvas">Management of the canvas</string>
+    <string name="please_enter_comments">Please enter comments</string>
+    <string name="comments_cannot_be_empty">Comments cannot be empty</string>
+    <string name="upload_up_to_six_images">Upload up to six images</string>
 </resources>

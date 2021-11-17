@@ -18,6 +18,7 @@ import com.datacvg.dimp.bean.ImageResBean;
 import com.datacvg.dimp.bean.IndexBean;
 import com.datacvg.dimp.bean.IndexChartInfoBean;
 import com.datacvg.dimp.bean.IndexTreeListBean;
+import com.datacvg.dimp.bean.JudgeJobBean;
 import com.datacvg.dimp.bean.KpiPermissionDataBean;
 import com.datacvg.dimp.bean.MessageBean;
 import com.datacvg.dimp.bean.ModuleListBean;
@@ -159,7 +160,6 @@ public interface MobileApi {
      * @param screen_id
      * @return
      */
-    @Headers({"Domain-Name: fis_api"})
     @GET("api/dataengine/largescreen/{id}")
     Observable<BaseBean<ScreenDetailBean>> getScreenDetail(@Path("id") String screen_id);
 
@@ -221,7 +221,7 @@ public interface MobileApi {
     Observable<BaseBean<ReadMessageBean>> doReadMessage(@Query("key") String doRead,
                                                         @Query("message_id") String id,
                                                         @Query("read") String read,
-                                                        @Query("module_id") String module_id);
+                                                        @Query("module_id") String module_id) ;
 
     /**
      * 获取管理画布参数
@@ -244,7 +244,6 @@ public interface MobileApi {
      * @param params
      * @return
      */
-    @Headers({"Domain-Name: fis_api"})
     @POST("largescreen/websocket")
     Observable<BaseBean<String>> confirmOnTheScreen(@Body Map<String, String> params);
 
@@ -531,4 +530,30 @@ public interface MobileApi {
 
     @POST("api/dataengine/dataexporler/report/screen")
     Observable<BaseBean> addToScreenRequest(@Body Map params);
+
+    /**
+     * 判断岗位是否可用
+     * @param currentUserPkid
+     * @param chooseUserPkid
+     * @return
+     */
+    @GET("api/mobile/login/userchange/getcredentials")
+    Observable<JudgeJobBean> judgeJobAvailability(@Query("userPkid") String currentUserPkid,
+                                                  @Query("targetUserPkid") String chooseUserPkid);
+
+    /**
+     * 获取要切换的岗位信息
+     * @param chooseUserId
+     * @return
+     */
+    @GET("api/mobile/login/switchposition")
+    Observable<BaseBean<UserLoginBean>> getJosInformation(@Query("loginName") String chooseUserId);
+
+    /**
+     * 注销岗位信息
+     * @param token
+     * @return
+     */
+    @GET("api/mobile/login/userchange/logoutticket")
+    Observable<JudgeJobBean> logoutTicket(@Query("authorization") String token);
 }

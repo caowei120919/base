@@ -27,4 +27,9 @@ public interface PersonView extends MvpView {
      * @param resdata
      */
     void getMessageSuccess(MessageBean resdata);
+
+    /**
+     * 岗位切换成功
+     */
+    void switchJobSuccess();
 }

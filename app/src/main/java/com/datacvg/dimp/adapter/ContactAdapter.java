@@ -147,7 +147,6 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     ((ContactViewHolder) holder).tvContact.setSelected(!((ContactViewHolder) holder).tvContact.isSelected());
                     ContactBean contactBean = resultList.get(position).getBean();
                     contactBean.setChecked(((ContactViewHolder) holder).tvContact.isSelected());
-                    notifyDataSetChanged();
                     EventBus.getDefault().post(new ContactEvent(contactBean));
             });
         }

@@ -12,7 +12,6 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PartMap;
 import retrofit2.http.Query;
-import retrofit2.http.Url;
 
 /**
  * @Author : T-Bag (茶包)

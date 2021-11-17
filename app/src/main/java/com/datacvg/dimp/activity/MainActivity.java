@@ -18,6 +18,7 @@ import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.ConstantReportBean;
+import com.datacvg.dimp.bean.DefaultUserBean;
 import com.datacvg.dimp.bean.DefaultUserListBean;
 import com.datacvg.dimp.bean.ModuleBean;
 import com.datacvg.dimp.bean.ModuleListBean;
@@ -29,12 +30,17 @@ import com.datacvg.dimp.event.HideNavigationEvent;
 import com.datacvg.dimp.event.LoginOutEvent;
 import com.datacvg.dimp.event.PageCompleteEvent;
 import com.datacvg.dimp.event.RebuildTableEvent;
+import com.datacvg.dimp.event.SwitchUserEvent;
 import com.datacvg.dimp.fragment.ActionFragment;
 import com.datacvg.dimp.fragment.DigitalFragment;
 import com.datacvg.dimp.fragment.PersonalFragment;
 import com.datacvg.dimp.fragment.ReportFragment;
 import com.datacvg.dimp.fragment.ScreenFragment;
 import com.datacvg.dimp.fragment.TableFragment;
+import com.datacvg.dimp.greendao.bean.ContactBean;
+import com.datacvg.dimp.greendao.bean.DepartmentBean;
+import com.datacvg.dimp.greendao.controller.DbContactController;
+import com.datacvg.dimp.greendao.controller.DbDepartmentController;
 import com.datacvg.dimp.presenter.MainPresenter;
 import com.datacvg.dimp.view.MainView;
 import com.google.gson.Gson;
@@ -97,6 +103,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @Override
     protected void setupData(Bundle savedInstanceState) {
         getPresenter().getPermissionModule();
+        getPresenter().getDepartmentAndContact();
         getDefaultReport();
     }
 
@@ -311,29 +318,29 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
      */
     @Override
     public void getDepartmentAndContactSuccess(DefaultUserListBean resdata) {
-//        DbDepartmentController departmentController = DbDepartmentController.getInstance(mContext);
-//        departmentController.deleteAllDepartment();
-//        DbContactController contactController = DbContactController.getInstance(mContext);
-//        contactController.deleteAllContact();
-//        for (DefaultUserBean bean : resdata) {
-//            DepartmentBean departmentBean = new DepartmentBean();
-//            departmentBean.setD_res_clname(bean.getD_res_clname());
-//            departmentBean.setD_res_flname(bean.getD_res_flname());
-//            departmentBean.setD_res_id(bean.getD_res_id());
-//            departmentBean.setD_res_parentid(bean.getD_res_parentid());
-//            departmentBean.setD_res_pkid(bean.getD_res_pkid());
-//            departmentBean.setD_res_rootid(bean.getD_res_rootid());
-//            departmentController.insertOrUpdateDepartment(departmentBean);
-//            for (DefaultUserBean.UserBean contact : bean.getUser()){
-//                ContactBean contactBean = new ContactBean();
-//                contactBean.setDepartment_id(bean.getD_res_pkid());
-//                contactBean.setId(contact.getId());
-//                contactBean.setUser_id(contact.getUser_id());
-//                contactBean.setName(contact.getName());
-//                contactController.insertOrUpdateContact(contactBean);
-//            }
-//        }
-//        PLog.e(DbContactController.getInstance(mContext).queryContactList().size() + "");
+        DbDepartmentController departmentController = DbDepartmentController.getInstance(mContext);
+        departmentController.deleteAllDepartment();
+        DbContactController contactController = DbContactController.getInstance(mContext);
+        contactController.deleteAllContact();
+        for (DefaultUserBean bean : resdata) {
+            DepartmentBean departmentBean = new DepartmentBean();
+            departmentBean.setD_res_clname(bean.getD_res_clname());
+            departmentBean.setD_res_flname(bean.getD_res_flname());
+            departmentBean.setD_res_id(bean.getD_res_id());
+            departmentBean.setD_res_parentid(bean.getD_res_parentid());
+            departmentBean.setD_res_pkid(bean.getD_res_pkid());
+            departmentBean.setD_res_rootid(bean.getD_res_rootid());
+            departmentController.insertOrUpdateDepartment(departmentBean);
+            for (DefaultUserBean.UserBean contact : bean.getUser()){
+                ContactBean contactBean = new ContactBean();
+                contactBean.setDepartment_id(bean.getD_res_pkid());
+                contactBean.setId(contact.getId());
+                contactBean.setUser_id(contact.getUser_id());
+                contactBean.setName(contact.getName());
+                contactController.insertOrUpdateContact(contactBean);
+            }
+        }
+        PLog.e(DbContactController.getInstance(mContext).queryContactList().size() + "");
     }
 
     /**
@@ -401,6 +408,13 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PageCompleteEvent event){
         tabModule.setVisibility(View.VISIBLE);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SwitchUserEvent event){
+        recreate();
+//        mContext.startActivity(new Intent(mContext, MainActivity.class));
+//        finish();
     }
 
     @Override

@@ -196,12 +196,16 @@ public class TableFragment extends BaseFragment<TableView, TablePresenter> imple
         }
     }
 
-    @OnClick({R.id.edit_delete})
+    @OnClick({R.id.edit_delete,R.id.ed_search})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.edit_delete :
                 edSearch.setText("");
                 edSearch.setCursorVisible(false);
+                break;
+
+            case R.id.ed_search :
+                edSearch.setCursorVisible(true);
                 break;
         }
     }

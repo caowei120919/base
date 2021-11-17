@@ -17,15 +17,15 @@
         android:button="@drawable/shape_check_department_expend">
     </CheckBox>
 
-    <CheckBox
+    <ImageView
         android:layout_toRightOf="@id/cb_expend"
         android:id="@+id/cb_department"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/W24"
-        android:button="@drawable/selector_select">
-    </CheckBox>
+        android:src="@drawable/selector_select">
+    </ImageView>
 
     <ImageView
         android:id="@+id/img_department"

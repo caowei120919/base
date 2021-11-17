@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -127,14 +128,12 @@ public class DepartmentAdapter extends RecyclerView.Adapter<DepartmentAdapter.Pa
                     notifyDataSetChanged();
                 }
             });
-            ((ParentViewHolder) holder).cbDepartment.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked){
-                        EventBus.getDefault().post(new AddDepartmentEvent(node.getBean()));
-                    }else{
-                        EventBus.getDefault().post(new DeleteDepartmentEvent(node.getBean()));
-                    }
+            ((ParentViewHolder) holder).cbDepartment.setOnClickListener(v -> {
+                holder.cbDepartment.setSelected(!holder.cbDepartment.isSelected());
+                if (holder.cbDepartment.isSelected()){
+                    EventBus.getDefault().post(new AddDepartmentEvent(node.getBean()));
+                }else{
+                    EventBus.getDefault().post(new DeleteDepartmentEvent(node.getBean()));
                 }
             });
             ((ParentViewHolder) holder).tvDepartmentName.setText(showDepartmentInAtBeans.get(position).getBean().getD_res_clname());
@@ -176,7 +175,7 @@ public class DepartmentAdapter extends RecyclerView.Adapter<DepartmentAdapter.Pa
         CheckBox cbExpend ;
 
         @BindView(R.id.cb_department)
-        CheckBox cbDepartment ;
+        ImageView cbDepartment ;
 
         @BindView(R.id.tv_departmentName)
         TextView tvDepartmentName ;

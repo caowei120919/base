@@ -7,8 +7,9 @@
     <ImageView
         android:id="@+id/img_top"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/H490"
-        android:src="@mipmap/login_top_bg">
+        android:layout_height="@dimen/H400"
+        android:src="@mipmap/login_top_bg"
+        android:scaleType="centerCrop">
     </ImageView>
 
     <EditText

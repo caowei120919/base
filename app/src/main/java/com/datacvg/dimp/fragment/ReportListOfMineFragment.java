@@ -4,11 +4,9 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Environment;
 import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.activity.AddReportToScreenActivity;
 import com.datacvg.dimp.activity.ReportDetailActivity;
@@ -30,11 +28,9 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.tbruyelle.rxpermissions2.RxPermissions;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -52,6 +48,8 @@ public class ReportListOfMineFragment extends BaseFragment<ReportListOfMineView,
     RecyclerView recyclerReportListOfMine ;
 
     private List<ReportBean> reportBeans = new ArrayList<>();
+    private List<ReportBean> sysReportBeans = new ArrayList<>() ;
+    private List<ReportBean> forNameReportBeans = new ArrayList<>() ;
     private ReportListAdapter adapter ;
     private ReportBean reportBean ;
 
