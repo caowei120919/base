@@ -2,9 +2,12 @@ package com.datacvg.dimp.fragment;
 
 import android.Manifest;
 import android.content.Intent;
+import android.icu.text.Collator;
+import android.os.Build;
 import android.os.Environment;
 import android.view.View;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.dimp.R;
@@ -16,6 +19,7 @@ import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.utils.FileUtils;
 import com.datacvg.dimp.baseandroid.utils.GlideLoader;
+import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.MultipartUtil;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
@@ -27,6 +31,7 @@ import com.datacvg.dimp.event.SortForNameEvent;
 import com.datacvg.dimp.event.SortForSystemEvent;
 import com.datacvg.dimp.presenter.ReportOfMinePresenter;
 import com.datacvg.dimp.view.ReportOfMineView;
+import com.google.gson.Gson;
 import com.lcw.library.imagepicker.ImagePicker;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
@@ -38,8 +43,11 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import butterknife.BindView;
 import okhttp3.RequestBody;
@@ -61,7 +69,9 @@ public class ReportOfMineGridFragment extends BaseFragment<ReportOfMineView, Rep
 
     public final static int MINE_REPORT_THUMB_REQUEST = 0x000001 ;
     private String changeAvatarPath;
-    private List<ReportBean> reportBeans = new ArrayList<>() ;
+    private List<ReportBean> originalBeans = new ArrayList<>() ;
+    private List<ReportBean> showReportBeans = new ArrayList<>() ;
+    private List<ReportBean> sortBeans = new ArrayList<>() ;
     private ReportGridOfMineAdapter reportAdapter ;
     private GridLayoutManager gridLayoutManager ;
     private ReportBean reportBean ;
@@ -83,7 +93,7 @@ public class ReportOfMineGridFragment extends BaseFragment<ReportOfMineView, Rep
         swipeReportOfMine.setEnableRefresh(true);
         gridLayoutManager = new GridLayoutManager(mContext,2);
         reportAdapter = new ReportGridOfMineAdapter(mContext,
-                Constants.REPORT_MINE,reportBeans,this);
+                Constants.REPORT_MINE, showReportBeans,this);
         recyclerReportOfMine.setLayoutManager(gridLayoutManager);
         recyclerReportOfMine.setAdapter(reportAdapter);
     }
@@ -100,9 +110,36 @@ public class ReportOfMineGridFragment extends BaseFragment<ReportOfMineView, Rep
         if(swipeReportOfMine.isRefreshing()){
             swipeReportOfMine.finishRefresh();
         }
-        this.reportBeans.clear();
-        this.reportBeans.addAll(reportBeans);
+        this.originalBeans.clear();
+        for (ReportBean bean : reportBeans){
+            if(!bean.getModel_id().equals(Constants.REPORT_MINE_PARENT_ID)){
+                this.originalBeans.add(bean);
+            }
+        }
+        sortReportBeans();
+        showReportBeans.clear();
+        showReportBeans.addAll(originalBeans);
         reportAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 对数据进行名称排序
+     */
+    private void sortReportBeans() {
+        sortBeans.clear();
+        sortBeans.addAll(originalBeans);
+        Collections.sort(sortBeans, new Comparator<ReportBean>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public int compare(ReportBean o1, ReportBean o2) {
+                Comparator<Object> com = Collator.getInstance(Locale.CHINA);
+                if(LanguageUtils.isZh(mContext)){
+                    return com.compare(o1.getModel_clname(),o2.getModel_clname());
+                }else{
+                    return com.compare(o1.getModel_flname(),o2.getModel_flname());
+                }
+            }
+        });
     }
 
     @Override
@@ -262,11 +299,17 @@ public class ReportOfMineGridFragment extends BaseFragment<ReportOfMineView, Rep
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SortForSystemEvent event){
+        showReportBeans.clear();
+        showReportBeans.addAll(originalBeans);
+        reportAdapter.notifyDataSetChanged();
         PLog.e("按系统排序");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SortForNameEvent event){
+        showReportBeans.clear();
+        showReportBeans.addAll(sortBeans);
+        reportAdapter.notifyDataSetChanged();
         PLog.e("按名称排序");
     }
 }

@@ -9,12 +9,10 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.activity.TableDetailActivity;
 import com.datacvg.dimp.activity.TableFolderActivity;
-import com.datacvg.dimp.adapter.TableAdapter;
 import com.datacvg.dimp.adapter.TableGridAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.DisplayUtils;
@@ -28,7 +26,6 @@ import com.datacvg.dimp.view.TableView;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
-
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;

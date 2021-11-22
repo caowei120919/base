@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.CommentListAdapter;
 import com.datacvg.dimp.adapter.PhotoAdapter;
@@ -120,7 +119,7 @@ public class TableCommentActivity extends BaseActivity<TableCommentView, TableCo
                             .showImage(true)
                             .showVideo(false)
                             .setSingleType(true)
-                            .setMaxCount(6)
+                            .setMaxCount(6 - photoPaths.size())
                             .start(mContext, Constants.REQUEST_OPEN_CAMERA);
                 }
                 break;
@@ -140,7 +139,7 @@ public class TableCommentActivity extends BaseActivity<TableCommentView, TableCo
     @OnTextChanged(value = R.id.ed_comment,callback = OnTextChanged.Callback.TEXT_CHANGED)
     public void onUserNameTextChange(CharSequence s ,int start,int before,int count){
         if(start==s.length()-1 && s.toString().endsWith(AT)){
-            startActivity(new Intent(mContext, ContactActivity.class));
+//            startActivity(new Intent(mContext, ContactActivity.class));
         }
     }
 
@@ -148,7 +147,6 @@ public class TableCommentActivity extends BaseActivity<TableCommentView, TableCo
     public void onEvent(DeletePhotoEvent event){
         if(event!= null){
             photoPaths.remove(event.getPosition());
-            photoAdapter.notifyDataSetChanged();
         }
     }
 

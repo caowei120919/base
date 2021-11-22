@@ -142,11 +142,12 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(((ContactViewHolder) holder).imgAvatar);
             ((ContactViewHolder) holder).mTextView.setText(resultList.get(position).getName());
-            ((ContactViewHolder) holder).tvContact.setSelected(resultList.get(position).isChecked());
+            ((ContactViewHolder) holder).tvContact.setSelected(resultList.get(position).getBean().getChecked());
             ((ContactViewHolder) holder).tvContact.setOnClickListener(view ->  {
                     ((ContactViewHolder) holder).tvContact.setSelected(!((ContactViewHolder) holder).tvContact.isSelected());
                     ContactBean contactBean = resultList.get(position).getBean();
-                    contactBean.setChecked(((ContactViewHolder) holder).tvContact.isSelected());
+                    contactBean.setChecked(!contactBean.getChecked());
+                    notifyDataSetChanged();
                     EventBus.getDefault().post(new ContactEvent(contactBean));
             });
         }

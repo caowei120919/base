@@ -29,7 +29,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="@dimen/H20"
             android:layout_marginBottom="@dimen/H20"
             android:layout_alignParentBottom="true"
             android:numColumns="3">
@@ -39,8 +38,7 @@
         <RelativeLayout
             android:id="@+id/rel_submit"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/H120"
+            android:layout_height="@dimen/H120"
             android:layout_above="@id/grid_photo">
 
             <TextView
@@ -58,6 +56,7 @@
                 android:paddingTop="@dimen/H40"
                 android:paddingBottom="@dimen/H40"
                 android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:src="@mipmap/report_comment_send">
             </ImageView>
 
@@ -89,8 +88,15 @@
             <EditText
                 android:id="@+id/ed_comment"
                 android:layout_width="match_parent"
-                android:layout_alignBottom="@id/img_at"
                 android:layout_height="wrap_content"
+                android:minHeight="@dimen/H60"
+                android:textSize="12sp"
+                android:paddingLeft="@dimen/W24"
+                android:hint="@string/please_enter_comments"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/W24"
+                android:maxHeight="@dimen/H100"
+                android:background="@drawable/shape_ffffff_f2f2f2"
                 android:layout_toLeftOf="@id/img_at">
             </EditText>
         </RelativeLayout>

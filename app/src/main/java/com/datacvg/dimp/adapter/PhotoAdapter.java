@@ -48,9 +48,9 @@ public class PhotoAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder = null;
         if(convertView == null){
-            convertView = View.inflate(mContext, R.layout.item_photo,null);
-            viewHolder = new ViewHolder();
-            viewHolder.imgPicture = convertView.findViewById(R.id.img_photo);
+            convertView = View.inflate(mContext, R.layout.item_photo,null) ;
+            viewHolder = new ViewHolder() ;
+            viewHolder.imgPicture = convertView.findViewById(R.id.img_photo) ;
             viewHolder.imgDelete = convertView.findViewById(R.id.img_delete) ;
             convertView.setTag(viewHolder);
         }else{
@@ -62,6 +62,8 @@ public class PhotoAdapter extends BaseAdapter {
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(viewHolder.imgPicture);
         viewHolder.imgDelete.setOnClickListener(v -> {
+            photoPaths.remove(position);
+            notifyDataSetChanged();
             EventBus.getDefault().post(new DeletePhotoEvent(position));
         });
         return convertView;
