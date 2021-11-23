@@ -2,9 +2,12 @@ package com.datacvg.dimp.fragment;
 
 import android.Manifest;
 import android.content.Intent;
+import android.icu.text.Collator;
+import android.os.Build;
 import android.os.Environment;
 import android.view.View;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.dimp.R;
@@ -15,12 +18,14 @@ import com.datacvg.dimp.adapter.ReportListAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.utils.FileUtils;
+import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.ReportBean;
 import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.event.ReportRefreshEvent;
+import com.datacvg.dimp.event.SortForNameEvent;
 import com.datacvg.dimp.event.SortForSystemEvent;
 import com.datacvg.dimp.presenter.ReportListOfSharedPresenter;
 import com.datacvg.dimp.view.ReportListOfSharedView;
@@ -28,13 +33,14 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.tbruyelle.rxpermissions2.RxPermissions;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import butterknife.BindView;
 
 /**
@@ -49,7 +55,9 @@ public class ReportListOfSharedFragment extends BaseFragment<ReportListOfSharedV
     @BindView(R.id.recycler_reportListOfShare)
     RecyclerView recyclerReportListOfShare ;
 
-    private List<ReportBean> reportBeans = new ArrayList<>();
+    private List<ReportBean> showReportBeans = new ArrayList<>() ;
+    private List<ReportBean> originalBeans = new ArrayList<>() ;
+    private List<ReportBean> sortBeans = new ArrayList<>() ;
     private ReportListAdapter adapter ;
     private ReportBean reportBean ;
 
@@ -69,7 +77,7 @@ public class ReportListOfSharedFragment extends BaseFragment<ReportListOfSharedV
         swipeReportListOfShare.setOnRefreshListener(this);
         swipeReportListOfShare.setEnableRefresh(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
-        adapter = new ReportListAdapter(mContext, Constants.REPORT_SHARE,reportBeans,this);
+        adapter = new ReportListAdapter(mContext, Constants.REPORT_SHARE, showReportBeans,this);
         recyclerReportListOfShare.setLayoutManager(linearLayoutManager);
         recyclerReportListOfShare.setAdapter(adapter);
     }
@@ -86,18 +94,45 @@ public class ReportListOfSharedFragment extends BaseFragment<ReportListOfSharedV
         if(swipeReportListOfShare.isRefreshing()){
             swipeReportListOfShare.finishRefresh();
         }
-        this.reportBeans.clear();
-        this.reportBeans.addAll(data);
+        this.originalBeans.clear();
+        for (ReportBean bean : data){
+            if(!bean.getShare_id().equals(Constants.REPORT_SHARE_PARENT_ID)){
+                this.originalBeans.add(bean);
+            }
+        }
+        sortReportBeans() ;
+        this.showReportBeans.clear();
+        this.showReportBeans.addAll(originalBeans);
         adapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 对报告进行排序操作
+     */
+    private void sortReportBeans() {
+        sortBeans.clear();
+        sortBeans.addAll(originalBeans);
+        Collections.sort(sortBeans, new Comparator<ReportBean>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public int compare(ReportBean o1, ReportBean o2) {
+                Comparator<Object> com = Collator.getInstance(Locale.CHINA);
+                if(LanguageUtils.isZh(mContext)){
+                    return com.compare(o1.getShare_clname(),o2.getShare_clname());
+                }else{
+                    return com.compare(o1.getShare_flname(),o2.getShare_flname());
+                }
+            }
+        });
     }
 
     @Override
     public void deleteSuccess() {
         reportBean = null ;
         EventBus.getDefault().post(new ReportRefreshEvent());
-        for (ReportBean reportBean : reportBeans){
+        for (ReportBean reportBean : showReportBeans){
             if(reportBean.getShare_id().equals(this.reportBean.getShare_id())){
-                reportBeans.remove(reportBean);
+                showReportBeans.remove(reportBean);
                 adapter.notifyDataSetChanged();
                 return;
             }
@@ -181,12 +216,24 @@ public class ReportListOfSharedFragment extends BaseFragment<ReportListOfSharedV
     @Override
     public void onReportClick(ReportBean reportBean) {
         Intent intent = new Intent(mContext, ReportDetailActivity.class) ;
+        reportBean.setReport_type(Constants.REPORT_SHARE);
         intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportBean);
         mContext.startActivity(intent);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SortForSystemEvent event){
+        showReportBeans.clear();
+        showReportBeans.addAll(originalBeans);
+        adapter.notifyDataSetChanged();
         PLog.e("按系统排序");
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SortForNameEvent event){
+        showReportBeans.clear();
+        showReportBeans.addAll(sortBeans);
+        adapter.notifyDataSetChanged();
+        PLog.e("按名称排序");
     }
 }

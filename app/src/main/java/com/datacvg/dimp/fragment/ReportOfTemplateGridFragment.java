@@ -2,27 +2,25 @@ package com.datacvg.dimp.fragment;
 
 import android.Manifest;
 import android.content.Intent;
+import android.icu.text.Collator;
+import android.os.Build;
 import android.os.Environment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.activity.ReportDetailActivity;
-import com.datacvg.dimp.activity.ReportFolderActivity;
 import com.datacvg.dimp.activity.ReportGridOnFolderActivity;
 import com.datacvg.dimp.adapter.ReportGridOfMineAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.utils.FileUtils;
 import com.datacvg.dimp.baseandroid.utils.GlideLoader;
+import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.MultipartUtil;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
@@ -46,8 +44,11 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -70,7 +71,9 @@ public class ReportOfTemplateGridFragment extends BaseFragment<ReportOfTemplateV
     RecyclerView recyclerReportOfTemplate ;
 
     public final static int TEMPLATE_REPORT_THUMB_REQUEST = 0x000003 ;
-    private List<ReportBean> reportBeans = new ArrayList<>() ;
+    private List<ReportBean> showReportBeans = new ArrayList<>() ;
+    private List<ReportBean> originalBeans = new ArrayList<>() ;
+    private List<ReportBean> sortBeans = new ArrayList<>() ;
     private ReportGridOfMineAdapter reportAdapter ;
     private GridLayoutManager gridLayoutManager ;
     private ReportBean reportBean ;
@@ -92,7 +95,7 @@ public class ReportOfTemplateGridFragment extends BaseFragment<ReportOfTemplateV
         swipeReportOfTemplate.setOnRefreshListener(this);
         swipeReportOfTemplate.setEnableRefresh(true);
         gridLayoutManager = new GridLayoutManager(mContext,2);
-        reportAdapter = new ReportGridOfMineAdapter(mContext, Constants.REPORT_TEMPLATE,reportBeans,this);
+        reportAdapter = new ReportGridOfMineAdapter(mContext, Constants.REPORT_TEMPLATE, showReportBeans,this);
         recyclerReportOfTemplate.setLayoutManager(gridLayoutManager);
         recyclerReportOfTemplate.setAdapter(reportAdapter);
     }
@@ -221,9 +224,36 @@ public class ReportOfTemplateGridFragment extends BaseFragment<ReportOfTemplateV
         if(swipeReportOfTemplate.isRefreshing()){
             swipeReportOfTemplate.finishRefresh();
         }
-        this.reportBeans.clear();
-        this.reportBeans.addAll(data);
+        this.originalBeans.clear();
+        for (ReportBean bean : data){
+            if(!bean.getTemplate_id().equals(Constants.REPORT_TEMPLATE_PARENT_ID)){
+                this.originalBeans.add(bean);
+            }
+        }
+        sortReportBeans();
+        this.showReportBeans.clear();
+        this.showReportBeans.addAll(originalBeans);
         reportAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 对报告进行排序操作
+     */
+    private void sortReportBeans() {
+        sortBeans.clear();
+        sortBeans.addAll(originalBeans);
+        Collections.sort(sortBeans, new Comparator<ReportBean>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public int compare(ReportBean o1, ReportBean o2) {
+                Comparator<Object> com = Collator.getInstance(Locale.CHINA);
+                if(LanguageUtils.isZh(mContext)){
+                    return com.compare(o1.getTemplate_clname(),o2.getTemplate_clname());
+                }else{
+                    return com.compare(o1.getTemplate_flname(),o2.getTemplate_flname());
+                }
+            }
+        });
     }
 
     @Override
@@ -261,11 +291,17 @@ public class ReportOfTemplateGridFragment extends BaseFragment<ReportOfTemplateV
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SortForSystemEvent event){
+        showReportBeans.clear();
+        showReportBeans.addAll(originalBeans);
+        reportAdapter.notifyDataSetChanged();
         PLog.e("按系统排序");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SortForNameEvent event){
+        showReportBeans.clear();
+        showReportBeans.addAll(sortBeans);
+        reportAdapter.notifyDataSetChanged();
         PLog.e("按名称排序");
     }
 }
