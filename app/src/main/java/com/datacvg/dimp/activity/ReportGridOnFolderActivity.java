@@ -62,6 +62,7 @@ public class ReportGridOnFolderActivity extends BaseActivity<ReportGridOnFolderV
     RecyclerView recyclerReportOfFolder ;
 
     private ReportBean reportBean ;
+    private ReportBean chooseReportBean ;
     private List<ReportBean> reportBeans = new ArrayList<>() ;
     private String folderType ;
     private ReportGridOfMineAdapter gridAdapter ;
@@ -175,7 +176,7 @@ public class ReportGridOnFolderActivity extends BaseActivity<ReportGridOnFolderV
 
     @Override
     public void deleteSuccess() {
-        reportBean = null ;
+        chooseReportBean = null ;
         EventBus.getDefault().post(new ReportRefreshEvent());
         switch (folderType){
             case Constants.REPORT_MINE :
@@ -200,23 +201,23 @@ public class ReportGridOnFolderActivity extends BaseActivity<ReportGridOnFolderV
 
     @Override
     public void uploadSuccess() {
-        reportBean = null ;
+        chooseReportBean = null ;
         switch (folderType){
             case Constants.REPORT_MINE :
                 getPresenter().getReportOfMine(Constants.REPORT_MINE
-                        ,Constants.REPORT_MINE_PARENT_ID
+                        ,reportBean.getModel_id()
                         ,String.valueOf(System.currentTimeMillis()));
                 break;
 
             case Constants.REPORT_SHARE :
                 getPresenter().getReportOfMine(Constants.REPORT_SHARE
-                        ,Constants.REPORT_SHARE_PARENT_ID
+                        ,reportBean.getShare_id()
                         ,String.valueOf(System.currentTimeMillis()));
                 break;
 
             case Constants.REPORT_TEMPLATE :
                 getPresenter().getReportOfMine(Constants.REPORT_TEMPLATE
-                        ,Constants.REPORT_TEMPLATE_PARENT_ID
+                        ,reportBean.getTemplate_id()
                         ,String.valueOf(System.currentTimeMillis()));
                 break;
         }
@@ -225,13 +226,14 @@ public class ReportGridOnFolderActivity extends BaseActivity<ReportGridOnFolderV
     @Override
     public void getReportOfMineSuccess(ReportListBean data) {
         this.reportBeans.clear();
-        this.reportBeans.addAll(reportBeans);
+        this.reportBeans.addAll(data);
         gridAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onReportClick(ReportBean reportBean) {
         Intent intent = new Intent(mContext, ReportDetailActivity.class) ;
+        reportBean.setReport_type(folderType);
         intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportBean);
         mContext.startActivity(intent);
     }
@@ -247,7 +249,7 @@ public class ReportGridOnFolderActivity extends BaseActivity<ReportGridOnFolderV
 
     @Override
     public void uploadThumb(ReportBean bean) {
-        this.reportBean = bean ;
+        this.chooseReportBean = bean ;
         choosePicture();
     }
 
@@ -283,22 +285,21 @@ public class ReportGridOnFolderActivity extends BaseActivity<ReportGridOnFolderV
     }
 
     private void compressThumb(String path) {
-        Luban.with(mContext)
-                .load(path)
-                .setCompressListener(new OnCompressListener() {
-                    @Override
-                    public void onStart() {
-                    }
-
-                    @Override
-                    public void onSuccess(File file) {
-                        upLoadAvatar(file);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                    }
-                }).launch();
+        File file = new File(path);
+        if(file.getName().endsWith(".jpg") || file.getName().endsWith(".png")){
+            try {
+                Long fileSize = file.length();
+                if(fileSize <= Constants.MAX_THUMB_SIZE){
+                    upLoadAvatar(file);
+                }else{
+                    ToastUtils.showLongToast(resources.getString(R.string.the_image_size_cannot_exceed_5m));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else{
+            ToastUtils.showLongToast(resources.getString(R.string.only_jpg_and_png_formats_are_supported));
+        }
     }
 
     private void upLoadAvatar(File file) {
@@ -306,49 +307,49 @@ public class ReportGridOnFolderActivity extends BaseActivity<ReportGridOnFolderV
         final Map<String, RequestBody> params = MultipartUtil.getRequestBodyMap(options, "img", file);
         switch (folderType){
             case Constants.REPORT_MINE :
-                getPresenter().uploadModelThumb(params,reportBean.getModel_id(),Constants.REPORT_MINE);
+                getPresenter().uploadModelThumb(params,chooseReportBean.getModel_id(),Constants.REPORT_MINE);
                 break;
 
             case Constants.REPORT_SHARE :
-                getPresenter().uploadModelThumb(params,reportBean.getModel_id(),Constants.REPORT_SHARE);
+                getPresenter().uploadModelThumb(params,chooseReportBean.getShare_id(),Constants.REPORT_SHARE);
                 break;
 
             case Constants.REPORT_TEMPLATE :
-                getPresenter().uploadModelThumb(params,reportBean.getModel_id(),Constants.REPORT_TEMPLATE);
+                getPresenter().uploadModelThumb(params,chooseReportBean.getTemplate_id(),Constants.REPORT_TEMPLATE);
                 break;
         }
     }
 
     @Override
     public void addToScreen(ReportBean bean) {
-        this.reportBean = bean ;
-        this.reportBean.setReport_type(folderType);
+        this.chooseReportBean = bean ;
+        this.chooseReportBean.setReport_type(folderType);
         Intent intent = new Intent(mContext, AddReportToScreenActivity.class) ;
-        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,this.reportBean);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,this.chooseReportBean);
         mContext.startActivity(intent);
     }
 
     @Override
     public void deleteReport(ReportBean bean) {
-        this.reportBean = bean ;
+        this.chooseReportBean = bean ;
         switch (folderType){
             case Constants.REPORT_MINE :
-                getPresenter().deleteReport(bean.getModel_id(),Constants.REPORT_MINE_TYPE);
+                getPresenter().deleteReport(chooseReportBean.getModel_id(),Constants.REPORT_MINE_TYPE);
                 break;
 
             case Constants.REPORT_SHARE :
-                getPresenter().deleteReport(bean.getShare_id(),Constants.REPORT_SHARE_TYPE);
+                getPresenter().deleteReport(chooseReportBean.getShare_id(),Constants.REPORT_SHARE_TYPE);
                 break;
 
             case Constants.REPORT_TEMPLATE :
-                getPresenter().deleteReport(bean.getTemplate_id(),Constants.REPORT_TEMPLATE_TYPE);
+                getPresenter().deleteReport(chooseReportBean.getTemplate_id(),Constants.REPORT_TEMPLATE_TYPE);
                 break;
         }
     }
 
     @Override
     public void downloadReport(ReportBean bean) {
-        this.reportBean = bean ;
+        this.chooseReportBean = bean ;
         downloadFile();
     }
 
@@ -364,15 +365,15 @@ public class ReportGridOnFolderActivity extends BaseActivity<ReportGridOnFolderV
                         if (aBoolean) {
                             switch (folderType){
                                 case Constants.REPORT_MINE :
-                                    getPresenter().downloadFile(reportBean.getModel_id(),Constants.REPORT_MINE_TYPE);
+                                    getPresenter().downloadFile(chooseReportBean.getModel_id(),Constants.REPORT_MINE_TYPE);
                                     break;
 
                                 case Constants.REPORT_SHARE :
-                                    getPresenter().downloadFile(reportBean.getShare_id(),Constants.REPORT_SHARE_TYPE);
+                                    getPresenter().downloadFile(chooseReportBean.getShare_id(),Constants.REPORT_SHARE_TYPE);
                                     break;
 
                                 case Constants.REPORT_TEMPLATE :
-                                    getPresenter().downloadFile(reportBean.getTemplate_id(),Constants.REPORT_TEMPLATE_TYPE);
+                                    getPresenter().downloadFile(chooseReportBean.getTemplate_id(),Constants.REPORT_TEMPLATE_TYPE);
                                     break;
                             }
                         } else {

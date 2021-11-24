@@ -251,22 +251,21 @@ public class ReportOfMineGridFragment extends BaseFragment<ReportOfMineView, Rep
     }
 
     private void compressThumb(String path) {
-        Luban.with(mContext)
-                .load(path)
-                .setCompressListener(new OnCompressListener() {
-                    @Override
-                    public void onStart() {
-                    }
-
-                    @Override
-                    public void onSuccess(File file) {
-                        upLoadAvatar(file);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                    }
-                }).launch();
+        File file = new File(path);
+        if(file.getName().endsWith(".jpg") || file.getName().endsWith(".png")){
+            try {
+                Long fileSize = file.length();
+                if(fileSize <= Constants.MAX_THUMB_SIZE){
+                    upLoadAvatar(file);
+                }else{
+                    ToastUtils.showLongToast(resources.getString(R.string.the_image_size_cannot_exceed_5m));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else{
+            ToastUtils.showLongToast(resources.getString(R.string.only_jpg_and_png_formats_are_supported));
+        }
     }
 
     @Override
@@ -279,7 +278,7 @@ public class ReportOfMineGridFragment extends BaseFragment<ReportOfMineView, Rep
                     compressThumb(changeAvatarPath);
                     break;
                 default:
-                    throw new IllegalStateException("Unexpected value: " + requestCode);
+                    break;
             }
         }
     }

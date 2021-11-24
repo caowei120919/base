@@ -132,10 +132,16 @@ public class ReportDetailActivity extends BaseActivity<ReportDetailView, ReportD
                 reportId = bean.getModel_id() ;
                 break;
 
-            default:
+            case Constants.REPORT_SHARE :
                 tvTitle.setText(LanguageUtils.isZh(mContext)
                         ? bean.getShare_clname() : bean.getShare_flname());
                 reportId = bean.getShare_id() ;
+                break;
+
+            default:
+                tvTitle.setText(LanguageUtils.isZh(mContext)
+                        ? bean.getTemplate_clname() : bean.getTemplate_flname());
+                reportId = bean.getTemplate_id() ;
                 break;
         }
         serviceUrl = serviceUrl + "api/dataengine/dataexporler" ;

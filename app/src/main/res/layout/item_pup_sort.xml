@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/W228"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@drawable/shape_303030">
@@ -12,11 +12,11 @@
 
         <ImageView
             android:id="@+id/img_thumb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/W50"
+            android:layout_height="@dimen/H50"
             android:layout_centerVertical="true"
             android:src="@mipmap/icon_report_thumb"
-            android:layout_marginLeft="@dimen/W25">
+            android:layout_marginLeft="@dimen/W12">
         </ImageView>
 
         <TextView
@@ -39,11 +39,11 @@
 
         <ImageView
             android:id="@+id/img_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/W50"
+            android:layout_height="@dimen/H50"
             android:layout_centerVertical="true"
             android:src="@mipmap/icon_for_name"
-            android:layout_marginLeft="@dimen/W25">
+            android:layout_marginLeft="@dimen/W12">
         </ImageView>
 
         <TextView

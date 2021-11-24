@@ -141,7 +141,7 @@ public class SearchReportActivity extends BaseActivity<SearchReportView, SearchR
             mContext.startActivity(intent);
         }else{
             Intent intent = new Intent(mContext, ReportDetailActivity.class) ;
-            intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportBean);
+            intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportBean) ;
             mContext.startActivity(intent);
         }
     }

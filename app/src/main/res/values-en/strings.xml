@@ -295,4 +295,6 @@
     <string name="please_enter_comments">Please enter comments</string>
     <string name="comments_cannot_be_empty">Comments cannot be empty</string>
     <string name="upload_up_to_six_images">Upload up to six images</string>
+    <string name="the_image_size_cannot_exceed_5m">The image size cannot exceed 5M</string>
+    <string name="only_jpg_and_png_formats_are_supported">Only JPG and PNG formats are supported</string>
 </resources>

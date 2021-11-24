@@ -364,7 +364,7 @@ public class FileUtils {
         return path.substring(extIndex + 1);
     }
 
-    public static String FormetFileSize(long fileS) {
+    public static String FormatFileSize(long fileS) {
         DecimalFormat df = new DecimalFormat("#0.00");
         String fileSizeString = "";
         if (fileS < 1024) {

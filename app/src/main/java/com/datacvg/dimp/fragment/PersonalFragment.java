@@ -368,7 +368,7 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
                     uploadUserAvatar();
                     break;
 
-                default :  //相册选取
+                case Constants.REQUEST_OPEN_CAMERA :
                     changeAvatarPath = data.getStringArrayListExtra(ImagePicker
                             .EXTRA_SELECT_IMAGES).get(0) ;
                     Glide.with(mContext)

@@ -38,6 +38,7 @@ public class Constants {
     public static final int SCAN_FOR_VPN = 0x00001027 ;
     public static final int SCAN_FOR_SCREEN = 0x00001026 ;
     public static final int SCAN_FOR_LOGIN = 0x00001025 ;
+    public static final long MAX_THUMB_SIZE = 5 * 1024 * 1024 ;
 
     public static final int REQUEST_TAKE_PHOTO = 0x00001024 ;
     public static final int REQUEST_OPEN_CAMERA = 0x00001023 ;

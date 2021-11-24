@@ -288,4 +288,6 @@
     <string name="please_enter_comments">请输入评论内容</string>
     <string name="comments_cannot_be_empty">评论内容不能为空</string>
     <string name="upload_up_to_six_images">最多上传六张图片</string>
+    <string name="the_image_size_cannot_exceed_5m">图片大小不能超过5M</string>
+    <string name="only_jpg_and_png_formats_are_supported">仅支持jpg和png格式</string>
 </resources>

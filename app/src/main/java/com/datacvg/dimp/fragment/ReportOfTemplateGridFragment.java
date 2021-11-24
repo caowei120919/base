@@ -189,34 +189,33 @@ public class ReportOfTemplateGridFragment extends BaseFragment<ReportOfTemplateV
                     compressThumb(changeAvatarPath);
                     break;
                 default:
-                    throw new IllegalStateException("Unexpected value: " + requestCode);
+                    break;
             }
         }
     }
 
     private void compressThumb(String path) {
-        Luban.with(mContext)
-                .load(path)
-                .setCompressListener(new OnCompressListener() {
-                    @Override
-                    public void onStart() {
-                    }
-
-                    @Override
-                    public void onSuccess(File file) {
-                        upLoadAvatar(file);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                    }
-                }).launch();
+        File file = new File(path);
+        if(file.getName().endsWith(".jpg") || file.getName().endsWith(".png")){
+            try {
+                Long fileSize = file.length();
+                if(fileSize <= Constants.MAX_THUMB_SIZE){
+                    upLoadAvatar(file);
+                }else{
+                    ToastUtils.showLongToast(resources.getString(R.string.the_image_size_cannot_exceed_5m));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else{
+            ToastUtils.showLongToast(resources.getString(R.string.only_jpg_and_png_formats_are_supported));
+        }
     }
 
     private void upLoadAvatar(File file) {
         Map<String, String> options = new HashMap<>();
         final Map<String, RequestBody> params = MultipartUtil.getRequestBodyMap(options, "img", file);
-        getPresenter().uploadTemplateThumb(params,reportBean.getModel_id(),Constants.REPORT_MINE);
+        getPresenter().uploadTemplateThumb(params,reportBean.getTemplate_id(),Constants.REPORT_TEMPLATE);
     }
 
     @Override

@@ -316,6 +316,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
+                                android:maxLength="6"
+                                android:hint="2000"
                                 android:background="@null"
                                 android:inputType="number"
                                 android:layout_marginLeft="@dimen/W15">
@@ -356,6 +358,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
+                                android:maxLength="6"
+                                android:hint="2000"
                                 android:background="@null"
                                 android:inputType="number"
                                 android:layout_marginLeft="@dimen/W15">
@@ -375,18 +379,6 @@
                     </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>
-
-<!--            <com.enlogy.statusview.StatusRelativeLayout-->
-<!--                android:id="@+id/status_screen"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="@dimen/H70"-->
-<!--                android:gravity="center_vertical"-->
-<!--                android:layout_below="@id/lin_screenSize"-->
-<!--                android:layout_marginTop="@dimen/H25"-->
-<!--                app:rContentView="@layout/item_sccreen_size_sixteen"-->
-<!--                app:rEmptyView="@layout/item_sccreen_size_one"-->
-<!--                app:rExtendView="@layout/item_sccreen_size_custom">-->
-<!--            </com.enlogy.statusview.StatusRelativeLayout>-->
 
             <TextView
                 android:id="@+id/tv_linTitle"
