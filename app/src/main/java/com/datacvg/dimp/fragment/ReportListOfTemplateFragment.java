@@ -223,6 +223,7 @@ public class ReportListOfTemplateFragment extends BaseFragment<ReportListOfTempl
     @Override
     public void onReportClick(ReportBean reportBean) {
         Intent intent = new Intent(mContext, ReportDetailActivity.class) ;
+        reportBean.setReport_type(Constants.REPORT_TEMPLATE);
         intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportBean);
         mContext.startActivity(intent);
     }

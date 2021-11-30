@@ -1,6 +1,7 @@
 package com.datacvg.dimp.activity;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -40,6 +41,8 @@ import com.google.gson.Gson;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -100,9 +103,9 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
     private boolean fromActionFragment = true ;
     private String actionType = "1";
     private IndexTreeNeedBean indexTreeNeedBean ;
-    private List<ActionPlanIndexBean> actionPlanIndexBeans = new ArrayList<>();
-    private List<ActionPlanIndexBean> taskIndexBeans = new ArrayList<>();
-    private List<IndexTreeBean> indexTreeBeans = new ArrayList<>();
+    private List<ActionPlanIndexBean> actionPlanIndexBeans = new ArrayList<>() ;
+    private List<ActionPlanIndexBean> taskIndexBeans = new ArrayList<>() ;
+    private List<IndexTreeBean> indexTreeBeans = new ArrayList<>() ;
     private List<IndexTreeBean> showDimensionIndex = new ArrayList<>() ;
     /**
      * 负责人
@@ -195,8 +198,6 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
                     @Override
                     public void customLayout(View v) {
                         final TextView tvSubmit = v.findViewById(R.id.tv_finish);
-//                        LinearLayout linChooseType = v.findViewById(R.id.lin_chooseType);
-//                        linChooseType.setVisibility(View.GONE);
                         TextView tvDataTitle = v.findViewById(R.id.tv_dataTitle);
                         tvDataTitle.setVisibility(View.VISIBLE);
                         TextView ivCancel = v.findViewById(R.id.iv_cancel);
@@ -293,7 +294,6 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
                 break;
 
             case R.id.img_addHead :
-                    PLog.e("选择联系人");
                     chooseContacts();
                 break;
 
@@ -398,11 +398,19 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
      * 弹出选择联系人弹窗
      */
     private void chooseContacts() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_cocntact,null,false);
-        builder.setView(view);
-        builder.create();
-        builder.show();
+        ArrayList<String> assistIds = new ArrayList<>() ;
+        Intent intent = new Intent(mContext,ChooseContactFromActionActivity.class) ;
+        intent.putExtra(Constants.EXTRA_DATA_FOR_ALBUM,resources.getString(R.string.head));
+        if(headContact != null){
+            intent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,headContact.getBean().getId()) ;
+        }
+        if(!assistantBeans.isEmpty()){
+            for (Contact contact : assistantBeans){
+                assistIds.add(contact.getBean().getId());
+            }
+            intent.putStringArrayListExtra(Constants.EXTRA_DATA_FOR_BEAN, assistIds);
+        }
+        mContext.startActivity(intent);
     }
 
     @Override

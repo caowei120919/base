@@ -141,34 +141,4 @@ public class ReportGridOnFolderPresenter extends BasePresenter<ReportGridOnFolde
                 });
     }
 
-    /**
-     *
-     * @param type  类型
-     * @param parentId  父id
-     * @param _t 时间戳
-     */
-    public void getReportOfMine(String type, String parentId, String _t) {
-        api.getReport(parentId,type,_t)
-                .compose(RxUtils.applySchedulersLifeCycle(getView()))
-                .subscribe(new RxObserver<BaseBean<ReportListBean>>(){
-                    @Override
-                    public void onComplete() {
-                        super.onComplete();
-                    }
-
-                    @Override
-                    public void onNext(BaseBean<ReportListBean> bean) {
-                        if(RxObserver.checkJsonCode(bean)){
-                            PLog.e(new Gson().toJson(bean.getData()));
-                            getView().getReportOfMineSuccess(bean.getData());
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        PLog.e("TAG",e.getMessage());
-                    }
-                });
-    }
 }

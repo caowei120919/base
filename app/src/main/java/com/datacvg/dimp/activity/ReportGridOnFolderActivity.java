@@ -4,13 +4,20 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.icu.text.Collator;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.dimp.R;
@@ -36,14 +43,15 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.RequestBody;
-import top.zibin.luban.Luban;
-import top.zibin.luban.OnCompressListener;
 
 /**
  * @Author : T-Bag (茶包)
@@ -57,16 +65,21 @@ public class ReportGridOnFolderActivity extends BaseActivity<ReportGridOnFolderV
     @BindView(R.id.img_sort)
     ImageView imgRight ;
     @BindView(R.id.img_search)
-    ImageView imgOther ;
+    ImageView imgSearch;
     @BindView(R.id.recycler_report)
     RecyclerView recyclerReportOfFolder ;
+    @BindView(R.id.img_other)
+    ImageView imgOther ;
 
     private ReportBean reportBean ;
     private ReportBean chooseReportBean ;
-    private List<ReportBean> reportBeans = new ArrayList<>() ;
+    private List<ReportBean> showReportBeans = new ArrayList<>() ;
+    private List<ReportBean> originalBeans = new ArrayList<>() ;
+    private List<ReportBean> sortBeans = new ArrayList<>() ;
     private String folderType ;
     private ReportGridOfMineAdapter gridAdapter ;
     private String listType ;
+    private PopupWindow sortPop ;
     private String changeAvatarPath;
 
     @Override
@@ -92,7 +105,7 @@ public class ReportGridOnFolderActivity extends BaseActivity<ReportGridOnFolderV
             return;
         }
         imgRight.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_sort));
-        imgOther.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_search_of_report));
+        imgSearch.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_search_of_report));
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext,2);
         switch (folderType){
             case Constants.REPORT_MINE :
@@ -110,7 +123,7 @@ public class ReportGridOnFolderActivity extends BaseActivity<ReportGridOnFolderV
                         : reportBean.getTemplate_flname());
                 break;
         }
-        gridAdapter = new ReportGridOfMineAdapter(mContext,folderType,reportBeans,this);
+        gridAdapter = new ReportGridOfMineAdapter(mContext,folderType, showReportBeans,this);
         recyclerReportOfFolder.setLayoutManager(gridLayoutManager);
         recyclerReportOfFolder.setAdapter(gridAdapter);
     }
@@ -154,15 +167,112 @@ public class ReportGridOnFolderActivity extends BaseActivity<ReportGridOnFolderV
 
             case R.id.img_sort :
                 PLog.e("排序");
+                if (sortPop == null){
+                    createSortPopWindow();
+                }else{
+                    sortPop.showAsDropDown(imgOther,-150,20);
+                }
                 break;
         }
     }
 
     @Override
     public void getReportSuccess(ReportListBean data) {
-        reportBeans.clear();
-        reportBeans.addAll(data);
+        this.originalBeans.clear();
+        this.originalBeans.addAll(data);
+        showReportBeans.clear();
+        showReportBeans.addAll(data);
+        sortReportBeans();
         gridAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 创建排序选择弹窗
+     */
+    private void createSortPopWindow() {
+        View contentView = LayoutInflater.from(mContext)
+                .inflate(R.layout.item_pup_sort, null);
+        RelativeLayout relBySystemDefault = contentView.findViewById(R.id.rel_bySystemDefault);
+        RelativeLayout relAccordingToTheName = contentView.findViewById(R.id.rel_accordingToTheName);
+        relBySystemDefault.setOnClickListener(v -> {
+            PLog.e("按系统排序");
+            showReportBeans.clear();
+            showReportBeans.addAll(originalBeans);
+            gridAdapter.notifyDataSetChanged();
+            if(sortPop != null && sortPop.isShowing()){
+                sortPop.dismiss();
+            }
+        });
+        relAccordingToTheName.setOnClickListener(v -> {
+            PLog.e("按名称排序");
+            showReportBeans.clear();
+            showReportBeans.addAll(sortBeans);
+            gridAdapter.notifyDataSetChanged();
+            if(sortPop != null && sortPop.isShowing()){
+                sortPop.dismiss();
+            }
+        });
+        sortPop = new PopupWindow(contentView,
+                (int) resources.getDimension(R.dimen.W260), ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        sortPop.setTouchable(true);
+        sortPop.setOutsideTouchable(false);
+        sortPop.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_bg_f8f8fa));
+        sortPop.showAsDropDown(imgOther,-150,20);
+    }
+
+    /**
+     * 对报告进行排序操作
+     */
+    private void sortReportBeans() {
+        sortBeans.clear();
+        sortBeans.addAll(originalBeans);
+
+        switch (folderType){
+            case Constants.REPORT_MINE :
+                Collections.sort(sortBeans, new Comparator<ReportBean>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public int compare(ReportBean o1, ReportBean o2) {
+                        Comparator<Object> com = Collator.getInstance(Locale.CHINA);
+                        if(LanguageUtils.isZh(mContext)){
+                            return com.compare(o1.getModel_clname(),o2.getModel_clname());
+                        }else{
+                            return com.compare(o1.getModel_flname(),o2.getModel_flname());
+                        }
+                    }
+                });
+                break;
+
+            case Constants.REPORT_SHARE :
+                Collections.sort(sortBeans, new Comparator<ReportBean>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public int compare(ReportBean o1, ReportBean o2) {
+                        Comparator<Object> com = Collator.getInstance(Locale.CHINA);
+                        if(LanguageUtils.isZh(mContext)){
+                            return com.compare(o1.getShare_clname(),o2.getShare_clname());
+                        }else{
+                            return com.compare(o1.getShare_flname(),o2.getShare_flname());
+                        }
+                    }
+                });
+                break;
+
+            case Constants.REPORT_TEMPLATE :
+                Collections.sort(sortBeans, new Comparator<ReportBean>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public int compare(ReportBean o1, ReportBean o2) {
+                        Comparator<Object> com = Collator.getInstance(Locale.CHINA);
+                        if(LanguageUtils.isZh(mContext)){
+                            return com.compare(o1.getTemplate_clname(),o2.getTemplate_clname());
+                        }else{
+                            return com.compare(o1.getTemplate_flname(),o2.getTemplate_flname());
+                        }
+                    }
+                });
+                break;
+        }
     }
 
     @Override
@@ -204,30 +314,23 @@ public class ReportGridOnFolderActivity extends BaseActivity<ReportGridOnFolderV
         chooseReportBean = null ;
         switch (folderType){
             case Constants.REPORT_MINE :
-                getPresenter().getReportOfMine(Constants.REPORT_MINE
+                getPresenter().getReportOnFolder(Constants.REPORT_MINE
                         ,reportBean.getModel_id()
                         ,String.valueOf(System.currentTimeMillis()));
                 break;
 
             case Constants.REPORT_SHARE :
-                getPresenter().getReportOfMine(Constants.REPORT_SHARE
+                getPresenter().getReportOnFolder(Constants.REPORT_SHARE
                         ,reportBean.getShare_id()
                         ,String.valueOf(System.currentTimeMillis()));
                 break;
 
             case Constants.REPORT_TEMPLATE :
-                getPresenter().getReportOfMine(Constants.REPORT_TEMPLATE
+                getPresenter().getReportOnFolder(Constants.REPORT_TEMPLATE
                         ,reportBean.getTemplate_id()
                         ,String.valueOf(System.currentTimeMillis()));
                 break;
         }
-    }
-
-    @Override
-    public void getReportOfMineSuccess(ReportListBean data) {
-        this.reportBeans.clear();
-        this.reportBeans.addAll(data);
-        gridAdapter.notifyDataSetChanged();
     }
 
     @Override

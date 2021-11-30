@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -51,6 +50,16 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/W24"
             android:layout_toLeftOf="@id/img_sort">
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/img_other"
+            android:layout_width="@dimen/W32"
+            android:layout_height="@dimen/W32"
+            android:scaleType="centerCrop"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/W24"
+            android:layout_toLeftOf="@id/img_search">
         </ImageView>
     </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView

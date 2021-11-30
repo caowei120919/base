@@ -1,11 +1,8 @@
 package com.datacvg.dimp.event;
 
 import androidx.annotation.Keep;
-
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.bean.Contact;
-
-import java.util.List;
 
 /**
  * @Author : T-Bag (茶包)

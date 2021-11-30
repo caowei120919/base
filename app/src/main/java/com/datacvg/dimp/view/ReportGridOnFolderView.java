@@ -16,6 +16,4 @@ public interface ReportGridOnFolderView extends MvpView {
     void deleteSuccess();
 
     void uploadSuccess();
-
-    void getReportOfMineSuccess(ReportListBean data);
 }

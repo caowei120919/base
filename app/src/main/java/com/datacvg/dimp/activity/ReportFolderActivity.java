@@ -3,18 +3,24 @@ package com.datacvg.dimp.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.icu.text.Collator;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.datacvg.dimp.R;
-import com.datacvg.dimp.adapter.ReportGridOfMineAdapter;
 import com.datacvg.dimp.adapter.ReportListAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
@@ -34,7 +40,10 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -56,11 +65,13 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
     RecyclerView recyclerReportOfFolder ;
 
     private ReportBean reportBean ;
-    private List<ReportBean> reportBeans = new ArrayList<>() ;
+    private List<ReportBean> showReportBeans = new ArrayList<>() ;
+    private List<ReportBean> originalBeans = new ArrayList<>() ;
+    private List<ReportBean> sortBeans = new ArrayList<>() ;
     private String folderType ;
-    private ReportGridOfMineAdapter gridAdapter ;
     private ReportListAdapter adapter ;
     private String listType ;
+    private PopupWindow sortPop ;
 
     @Override
     protected int getLayoutId() {
@@ -103,7 +114,7 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
                 break;
         }
 
-        adapter = new ReportListAdapter(mContext,folderType,reportBeans,this);
+        adapter = new ReportListAdapter(mContext,folderType, showReportBeans,this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         recyclerReportOfFolder.setLayoutManager(linearLayoutManager);
         recyclerReportOfFolder.setAdapter(adapter);
@@ -148,15 +159,111 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
 
             case R.id.img_sort :
                 PLog.e("排序");
+                if (sortPop == null){
+                    createSortPopWindow();
+                }else{
+                    sortPop.showAsDropDown(imgOther,-150,20);
+                }
                 break;
         }
     }
 
+    /**
+     * 创建排序选择弹窗
+     */
+    private void createSortPopWindow() {
+        View contentView = LayoutInflater.from(mContext)
+                .inflate(R.layout.item_pup_sort, null);
+        RelativeLayout relBySystemDefault = contentView.findViewById(R.id.rel_bySystemDefault);
+        RelativeLayout relAccordingToTheName = contentView.findViewById(R.id.rel_accordingToTheName);
+        relBySystemDefault.setOnClickListener(v -> {
+            PLog.e("按系统排序");
+            showReportBeans.clear();
+            showReportBeans.addAll(originalBeans);
+            adapter.notifyDataSetChanged();
+            if(sortPop != null && sortPop.isShowing()){
+                sortPop.dismiss();
+            }
+        });
+        relAccordingToTheName.setOnClickListener(v -> {
+            PLog.e("按名称排序");
+            showReportBeans.clear();
+            showReportBeans.addAll(sortBeans);
+            adapter.notifyDataSetChanged();
+            if(sortPop != null && sortPop.isShowing()){
+                sortPop.dismiss();
+            }
+        });
+        sortPop = new PopupWindow(contentView,
+                (int) resources.getDimension(R.dimen.W260), ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        sortPop.setTouchable(true);
+        sortPop.setOutsideTouchable(false);
+        sortPop.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_bg_f8f8fa));
+        sortPop.showAsDropDown(imgOther,-150,20);
+    }
+
     @Override
     public void getReportSuccess(ReportListBean data) {
-        reportBeans.clear();
-        reportBeans.addAll(data);
+        this.originalBeans.addAll(data);
+        showReportBeans.clear();
+        showReportBeans.addAll(data);
+        sortReportBeans();
         adapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 对报告进行排序操作
+     */
+    private void sortReportBeans() {
+        sortBeans.clear();
+        sortBeans.addAll(originalBeans);
+
+        switch (folderType){
+            case Constants.REPORT_MINE :
+                Collections.sort(sortBeans, new Comparator<ReportBean>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public int compare(ReportBean o1, ReportBean o2) {
+                        Comparator<Object> com = Collator.getInstance(Locale.CHINA);
+                        if(LanguageUtils.isZh(mContext)){
+                            return com.compare(o1.getModel_clname(),o2.getModel_clname());
+                        }else{
+                            return com.compare(o1.getModel_flname(),o2.getModel_flname());
+                        }
+                    }
+                });
+                break;
+
+            case Constants.REPORT_SHARE :
+                Collections.sort(sortBeans, new Comparator<ReportBean>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public int compare(ReportBean o1, ReportBean o2) {
+                        Comparator<Object> com = Collator.getInstance(Locale.CHINA);
+                        if(LanguageUtils.isZh(mContext)){
+                            return com.compare(o1.getShare_clname(),o2.getShare_clname());
+                        }else{
+                            return com.compare(o1.getShare_flname(),o2.getShare_flname());
+                        }
+                    }
+                });
+                break;
+
+            case Constants.REPORT_TEMPLATE :
+                Collections.sort(sortBeans, new Comparator<ReportBean>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public int compare(ReportBean o1, ReportBean o2) {
+                        Comparator<Object> com = Collator.getInstance(Locale.CHINA);
+                        if(LanguageUtils.isZh(mContext)){
+                            return com.compare(o1.getTemplate_clname(),o2.getTemplate_clname());
+                        }else{
+                            return com.compare(o1.getTemplate_flname(),o2.getTemplate_flname());
+                        }
+                    }
+                });
+                break;
+        }
     }
 
     /**
@@ -266,6 +373,7 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
     @Override
     public void onReportClick(ReportBean reportBean) {
         Intent intent = new Intent(mContext, ReportDetailActivity.class) ;
+        reportBean.setReport_type(folderType);
         intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportBean);
         mContext.startActivity(intent);
     }

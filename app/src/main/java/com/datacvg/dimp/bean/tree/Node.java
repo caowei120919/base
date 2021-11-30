@@ -1,5 +1,6 @@
 package com.datacvg.dimp.bean.tree;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
@@ -10,11 +11,22 @@ import java.util.List;
  * @Time : 2020-09-09
  * @Description :
  */
+@Keep
 public class Node<T extends Node<T>> implements Comparable<T> {
     public int id;
     public int pId;
     public int level;
     public boolean isExpand;
+    public boolean isContact = false;
+
+    public boolean isContact() {
+        return isContact;
+    }
+
+    public void setContact(boolean contact) {
+        isContact = contact;
+    }
+
     public List<T> childNodes;
 
     /**

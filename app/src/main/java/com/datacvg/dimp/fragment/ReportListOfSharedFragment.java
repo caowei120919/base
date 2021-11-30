@@ -128,7 +128,6 @@ public class ReportListOfSharedFragment extends BaseFragment<ReportListOfSharedV
 
     @Override
     public void deleteSuccess() {
-        reportBean = null ;
         EventBus.getDefault().post(new ReportRefreshEvent());
         for (ReportBean reportBean : showReportBeans){
             if(reportBean.getShare_id().equals(this.reportBean.getShare_id())){
@@ -137,6 +136,7 @@ public class ReportListOfSharedFragment extends BaseFragment<ReportListOfSharedV
                 return;
             }
         }
+        reportBean = null ;
     }
 
     @Override
