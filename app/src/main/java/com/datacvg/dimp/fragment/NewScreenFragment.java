@@ -453,6 +453,10 @@ public class NewScreenFragment extends BaseFragment<NewScreenView, NewScreenPres
                 ToastUtils.showLongToast(resources.getString(R.string.please_enter_a_large_screen_name));
                 return;
             }
+            if(screenWide == 0 || screenHeight == 0){
+                ToastUtils.showLongToast(resources.getString(R.string.the_size_must_be_a_value_greater_than_zero));
+                return;
+            }
             AddToScreenRequestBean requestBean = new AddToScreenRequestBean();
             switch (event.getReportBean().getReport_type()){
                 case Constants.REPORT_MINE :

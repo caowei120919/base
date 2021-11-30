@@ -136,6 +136,7 @@ public class TableFolderActivity extends BaseActivity<TableFolderView, TableFold
             case "powerbi_install" :
             case "TABLEAU" :
             case "BO_DASHBOARD" :
+            case "CI":
                 Intent tableIntent = new Intent(mContext, TableDetailActivity.class);
                 tableIntent.putExtra(Constants
                         .EXTRA_DATA_FOR_BEAN,tableBean);

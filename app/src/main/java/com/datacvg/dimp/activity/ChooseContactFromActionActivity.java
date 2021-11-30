@@ -85,32 +85,12 @@ public class ChooseContactFromActionActivity extends BaseActivity<ChooseContactF
      * 拉取创建
      */
     private void createDepartmentInAtBeans() {
-        List<DepartmentBean> departmentBeans = DbDepartmentController.getInstance(mContext).queryDepartmentList();
-        for (DepartmentBean departmentBean : departmentBeans){
-            ChooseContactForActionBean chooseContactForActionBean = new ChooseContactForActionBean() ;
-            chooseContactForActionBean.setResId(departmentBean.getD_res_id());
-            chooseContactForActionBean.setContact(false);
-            chooseContactForActionBean.setLevel(-1);
-            chooseContactForActionBean.setName(departmentBean.getD_res_clname());
-            chooseContactForActionBean.setParentId(departmentBean.getD_res_parentid());
-            List<ContactBean> contactBeans = DbContactController.getInstance(mContext).queryContactList(departmentBean.getD_res_pkid());
-            List<ChooseContactForActionBean> childBeans = new ArrayList<>() ;
-            for (ContactBean contactBean : contactBeans){
-                ChooseContactForActionBean chooseContactForActionChildBean = new ChooseContactForActionBean() ;
-                chooseContactForActionChildBean.setResId(contactBean.getContact_id().toString());
-                chooseContactForActionChildBean.setName(contactBean.getName());
-                chooseContactForActionChildBean.setContact(true);
-                chooseContactForActionChildBean.setParentId(departmentBean.getD_res_id());
-                childBeans.add(chooseContactForActionChildBean);
-            }
-            chooseContactForActionBean.getChildBeans().addAll(childBeans);
-            chooseContactForActionBeans.add(chooseContactForActionBean);
-        }
-        for (ChooseContactForActionBean bean : chooseContactForActionBeans){
-            if(bean.getParentId().equals("0")){
-                bean.setLevel(0);
-                sortBeans.add(bean);
-            }
+        List<DepartmentBean> rootDepartmentBeans = DbDepartmentController.getInstance(mContext)
+                .queryDepartmentListForParent("0");
+        int count = DbDepartmentController.getInstance(mContext)
+                .queryDepartmentList().size();
+        for (DepartmentBean departmentBean : rootDepartmentBeans){
+
         }
     }
 

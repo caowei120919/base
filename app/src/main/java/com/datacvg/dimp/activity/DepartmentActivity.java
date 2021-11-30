@@ -75,7 +75,7 @@ public class DepartmentActivity extends BaseActivity<DepartmentView, DepartmentP
          * 添加根节点
          */
         adapter = new DepartmentAdapter(mContext,departmentInAtBeans);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this );
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         //设置布局管理器
         recycleDepartment.setLayoutManager(layoutManager);
         recycleDepartment.setHasFixedSize(true);

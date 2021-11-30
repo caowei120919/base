@@ -23,6 +23,7 @@ import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
+import com.datacvg.dimp.baseandroid.widget.CVGOKCancelWithTitle;
 import com.datacvg.dimp.bean.ReportBean;
 import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.event.ReportRefreshEvent;
@@ -163,7 +164,17 @@ public class ReportListOfTemplateFragment extends BaseFragment<ReportListOfTempl
     @Override
     public void onReportDelete(ReportBean reportBean) {
         this.reportBean = reportBean ;
-        getPresenter().deleteReport(reportBean.getTemplate_id(),Constants.REPORT_TEMPLATE_TYPE);
+        CVGOKCancelWithTitle dialogOKCancel = new CVGOKCancelWithTitle(mContext);
+        dialogOKCancel.setMessage(mContext.getResources()
+                .getString(R.string.confirm_deletion));
+        dialogOKCancel.setCancelable(false);
+        dialogOKCancel.setOnClickPositiveButtonListener(view -> {
+            getPresenter().deleteReport(reportBean.getTemplate_id(),Constants.REPORT_TEMPLATE_TYPE);
+        });
+        dialogOKCancel.setOnClickListenerNegativeBtn(view -> {
+            dialogOKCancel.dismiss();
+        });
+        dialogOKCancel.show();
     }
 
     /**

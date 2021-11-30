@@ -25,6 +25,7 @@ import com.datacvg.dimp.baseandroid.utils.MultipartUtil;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
+import com.datacvg.dimp.baseandroid.widget.CVGOKCancelWithTitle;
 import com.datacvg.dimp.bean.ReportBean;
 import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.event.ReportRefreshEvent;
@@ -95,7 +96,8 @@ public class ReportOfTemplateGridFragment extends BaseFragment<ReportOfTemplateV
         swipeReportOfTemplate.setOnRefreshListener(this);
         swipeReportOfTemplate.setEnableRefresh(true);
         gridLayoutManager = new GridLayoutManager(mContext,2);
-        reportAdapter = new ReportGridOfMineAdapter(mContext, Constants.REPORT_TEMPLATE, showReportBeans,this);
+        reportAdapter = new ReportGridOfMineAdapter(mContext, Constants.REPORT_TEMPLATE
+                , showReportBeans,this);
         recyclerReportOfTemplate.setLayoutManager(gridLayoutManager);
         recyclerReportOfTemplate.setAdapter(reportAdapter);
     }
@@ -139,7 +141,17 @@ public class ReportOfTemplateGridFragment extends BaseFragment<ReportOfTemplateV
     @Override
     public void deleteReport(ReportBean bean) {
         this.reportBean = bean ;
-        getPresenter().deleteReport(bean.getTemplate_id(),Constants.REPORT_TEMPLATE_TYPE);
+        CVGOKCancelWithTitle dialogOKCancel = new CVGOKCancelWithTitle(mContext);
+        dialogOKCancel.setMessage(mContext.getResources()
+                .getString(R.string.confirm_deletion));
+        dialogOKCancel.setCancelable(false);
+        dialogOKCancel.setOnClickPositiveButtonListener(view -> {
+            getPresenter().deleteReport(bean.getTemplate_id(),Constants.REPORT_TEMPLATE_TYPE);
+        });
+        dialogOKCancel.setOnClickListenerNegativeBtn(view -> {
+            dialogOKCancel.dismiss();
+        });
+        dialogOKCancel.show();
     }
 
     @Override
@@ -290,7 +302,7 @@ public class ReportOfTemplateGridFragment extends BaseFragment<ReportOfTemplateV
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SortForSystemEvent event){
-        showReportBeans.clear();
+        showReportBeans.clear()                                           ;
         showReportBeans.addAll(originalBeans);
         reportAdapter.notifyDataSetChanged();
         PLog.e("按系统排序");

@@ -30,6 +30,7 @@ import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
+import com.datacvg.dimp.baseandroid.widget.CVGOKCancelWithTitle;
 import com.datacvg.dimp.bean.ReportBean;
 import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.event.ReportRefreshEvent;
@@ -273,19 +274,29 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
     @Override
     public void onReportDelete(ReportBean reportBean) {
         this.reportBean = reportBean ;
-        switch (folderType){
-            case Constants.REPORT_MINE :
-                getPresenter().deleteReport(reportBean.getModel_id(),Constants.REPORT_MINE_TYPE);
-                break;
+        CVGOKCancelWithTitle dialogOKCancel = new CVGOKCancelWithTitle(mContext);
+        dialogOKCancel.setMessage(mContext.getResources()
+                .getString(R.string.confirm_deletion));
+        dialogOKCancel.setCancelable(false);
+        dialogOKCancel.setOnClickPositiveButtonListener(view -> {
+            switch (folderType){
+                case Constants.REPORT_MINE :
+                    getPresenter().deleteReport(reportBean.getModel_id(),Constants.REPORT_MINE_TYPE);
+                    break;
 
-            case Constants.REPORT_SHARE :
-                getPresenter().deleteReport(reportBean.getShare_id(),Constants.REPORT_SHARE_TYPE);
-                break;
+                case Constants.REPORT_SHARE :
+                    getPresenter().deleteReport(reportBean.getShare_id(),Constants.REPORT_SHARE_TYPE);
+                    break;
 
-            case Constants.REPORT_TEMPLATE :
-                getPresenter().deleteReport(reportBean.getTemplate_id(),Constants.REPORT_TEMPLATE_TYPE);
-                break;
-        }
+                case Constants.REPORT_TEMPLATE :
+                    getPresenter().deleteReport(reportBean.getTemplate_id(),Constants.REPORT_TEMPLATE_TYPE);
+                    break;
+            }
+        });
+        dialogOKCancel.setOnClickListenerNegativeBtn(view -> {
+            dialogOKCancel.dismiss();
+        });
+        dialogOKCancel.show();
     }
 
     @Override

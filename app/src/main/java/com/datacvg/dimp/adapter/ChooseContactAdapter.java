@@ -42,15 +42,15 @@ public class ChooseContactAdapter extends RecyclerView.Adapter<ChooseContactAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ChooseContactForActionBean chooseContactForActionBean = chooseContactForActionBeans.get(position);
-        holder.cbExpend.setVisibility(chooseContactForActionBean.getContact() ? View.GONE : View.VISIBLE);
-        holder.tvDepartmentName.setText(chooseContactForActionBean.getName());
-        holder.cbExpend.setOnClickListener(v -> {
-            if (!chooseContactForActionBean.getChildBeans().isEmpty()){
-                chooseContactForActionBeans.addAll(position + 1 ,chooseContactForActionBean.getChildBeans());
-                notifyDataSetChanged();
-            }
-        });
+//        ChooseContactForActionBean chooseContactForActionBean = chooseContactForActionBeans.get(position);
+//        holder.cbExpend.setVisibility(chooseContactForActionBean.getContact() ? View.GONE : View.VISIBLE);
+//        holder.tvDepartmentName.setText(chooseContactForActionBean.getName());
+//        holder.cbExpend.setOnClickListener(v -> {
+//            if (!chooseContactForActionBean.getChildBeans().isEmpty()){
+//                chooseContactForActionBeans.addAll(position + 1 ,chooseContactForActionBean.getChildBeans());
+//                notifyDataSetChanged();
+//            }
+//        });
     }
 
     @Override

@@ -291,4 +291,6 @@
     <string name="the_image_size_cannot_exceed_5m">图片大小不能超过5M</string>
     <string name="only_jpg_and_png_formats_are_supported">仅支持jpg和png格式</string>
     <string name="download_successfully">下载成功</string>
+    <string name="confirm_deletion">确认删除?</string>
+    <string name="the_size_must_be_a_value_greater_than_zero">尺寸必须为大于0的数值</string>
 </resources>

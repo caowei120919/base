@@ -49,6 +49,7 @@ public class Node<T extends Node<T>> implements Comparable<T> {
         this.pId = pId;
         this.level = level;
         this.isExpand = isExpand;
+        this.isContact = false ;
     }
 
     /**
