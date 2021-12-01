@@ -52,6 +52,7 @@ public class TableDetailPresenter extends BasePresenter<TableDetailView>{
                     public void onError(Throwable e) {
                         super.onError(e);
                         PLog.e("TAG",e.getMessage());
+                        getView().getParamInfoError();
                     }
                 });
     }

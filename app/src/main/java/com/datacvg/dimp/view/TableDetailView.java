@@ -35,4 +35,9 @@ public interface TableDetailView extends MvpView {
      * 取消默认报表成功
      */
     void cancelDefaultReportSuccess();
+
+    /**
+     * 报表参数获取失败
+     */
+    void getParamInfoError();
 }

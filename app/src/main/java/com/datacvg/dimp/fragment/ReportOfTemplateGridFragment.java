@@ -302,7 +302,7 @@ public class ReportOfTemplateGridFragment extends BaseFragment<ReportOfTemplateV
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SortForSystemEvent event){
-        showReportBeans.clear()                                           ;
+        showReportBeans.clear();
         showReportBeans.addAll(originalBeans);
         reportAdapter.notifyDataSetChanged();
         PLog.e("按系统排序");

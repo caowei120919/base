@@ -341,6 +341,17 @@ public class TableDetailActivity extends BaseActivity<TableDetailView, TableDeta
         }
     }
 
+    @Override
+    public void getParamInfoError() {
+        imgThree.setVisibility(View.GONE);
+        imgTwo.setImageBitmap(isDefaultReport ? BitmapFactory.decodeResource(resources
+                ,R.mipmap.icon_report_normal) : BitmapFactory.decodeResource(resources
+                ,R.mipmap.icon_report_default));
+        imgOne.setImageBitmap(BitmapFactory.decodeResource(resources
+                ,R.mipmap.icon_report_comment));
+        hasParamInfo = false ;
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RefreshTableEvent event){
         getPresenter().getTableUrl(event.getParamArr(),tableBean.getRes_id());

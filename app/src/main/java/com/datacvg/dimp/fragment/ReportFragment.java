@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -18,6 +20,7 @@ import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.event.ClearAllReportEvent;
+import com.datacvg.dimp.event.ReportTrashEvent;
 import com.datacvg.dimp.event.SortForNameEvent;
 import com.datacvg.dimp.event.SortForSystemEvent;
 import com.datacvg.dimp.presenter.ReportPresenter;
@@ -56,6 +59,7 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
      */
     private static Integer showType = 0 ;
     private static Integer selectPosition = 0 ;
+    private boolean isEdit = false ;
     private TitleNavigator titleNavigator ;
     private FragmentContainerHelper mTitleFragmentContainerHelper ;
     private FragmentTransaction fragmentTransaction;
@@ -185,6 +189,10 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
     private void showFragment(int position) {
         fragmentManager = getChildFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
+        if(position != 3){
+            isEdit = false ;
+            EventBus.getDefault().post(new ReportTrashEvent(false));
+        }
         hideFragment(fragmentTransaction);
         switch (position){
             case 0 :
@@ -294,6 +302,16 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
                 });
                 statusReport.findViewById(R.id.tv_clear).setOnClickListener(v -> {
                     EventBus.getDefault().post(new ClearAllReportEvent());
+                });
+                statusReport.findViewById(R.id.tv_edit).setOnClickListener(v -> {
+                    if(isEdit){
+                        EventBus.getDefault().post(new ReportTrashEvent(isEdit));
+                        ((TextView)statusReport.findViewById(R.id.tv_edit)).setText(resources.getString(R.string.the_editor));
+                    }else{
+                        EventBus.getDefault().post(new ReportTrashEvent(isEdit));
+                        ((TextView)statusReport.findViewById(R.id.tv_edit)).setText(resources.getString(R.string.cancel));
+                    }
+                    isEdit = !isEdit ;
                 });
                 switch (showType){
                     case 0 :
