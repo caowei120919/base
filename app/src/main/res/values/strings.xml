@@ -293,4 +293,5 @@
     <string name="download_successfully">下载成功</string>
     <string name="confirm_deletion">确认删除?</string>
     <string name="the_size_must_be_a_value_greater_than_zero">尺寸必须为大于0的数值</string>
+    <string name="are_you_sure_to_clear_all_data">确认清空所有数据?</string>
 </resources>

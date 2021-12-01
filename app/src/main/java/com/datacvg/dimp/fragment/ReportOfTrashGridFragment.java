@@ -14,6 +14,7 @@ import com.datacvg.dimp.event.ClearAllReportEvent;
 import com.datacvg.dimp.event.ReportRefreshEvent;
 import com.datacvg.dimp.presenter.ReportOfTrashPresenter;
 import com.datacvg.dimp.view.ReportOfTrashView;
+import com.mylhyl.superdialog.SuperDialog;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
@@ -78,6 +79,7 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
         if(swipeReportGridOfTrash.isRefreshing()){
             swipeReportGridOfTrash.finishRefresh();
         }
+        reportTrashBeans.clear();
         reportTrashBeans.addAll(data);
         adapter.notifyDataSetChanged();
     }
@@ -96,9 +98,36 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
         queryReportOnTrash();
     }
 
+    @Override
+    public void clearSuccess() {
+        ToastUtils.showLongToast(resources.getString(R.string.delete_the_success));
+        queryReportOnTrash();
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ClearAllReportEvent event){
-        getPresenter().clearReport();
+        createConfirmPop();
+    }
+
+    /**
+     * 创建二次确认弹框
+     */
+    private void createConfirmPop() {
+        List<String> listButton = new ArrayList<>();
+        listButton.add(resources.getString(R.string.confirm_the_deletion));
+        new SuperDialog.Builder(getActivity())
+                .setCanceledOnTouchOutside(false)
+                .setTitle(resources.getString(R.string.are_you_sure_to_clear_all_data),resources.getColor(R.color.c_303030),24,80)
+                .setItems(listButton,resources.getColor(R.color.c_da3a16),24,80
+                        , new SuperDialog.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(int position) {
+                                getPresenter().clearReport();
+                            }
+                        })
+                .setNegativeButton(resources.getString(R.string.cancel)
+                        ,resources.getColor(R.color.c_303030),24,80, null)
+                .build();
     }
 
 

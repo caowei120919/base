@@ -11,6 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.baseandroid.config.Constants;
+import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
+import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.bean.ReportBean;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +30,20 @@ public class SearchReportAdapter extends RecyclerView.Adapter<SearchReportAdapte
     private LayoutInflater inflater ;
     private List<ReportBean> reportBeans = new ArrayList<>() ;
     private OnSearchReportClick click ;
+    private String reportType ;
 
-    public SearchReportAdapter(Context mContext,OnSearchReportClick click, List<ReportBean> reportBeans) {
+    public SearchReportAdapter(Context mContext,OnSearchReportClick click,
+                               List<ReportBean> reportBeans,String reportType) {
         this.mContext = mContext;
         this.inflater = LayoutInflater.from(mContext);
         this.click = click ;
         this.reportBeans = reportBeans;
+        this.reportType = reportType ;
+    }
+
+    public void setReportType(String reportType) {
+        this.reportType = reportType;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -50,10 +61,20 @@ public class SearchReportAdapter extends RecyclerView.Adapter<SearchReportAdapte
         }else{
             holder.imgIconType.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources(),R.mipmap.icon_search_report));
         }
-        holder.tvReportName.setText(TextUtils.isEmpty(reportBean.getModel_clname())
-                ? (TextUtils.isEmpty(reportBean.getShare_clname())
-                ? reportBean.getShare_clname() : reportBean.getTemplate_clname())
-                : reportBean.getModel_clname());
+        PLog.e(reportType);
+        switch (reportType){
+            case Constants.REPORT_MINE :
+                holder.tvReportName.setText(LanguageUtils.isZh(mContext) ? reportBean.getModel_clname() : reportBean.getModel_flname());
+                break;
+
+            case Constants.REPORT_SHARE :
+                holder.tvReportName.setText(LanguageUtils.isZh(mContext) ? reportBean.getShare_clname() : reportBean.getShare_flname());
+                break;
+
+            case Constants.REPORT_TEMPLATE :
+                holder.tvReportName.setText(LanguageUtils.isZh(mContext) ? reportBean.getTemplate_clname() : reportBean.getTemplate_flname());
+                break;
+        }
         holder.itemView.setOnClickListener(v -> {
             click.onReportClick(reportBean);
         });

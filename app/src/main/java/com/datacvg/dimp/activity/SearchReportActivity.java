@@ -38,6 +38,7 @@ public class SearchReportActivity extends BaseActivity<SearchReportView, SearchR
     private String reportType = Constants.REPORT_MINE;
     private List<ReportBean> reportBeans = new ArrayList<>() ;
     private List<ReportBean> reportSearchBeans = new ArrayList<>() ;
+    private ReportBean reportBean ;
     private SearchReportAdapter adapter ;
 
     @Override
@@ -54,7 +55,7 @@ public class SearchReportActivity extends BaseActivity<SearchReportView, SearchR
     protected void setupView() {
         StatusBarUtil.setStatusBarColor(mContext
                 ,mContext.getResources().getColor(R.color.c_FFFFFF));
-        adapter = new SearchReportAdapter(mContext,this,reportSearchBeans);
+        adapter = new SearchReportAdapter(mContext,this,reportSearchBeans,reportType);
         LinearLayoutManager manager = new LinearLayoutManager(mContext);
         recyclerSearchReport.setLayoutManager(manager);
         recyclerSearchReport.setAdapter(adapter);
@@ -81,22 +82,24 @@ public class SearchReportActivity extends BaseActivity<SearchReportView, SearchR
     @Override
     protected void setupData(Bundle savedInstanceState) {
         reportType = getIntent().getStringExtra(Constants.EXTRA_DATA_FOR_BEAN);
+        reportBean = (ReportBean) getIntent().getSerializableExtra(Constants.EXTRA_DATA_FOR_SCAN);
+        adapter.setReportType(reportType);
         switch (reportType){
             case Constants.REPORT_MINE :
                 getPresenter().getReport(reportType
-                        ,Constants.REPORT_MINE_PARENT_ID
+                        ,reportBean == null ? Constants.REPORT_MINE_PARENT_ID : reportBean.getModel_id()
                         ,String.valueOf(System.currentTimeMillis()));
                 break;
 
             case Constants.REPORT_SHARE :
                 getPresenter().getReport(reportType
-                        ,Constants.REPORT_SHARE_PARENT_ID
+                        ,reportBean == null ? Constants.REPORT_SHARE_PARENT_ID : reportBean.getShare_id()
                         ,String.valueOf(System.currentTimeMillis()));
                 break;
 
             case Constants.REPORT_TEMPLATE :
                 getPresenter().getReport(reportType
-                        ,Constants.REPORT_TEMPLATE_PARENT_ID
+                        ,reportBean == null ? Constants.REPORT_TEMPLATE_PARENT_ID : reportBean.getTemplate_id()
                         ,String.valueOf(System.currentTimeMillis()));
                 break;
         }
@@ -141,6 +144,7 @@ public class SearchReportActivity extends BaseActivity<SearchReportView, SearchR
             mContext.startActivity(intent);
         }else{
             Intent intent = new Intent(mContext, ReportDetailActivity.class) ;
+            reportBean.setReport_type(reportType);
             intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportBean) ;
             mContext.startActivity(intent);
         }

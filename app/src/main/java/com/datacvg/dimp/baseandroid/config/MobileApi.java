@@ -556,4 +556,14 @@ public interface MobileApi {
      */
     @GET("api/mobile/login/userchange/logoutticket")
     Observable<JudgeJobBean> logoutTicket(@Query("authorization") String token);
+
+    /**
+     * 删除回收站数据
+     * @param type
+     * @param s
+     * @return
+     */
+    @GET("api/dataengine/dataexporler/model/recycle")
+    Observable<BaseBean> clearReportOnTrash(@Query("type") String type,
+                                            @Query("_t") String s);
 }

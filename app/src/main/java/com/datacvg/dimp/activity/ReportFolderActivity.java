@@ -154,6 +154,7 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
             case R.id.img_search :
                 PLog.e("跳转到搜索");
                 Intent intent = new Intent(mContext, SearchReportActivity.class) ;
+                intent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,(ReportBean) getIntent().getSerializableExtra(Constants.EXTRA_DATA_FOR_BEAN));
                 intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,folderType);
                 mContext.startActivity(intent);
                 break;

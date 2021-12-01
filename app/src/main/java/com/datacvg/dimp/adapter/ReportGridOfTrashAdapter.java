@@ -78,7 +78,6 @@ public class ReportGridOfTrashAdapter extends RecyclerView.Adapter<ReportGridOfT
                 ? reportTrashBean.getRes_clname() : reportTrashBean.getRes_flname());
         holder.imgMenu.setOnClickListener(v -> {
             PLog.e("菜单点击处理");
-//            listener.onMenuClick(reportTrashBean);
             showMenuPop(holder.imgMenu,reportTrashBean,position);
         });
 
@@ -94,14 +93,20 @@ public class ReportGridOfTrashAdapter extends RecyclerView.Adapter<ReportGridOfT
                 ,null,false);
         RelativeLayout relDelete = containView.findViewById(R.id.rel_delete) ;
         RelativeLayout relRestore = containView.findViewById(R.id.rel_restore) ;
+        PopupWindow popupWindow = new PopupWindow(containView,
+                (int) mContext.getResources().getDimension(R.dimen.W260), ViewGroup.LayoutParams.WRAP_CONTENT, true);
         relDelete.setOnClickListener(v -> {
             listener.deleteReport(bean);
+            if(popupWindow != null && popupWindow.isShowing()){
+                popupWindow.dismiss();
+            }
         });
         relRestore.setOnClickListener(v -> {
             listener.restoreReport(bean);
+            if(popupWindow != null && popupWindow.isShowing()){
+                popupWindow.dismiss();
+            }
         });
-        PopupWindow popupWindow = new PopupWindow(containView,
-                (int) mContext.getResources().getDimension(R.dimen.W260), ViewGroup.LayoutParams.WRAP_CONTENT, true);
         int windowPos[] = PopupWindowUtil.calculatePopWindowPos(view, containView);
         popupWindow.showAtLocation(view, Gravity.TOP | Gravity.START, position%2 == 0 ? 200 : windowPos[0] - 100, windowPos[1]);
     }

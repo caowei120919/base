@@ -162,6 +162,7 @@ public class ReportGridOnFolderActivity extends BaseActivity<ReportGridOnFolderV
             case R.id.img_search :
                 PLog.e("跳转到搜索");
                 Intent intent = new Intent(mContext, SearchReportActivity.class) ;
+                intent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,getIntent().getSerializableExtra(Constants.EXTRA_DATA_FOR_BEAN));
                 intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,folderType);
                 mContext.startActivity(intent);
                 break;

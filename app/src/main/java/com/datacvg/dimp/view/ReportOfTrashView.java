@@ -14,4 +14,6 @@ public interface ReportOfTrashView extends MvpView {
     void restoreSuccess();
 
     void deleteSuccess();
+
+    void clearSuccess();
 }

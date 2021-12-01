@@ -147,26 +147,26 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
             case R.id.img_changeType :
                 if (showType == 0){
                     showType = 1 ;
-                    imgChangeType.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_list));
+                    imgChangeType.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_list)) ;
                 }else{
                     showType = 0 ;
-                    imgChangeType.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_grid));
+                    imgChangeType.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_grid)) ;
                 }
-                showFragment(selectPosition);
+                showFragment(selectPosition) ;
                 break;
 
             case R.id.img_sort :
                     if (sortPop == null){
-                        createSortPopWindow();
+                        createSortPopWindow() ;
                     }else{
-                        sortPop.showAsDropDown(imgSearch,-150,20);
+                        sortPop.showAsDropDown(imgSearch,-150,20) ;
                     }
                 break;
 
             case R.id.img_search :
                 Intent intent = new Intent(mContext, SearchReportActivity.class) ;
                 intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportType) ;
-                mContext.startActivity(intent);
+                mContext.startActivity(intent) ;
                 break;
         }
     }

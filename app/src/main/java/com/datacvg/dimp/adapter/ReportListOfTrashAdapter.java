@@ -1,6 +1,7 @@
 package com.datacvg.dimp.adapter;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,9 @@ public class ReportListOfTrashAdapter extends RecyclerView.Adapter<ReportListOfT
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ReportTrashBean reportBean = reportBeans.get(position);
+        holder.imgIcon.setImageBitmap(reportBean.getRes_type().endsWith("_folder")
+                ? BitmapFactory.decodeResource(mContext.getResources(),R.mipmap.icon_folder)
+                : BitmapFactory.decodeResource(mContext.getResources(),R.mipmap.icon_report));
         holder.tvReportName.setText(LanguageUtils.isZh(mContext)
                 ? reportBean.getRes_clname() : reportBean.getRes_flname());
     }
