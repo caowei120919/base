@@ -15,12 +15,17 @@ import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.bean.ReportTrashBean;
 import com.datacvg.dimp.bean.ReportTrashListBean;
 import com.datacvg.dimp.event.ReportRefreshEvent;
+import com.datacvg.dimp.event.ReportTrashCheckAllEvent;
+import com.datacvg.dimp.event.ReportTrashEvent;
+import com.datacvg.dimp.event.ReportTrashInCheckAllEvent;
+import com.datacvg.dimp.event.ReportTrashNotAllCheckEvent;
 import com.datacvg.dimp.presenter.ReportListOfTrashPresenter;
 import com.datacvg.dimp.view.ReportListOfTrashView;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -35,12 +40,13 @@ import butterknife.BindView;
  * @Description : 回收站
  */
 public class ReportListOfTrashFragment extends BaseFragment<ReportListOfTrashView, ReportListOfTrashPresenter>
-        implements ReportListOfTrashView, OnRefreshListener {
+        implements ReportListOfTrashView, OnRefreshListener, ReportListOfTrashAdapter.OnReportTrashClickListener {
     @BindView(R.id.swipe_reportListOfTrash)
     SmartRefreshLayout swipeReportListOfTrash ;
     @BindView(R.id.recycler_reportListOfTrash)
     RecyclerView recyclerReportListOfTrash ;
 
+    private boolean isEdit = false ;
     private ReportListOfTrashAdapter adapter ;
     private List<ReportTrashBean> reportBeans = new ArrayList<>() ;
 
@@ -61,7 +67,7 @@ public class ReportListOfTrashFragment extends BaseFragment<ReportListOfTrashVie
         swipeReportListOfTrash.setOnRefreshListener(this);
         swipeReportListOfTrash.setEnableRefresh(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
-        adapter = new ReportListOfTrashAdapter(mContext, reportBeans);
+        adapter = new ReportListOfTrashAdapter(mContext,this, reportBeans,isEdit);
         recyclerReportListOfTrash.setLayoutManager(linearLayoutManager);
         recyclerReportListOfTrash.setAdapter(adapter);
     }
@@ -100,10 +106,34 @@ public class ReportListOfTrashFragment extends BaseFragment<ReportListOfTrashVie
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ReportTrashEvent event){
+        adapter.setEdit(!event.getEdit());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ReportRefreshEvent event){
         reportBeans.clear();
         getPresenter().queryReport(Constants.REPORT_MINE,System.currentTimeMillis() + "");
         getPresenter().queryReport(Constants.REPORT_SHARE,System.currentTimeMillis() + "");
         getPresenter().queryReport(Constants.REPORT_TEMPLATE,System.currentTimeMillis() + "");
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ReportTrashCheckAllEvent event){
+        for (ReportTrashBean reportTrashBean : reportBeans){
+            reportTrashBean.setChecked(event.isCheckAll());
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void checkReport(ReportTrashBean bean) {
+        for (ReportTrashBean reportTrashBean : reportBeans){
+            if(!reportTrashBean.getChecked()){
+                EventBus.getDefault().post(new ReportTrashNotAllCheckEvent());
+                return;
+            }
+        }
+        EventBus.getDefault().post(new ReportTrashInCheckAllEvent());
     }
 }

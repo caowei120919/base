@@ -39,6 +39,15 @@ public class ReportTrashBean implements Serializable {
     private String update_time;
     private String update_user;
     private String user_pkid;
+    private Boolean isChecked = false ;
+
+    public Boolean getChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(Boolean checked) {
+        isChecked = checked;
+    }
 
     public String getClassify() {
         return classify;

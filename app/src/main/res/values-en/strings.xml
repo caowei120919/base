@@ -286,6 +286,7 @@
     <string name="orientation">orientation :</string>
     <string name="the_screen_size">The screen size :</string>
     <string name="wide">wide :</string>
+    <string name="restore">restore</string>
     <string name="high_">high :</string>
     <string name="the_custom">The custom</string>
     <string name="description_added_to_the_large_screen_successfully">Description Added to the large screen successfully</string>

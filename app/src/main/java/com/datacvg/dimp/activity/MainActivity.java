@@ -30,6 +30,7 @@ import com.datacvg.dimp.event.HideNavigationEvent;
 import com.datacvg.dimp.event.LoginOutEvent;
 import com.datacvg.dimp.event.PageCompleteEvent;
 import com.datacvg.dimp.event.RebuildTableEvent;
+import com.datacvg.dimp.event.ReportTrashEvent;
 import com.datacvg.dimp.event.SwitchUserEvent;
 import com.datacvg.dimp.fragment.ActionFragment;
 import com.datacvg.dimp.fragment.DigitalFragment;
@@ -423,5 +424,10 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         for (Fragment fragment : fragmentManager.getFragments()){
             fragment.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ReportTrashEvent event){
+            tabModule.setVisibility(event.getEdit() ? View.VISIBLE : View.GONE);
     }
 }

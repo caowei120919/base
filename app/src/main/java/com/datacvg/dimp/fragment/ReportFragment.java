@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -20,7 +21,13 @@ import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.event.ClearAllReportEvent;
+import com.datacvg.dimp.event.HideNavigationEvent;
+import com.datacvg.dimp.event.ReportTrashCheckAllEvent;
+import com.datacvg.dimp.event.ReportTrashDeleteEvent;
 import com.datacvg.dimp.event.ReportTrashEvent;
+import com.datacvg.dimp.event.ReportTrashInCheckAllEvent;
+import com.datacvg.dimp.event.ReportTrashNotAllCheckEvent;
+import com.datacvg.dimp.event.ReportTrashRestoreEvent;
 import com.datacvg.dimp.event.SortForNameEvent;
 import com.datacvg.dimp.event.SortForSystemEvent;
 import com.datacvg.dimp.presenter.ReportPresenter;
@@ -30,6 +37,9 @@ import com.enlogy.statusview.StatusRelativeLayout;
 import net.lucode.hackware.magicindicator.FragmentContainerHelper;
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.Arrays;
 import java.util.List;
 import butterknife.BindView;
@@ -52,6 +62,10 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
     ImageView imgSearch ;
     @BindView(R.id.status_report)
     StatusRelativeLayout statusReport ;
+    @BindView(R.id.rel_deleteOrRestore)
+    RelativeLayout relDeleteOrRestore ;
+    @BindView(R.id.cb_selectAll)
+    CheckBox cbSelectAll ;
 
     /**
      * 0 : 九宫格样式
@@ -141,7 +155,7 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
     }
 
 
-    @OnClick({R.id.img_changeType,R.id.img_sort,R.id.img_search})
+    @OnClick({R.id.img_changeType,R.id.img_sort,R.id.img_search,R.id.tv_restore,R.id.tv_delete,R.id.cb_selectAll})
     public void OnClick(View view){
         switch (view.getId()){
             case R.id.img_changeType :
@@ -168,6 +182,21 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
                 intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportType) ;
                 mContext.startActivity(intent) ;
                 break;
+
+            case R.id.tv_restore :
+                PLog.e("还原");
+                EventBus.getDefault().post(new ReportTrashRestoreEvent());
+                break;
+
+            case R.id.tv_delete :
+                PLog.e("删除");
+                EventBus.getDefault().post(new ReportTrashDeleteEvent());
+                break;
+
+            case R.id.cb_selectAll :
+                PLog.e("全选");
+                EventBus.getDefault().post(new ReportTrashCheckAllEvent(cbSelectAll.isChecked()));
+                break;
         }
     }
 
@@ -182,6 +211,16 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
         mTitleFragmentContainerHelper.handlePageSelected(position);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ReportTrashNotAllCheckEvent event){
+        cbSelectAll.setChecked(false);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ReportTrashInCheckAllEvent event){
+        cbSelectAll.setChecked(true);
+    }
+
     /**
      * 根据位置展示对应fragment
      * @param position
@@ -189,13 +228,12 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
     private void showFragment(int position) {
         fragmentManager = getChildFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        if(position != 3){
-            isEdit = false ;
-            EventBus.getDefault().post(new ReportTrashEvent(false));
-        }
         hideFragment(fragmentTransaction);
         switch (position){
             case 0 :
+                EventBus.getDefault().post(new HideNavigationEvent(true));
+                relDeleteOrRestore.setVisibility(View.GONE);
+                isEdit = false ;
                 reportType = Constants.REPORT_MINE ;
                 statusReport.showContent();
                 if (showType == 0){
@@ -227,6 +265,9 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
                 break;
 
             case 1 :
+                EventBus.getDefault().post(new HideNavigationEvent(true));
+                relDeleteOrRestore.setVisibility(View.GONE);
+                isEdit = false ;
                 reportType = Constants.REPORT_SHARE ;
                 statusReport.showContent();
                 if (showType == 0){
@@ -258,6 +299,9 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
                 break;
 
             case 2 :
+                EventBus.getDefault().post(new HideNavigationEvent(true));
+                relDeleteOrRestore.setVisibility(View.GONE);
+                isEdit = false ;
                 reportType = Constants.REPORT_TEMPLATE ;
                 statusReport.showContent();
                 if (showType == 0){
@@ -303,13 +347,18 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
                 statusReport.findViewById(R.id.tv_clear).setOnClickListener(v -> {
                     EventBus.getDefault().post(new ClearAllReportEvent());
                 });
+                if(!isEdit){
+                    ((TextView)statusReport.findViewById(R.id.tv_edit)).setText(resources.getString(R.string.the_editor));
+                }
                 statusReport.findViewById(R.id.tv_edit).setOnClickListener(v -> {
                     if(isEdit){
-                        EventBus.getDefault().post(new ReportTrashEvent(isEdit));
+                        EventBus.getDefault().post(new HideNavigationEvent(true));
                         ((TextView)statusReport.findViewById(R.id.tv_edit)).setText(resources.getString(R.string.the_editor));
+                        relDeleteOrRestore.setVisibility(View.GONE);
                     }else{
-                        EventBus.getDefault().post(new ReportTrashEvent(isEdit));
+                        EventBus.getDefault().post(new ReportTrashEvent(false));
                         ((TextView)statusReport.findViewById(R.id.tv_edit)).setText(resources.getString(R.string.cancel));
+                        relDeleteOrRestore.setVisibility(View.VISIBLE);
                     }
                     isEdit = !isEdit ;
                 });

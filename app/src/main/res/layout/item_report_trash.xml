@@ -15,8 +15,18 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/img_selected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/W30"
+                android:src="@drawable/selector_select">
+            </ImageView>
+
+            <ImageView
                 android:id="@+id/img_icon"
                 android:layout_width="@dimen/W60"
+                android:layout_toRightOf="@id/img_selected"
                 android:layout_height="@dimen/H50"
                 android:layout_marginLeft="@dimen/W48"
                 android:layout_centerVertical="true"

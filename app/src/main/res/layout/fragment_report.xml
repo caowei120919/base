@@ -26,8 +26,74 @@
     <FrameLayout
         android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:layout_below="@id/status_title"
         android:background="@color/c_f8f8fa">
     </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/rel_deleteOrRestore"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="@dimen/H100"
+        android:background="@color/c_FFFFFF"
+        android:layout_alignParentBottom="true">
+        <CheckBox
+            android:id="@+id/cb_selectAll"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/ed_pwd"
+            android:layout_marginLeft="@dimen/W30"
+            android:button="@null"
+            android:background="@null"
+            android:drawablePadding="@dimen/W30"
+            android:drawableLeft="@drawable/selector_select"
+            android:paddingLeft="@dimen/W1"
+            android:text="@string/select_all"
+            android:textSize="13sp"
+            android:textColor="@color/c_666666">
+        </CheckBox>
+
+        <TextView
+            android:id="@+id/tv_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/delete"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:drawablePadding="@dimen/W15"
+            android:paddingRight="@dimen/W30"
+            android:drawableLeft="@mipmap/icon_delete_page"
+            android:textColor="@color/c_da3a16"
+            android:layout_alignParentRight="true">
+        </TextView>
+
+        <TextView
+            android:layout_width="@dimen/W3"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/H30"
+            android:layout_marginBottom="@dimen/H30"
+            android:layout_toLeftOf="@id/tv_delete"
+            android:background="@color/c_dbdbdb"
+            android:layout_marginRight="@dimen/W30">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_restore"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/restore"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:drawablePadding="@dimen/W15"
+            android:layout_marginLeft="@dimen/W33"
+            android:layout_toLeftOf="@id/tv_delete"
+            android:paddingRight="@dimen/W63"
+            android:drawableLeft="@mipmap/icon_report_restore_black"
+            android:textColor="@color/c_303030">
+        </TextView>
+
+    </RelativeLayout>
 </LinearLayout>

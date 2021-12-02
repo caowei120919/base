@@ -39,6 +39,7 @@ import com.datacvg.dimp.event.ReportRefreshEvent;
 import com.datacvg.dimp.presenter.ReportGridOnFolderPresenter;
 import com.datacvg.dimp.view.ReportGridOnFolderView;
 import com.lcw.library.imagepicker.ImagePicker;
+import com.mylhyl.superdialog.SuperDialog;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.greenrobot.eventbus.EventBus;
@@ -437,29 +438,33 @@ public class ReportGridOnFolderActivity extends BaseActivity<ReportGridOnFolderV
     @Override
     public void deleteReport(ReportBean bean) {
         this.chooseReportBean = bean ;
-        CVGOKCancelWithTitle dialogOKCancel = new CVGOKCancelWithTitle(mContext);
-        dialogOKCancel.setMessage(mContext.getResources()
-                .getString(R.string.confirm_deletion));
-        dialogOKCancel.setCancelable(false);
-        dialogOKCancel.setOnClickPositiveButtonListener(view -> {
-            switch (folderType){
-                case Constants.REPORT_MINE :
-                    getPresenter().deleteReport(chooseReportBean.getModel_id(),Constants.REPORT_MINE_TYPE);
-                    break;
+        List<String> listButton = new ArrayList<>();
+        listButton.add(resources.getString(R.string.confirm_the_deletion));
+        new SuperDialog.Builder(mContext)
+                .setCanceledOnTouchOutside(false)
+                .setTitle(resources.getString(R.string.are_you_sure_to_clear_all_data),resources.getColor(R.color.c_303030),24,80)
+                .setItems(listButton,resources.getColor(R.color.c_da3a16),24,80
+                        , new SuperDialog.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(int position) {
+                                switch (folderType){
+                                    case Constants.REPORT_MINE :
+                                        getPresenter().deleteReport(chooseReportBean.getModel_id(),Constants.REPORT_MINE_TYPE);
+                                        break;
 
-                case Constants.REPORT_SHARE :
-                    getPresenter().deleteReport(chooseReportBean.getShare_id(),Constants.REPORT_SHARE_TYPE);
-                    break;
+                                    case Constants.REPORT_SHARE :
+                                        getPresenter().deleteReport(chooseReportBean.getShare_id(),Constants.REPORT_SHARE_TYPE);
+                                        break;
 
-                case Constants.REPORT_TEMPLATE :
-                    getPresenter().deleteReport(chooseReportBean.getTemplate_id(),Constants.REPORT_TEMPLATE_TYPE);
-                    break;
-            }
-        });
-        dialogOKCancel.setOnClickListenerNegativeBtn(view -> {
-            dialogOKCancel.dismiss();
-        });
-        dialogOKCancel.show();
+                                    case Constants.REPORT_TEMPLATE :
+                                        getPresenter().deleteReport(chooseReportBean.getTemplate_id(),Constants.REPORT_TEMPLATE_TYPE);
+                                        break;
+                                }
+                            }
+                        })
+                .setNegativeButton(resources.getString(R.string.cancel)
+                        ,resources.getColor(R.color.c_303030),24,80, null)
+                .build();
     }
 
     @Override

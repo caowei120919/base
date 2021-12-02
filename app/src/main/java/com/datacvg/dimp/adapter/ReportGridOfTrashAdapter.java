@@ -41,6 +41,7 @@ public class ReportGridOfTrashAdapter extends RecyclerView.Adapter<ReportGridOfT
     private LayoutInflater inflater ;
     private List<ReportTrashBean> reportTrashBeans = new ArrayList<>() ;
     private OnReportTrashClickListener listener ;
+    private boolean isEdit = false ;
 
     public ReportGridOfTrashAdapter(Context mContext,OnReportTrashClickListener listener
             , List<ReportTrashBean> reportTrashBeans) {
@@ -48,6 +49,11 @@ public class ReportGridOfTrashAdapter extends RecyclerView.Adapter<ReportGridOfT
         this.inflater = LayoutInflater.from(mContext);
         this.listener = listener ;
         this.reportTrashBeans = reportTrashBeans;
+    }
+
+    public void setEdit(boolean edit) {
+        isEdit = edit;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -76,11 +82,22 @@ public class ReportGridOfTrashAdapter extends RecyclerView.Adapter<ReportGridOfT
         }
         holder.tvTitle.setText(LanguageUtils.isZh(mContext)
                 ? reportTrashBean.getRes_clname() : reportTrashBean.getRes_flname());
-        holder.imgMenu.setOnClickListener(v -> {
-            PLog.e("菜单点击处理");
-            showMenuPop(holder.imgMenu,reportTrashBean,position);
-        });
-
+        if(isEdit){
+            holder.imgMenu.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources()
+                    ,reportTrashBean.getChecked() ? R.mipmap.icon_trash_check : R.mipmap.icon_trash_uncheck));
+            holder.imgMenu.setOnClickListener(v -> {
+                reportTrashBean.setChecked(!reportTrashBean.getChecked());
+                listener.checkReport(reportTrashBean);
+                notifyDataSetChanged();
+            });
+        }else{
+            holder.imgMenu.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources()
+                    , R.mipmap.icon_report_menu));
+            holder.imgMenu.setOnClickListener(v -> {
+                PLog.e("菜单点击处理");
+                showMenuPop(holder.imgMenu,reportTrashBean,position);
+            });
+        }
     }
 
     /**
@@ -134,6 +151,8 @@ public class ReportGridOfTrashAdapter extends RecyclerView.Adapter<ReportGridOfT
      * 回收站操作监听
      */
     public interface OnReportTrashClickListener{
+
+        void checkReport(ReportTrashBean bean);
 
         void deleteReport(ReportTrashBean bean);
 

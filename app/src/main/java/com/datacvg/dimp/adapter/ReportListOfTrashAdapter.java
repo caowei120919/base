@@ -27,11 +27,20 @@ public class ReportListOfTrashAdapter extends RecyclerView.Adapter<ReportListOfT
     private Context mContext ;
     private LayoutInflater inflater ;
     private List<ReportTrashBean> reportBeans = new ArrayList<>() ;
+    private boolean isEdit = false ;
+    private OnReportTrashClickListener listener ;
 
-    public ReportListOfTrashAdapter(Context mContext, List<ReportTrashBean> reportBeans) {
+    public ReportListOfTrashAdapter(Context mContext, OnReportTrashClickListener listener ,List<ReportTrashBean> reportBeans,boolean isEdit) {
         this.mContext = mContext;
         inflater = LayoutInflater.from(mContext);
+        this.listener = listener ;
         this.reportBeans = reportBeans;
+        this.isEdit = isEdit ;
+    }
+
+    public void setEdit(boolean edit) {
+        isEdit = edit;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -44,6 +53,15 @@ public class ReportListOfTrashAdapter extends RecyclerView.Adapter<ReportListOfT
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ReportTrashBean reportBean = reportBeans.get(position);
+        holder.imgSelected.setVisibility(isEdit ? View.VISIBLE : View.GONE);
+        if(isEdit){
+            holder.imgSelected.setSelected(reportBean.getChecked());
+            holder.imgSelected.setOnClickListener(v -> {
+                holder.imgSelected.setSelected(!holder.imgSelected.isSelected());
+                reportBean.setChecked(holder.imgSelected.isSelected());
+                listener.checkReport(reportBean);
+            });
+        }
         holder.imgIcon.setImageBitmap(reportBean.getRes_type().endsWith("_folder")
                 ? BitmapFactory.decodeResource(mContext.getResources(),R.mipmap.icon_folder)
                 : BitmapFactory.decodeResource(mContext.getResources(),R.mipmap.icon_report));
@@ -59,6 +77,8 @@ public class ReportListOfTrashAdapter extends RecyclerView.Adapter<ReportListOfT
     public class ViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.img_icon)
         ImageView imgIcon ;
+        @BindView(R.id.img_selected)
+        ImageView imgSelected ;
         @BindView(R.id.tv_reportName)
         TextView tvReportName ;
         @BindView(R.id.rel_restore)
@@ -74,5 +94,12 @@ public class ReportListOfTrashAdapter extends RecyclerView.Adapter<ReportListOfT
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+    }
+
+    /**
+     * 回收站操作监听
+     */
+    public interface OnReportTrashClickListener{
+        void checkReport(ReportTrashBean bean);
     }
 }

@@ -12,12 +12,20 @@ import com.datacvg.dimp.bean.ReportTrashBean;
 import com.datacvg.dimp.bean.ReportTrashListBean;
 import com.datacvg.dimp.event.ClearAllReportEvent;
 import com.datacvg.dimp.event.ReportRefreshEvent;
+import com.datacvg.dimp.event.ReportTrashCheckAllEvent;
+import com.datacvg.dimp.event.ReportTrashDeleteEvent;
+import com.datacvg.dimp.event.ReportTrashEvent;
+import com.datacvg.dimp.event.ReportTrashInCheckAllEvent;
+import com.datacvg.dimp.event.ReportTrashNotAllCheckEvent;
+import com.datacvg.dimp.event.ReportTrashRestoreEvent;
 import com.datacvg.dimp.presenter.ReportOfTrashPresenter;
 import com.datacvg.dimp.view.ReportOfTrashView;
 import com.mylhyl.superdialog.SuperDialog;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
@@ -79,7 +87,6 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
         if(swipeReportGridOfTrash.isRefreshing()){
             swipeReportGridOfTrash.finishRefresh();
         }
-        reportTrashBeans.clear();
         reportTrashBeans.addAll(data);
         adapter.notifyDataSetChanged();
     }
@@ -88,6 +95,7 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
     public void restoreSuccess() {
         reportTrashBeans.clear();
         ToastUtils.showLongToast(resources.getString(R.string.restore_successful));
+        reportTrashBeans.clear();
         queryReportOnTrash();
     }
 
@@ -95,12 +103,14 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
     public void deleteSuccess() {
         reportTrashBeans.clear();
         ToastUtils.showLongToast(resources.getString(R.string.delete_the_success));
+        reportTrashBeans.clear();
         queryReportOnTrash();
     }
 
     @Override
     public void clearSuccess() {
         ToastUtils.showLongToast(resources.getString(R.string.delete_the_success));
+        reportTrashBeans.clear();
         queryReportOnTrash();
     }
 
@@ -146,6 +156,17 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
     }
 
     @Override
+    public void checkReport(ReportTrashBean bean) {
+        for (ReportTrashBean reportTrashBean : reportTrashBeans){
+            if(!reportTrashBean.getChecked()){
+                EventBus.getDefault().post(new ReportTrashNotAllCheckEvent());
+                return;
+            }
+        }
+        EventBus.getDefault().post(new ReportTrashInCheckAllEvent());
+    }
+
+    @Override
     public void deleteReport(ReportTrashBean bean) {
         String type = "" ;
         switch (bean.getRes_type()){
@@ -187,5 +208,70 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
                 break;
         }
         getPresenter().restoreOnTrash(type,bean.getRes_id());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ReportTrashEvent event){
+            adapter.setEdit(!event.getEdit());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ReportTrashDeleteEvent event){
+        for (ReportTrashBean trashBean : reportTrashBeans){
+            if(trashBean.getChecked()){
+                String type = "" ;
+                switch (trashBean.getRes_type()){
+                    case Constants.REPORT_TEMPLATE_TYPE :
+                    case Constants.REPORT_TEMPLATE_FOLDER_TYPE :
+                        type = "TEMPLATE" ;
+                        break;
+
+                    case Constants.REPORT_MINE_TYPE :
+                    case Constants.REPORT_MINE_FOLDER_TYPE :
+                        type = "MODEL" ;
+                        break;
+
+                    case Constants.REPORT_SHARE_TYPE :
+                    case Constants.REPORT_SHARE_FOLDER_TYPE :
+                        type = "SHARE" ;
+                        break;
+                }
+                getPresenter().restoreOnTrash(type,trashBean.getRes_id());
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ReportTrashRestoreEvent event){
+        for (ReportTrashBean trashBean:reportTrashBeans){
+            if(trashBean.getChecked()) {
+                String type = "";
+                switch (trashBean.getRes_type()) {
+                    case Constants.REPORT_TEMPLATE_TYPE:
+                    case Constants.REPORT_TEMPLATE_FOLDER_TYPE:
+                        type = "TEMPLATE";
+                        break;
+
+                    case Constants.REPORT_MINE_TYPE:
+                    case Constants.REPORT_MINE_FOLDER_TYPE:
+                        type = "MODEL";
+                        break;
+
+                    case Constants.REPORT_SHARE_TYPE:
+                    case Constants.REPORT_SHARE_FOLDER_TYPE:
+                        type = "SHARE";
+                        break;
+                }
+                getPresenter().deleteReportOnTrash(type, trashBean.getRes_id());
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ReportTrashCheckAllEvent event){
+        for (ReportTrashBean reportTrashBean : reportTrashBeans){
+            reportTrashBean.setChecked(event.isCheckAll());
+        }
+        adapter.notifyDataSetChanged();
     }
 }

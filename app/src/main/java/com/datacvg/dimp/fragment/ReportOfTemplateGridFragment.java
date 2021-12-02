@@ -34,6 +34,7 @@ import com.datacvg.dimp.event.SortForSystemEvent;
 import com.datacvg.dimp.presenter.ReportOfTemplatePresenter;
 import com.datacvg.dimp.view.ReportOfTemplateView;
 import com.lcw.library.imagepicker.ImagePicker;
+import com.mylhyl.superdialog.SuperDialog;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
@@ -141,17 +142,21 @@ public class ReportOfTemplateGridFragment extends BaseFragment<ReportOfTemplateV
     @Override
     public void deleteReport(ReportBean bean) {
         this.reportBean = bean ;
-        CVGOKCancelWithTitle dialogOKCancel = new CVGOKCancelWithTitle(mContext);
-        dialogOKCancel.setMessage(mContext.getResources()
-                .getString(R.string.confirm_deletion));
-        dialogOKCancel.setCancelable(false);
-        dialogOKCancel.setOnClickPositiveButtonListener(view -> {
-            getPresenter().deleteReport(bean.getTemplate_id(),Constants.REPORT_TEMPLATE_TYPE);
-        });
-        dialogOKCancel.setOnClickListenerNegativeBtn(view -> {
-            dialogOKCancel.dismiss();
-        });
-        dialogOKCancel.show();
+        List<String> listButton = new ArrayList<>();
+        listButton.add(resources.getString(R.string.confirm_the_deletion));
+        new SuperDialog.Builder(getActivity())
+                .setCanceledOnTouchOutside(false)
+                .setTitle(resources.getString(R.string.are_you_sure_to_clear_all_data),resources.getColor(R.color.c_303030),24,80)
+                .setItems(listButton,resources.getColor(R.color.c_da3a16),24,80
+                        , new SuperDialog.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(int position) {
+                                getPresenter().deleteReport(bean.getTemplate_id(),Constants.REPORT_TEMPLATE_TYPE);
+                            }
+                        })
+                .setNegativeButton(resources.getString(R.string.cancel)
+                        ,resources.getColor(R.color.c_303030),24,80, null)
+                .build();
     }
 
     @Override
