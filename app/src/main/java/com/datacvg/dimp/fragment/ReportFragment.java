@@ -22,6 +22,7 @@ import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.event.ClearAllReportEvent;
 import com.datacvg.dimp.event.HideNavigationEvent;
+import com.datacvg.dimp.event.ReportTrashCancelEvent;
 import com.datacvg.dimp.event.ReportTrashCheckAllEvent;
 import com.datacvg.dimp.event.ReportTrashDeleteEvent;
 import com.datacvg.dimp.event.ReportTrashEvent;
@@ -353,6 +354,7 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
                 statusReport.findViewById(R.id.tv_edit).setOnClickListener(v -> {
                     if(isEdit){
                         EventBus.getDefault().post(new HideNavigationEvent(true));
+                        EventBus.getDefault().post(new ReportTrashCancelEvent());
                         ((TextView)statusReport.findViewById(R.id.tv_edit)).setText(resources.getString(R.string.the_editor));
                         relDeleteOrRestore.setVisibility(View.GONE);
                     }else{

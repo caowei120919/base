@@ -15,6 +15,7 @@ import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.bean.ReportTrashBean;
 import com.datacvg.dimp.bean.ReportTrashListBean;
 import com.datacvg.dimp.event.ReportRefreshEvent;
+import com.datacvg.dimp.event.ReportTrashCancelEvent;
 import com.datacvg.dimp.event.ReportTrashCheckAllEvent;
 import com.datacvg.dimp.event.ReportTrashEvent;
 import com.datacvg.dimp.event.ReportTrashInCheckAllEvent;
@@ -107,7 +108,15 @@ public class ReportListOfTrashFragment extends BaseFragment<ReportListOfTrashVie
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ReportTrashEvent event){
+        for (ReportTrashBean reportTrashBean : reportBeans){
+            reportTrashBean.setChecked(false);
+        }
         adapter.setEdit(!event.getEdit());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ReportTrashCancelEvent event){
+        adapter.setEdit(false);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

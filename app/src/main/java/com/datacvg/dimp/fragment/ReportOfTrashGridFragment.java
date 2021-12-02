@@ -12,6 +12,7 @@ import com.datacvg.dimp.bean.ReportTrashBean;
 import com.datacvg.dimp.bean.ReportTrashListBean;
 import com.datacvg.dimp.event.ClearAllReportEvent;
 import com.datacvg.dimp.event.ReportRefreshEvent;
+import com.datacvg.dimp.event.ReportTrashCancelEvent;
 import com.datacvg.dimp.event.ReportTrashCheckAllEvent;
 import com.datacvg.dimp.event.ReportTrashDeleteEvent;
 import com.datacvg.dimp.event.ReportTrashEvent;
@@ -186,6 +187,14 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
                 break;
         }
         getPresenter().deleteReportOnTrash(type,bean.getRes_id());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ReportTrashCancelEvent event){
+        for (ReportTrashBean reportTrashBean : reportTrashBeans){
+            reportTrashBean.setChecked(false);
+        }
+        adapter.setEdit(false);
     }
 
     @Override

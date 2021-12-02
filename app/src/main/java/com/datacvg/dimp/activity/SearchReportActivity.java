@@ -128,7 +128,27 @@ public class SearchReportActivity extends BaseActivity<SearchReportView, SearchR
     @Override
     public void getReportSuccess(ReportListBean data) {
         reportBeans.clear();
-        reportBeans.addAll(data);
+        for (ReportBean reportBean : data){
+            switch (reportType){
+                case Constants.REPORT_MINE :
+                    if(!reportBean.getModel_id().equals(Constants.REPORT_MINE_PARENT_ID)){
+                        reportBeans.add(reportBean);
+                    }
+                    break;
+
+                case Constants.REPORT_SHARE :
+                    if(!reportBean.getShare_id().equals(Constants.REPORT_SHARE_PARENT_ID)){
+                        reportBeans.add(reportBean);
+                    }
+                    break;
+
+                case Constants.REPORT_TEMPLATE :
+                    if(!reportBean.getTemplate_id().equals(Constants.REPORT_TEMPLATE_PARENT_ID)){
+                        reportBeans.add(reportBean);
+                    }
+                    break;
+            }
+        }
     }
 
     /**
