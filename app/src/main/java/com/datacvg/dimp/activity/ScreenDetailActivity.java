@@ -71,6 +71,8 @@ public class ScreenDetailActivity extends BaseActivity<ScreenDetailView, ScreenD
     ImageView imgPlayOrStop ;
     @BindView(R.id.recycler_playList)
     RecyclerView recyclerPlayList ;
+    @BindView(R.id.tv_add)
+    TextView tvAdd ;
 
     private String title ;
     private ScreenBean bean ;
@@ -108,10 +110,12 @@ public class ScreenDetailActivity extends BaseActivity<ScreenDetailView, ScreenD
     protected void setupData(Bundle savedInstanceState) {
         title = getIntent().getStringExtra("title");
         bean = (ScreenBean) getIntent().getSerializableExtra(Constants.EXTRA_DATA_FOR_BEAN);
+        PLog.e(new Gson().toJson(bean));
         Constants.screenBean = bean ;
         tvTitle.setText(title);
         imgRight.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.vpn_scan));
         tvName.setText(bean.getScreen_name());
+        tvAdd.setVisibility(bean.getEdit_flag() == 1 ? View.VISIBLE : View.GONE);
         ScreenFormatBean screenFormatBean = new Gson().fromJson(bean.getScreen_format()
                 ,ScreenFormatBean.class);
         tvSize.setText(screenFormatBean.getSize()
@@ -121,7 +125,7 @@ public class ScreenDetailActivity extends BaseActivity<ScreenDetailView, ScreenD
                 mContext.getResources().getString(R.string.landscape) :
                 mContext.getResources().getString(R.string.vertical_screen)));
 
-        adapter = new ScreenDetailAdapter(mContext,beans,this);
+        adapter = new ScreenDetailAdapter(mContext,beans,this,bean.getEdit_flag() == 1 ,bean.getDelete_flag() == 1);
         LinearLayoutManager manager = new LinearLayoutManager(mContext);
         manager.setOrientation(RecyclerView.VERTICAL);
         manager.setAutoMeasureEnabled(true);

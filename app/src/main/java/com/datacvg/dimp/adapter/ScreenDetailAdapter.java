@@ -26,14 +26,18 @@ public class ScreenDetailAdapter extends RecyclerView.Adapter<ScreenDetailAdapte
     private LayoutInflater inflater ;
     private List<ScreenDetailBean.ListBean> beans = new ArrayList<>();
     private OnScreenDetailClick click ;
+    private boolean isEditFlag = true ;
+    private boolean isDeleteFlag = true ;
 
 
     public ScreenDetailAdapter(Context mContext, List<ScreenDetailBean.ListBean> beans
-            ,OnScreenDetailClick click) {
+            ,OnScreenDetailClick click,boolean isEditFlag,boolean isDeleteFlag) {
         this.mContext = mContext;
         this.beans = beans;
         inflater = LayoutInflater.from(mContext);
         this.click = click ;
+        this.isEditFlag = isEditFlag ;
+        this.isDeleteFlag = isDeleteFlag ;
     }
 
     @NonNull
@@ -53,12 +57,17 @@ public class ScreenDetailAdapter extends RecyclerView.Adapter<ScreenDetailAdapte
             holder.imgTitle.setImageBitmap(BitmapFactory
                     .decodeResource(mContext.getResources(),R.mipmap.icon_screen_detail_title));
         }
-        holder.imgDelete.setOnClickListener(view -> {
-            click.onDeleteClick(position);
-        });
-        holder.imgSetting.setOnClickListener(view -> {
-            click.onSettingClick(position);
-        });
+        if(isDeleteFlag){
+            holder.imgDelete.setOnClickListener(view -> {
+                click.onDeleteClick(position);
+            });
+        }
+
+        if(isEditFlag){
+            holder.imgSetting.setOnClickListener(view -> {
+                click.onSettingClick(position);
+            });
+        }
     }
 
     @Override
