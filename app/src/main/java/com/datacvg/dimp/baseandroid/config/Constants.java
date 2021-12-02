@@ -47,6 +47,7 @@ public class Constants {
     public static final String DATA_CVG_BASE_URL = "http://%s/datacvg.com/" ;
     public static final String USER_TOKEN = "USER_TOKEN";
     public static final String USER_PKID = "USER_PKID";
+    public static final String USER_CURRENT_PKID = "USER_CURRENT_PKID" ;
     public static final String USER_PWD = "USER_PWD";
     public static final String USER_ORG_NAME = "USER_ORG_NAME";
     public static final String FINGERPRINT = "USER_FINGERPRINT";

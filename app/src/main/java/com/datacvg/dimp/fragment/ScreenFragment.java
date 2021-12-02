@@ -18,12 +18,16 @@ import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.bean.ScreenBean;
 import com.datacvg.dimp.bean.ScreenListBean;
+import com.datacvg.dimp.event.SwitchUserEvent;
 import com.datacvg.dimp.presenter.ScreenPresenter;
 import com.datacvg.dimp.view.ScreenView;
 import com.google.gson.Gson;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;

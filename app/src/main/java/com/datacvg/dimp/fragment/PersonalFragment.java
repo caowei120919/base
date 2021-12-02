@@ -125,14 +125,18 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
         tvTitle.setText(resources.getString(R.string.personal_center));
         imgLeft.setVisibility(View.GONE);
         imgRight.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.vpn_scan));
-        tvName.setText(PreferencesHelper.get(Constants.USER_NAME,""));
         tvCompanyName.setText(PreferencesHelper.get(Constants.USER_ORG_NAME,""));
         tvName.setText(PreferencesHelper.get(Constants.USER_NAME,""));
+        String currentPkId = PreferencesHelper.get(Constants.USER_CURRENT_PKID,"");
         GlideUrl imgUrl = new GlideUrl(Constants.BASE_MOBILE_URL + Constants.HEAD_IMG_URL
-                + PreferencesHelper.get(Constants.USER_PKID,"")
+                + (TextUtils.isEmpty(currentPkId) ? PreferencesHelper.get(Constants.USER_PKID,"") : currentPkId)
                 , new LazyHeaders.Builder().addHeader(Constants.AUTHORIZATION,Constants.token).build());
         Glide.with(mContext).load(imgUrl).diskCacheStrategy(DiskCacheStrategy.NONE).into(circleHead);
-        getPresenter().getJob(PreferencesHelper.get(Constants.USER_PKID,""));
+        if(TextUtils.isEmpty(currentPkId)){
+            getPresenter().getJob(PreferencesHelper.get(Constants.USER_PKID,""));
+        }else {
+            getPresenter().getJob(currentPkId);
+        }
         getPresenter().getMessage(pageIndex+ "",pageSize + "",module_id,read_flag);
     }
 
@@ -316,11 +320,12 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
     @Override
     public void getUseJobsSuccess(UserJobsListBean resdata) {
         userJobsBeans = resdata ;
+        String currentPkId = PreferencesHelper.get(Constants.USER_PKID,"") ;
         for (UserJobsBean bean: resdata) {
             if(TextUtils.isEmpty(bean.getUser_pkid())){
                 continue;
             }else{
-                if (bean.getUser_pkid().equals(PreferencesHelper.get(Constants.USER_PKID,""))){
+                if (bean.getUser_pkid().equals(currentPkId)){
                     tvJobName.setText(bean.getPost_clname());
                 }
             }
@@ -352,8 +357,9 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
      */
     @Override
     public void switchJobSuccess() {
-        tvJobName.setText(userJobsBean.getPost_clname());
+//        tvJobName.setText(userJobsBean.getPost_clname());
         EventBus.getDefault().post(new SwitchUserEvent());
+        setupData();
     }
 
     @Override
@@ -404,7 +410,6 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
         if(menuWindow != null && menuWindow.isShowing()){
             menuWindow.dismiss();
         }
-        tvJobName.setText(userJobsBean.getPost_clname());
         judgeJobAvailability(userJobsBean);
     }
 
@@ -413,7 +418,11 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
      * @param userJobsBean
      */
     private void judgeJobAvailability(UserJobsBean userJobsBean) {
-        getPresenter().judgeJobAvailability(PreferencesHelper.get(Constants.USER_PKID,"")
+        String currentPkId = PreferencesHelper.get(Constants.USER_CURRENT_PKID,"");
+        if(TextUtils.isEmpty(currentPkId)){
+            currentPkId = PreferencesHelper.get(Constants.USER_PKID,"");
+        }
+        getPresenter().judgeJobAvailability(currentPkId
                 ,userJobsBean.getUser_pkid(),userJobsBean.getUser_id());
     }
 }

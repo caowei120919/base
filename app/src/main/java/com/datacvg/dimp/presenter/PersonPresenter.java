@@ -1,5 +1,7 @@
 package com.datacvg.dimp.presenter;
 
+import android.text.TextUtils;
+
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.config.MobileApi;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
@@ -211,6 +213,13 @@ public class PersonPresenter extends BasePresenter<PersonView> {
                     public void onNext(JudgeJobBean bean) {
                         if(bean.getStatus().equals(Constants.JUDGE_SUCCESS)){
                             Constants.token = userLoginBean.getUser_token() ;
+                            String currentPkid = PreferencesHelper.get(Constants.USER_CURRENT_PKID,"") ;
+                            if(TextUtils.isEmpty(currentPkid)){
+                                currentPkid = PreferencesHelper.get(Constants.USER_PKID,"");
+                                PreferencesHelper.put(Constants.USER_CURRENT_PKID,currentPkid);
+                            }
+                            PreferencesHelper.put(Constants.USER_ORG_NAME,userLoginBean.getResdata().getOrgName());
+                            PreferencesHelper.put(Constants.USER_NAME,userLoginBean.getResdata().getUserName());
                             PreferencesHelper.put(Constants.USER_ID,userLoginBean.getResdata().getUserId());
                             PreferencesHelper.put(Constants.USER_PKID,userLoginBean.getResdata().getUserPkid());
                             getView().switchJobSuccess();

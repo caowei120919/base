@@ -46,6 +46,7 @@ public class SplashActivity extends BaseActivity<SplashView, SplashPresenter> im
     protected void setupView() {
         REMEMBER_USER = PreferencesHelper
                 .get(Constants.USER_CHECK_REMEMBER,false) ;
+        PreferencesHelper.put(Constants.USER_CURRENT_PKID,"");
         companyCode = PreferencesHelper.get(Constants.USER_COMPANY_CODE, BuildConfig.DEBUG ? "datacvg" : "");
         userName = PreferencesHelper.get(Constants.USER_LOGIN_NAME,BuildConfig.DEBUG ? "windy" : "");
         password = PreferencesHelper.get(Constants.USER_LOGIN_PASSWORD,BuildConfig.DEBUG ? "111111" : "");

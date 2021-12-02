@@ -84,6 +84,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     private long firstTime = 0;
     private List<ModuleInfo> moduleBeans = new ArrayList<>();
     private FragmentManager fragmentManager ;
+    private Bundle savedInstanceState ;
 
     @Override
     protected int getLayoutId() {
@@ -103,6 +104,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Override
     protected void setupData(Bundle savedInstanceState) {
+        this.savedInstanceState = savedInstanceState;
         getPresenter().getPermissionModule();
         getPresenter().getDepartmentAndContact();
         getDefaultReport();
@@ -413,9 +415,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SwitchUserEvent event){
-        recreate();
-//        mContext.startActivity(new Intent(mContext, MainActivity.class));
-//        finish();
+        setupData(savedInstanceState);
     }
 
     @Override
