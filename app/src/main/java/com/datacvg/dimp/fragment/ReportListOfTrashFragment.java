@@ -10,18 +10,23 @@ import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.ReportListAdapter;
 import com.datacvg.dimp.adapter.ReportListOfTrashAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
+import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.ReportBean;
 import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.bean.ReportTrashBean;
 import com.datacvg.dimp.bean.ReportTrashListBean;
+import com.datacvg.dimp.event.ClearAllReportEvent;
 import com.datacvg.dimp.event.ReportRefreshEvent;
 import com.datacvg.dimp.event.ReportTrashCancelEvent;
 import com.datacvg.dimp.event.ReportTrashCheckAllEvent;
+import com.datacvg.dimp.event.ReportTrashDeleteEvent;
 import com.datacvg.dimp.event.ReportTrashEvent;
 import com.datacvg.dimp.event.ReportTrashInCheckAllEvent;
 import com.datacvg.dimp.event.ReportTrashNotAllCheckEvent;
+import com.datacvg.dimp.event.ReportTrashRestoreEvent;
 import com.datacvg.dimp.presenter.ReportListOfTrashPresenter;
 import com.datacvg.dimp.view.ReportListOfTrashView;
+import com.mylhyl.superdialog.SuperDialog;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
@@ -101,9 +106,56 @@ public class ReportListOfTrashFragment extends BaseFragment<ReportListOfTrashVie
     }
 
     @Override
+    public void deleteSuccess() {
+        ToastUtils.showLongToast(resources.getString(R.string.delete_the_success));
+        reportBeans.clear();
+        queryReportOnTrash();
+    }
+
+    @Override
+    public void restoreSuccess() {
+        reportBeans.clear();
+        ToastUtils.showLongToast(resources.getString(R.string.restore_successful));
+        queryReportOnTrash();
+    }
+
+    @Override
+    public void clearSuccess() {
+        ToastUtils.showLongToast(resources.getString(R.string.delete_the_success));
+        reportBeans.clear();
+        queryReportOnTrash();
+    }
+
+    @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         reportBeans.clear();
         queryReportOnTrash();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ClearAllReportEvent event){
+        createConfirmPop();
+    }
+
+    /**
+     * 创建二次确认弹框
+     */
+    private void createConfirmPop() {
+        List<String> listButton = new ArrayList<>();
+        listButton.add(resources.getString(R.string.confirm_the_deletion));
+        new SuperDialog.Builder(getActivity())
+                .setCanceledOnTouchOutside(false)
+                .setTitle(resources.getString(R.string.are_you_sure_to_clear_all_data),resources.getColor(R.color.c_303030),24,80)
+                .setItems(listButton,resources.getColor(R.color.c_da3a16),24,80
+                        , new SuperDialog.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(int position) {
+                                getPresenter().clearReport();
+                            }
+                        })
+                .setNegativeButton(resources.getString(R.string.cancel)
+                        ,resources.getColor(R.color.c_303030),24,80, null)
+                .build();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -144,5 +196,163 @@ public class ReportListOfTrashFragment extends BaseFragment<ReportListOfTrashVie
             }
         }
         EventBus.getDefault().post(new ReportTrashInCheckAllEvent());
+    }
+
+    @Override
+    public void onReportDelete(ReportTrashBean reportBean) {
+        List<String> listButton = new ArrayList<>();
+        listButton.add(resources.getString(R.string.confirm_the_deletion));
+        new SuperDialog.Builder(getActivity())
+                .setCanceledOnTouchOutside(false)
+                .setTitle(resources.getString(R.string.confirm_deletion),resources.getColor(R.color.c_303030),24,80)
+                .setItems(listButton,resources.getColor(R.color.c_da3a16),24,80
+                        , new SuperDialog.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(int position) {
+                                        String type = "";
+                                        switch (reportBean.getRes_type()) {
+                                            case Constants.REPORT_TEMPLATE_TYPE:
+                                            case Constants.REPORT_TEMPLATE_FOLDER_TYPE:
+                                                type = "TEMPLATE";
+                                                break;
+
+                                            case Constants.REPORT_MINE_TYPE:
+                                            case Constants.REPORT_MINE_FOLDER_TYPE:
+                                                type = "MODEL";
+                                                break;
+
+                                            case Constants.REPORT_SHARE_TYPE:
+                                            case Constants.REPORT_SHARE_FOLDER_TYPE:
+                                                type = "SHARE";
+                                                break;
+                                        }
+                                        getPresenter().deleteReportOnTrash(type, reportBean.getRes_id());
+                                    }
+                        })
+                .setNegativeButton(resources.getString(R.string.cancel)
+                        ,resources.getColor(R.color.c_303030),24,80, null)
+                .build();
+    }
+
+    @Override
+    public void onReportRestore(ReportTrashBean reportBean) {
+        List<String> listButton = new ArrayList<>();
+        listButton.add(resources.getString(R.string.confirm_the_reduction));
+        new SuperDialog.Builder(getActivity())
+                .setCanceledOnTouchOutside(false)
+                .setTitle(resources.getString(R.string.confirm_the_reduction),resources.getColor(R.color.c_303030),24,80)
+                .setItems(listButton,resources.getColor(R.color.c_da3a16),24,80
+                        , new SuperDialog.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(int position) {
+                                        String type = "" ;
+                                        switch (reportBean.getRes_type()){
+                                            case Constants.REPORT_TEMPLATE_TYPE :
+                                            case Constants.REPORT_TEMPLATE_FOLDER_TYPE :
+                                                type = "TEMPLATE" ;
+                                                break;
+
+                                            case Constants.REPORT_MINE_TYPE :
+                                            case Constants.REPORT_MINE_FOLDER_TYPE :
+                                                type = "MODEL" ;
+                                                break;
+
+                                            case Constants.REPORT_SHARE_TYPE :
+                                            case Constants.REPORT_SHARE_FOLDER_TYPE :
+                                                type = "SHARE" ;
+                                                break;
+                                        }
+                                        getPresenter().restoreOnTrash(type,reportBean.getRes_id());
+                            }
+                        })
+                .setNegativeButton(resources.getString(R.string.cancel)
+                        ,resources.getColor(R.color.c_303030),24,80, null)
+                .build();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ReportTrashDeleteEvent event){
+        if (!isFragmentVisible()){
+            return;
+        }
+        List<String> listButton = new ArrayList<>();
+        listButton.add(resources.getString(R.string.confirm_the_deletion));
+        new SuperDialog.Builder(getActivity())
+                .setCanceledOnTouchOutside(false)
+                .setTitle(resources.getString(R.string.confirm_deletion),resources.getColor(R.color.c_303030),24,80)
+                .setItems(listButton,resources.getColor(R.color.c_da3a16),24,80
+                        , new SuperDialog.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(int position) {
+                                for (ReportTrashBean trashBean:reportBeans){
+                                    if(trashBean.getChecked()) {
+                                        String type = "";
+                                        switch (trashBean.getRes_type()) {
+                                            case Constants.REPORT_TEMPLATE_TYPE:
+                                            case Constants.REPORT_TEMPLATE_FOLDER_TYPE:
+                                                type = "TEMPLATE";
+                                                break;
+
+                                            case Constants.REPORT_MINE_TYPE:
+                                            case Constants.REPORT_MINE_FOLDER_TYPE:
+                                                type = "MODEL";
+                                                break;
+
+                                            case Constants.REPORT_SHARE_TYPE:
+                                            case Constants.REPORT_SHARE_FOLDER_TYPE:
+                                                type = "SHARE";
+                                                break;
+                                        }
+                                        getPresenter().deleteReportOnTrash(type, trashBean.getRes_id());
+                                    }
+                                }
+                            }
+                        })
+                .setNegativeButton(resources.getString(R.string.cancel)
+                        ,resources.getColor(R.color.c_303030),24,80, null)
+                .build();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ReportTrashRestoreEvent event){
+        if (!isFragmentVisible()){
+            return;
+        }
+        List<String> listButton = new ArrayList<>();
+        listButton.add(resources.getString(R.string.confirm_the_reduction));
+        new SuperDialog.Builder(getActivity())
+                .setCanceledOnTouchOutside(false)
+                .setTitle(resources.getString(R.string.confirm_the_reduction),resources.getColor(R.color.c_303030),24,80)
+                .setItems(listButton,resources.getColor(R.color.c_da3a16),24,80
+                        , new SuperDialog.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(int position) {
+                                for (ReportTrashBean trashBean : reportBeans){
+                                    if(trashBean.getChecked()){
+                                        String type = "" ;
+                                        switch (trashBean.getRes_type()){
+                                            case Constants.REPORT_TEMPLATE_TYPE :
+                                            case Constants.REPORT_TEMPLATE_FOLDER_TYPE :
+                                                type = "TEMPLATE" ;
+                                                break;
+
+                                            case Constants.REPORT_MINE_TYPE :
+                                            case Constants.REPORT_MINE_FOLDER_TYPE :
+                                                type = "MODEL" ;
+                                                break;
+
+                                            case Constants.REPORT_SHARE_TYPE :
+                                            case Constants.REPORT_SHARE_FOLDER_TYPE :
+                                                type = "SHARE" ;
+                                                break;
+                                        }
+                                        getPresenter().restoreOnTrash(type,trashBean.getRes_id());
+                                    }
+                                }
+                            }
+                        })
+                .setNegativeButton(resources.getString(R.string.cancel)
+                        ,resources.getColor(R.color.c_303030),24,80, null)
+                .build();
     }
 }

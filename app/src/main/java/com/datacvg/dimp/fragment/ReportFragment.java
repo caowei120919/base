@@ -350,6 +350,7 @@ public class ReportFragment extends BaseFragment<ReportView, ReportPresenter> im
                 });
                 if(!isEdit){
                     ((TextView)statusReport.findViewById(R.id.tv_edit)).setText(resources.getString(R.string.the_editor));
+                    EventBus.getDefault().post(new ReportTrashCancelEvent());
                 }
                 statusReport.findViewById(R.id.tv_edit).setOnClickListener(v -> {
                     if(isEdit){

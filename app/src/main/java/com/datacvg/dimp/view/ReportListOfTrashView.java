@@ -16,4 +16,10 @@ public interface ReportListOfTrashView extends MvpView {
      * @param data
      */
     void queryReportSuccess(ReportTrashListBean data);
+
+    void deleteSuccess();
+
+    void restoreSuccess();
+
+    void clearSuccess();
 }

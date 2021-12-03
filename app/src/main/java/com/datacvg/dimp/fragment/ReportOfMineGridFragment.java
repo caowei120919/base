@@ -28,6 +28,7 @@ import com.datacvg.dimp.baseandroid.widget.CVGOKCancelWithTitle;
 import com.datacvg.dimp.bean.ReportBean;
 import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.event.ReportRefreshEvent;
+import com.datacvg.dimp.event.RestoreSuccessEvent;
 import com.datacvg.dimp.event.SortForNameEvent;
 import com.datacvg.dimp.event.SortForSystemEvent;
 import com.datacvg.dimp.presenter.ReportOfMinePresenter;
@@ -327,5 +328,12 @@ public class ReportOfMineGridFragment extends BaseFragment<ReportOfMineView, Rep
         showReportBeans.addAll(sortBeans);
         reportAdapter.notifyDataSetChanged();
         PLog.e("按名称排序");
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(RestoreSuccessEvent event){
+        getPresenter().getReportOfMine(Constants.REPORT_MINE
+                ,Constants.REPORT_MINE_PARENT_ID
+                ,String.valueOf(System.currentTimeMillis()));
     }
 }

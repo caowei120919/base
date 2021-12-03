@@ -285,6 +285,7 @@ public class ReportGridOnFolderActivity extends BaseActivity<ReportGridOnFolderV
                 .getAbsolutePath();
         String mFileName = "dimp_" + reportBean.getModel_id() + ".canvas";
         FileUtils.writeTxtToFile(bean,mFolder,mFileName);
+        ToastUtils.showLongToast(resources.getString(R.string.download_successfully));
     }
 
     @Override

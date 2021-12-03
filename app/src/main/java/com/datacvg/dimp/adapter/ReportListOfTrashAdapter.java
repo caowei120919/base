@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
+import com.datacvg.dimp.baseandroid.widget.SwipeMenuLayout;
 import com.datacvg.dimp.bean.ReportTrashBean;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +68,23 @@ public class ReportListOfTrashAdapter extends RecyclerView.Adapter<ReportListOfT
                 : BitmapFactory.decodeResource(mContext.getResources(),R.mipmap.icon_report));
         holder.tvReportName.setText(LanguageUtils.isZh(mContext)
                 ? reportBean.getRes_clname() : reportBean.getRes_flname());
+        holder.swipeTrash.setCloseListener(new SwipeMenuLayout.OnCloseListener() {
+            @Override
+            public void closeSwipe() {
+                holder.imgFunctionDelete.setVisibility(View.VISIBLE);
+                holder.tvConfirmDelete.setVisibility(View.GONE);
+            }
+        });
+        holder.relDelete.setOnClickListener(v -> {
+            holder.imgFunctionDelete.setVisibility(View.GONE);
+            holder.tvConfirmDelete.setVisibility(View.VISIBLE);
+        });
+        holder.tvConfirmDelete.setOnClickListener(v -> {
+            listener.onReportDelete(reportBean);
+        });
+        holder.relRestore.setOnClickListener(v -> {
+            listener.onReportRestore(reportBean);
+        });
     }
 
     @Override
@@ -89,6 +107,8 @@ public class ReportListOfTrashAdapter extends RecyclerView.Adapter<ReportListOfT
         ImageView imgFunctionDelete ;
         @BindView(R.id.tv_confirmDelete)
         TextView tvConfirmDelete ;
+        @BindView(R.id.swipe_trash)
+        SwipeMenuLayout swipeTrash ;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -101,5 +121,9 @@ public class ReportListOfTrashAdapter extends RecyclerView.Adapter<ReportListOfT
      */
     public interface OnReportTrashClickListener{
         void checkReport(ReportTrashBean bean);
+
+        void onReportDelete(ReportTrashBean reportBean);
+
+        void onReportRestore(ReportTrashBean reportBean);
     }
 }

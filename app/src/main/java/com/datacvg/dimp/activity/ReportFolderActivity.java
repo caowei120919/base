@@ -74,6 +74,7 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
     private ReportListAdapter adapter ;
     private String listType ;
     private PopupWindow sortPop ;
+    private ReportBean selectedReportBean ;
 
     @Override
     protected int getLayoutId() {
@@ -275,7 +276,7 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
      */
     @Override
     public void onReportDelete(ReportBean reportBean) {
-        this.reportBean = reportBean ;
+        this.selectedReportBean = reportBean ;
         List<String> listButton = new ArrayList<>();
         listButton.add(resources.getString(R.string.confirm_the_deletion));
         new SuperDialog.Builder(mContext)
@@ -287,15 +288,15 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
                             public void onItemClick(int position) {
                                 switch (folderType){
                                     case Constants.REPORT_MINE :
-                                        getPresenter().deleteReport(reportBean.getModel_id(),Constants.REPORT_MINE_TYPE);
+                                        getPresenter().deleteReport(selectedReportBean.getModel_id(),Constants.REPORT_MINE_TYPE);
                                         break;
 
                                     case Constants.REPORT_SHARE :
-                                        getPresenter().deleteReport(reportBean.getShare_id(),Constants.REPORT_SHARE_TYPE);
+                                        getPresenter().deleteReport(selectedReportBean.getShare_id(),Constants.REPORT_SHARE_TYPE);
                                         break;
 
                                     case Constants.REPORT_TEMPLATE :
-                                        getPresenter().deleteReport(reportBean.getTemplate_id(),Constants.REPORT_TEMPLATE_TYPE);
+                                        getPresenter().deleteReport(selectedReportBean.getTemplate_id(),Constants.REPORT_TEMPLATE_TYPE);
                                         break;
                                 }
                             }
@@ -307,7 +308,7 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
 
     @Override
     public void deleteSuccess() {
-        reportBean = null ;
+        ToastUtils.showLongToast(resources.getString(R.string.delete_the_success));
         EventBus.getDefault().post(new ReportRefreshEvent());
         switch (folderType){
             case Constants.REPORT_MINE :
@@ -328,6 +329,7 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
                         ,String.valueOf(System.currentTimeMillis()));
                 break;
         }
+        selectedReportBean = null ;
     }
 
     /**
@@ -336,10 +338,10 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
      */
     @Override
     public void onReportAddToScreen(ReportBean reportBean) {
-        this.reportBean = reportBean ;
-        this.reportBean.setReport_type(folderType);
+        this.selectedReportBean = reportBean ;
+        this.selectedReportBean.setReport_type(folderType);
         Intent intent = new Intent(mContext, AddReportToScreenActivity.class) ;
-        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,this.reportBean);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,this.selectedReportBean);
         mContext.startActivity(intent);
     }
 
@@ -349,7 +351,7 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
      */
     @Override
     public void onReportDownload(ReportBean reportBean) {
-        this.reportBean = reportBean ;
+        this.selectedReportBean = reportBean ;
         downloadFile();
     }
 
@@ -360,7 +362,19 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
                     @Override
                     public void onNext(Boolean aBoolean) {
                         if (aBoolean) {
-                            getPresenter().downloadFile(reportBean.getShare_id(),Constants.REPORT_SHARE_TYPE);
+                            switch (folderType){
+                                case Constants.REPORT_MINE :
+                                    getPresenter().downloadFile(selectedReportBean.getModel_id(),Constants.REPORT_MINE_TYPE);
+                                    break;
+
+                                case Constants.REPORT_SHARE :
+                                    getPresenter().downloadFile(selectedReportBean.getShare_id(),Constants.REPORT_SHARE_TYPE);
+                                    break;
+
+                                case Constants.REPORT_TEMPLATE :
+                                    getPresenter().downloadFile(selectedReportBean.getTemplate_id(),Constants.REPORT_TEMPLATE_TYPE);
+                                    break;
+                            }
                         } else {
                             ToastUtils.showShortToast(mContext.getResources()
                                     .getString(R.string.the_file_cannot_be_downloaded_because_the_permission_is_not_allowed));
@@ -374,8 +388,9 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
         String mFolder = Environment
                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
                 .getAbsolutePath();
-        String mFileName = "dimp_" + reportBean.getShare_id() + ".canvas";
+        String mFileName = "dimp_" + selectedReportBean.getShare_id() + ".canvas";
         FileUtils.writeTxtToFile(bean,mFolder,mFileName);
+        ToastUtils.showLongToast(resources.getString(R.string.download_successfully));
     }
 
     @Override

@@ -29,6 +29,7 @@ import com.datacvg.dimp.baseandroid.widget.CVGOKCancelWithTitle;
 import com.datacvg.dimp.bean.ReportBean;
 import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.event.ReportRefreshEvent;
+import com.datacvg.dimp.event.RestoreSuccessEvent;
 import com.datacvg.dimp.event.SortForNameEvent;
 import com.datacvg.dimp.event.SortForSystemEvent;
 import com.datacvg.dimp.presenter.ReportOfTemplatePresenter;
@@ -287,6 +288,7 @@ public class ReportOfTemplateGridFragment extends BaseFragment<ReportOfTemplateV
                 .getAbsolutePath();
         String mFileName = "dimp_" + reportBean.getTemplate_id() + ".canvas";
         FileUtils.writeTxtToFile(bean,mFolder,mFileName);
+        ToastUtils.showLongToast(resources.getString(R.string.download_successfully));
     }
 
     @Override
@@ -319,5 +321,12 @@ public class ReportOfTemplateGridFragment extends BaseFragment<ReportOfTemplateV
         showReportBeans.addAll(sortBeans);
         reportAdapter.notifyDataSetChanged();
         PLog.e("按名称排序");
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(RestoreSuccessEvent event){
+        getPresenter().getReportOfTemplate(Constants.REPORT_TEMPLATE
+                ,Constants.REPORT_TEMPLATE_PARENT_ID
+                ,String.valueOf(System.currentTimeMillis()));
     }
 }
