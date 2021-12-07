@@ -7,21 +7,13 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.dimp.R;
-import com.datacvg.dimp.adapter.ChooseContactAdapter;
+import com.datacvg.dimp.adapter.ContactOrDepartmentAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
-import com.datacvg.dimp.baseandroid.utils.PLog;
-import com.datacvg.dimp.bean.ChooseContactForActionBean;
-import com.datacvg.dimp.bean.Contact;
-import com.datacvg.dimp.bean.DepartmentInAtBean;
-import com.datacvg.dimp.greendao.bean.ContactBean;
-import com.datacvg.dimp.greendao.bean.ContactBeanDao;
-import com.datacvg.dimp.greendao.bean.DepartmentBean;
-import com.datacvg.dimp.greendao.controller.DbContactController;
-import com.datacvg.dimp.greendao.controller.DbDepartmentController;
+import com.datacvg.dimp.baseandroid.greendao.bean.ContactOrDepartmentBean;
+import com.datacvg.dimp.baseandroid.greendao.controller.DbContactOrDepartmentController;
+import com.datacvg.dimp.bean.ContactOrDepartmentForActionBean;
 import com.datacvg.dimp.presenter.ChooseContactFromActionPresenter;
 import com.datacvg.dimp.view.ChooseContactFromActionView;
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -41,12 +33,10 @@ public class ChooseContactFromActionActivity extends BaseActivity<ChooseContactF
     @BindView(R.id.recycler_contact)
     RecyclerView recyclerContact ;
 
-    private List<String> assistIds = new ArrayList<String>() ;
+    private List<String> assistIds = new ArrayList<>() ;
     private String headContactId ;
-    private List<DepartmentInAtBean> departmentInAtBeans = new ArrayList<>() ;
-    private List<ChooseContactForActionBean> chooseContactForActionBeans = new ArrayList<>() ;
-    private List<ChooseContactForActionBean> sortBeans = new ArrayList<>() ;
-    private ChooseContactAdapter adapter ;
+    private List<ContactOrDepartmentForActionBean> departmentInAtBeans = new ArrayList<>();
+    private ContactOrDepartmentAdapter adapter ;
 
     @Override
     protected int getLayoutId() {
@@ -71,7 +61,7 @@ public class ChooseContactFromActionActivity extends BaseActivity<ChooseContactF
 
         createDepartmentInAtBeans();
 
-        adapter = new ChooseContactAdapter(mContext,sortBeans,chooseContactForActionBeans);
+        adapter = new ContactOrDepartmentAdapter(mContext,departmentInAtBeans);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerContact.setLayoutManager(layoutManager);
         recyclerContact.setHasFixedSize(true);
@@ -85,12 +75,10 @@ public class ChooseContactFromActionActivity extends BaseActivity<ChooseContactF
      * 拉取创建
      */
     private void createDepartmentInAtBeans() {
-        List<DepartmentBean> rootDepartmentBeans = DbDepartmentController.getInstance(mContext)
-                .queryDepartmentListForParent("0");
-        int count = DbDepartmentController.getInstance(mContext)
-                .queryDepartmentList().size();
-        for (DepartmentBean departmentBean : rootDepartmentBeans){
-
+        for (ContactOrDepartmentBean contactOrDepartmentBean : DbContactOrDepartmentController.getInstance(mContext).queryAllResources()){
+            ContactOrDepartmentForActionBean contactOrDepartmentForActionBean = new ContactOrDepartmentForActionBean(contactOrDepartmentBean.getResId()
+                    ,contactOrDepartmentBean.getParentId(),contactOrDepartmentBean.getLevel(),contactOrDepartmentBean.getIsExpend(),contactOrDepartmentBean);
+            departmentInAtBeans.add(contactOrDepartmentForActionBean);
         }
     }
 

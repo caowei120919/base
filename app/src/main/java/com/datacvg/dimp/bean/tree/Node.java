@@ -3,6 +3,8 @@ package com.datacvg.dimp.bean.tree;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
+import com.datacvg.dimp.greendao.bean.ContactBean;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,28 +15,18 @@ import java.util.List;
  */
 @Keep
 public class Node<T extends Node<T>> implements Comparable<T> {
-    public int id;
-    public int pId;
+    public String id;
+    public String pId;
     public int level;
     public boolean isExpand;
-    public boolean isContact = false;
-
-    public boolean isContact() {
-        return isContact;
-    }
-
-    public void setContact(boolean contact) {
-        isContact = contact;
-    }
 
     public List<T> childNodes;
-
     /**
      * @param id    自己的id
      * @param pId   上一层id
      * @param level 层级
      */
-    public Node(int id, int pId, int level) {
+    public Node(String id, String pId, int level) {
         this(id, pId, level, false);
     }
 
@@ -44,39 +36,38 @@ public class Node<T extends Node<T>> implements Comparable<T> {
      * @param level    层级
      * @param isExpand 是否展开
      */
-    public Node(int id, int pId, int level, boolean isExpand) {
+    public Node(String id, String pId, int level, boolean isExpand) {
         this.id = id;
         this.pId = pId;
         this.level = level;
         this.isExpand = isExpand;
-        this.isContact = false ;
     }
 
     /**
      * 获取自己的id
      */
-    public int getId() {
+    public String getId() {
         return id;
     }
 
     /**
      * 设置自己的id
      */
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
     /**
      * 获取上一层id
      */
-    public int getpId() {
+    public String getpId() {
         return pId;
     }
 
     /**
      * 设置上一层id
      */
-    public void setpId(int pId) {
+    public void setpId(String pId) {
         this.pId = pId;
     }
 
@@ -124,7 +115,7 @@ public class Node<T extends Node<T>> implements Comparable<T> {
 
     @Override
     public int compareTo(@NonNull T other) {
-        return id - other.id;
+        return id .compareTo(other.id) ;
     }
 
     public boolean hasChild() {

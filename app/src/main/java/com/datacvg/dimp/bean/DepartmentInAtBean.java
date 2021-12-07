@@ -19,7 +19,7 @@ public class DepartmentInAtBean extends Node<DepartmentInAtBean> {
         return bean;
     }
 
-    public DepartmentInAtBean(int id, int pId, int level, boolean isExpand, DepartmentBean bean) {
+    public DepartmentInAtBean(String id, String pId, int level, boolean isExpand, DepartmentBean bean) {
         super(id, pId, level, isExpand);
         this.bean = bean ;
     }

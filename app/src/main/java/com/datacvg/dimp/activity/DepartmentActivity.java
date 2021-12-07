@@ -116,8 +116,8 @@ public class DepartmentActivity extends BaseActivity<DepartmentView, DepartmentP
             }
             for (int i = 0 ; i < departmentRootBeans.size() ; i++){
                 DepartmentInAtBean departmentInAtBean
-                        = new DepartmentInAtBean(departmentRootBeans.get(i).getDepartment_id().intValue()
-                        ,DbDepartmentController.getInstance(mContext).getParentDepartmentIdForResId(departmentRootBeans.get(i).getD_res_parentid()),leave
+                        = new DepartmentInAtBean(departmentRootBeans.get(i).getDepartment_id().toString()
+                        ,String.valueOf(DbDepartmentController.getInstance(mContext).getParentDepartmentIdForResId(departmentRootBeans.get(i).getD_res_parentid())),leave
                         ,DbDepartmentController.getInstance(mContext).queryDepartmentListForParent(departmentRootBeans.get(i).getD_res_id()).size() > 0
                         ,departmentRootBeans.get(i));
                 departmentInAtBeans.add(departmentInAtBean);

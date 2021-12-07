@@ -974,6 +974,7 @@ public class FileUtils {
                 file.getParentFile().mkdirs();
                 file.createNewFile();
             }
+            PLog.e(file.getAbsolutePath());
             RandomAccessFile raf = new RandomAccessFile(file, "rwd");
             raf.seek(file.length());
             raf.write(strContent.getBytes());

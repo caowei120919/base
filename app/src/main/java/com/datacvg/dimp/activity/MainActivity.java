@@ -12,7 +12,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
+import com.datacvg.dimp.baseandroid.greendao.bean.ContactOrDepartmentBean;
 import com.datacvg.dimp.baseandroid.greendao.bean.ModuleInfo;
+import com.datacvg.dimp.baseandroid.greendao.controller.DbContactOrDepartmentController;
 import com.datacvg.dimp.baseandroid.greendao.controller.DbModuleInfoController;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
@@ -344,6 +346,30 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
             }
         }
         PLog.e(DbContactController.getInstance(mContext).queryContactList().size() + "");
+
+        DbContactOrDepartmentController dbContactOrDepartmentController
+                = DbContactOrDepartmentController.getInstance(mContext);
+        dbContactOrDepartmentController.deleteAllResources();
+        for (DefaultUserBean bean : resdata){
+            ContactOrDepartmentBean contactOrDepartmentBean = new ContactOrDepartmentBean() ;
+            contactOrDepartmentBean.setIsContact(false);
+            contactOrDepartmentBean.setLevel(bean.getRes_level());
+            contactOrDepartmentBean.setExpend(true);
+            contactOrDepartmentBean.setName(bean.getD_res_clname());
+            contactOrDepartmentBean.setResId(bean.getD_res_id());
+            contactOrDepartmentBean.setParentId(bean.getD_res_parentid());
+            for (DefaultUserBean.UserBean contact : bean.getUser()){
+                ContactOrDepartmentBean contactBean = new ContactOrDepartmentBean();
+                contactBean.setParentId(bean.getD_res_id());
+                contactBean.setResId(contact.getId());
+                contactBean.setLevel(bean.getRes_level() + 1);
+                contactBean.setIsContact(true);
+                contactBean.setExpend(false);
+                contactBean.setName(contact.getName());
+                dbContactOrDepartmentController.insertContactOrDepartment(contactBean);
+            }
+            dbContactOrDepartmentController.insertContactOrDepartment(contactOrDepartmentBean);
+        }
     }
 
     /**
