@@ -298,7 +298,19 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
                 break;
 
             case R.id.img_addAssistant :
-                    PLog.e("选择协助人");
+                ArrayList<String> assistIds = new ArrayList<>() ;
+                Intent intent = new Intent(mContext,ChooseContactFromActionActivity.class) ;
+                intent.putExtra(Constants.EXTRA_DATA_FOR_ALBUM,false);
+                if(headContact != null){
+                    intent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,headContact.getBean().getId()) ;
+                }
+                if(!assistantBeans.isEmpty()){
+                    for (Contact contact : assistantBeans){
+                        assistIds.add(contact.getBean().getId());
+                    }
+                    intent.putStringArrayListExtra(Constants.EXTRA_DATA_FOR_BEAN, assistIds);
+                }
+                mContext.startActivity(intent);
                 break;
 
             case R.id.img_addIndex :
@@ -400,7 +412,7 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
     private void chooseContacts() {
         ArrayList<String> assistIds = new ArrayList<>() ;
         Intent intent = new Intent(mContext,ChooseContactFromActionActivity.class) ;
-        intent.putExtra(Constants.EXTRA_DATA_FOR_ALBUM,resources.getString(R.string.head));
+        intent.putExtra(Constants.EXTRA_DATA_FOR_ALBUM,true);
         if(headContact != null){
             intent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,headContact.getBean().getId()) ;
         }
@@ -495,6 +507,11 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
        if(bean.isChecked()){
            View view = LayoutInflater.from(mContext).inflate(R.layout.item_selected_user,null);
            TextView tv_group = view.findViewById(R.id.tv_user);
+           ImageView img_delete = view.findViewById(R.id.img_delete);
+           img_delete.setOnClickListener(v -> {
+               flowIndex.removeView(view);
+               taskIndexBeans.remove(bean);
+           });
            tv_group.setText(bean.getName());
            view.setTag(bean.getIndex_id());
            flowIndex.addView(view);

@@ -33,16 +33,30 @@ public class ContactOrDepartmentAdapter extends RecyclerView.Adapter<ContactOrDe
     private List<ContactOrDepartmentForActionBean> firstLevelDepartmentInAtBeans = new ArrayList<>() ;
     private List<ContactOrDepartmentForActionBean> removeDepartmentInAtBeans = new ArrayList<>();
     private Context mContext ;
+    private List<String> assistIds ;
+    private String headId ;
+    private boolean justContact = false ;
 
-    public ContactOrDepartmentAdapter(Context mContext, List<ContactOrDepartmentForActionBean> departmentInAtBeans) {
+    public ContactOrDepartmentAdapter(Context mContext, List<ContactOrDepartmentForActionBean> departmentInAtBeans
+            ,List<String> assistIds,String headId) {
         this.mContext = mContext ;
+        this.assistIds = assistIds ;
+        this.headId = headId ;
         setDepartments(departmentInAtBeans);
-        PLog.e(departmentInAtBeans.size() + "");
     }
 
-    private void setDepartments(List<ContactOrDepartmentForActionBean> departmentInAtBeans) {
+    public void setJustContact(boolean justContact) {
+        this.justContact = justContact;
+    }
+
+    public void setDepartments(List<ContactOrDepartmentForActionBean> departmentInAtBeans) {
         totalDepartmentInAtBeans = departmentInAtBeans ;
-        reset();
+        if(justContact){
+            showDepartmentInAtBeans.clear();
+            showDepartmentInAtBeans.addAll(departmentInAtBeans);
+        }else{
+            reset();
+        }
         super.notifyDataSetChanged();
     }
 

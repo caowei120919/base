@@ -1,7 +1,12 @@
 package com.datacvg.dimp.activity;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.TextView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,6 +16,8 @@ import com.datacvg.dimp.adapter.ContactOrDepartmentAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.greendao.bean.ContactOrDepartmentBean;
 import com.datacvg.dimp.baseandroid.greendao.controller.DbContactOrDepartmentController;
+import com.datacvg.dimp.baseandroid.utils.DisplayUtils;
+import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.bean.ContactOrDepartmentForActionBean;
 import com.datacvg.dimp.presenter.ChooseContactFromActionPresenter;
 import com.datacvg.dimp.view.ChooseContactFromActionView;
@@ -29,9 +36,10 @@ public class ChooseContactFromActionActivity extends BaseActivity<ChooseContactF
 
     @BindView(R.id.tv_title)
     TextView tvTitle ;
-
     @BindView(R.id.recycler_contact)
     RecyclerView recyclerContact ;
+    @BindView(R.id.edit_userName)
+    EditText editUserName ;
 
     private List<String> assistIds = new ArrayList<>() ;
     private String headContactId ;
@@ -50,7 +58,8 @@ public class ChooseContactFromActionActivity extends BaseActivity<ChooseContactF
 
     @Override
     protected void setupView() {
-        tvTitle.setText(getIntent().getStringExtra(Constants.EXTRA_DATA_FOR_ALBUM));
+        tvTitle.setText(getIntent().getBooleanExtra(Constants.EXTRA_DATA_FOR_ALBUM,false)
+                ? resources.getString(R.string.head) : resources.getString(R.string.assistant));
     }
 
     @Override
@@ -61,7 +70,7 @@ public class ChooseContactFromActionActivity extends BaseActivity<ChooseContactF
 
         createDepartmentInAtBeans();
 
-        adapter = new ContactOrDepartmentAdapter(mContext,departmentInAtBeans);
+        adapter = new ContactOrDepartmentAdapter(mContext,departmentInAtBeans,assistIds,headContactId);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerContact.setLayoutManager(layoutManager);
         recyclerContact.setHasFixedSize(true);
@@ -69,6 +78,26 @@ public class ChooseContactFromActionActivity extends BaseActivity<ChooseContactF
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerContact.setAdapter(adapter);
         recyclerContact.setItemAnimator(new DefaultItemAnimator());
+
+        editUserName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    DisplayUtils.hideSoftInput(mContext);
+                    departmentInAtBeans.clear();
+                    if(TextUtils.isEmpty(editUserName.getText().toString())){
+                        adapter.setJustContact(false);
+                    }else{
+                        adapter.setJustContact(true);
+                    }
+                    createDepartmentInAtBeans();
+                    adapter.setDepartments(departmentInAtBeans);
+                    editUserName.setCursorVisible(false);
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     /**
@@ -76,10 +105,19 @@ public class ChooseContactFromActionActivity extends BaseActivity<ChooseContactF
      */
     private void createDepartmentInAtBeans() {
         for (ContactOrDepartmentBean contactOrDepartmentBean : DbContactOrDepartmentController.getInstance(mContext).queryAllResources()){
-            ContactOrDepartmentForActionBean contactOrDepartmentForActionBean = new ContactOrDepartmentForActionBean(contactOrDepartmentBean.getResId()
-                    ,contactOrDepartmentBean.getParentId(),contactOrDepartmentBean.getLevel(),contactOrDepartmentBean.getIsExpend(),contactOrDepartmentBean);
-            departmentInAtBeans.add(contactOrDepartmentForActionBean);
+            if(TextUtils.isEmpty(editUserName.getText().toString())){
+                ContactOrDepartmentForActionBean contactOrDepartmentForActionBean = new ContactOrDepartmentForActionBean(contactOrDepartmentBean.getResId()
+                        ,contactOrDepartmentBean.getParentId(),contactOrDepartmentBean.getLevel(),contactOrDepartmentBean.getIsExpend(),contactOrDepartmentBean);
+                departmentInAtBeans.add(contactOrDepartmentForActionBean);
+            }else{
+                if(contactOrDepartmentBean.getName().contains(editUserName.getText().toString()) && contactOrDepartmentBean.getIsContact()){
+                    ContactOrDepartmentForActionBean contactOrDepartmentForActionBean = new ContactOrDepartmentForActionBean(contactOrDepartmentBean.getResId()
+                            ,contactOrDepartmentBean.getParentId(),contactOrDepartmentBean.getLevel(),contactOrDepartmentBean.getIsExpend(),contactOrDepartmentBean);
+                    departmentInAtBeans.add(contactOrDepartmentForActionBean);
+                }
+            }
         }
+        PLog.e(departmentInAtBeans.size() + "");
     }
 
     @OnClick({R.id.rel_outside,R.id.rel_view})

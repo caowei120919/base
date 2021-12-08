@@ -282,7 +282,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
         tvActionPlan.setVisibility((resdata.getPlan() != null
                 && resdata.getPlan().getPlan_flg().equals("T")) ? View.VISIBLE : View.GONE);
         if(resdata.getDetail() != null && resdata.getDetail().size() > 0){
-            fillDetailDate(resdata.getDetail().get(0));
+            fillDetailDate(resdata.getBaseInfo());
         }
         if(resdata.getBaseInfo() != null){
             switch (resdata.getBaseInfo().getTask_priority()){
@@ -550,7 +550,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
      * 填充详情有关数据
      * @param detailBean
      */
-    private void fillDetailDate(TaskInfoBean.DetailBean detailBean) {
+    private void fillDetailDate(TaskInfoBean.BaseInfoBean detailBean) {
         switch (detailBean.getTask_state()){
             case "3" :
                 imgState.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources()
