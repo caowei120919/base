@@ -84,6 +84,15 @@ public class CreateTaskBean {
     private String taskText ;
     private String userMsg ;
     private String indexList ;
+    private String startTime ;
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
 
     public String getAllDeimension() {
         return allDeimension;

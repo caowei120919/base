@@ -13,9 +13,33 @@ import com.datacvg.dimp.bean.tree.Node;
 @Keep
 public class ContactOrDepartmentForActionBean extends Node<ContactOrDepartmentForActionBean> {
     private ContactOrDepartmentBean contactOrDepartmentBean ;
+    /**
+     * 是否选中
+     */
+    private boolean isChecked = false ;
+    /**
+     * 是否可以选择
+     */
+    private boolean isUnableChoose = false ;
 
     public ContactOrDepartmentBean getContactOrDepartmentBean() {
         return contactOrDepartmentBean;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
+    public boolean isUnableChoose() {
+        return isUnableChoose;
+    }
+
+    public void setUnableChoose(boolean unableChoose) {
+        isUnableChoose = unableChoose;
     }
 
     public void setContactOrDepartmentBean(ContactOrDepartmentBean contactOrDepartmentBean) {

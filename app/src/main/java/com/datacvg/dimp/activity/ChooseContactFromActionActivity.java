@@ -41,10 +41,12 @@ public class ChooseContactFromActionActivity extends BaseActivity<ChooseContactF
     @BindView(R.id.edit_userName)
     EditText editUserName ;
 
-    private List<String> assistIds = new ArrayList<>() ;
+    private List<String> assistIds = new ArrayList<>();
     private String headContactId ;
     private List<ContactOrDepartmentForActionBean> departmentInAtBeans = new ArrayList<>();
+    private List<ContactOrDepartmentForActionBean> showBeans = new ArrayList<>() ;
     private ContactOrDepartmentAdapter adapter ;
+    private boolean isHeadChoose ;
 
     @Override
     protected int getLayoutId() {
@@ -58,8 +60,8 @@ public class ChooseContactFromActionActivity extends BaseActivity<ChooseContactF
 
     @Override
     protected void setupView() {
-        tvTitle.setText(getIntent().getBooleanExtra(Constants.EXTRA_DATA_FOR_ALBUM,false)
-                ? resources.getString(R.string.head) : resources.getString(R.string.assistant));
+        isHeadChoose = getIntent().getBooleanExtra(Constants.EXTRA_DATA_FOR_ALBUM,false) ;
+        tvTitle.setText(isHeadChoose ? resources.getString(R.string.head) : resources.getString(R.string.assistant));
     }
 
     @Override
@@ -70,7 +72,7 @@ public class ChooseContactFromActionActivity extends BaseActivity<ChooseContactF
 
         createDepartmentInAtBeans();
 
-        adapter = new ContactOrDepartmentAdapter(mContext,departmentInAtBeans,assistIds,headContactId);
+        adapter = new ContactOrDepartmentAdapter(mContext,showBeans,isHeadChoose);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerContact.setLayoutManager(layoutManager);
         recyclerContact.setHasFixedSize(true);
@@ -84,14 +86,9 @@ public class ChooseContactFromActionActivity extends BaseActivity<ChooseContactF
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     DisplayUtils.hideSoftInput(mContext);
-                    departmentInAtBeans.clear();
-                    if(TextUtils.isEmpty(editUserName.getText().toString())){
-                        adapter.setJustContact(false);
-                    }else{
-                        adapter.setJustContact(true);
-                    }
-                    createDepartmentInAtBeans();
-                    adapter.setDepartments(departmentInAtBeans);
+                    showBeans.clear();
+                    searchUserForList();
+                    adapter.setDepartments(showBeans);
                     editUserName.setCursorVisible(false);
                     return true;
                 }
@@ -101,22 +98,45 @@ public class ChooseContactFromActionActivity extends BaseActivity<ChooseContactF
     }
 
     /**
+     * 根据关键字搜索人员信息
+     */
+    private void searchUserForList() {
+        if(TextUtils.isEmpty(editUserName.getText().toString())){
+            adapter.setJustContact(false);
+            showBeans.addAll(departmentInAtBeans);
+        }else{
+            for (ContactOrDepartmentForActionBean bean : departmentInAtBeans){
+                if(bean.getContactOrDepartmentBean().getName().contains(editUserName.getText().toString())){
+                    if(isHeadChoose){
+                        bean.setUnableChoose(assistIds.contains(bean.getId()));
+                    }else{
+                        bean.setUnableChoose(TextUtils.isEmpty(headContactId) ? false : bean.getId().equals(headContactId));
+                    }
+                    showBeans.add(bean);
+                }
+            }
+            adapter.setJustContact(true);
+        }
+    }
+
+    /**
      * 拉取创建
      */
     private void createDepartmentInAtBeans() {
         for (ContactOrDepartmentBean contactOrDepartmentBean : DbContactOrDepartmentController.getInstance(mContext).queryAllResources()){
-            if(TextUtils.isEmpty(editUserName.getText().toString())){
                 ContactOrDepartmentForActionBean contactOrDepartmentForActionBean = new ContactOrDepartmentForActionBean(contactOrDepartmentBean.getResId()
                         ,contactOrDepartmentBean.getParentId(),contactOrDepartmentBean.getLevel(),contactOrDepartmentBean.getIsExpend(),contactOrDepartmentBean);
-                departmentInAtBeans.add(contactOrDepartmentForActionBean);
-            }else{
-                if(contactOrDepartmentBean.getName().contains(editUserName.getText().toString()) && contactOrDepartmentBean.getIsContact()){
-                    ContactOrDepartmentForActionBean contactOrDepartmentForActionBean = new ContactOrDepartmentForActionBean(contactOrDepartmentBean.getResId()
-                            ,contactOrDepartmentBean.getParentId(),contactOrDepartmentBean.getLevel(),contactOrDepartmentBean.getIsExpend(),contactOrDepartmentBean);
-                    departmentInAtBeans.add(contactOrDepartmentForActionBean);
+                if(isHeadChoose){
+                    contactOrDepartmentForActionBean.setChecked(TextUtils.isEmpty(headContactId) ? false : headContactId.equals(contactOrDepartmentBean.getId()));
+                    contactOrDepartmentForActionBean.setUnableChoose((assistIds == null || assistIds.isEmpty())  ? false : assistIds.contains(contactOrDepartmentForActionBean.getId()));
+                }else{
+                    contactOrDepartmentForActionBean.setChecked((assistIds == null || assistIds.isEmpty())  ? false : assistIds.contains(contactOrDepartmentForActionBean.getId()));
+                    contactOrDepartmentForActionBean.setUnableChoose(TextUtils.isEmpty(headContactId) ? false : contactOrDepartmentForActionBean.getId().equals(headContactId));
                 }
+                departmentInAtBeans.add(contactOrDepartmentForActionBean);
             }
-        }
+        showBeans.clear();
+        showBeans.addAll(departmentInAtBeans);
         PLog.e(departmentInAtBeans.size() + "");
     }
 

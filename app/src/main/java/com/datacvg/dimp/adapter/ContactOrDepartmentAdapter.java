@@ -1,6 +1,7 @@
 package com.datacvg.dimp.adapter;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +13,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.baseandroid.greendao.bean.ContactOrDepartmentBean;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.bean.ContactOrDepartmentForActionBean;
+import com.datacvg.dimp.event.ChooseUserForActionEvent;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,22 +32,17 @@ import butterknife.ButterKnife;
  * @Description :
  */
 public class ContactOrDepartmentAdapter extends RecyclerView.Adapter<ContactOrDepartmentAdapter.ParentViewHolder> {
-    private final int PARENT_VIEW = 0 ;
-    private final int CHILD_VIEW = 1 ;
     private List<ContactOrDepartmentForActionBean> totalDepartmentInAtBeans = new ArrayList<>() ;
     private List<ContactOrDepartmentForActionBean> showDepartmentInAtBeans = new ArrayList<>() ;
     private List<ContactOrDepartmentForActionBean> firstLevelDepartmentInAtBeans = new ArrayList<>() ;
     private List<ContactOrDepartmentForActionBean> removeDepartmentInAtBeans = new ArrayList<>();
     private Context mContext ;
-    private List<String> assistIds ;
-    private String headId ;
     private boolean justContact = false ;
+    private boolean isHeadChoose = false ;
 
-    public ContactOrDepartmentAdapter(Context mContext, List<ContactOrDepartmentForActionBean> departmentInAtBeans
-            ,List<String> assistIds,String headId) {
+    public ContactOrDepartmentAdapter(Context mContext, List<ContactOrDepartmentForActionBean> departmentInAtBeans,boolean isHeadChoose) {
         this.mContext = mContext ;
-        this.assistIds = assistIds ;
-        this.headId = headId ;
+        this.isHeadChoose = isHeadChoose ;
         setDepartments(departmentInAtBeans);
     }
 
@@ -112,7 +113,11 @@ public class ContactOrDepartmentAdapter extends RecyclerView.Adapter<ContactOrDe
     public void onBindViewHolder(@NonNull ContactOrDepartmentAdapter.ParentViewHolder holder, int position) {
         ContactOrDepartmentForActionBean node = showDepartmentInAtBeans.get(position);
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) holder.cbExpend.getLayoutParams();
-            params.leftMargin = (showDepartmentInAtBeans.get(position).level + 1 ) * dip2px(20);
+            if (justContact){
+                params.leftMargin = 0;
+            }else{
+                params.leftMargin = (int) ((showDepartmentInAtBeans.get(position).level + 0.5) * dip2px(10));
+            }
             holder.cbExpend.setVisibility(showDepartmentInAtBeans.get(position).hasChild() ? View.VISIBLE : View.INVISIBLE);
             holder.cbExpend.setOnCheckedChangeListener(null);
             holder.cbExpend.setChecked(node.hasChild() && showDepartmentInAtBeans.containsAll(node.childNodes));
@@ -133,12 +138,29 @@ public class ContactOrDepartmentAdapter extends RecyclerView.Adapter<ContactOrDe
                     notifyDataSetChanged();
                 }
             });
-            ((ParentViewHolder) holder).cbDepartment.setVisibility(showDepartmentInAtBeans.get(position)
+            holder.cbDepartment.setVisibility(showDepartmentInAtBeans.get(position)
                     .getContactOrDepartmentBean().getIsContact() ? View.VISIBLE : View.GONE);
-            ((ParentViewHolder) holder).cbDepartment.setOnClickListener(v -> {
-                holder.cbDepartment.setSelected(!holder.cbDepartment.isSelected());
-            });
-            ((ParentViewHolder) holder).tvDepartmentName.setText(showDepartmentInAtBeans.get(position).getContactOrDepartmentBean().getName());
+            holder.cbDepartment.setSelected(showDepartmentInAtBeans.get(position).isChecked());
+            if(showDepartmentInAtBeans.get(position).isUnableChoose()){
+                holder.cbDepartment.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources()
+                        ,R.mipmap.cx_unable_select));
+            }else{
+                holder.cbDepartment.setOnClickListener(v -> {
+                    if(showDepartmentInAtBeans.get(position).isChecked()){
+                        showDepartmentInAtBeans.get(position).setChecked(false);
+                    }else{
+                        if(isHeadChoose){
+                            for (ContactOrDepartmentForActionBean contactOrDepartmentForActionBean : showDepartmentInAtBeans){
+                                contactOrDepartmentForActionBean.setChecked(false);
+                            }
+                        }
+                        showDepartmentInAtBeans.get(position).setChecked(true);
+                    }
+                    EventBus.getDefault().post(new ChooseUserForActionEvent(showDepartmentInAtBeans.get(position),isHeadChoose));
+                    notifyDataSetChanged();
+                });
+            }
+            holder.tvDepartmentName.setText(showDepartmentInAtBeans.get(position).getContactOrDepartmentBean().getName());
         }
 
     /**
@@ -162,14 +184,6 @@ public class ContactOrDepartmentAdapter extends RecyclerView.Adapter<ContactOrDe
     @Override
     public int getItemCount() {
         return showDepartmentInAtBeans.size();
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        if(showDepartmentInAtBeans.get(position).isExpand){
-            return PARENT_VIEW ;
-        }
-        return CHILD_VIEW;
     }
 
     public class ParentViewHolder extends RecyclerView.ViewHolder{

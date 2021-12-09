@@ -19,6 +19,7 @@ public class ContactOrDepartmentBean {
     private String name;
     private String resId;
     private String parentId;
+    private String userId;
     private Boolean isExpend = false ;
     private Boolean isContact = false ;
 
@@ -32,13 +33,15 @@ public class ContactOrDepartmentBean {
 
     private int level = -1 ;
 
-    @Generated(hash = 168670897)
+    @Generated(hash = 1548651461)
     public ContactOrDepartmentBean(Long id, String name, String resId,
-            String parentId, Boolean isExpend, Boolean isContact, int level) {
+            String parentId, String userId, Boolean isExpend, Boolean isContact,
+            int level) {
         this.id = id;
         this.name = name;
         this.resId = resId;
         this.parentId = parentId;
+        this.userId = userId;
         this.isExpend = isExpend;
         this.isContact = isContact;
         this.level = level;
@@ -48,6 +51,13 @@ public class ContactOrDepartmentBean {
     public ContactOrDepartmentBean() {
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public Long getId() {
         return id;

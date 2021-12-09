@@ -21,6 +21,7 @@
         android:id="@+id/img_delete"
         android:layout_width="@dimen/W15"
         android:layout_height="@dimen/H15"
+        android:visibility="gone"
         android:src="@mipmap/icon_comment_close"
         android:layout_toRightOf="@id/tv_user"
         android:layout_marginLeft="-10dp">

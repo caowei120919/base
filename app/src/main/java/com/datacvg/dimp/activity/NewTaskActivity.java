@@ -28,10 +28,13 @@ import com.datacvg.dimp.baseandroid.utils.TimeUtils;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.ActionPlanIndexBean;
 import com.datacvg.dimp.bean.ActionPlanIndexListBean;
+import com.datacvg.dimp.bean.ContactOrDepartmentForActionBean;
 import com.datacvg.dimp.bean.CreateTaskBean;
 import com.datacvg.dimp.bean.Contact;
+import com.datacvg.dimp.bean.CreateTaskIndex;
 import com.datacvg.dimp.bean.IndexTreeBean;
 import com.datacvg.dimp.bean.IndexTreeNeedBean;
+import com.datacvg.dimp.event.ChooseUserForActionEvent;
 import com.datacvg.dimp.event.CreateTaskEvent;
 import com.datacvg.dimp.event.HeadOrAssistantEvent;
 import com.datacvg.dimp.presenter.NewTaskPresenter;
@@ -91,6 +94,8 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
     RelativeLayout relDimension ;
     @BindView(R.id.flow_dimension)
     FlowLayout flowDimension ;
+    @BindView(R.id.rel_headUser)
+    RelativeLayout relHeadUser ;
 
     /**
      * 时间选择器
@@ -101,7 +106,7 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
      */
     private String taskTitle ;
     private boolean fromActionFragment = true ;
-    private String actionType = "1";
+    private String actionType = "";
     private IndexTreeNeedBean indexTreeNeedBean ;
     private List<ActionPlanIndexBean> actionPlanIndexBeans = new ArrayList<>() ;
     private List<ActionPlanIndexBean> taskIndexBeans = new ArrayList<>() ;
@@ -110,12 +115,12 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
     /**
      * 负责人
      */
-    private Contact headContact ;
+    private ContactOrDepartmentForActionBean headContact ;
 
     /**
      * 协助人
      */
-    private List<Contact> assistantBeans = new ArrayList<>() ;
+    private List<ContactOrDepartmentForActionBean> assistantBeans = new ArrayList<>() ;
 
     /**
      * 任务截止日期
@@ -249,7 +254,7 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
     @OnClick({R.id.img_left,R.id.tv_date,R.id.tv_actionTypeCommon
             ,R.id.tv_actionTypeSpecial,R.id.tv_priorityHigh,R.id.tv_priorityMiddle
             ,R.id.tv_priorityLow,R.id.img_addHead,R.id.img_addAssistant,R.id.img_addIndex
-            ,R.id.tv_right})
+            ,R.id.tv_right,R.id.img_delete})
     public void OnClick(View view){
         switch (view.getId()){
             case R.id.img_left :
@@ -302,11 +307,11 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
                 Intent intent = new Intent(mContext,ChooseContactFromActionActivity.class) ;
                 intent.putExtra(Constants.EXTRA_DATA_FOR_ALBUM,false);
                 if(headContact != null){
-                    intent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,headContact.getBean().getId()) ;
+                    intent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,headContact.getId()) ;
                 }
                 if(!assistantBeans.isEmpty()){
-                    for (Contact contact : assistantBeans){
-                        assistIds.add(contact.getBean().getId());
+                    for (ContactOrDepartmentForActionBean contact : assistantBeans){
+                        assistIds.add(contact.getId());
                     }
                     intent.putStringArrayListExtra(Constants.EXTRA_DATA_FOR_BEAN, assistIds);
                 }
@@ -337,15 +342,15 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
                     List<CreateTaskBean.TaskUser> taskUsers = new ArrayList<>();
                     CreateTaskBean.TaskUser taskUser = new CreateTaskBean.TaskUser();
                     taskUser.setChecked(true);
-                    taskUser.setId(headContact.getBean().getUser_id());
-                    taskUser.setName(headContact.getBean().getName());
+                    taskUser.setId(headContact.getContactOrDepartmentBean().getUserId());
+                    taskUser.setName(headContact.getContactOrDepartmentBean().getName());
                     taskUser.setType("2");
                     taskUsers.add(taskUser);
-                    for (Contact contact : assistantBeans){
+                    for (ContactOrDepartmentForActionBean contact : assistantBeans){
                         CreateTaskBean.TaskUser taskAssistant = new CreateTaskBean.TaskUser();
                         taskAssistant.setType("3");
-                        taskAssistant.setName(contact.getBean().getName());
-                        taskAssistant.setId(contact.getBean().getUser_id());
+                        taskAssistant.setName(contact.getContactOrDepartmentBean().getName());
+                        taskAssistant.setId(contact.getContactOrDepartmentBean().getUserId());
                         taskAssistant.setChecked(true);
                         taskUsers.add(taskAssistant);
                     }
@@ -353,19 +358,35 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
                     actionPlanInfoDTO.setTask_parent_id("0");
                     createTaskBean.setLang(LanguageUtils.isZh(mContext) ? "zh" : "en");
                     if(!fromActionFragment){
+                        createTaskBean.setStartTime(indexTreeNeedBean.getTimeVal());
                         createTaskBean.setFuDimension(indexTreeNeedBean.getFuDimension());
                         createTaskBean.setpDimension(indexTreeNeedBean.getpDimension());
                         createTaskBean.setOrgDimension(indexTreeNeedBean.getOrgDimension());
                         createTaskBean.setAllDeimension(indexTreeNeedBean.getOrgName() + ","
                                 + indexTreeNeedBean.getFuName()
                                 + "," + indexTreeNeedBean.getpName());
+                    }else{
+                        createTaskBean.setStartTime("");
+                        createTaskBean.setFuDimension("");
+                        createTaskBean.setpDimension("");
+                        createTaskBean.setOrgDimension("");
+                        createTaskBean.setAllDeimension("");
                     }
+                    List<CreateTaskIndex> createTaskIndices = new ArrayList<>() ;
                     createTaskBean.setIndexList(new Gson().toJson(indexTreeBeans));
                     createTaskBean.setUserMsg(new Gson().toJson(taskUsers));
                     createTaskBean.setIndex(new Gson().toJson(taskIndexBeans));
                     createTaskBean.setActionType(actionType);
                     createTaskBean.setActionPlanInfoDTO(actionPlanInfoDTO);
                     getPresenter().createTask(createTaskBean);
+                break;
+
+            case R.id.img_delete :
+                if(relHeadUser.getVisibility() == View.VISIBLE){
+                    relHeadUser.setVisibility(View.GONE);
+                }
+                headContact = null ;
+                relHeadUser.setVisibility(View.GONE);
                 break;
         }
     }
@@ -414,11 +435,11 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
         Intent intent = new Intent(mContext,ChooseContactFromActionActivity.class) ;
         intent.putExtra(Constants.EXTRA_DATA_FOR_ALBUM,true);
         if(headContact != null){
-            intent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,headContact.getBean().getId()) ;
+            intent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,headContact.getId()) ;
         }
         if(!assistantBeans.isEmpty()){
-            for (Contact contact : assistantBeans){
-                assistIds.add(contact.getBean().getId());
+            for (ContactOrDepartmentForActionBean contact : assistantBeans){
+                assistIds.add(contact.getId());
             }
             intent.putStringArrayListExtra(Constants.EXTRA_DATA_FOR_BEAN, assistIds);
         }
@@ -508,6 +529,7 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
            View view = LayoutInflater.from(mContext).inflate(R.layout.item_selected_user,null);
            TextView tv_group = view.findViewById(R.id.tv_user);
            ImageView img_delete = view.findViewById(R.id.img_delete);
+           img_delete.setVisibility(View.VISIBLE);
            img_delete.setOnClickListener(v -> {
                flowIndex.removeView(view);
                taskIndexBeans.remove(bean);
@@ -582,57 +604,50 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void OnEvent(HeadOrAssistantEvent event){
-        /**
-         * 选择负责人
-         */
-        if(event.getChooseType() == Constants.CHOOSE_TYPE_HEAD){
-            if (event.isChecked()){
-                headContact = event.getContact();
-                tvHeadUser.setVisibility(View.VISIBLE);
-                tvHeadUser.setText(event.getContact().getBean().getName());
+    public void onEvent(ChooseUserForActionEvent event){
+        if(event.isHeadChoose()){
+            if(event.getContactOrDepartmentForActionBean().isChecked()){
+                headContact = event.getContactOrDepartmentForActionBean() ;
+                relHeadUser.setVisibility(View.VISIBLE);
+                tvHeadUser.setText(event.getContactOrDepartmentForActionBean()
+                        .getContactOrDepartmentBean().getName());
             }else{
-                tvHeadUser.setVisibility(View.GONE);
+                relHeadUser.setVisibility(View.GONE);
                 headContact = null ;
             }
         }else{
-            if(event.isChecked()){
-                assistantBeans.add(event.getContact());
-                buildAssistantFlow(event.getContact(),true);
-            }else{
-                Contact removeContact = null;
-                for (Contact contact : assistantBeans){
-                    if(contact.getBean().getId().equals(event.getContact().getBean().getId())){
-                        removeContact = contact ;
-                        break;
-                    }
-                }
-                if(removeContact != null){
-                    buildAssistantFlow(event.getContact(),false);
-                    assistantBeans.remove(removeContact);
-                }
-            }
+            buildAssistantFlow(event.getContactOrDepartmentForActionBean());
         }
     }
 
     /**
      * 构建协助人视图
      */
-    public void buildAssistantFlow(Contact contact ,boolean isAddView){
-        if(isAddView){
+    public void buildAssistantFlow(ContactOrDepartmentForActionBean contact){
+        if(contact.isChecked()){
+            assistantBeans.add(contact);
             View view = LayoutInflater.from(mContext).inflate(R.layout.item_selected_user,null);
             TextView tv_group = view.findViewById(R.id.tv_user);
-            tv_group.setText(contact.getBean().getName());
-            view.setTag(contact.getBean().getId());
+            ImageView img_delete =view.findViewById(R.id.img_delete);
+            img_delete.setVisibility(View.VISIBLE);
+            img_delete.setOnClickListener(v -> {
+                flowAssistant.removeView(view);
+                assistantBeans.remove(contact);
+            });
+            tv_group.setText(contact.getContactOrDepartmentBean().getName());
+            view.setTag(contact.getId());
             flowAssistant.addView(view);
         }else{
+            assistantBeans.remove(contact);
             for (int i = 0 ; i < flowAssistant.getChildCount(); i++){
                 View view = flowAssistant.getChildAt(i);
-                if(view.getTag().equals(contact.getBean().getId())){
+                if(view.getTag().equals(contact.getId())){
                     flowAssistant.removeView(view);
                     break;
                 }
             }
         }
     }
+
+
 }

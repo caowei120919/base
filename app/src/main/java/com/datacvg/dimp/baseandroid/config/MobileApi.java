@@ -303,7 +303,7 @@ public interface MobileApi {
     @POST("api/mobile/indexpad/list")
     Observable<BaseBean<IndexTreeListBean>> getIndexTree(@Body Map map);
 
-    @POST("api/mobile/actionplan/creattask")
+    @POST("api/ddb/actionplan/add")
     Observable<BaseBean> createTask(@Body Map map);
 
     @GET("api/mobile/actionplan/infodetail")

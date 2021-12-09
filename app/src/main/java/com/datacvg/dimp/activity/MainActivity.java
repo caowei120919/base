@@ -353,7 +353,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         for (DefaultUserBean bean : resdata){
             ContactOrDepartmentBean contactOrDepartmentBean = new ContactOrDepartmentBean() ;
             contactOrDepartmentBean.setIsContact(false);
-            contactOrDepartmentBean.setLevel(bean.getRes_level());
+            contactOrDepartmentBean.setLevel(bean.getRes_level() + 1);
             contactOrDepartmentBean.setExpend(true);
             contactOrDepartmentBean.setName(bean.getD_res_clname());
             contactOrDepartmentBean.setResId(bean.getD_res_id());
@@ -362,7 +362,8 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                 ContactOrDepartmentBean contactBean = new ContactOrDepartmentBean();
                 contactBean.setParentId(bean.getD_res_id());
                 contactBean.setResId(contact.getId());
-                contactBean.setLevel(bean.getRes_level() + 1);
+                contactBean.setLevel(bean.getRes_level() + 2);
+                contactBean.setUserId(contact.getUser_id());
                 contactBean.setIsContact(true);
                 contactBean.setExpend(false);
                 contactBean.setName(contact.getName());

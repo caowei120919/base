@@ -24,6 +24,7 @@ import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.activity.FeedBackActivity;
+import com.datacvg.dimp.activity.InComeDetailActivity;
 import com.datacvg.dimp.activity.MessageCentreActivity;
 import com.datacvg.dimp.activity.ScanActivity;
 import com.datacvg.dimp.activity.SettingActivity;
