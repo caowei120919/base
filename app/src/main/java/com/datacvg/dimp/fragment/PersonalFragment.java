@@ -167,7 +167,7 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
                         .subscribe(new RxObserver<Boolean>(){
                             @Override
                             public void onNext(Boolean aBoolean) {
-                                if (aBoolean) {      //授权通过拍摄照片
+                                if (aBoolean) {
                                     mIntentIntegrator = new IntentIntegrator(getActivity());
                                     mIntentIntegrator.setCaptureActivity(ScanActivity.class);
                                     mIntentIntegrator.addExtra(Constants.EXTRA_DATA_FOR_SCAN

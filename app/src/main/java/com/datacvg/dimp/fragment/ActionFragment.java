@@ -7,8 +7,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.activity.NewTaskActivity;
 import com.datacvg.dimp.activity.TaskDetailActivity;
@@ -22,6 +26,9 @@ import com.datacvg.dimp.bean.ActionPlanListBean;
 import com.datacvg.dimp.event.CreateTaskEvent;
 import com.datacvg.dimp.presenter.ActionPresenter;
 import com.datacvg.dimp.view.ActionView;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -40,7 +47,7 @@ import butterknife.OnClick;
  * @Description : 行动方案
  */
 public class ActionFragment extends BaseFragment<ActionView, ActionPresenter>
-        implements ActionView, ActionPlanAdapter.ToActionClick {
+        implements ActionView, ActionPlanAdapter.ToActionClick, OnRefreshListener {
     @BindView(R.id.img_left)
     ImageView imgLeft ;
     @BindView(R.id.tv_title)
@@ -53,6 +60,8 @@ public class ActionFragment extends BaseFragment<ActionView, ActionPresenter>
     TextView tvIssued ;
     @BindView(R.id.tv_received)
     TextView tvReceived ;
+    @BindView(R.id.swipe_action)
+    SmartRefreshLayout swipeAction ;
     @BindView(R.id.recycler_action)
     RecyclerView recyclerAction;
 
@@ -80,6 +89,9 @@ public class ActionFragment extends BaseFragment<ActionView, ActionPresenter>
     protected void setupView(View rootView) {
         StatusBarUtil.setStatusBarColor(getActivity()
                 ,mContext.getResources().getColor(R.color.c_FFFFFF));
+        swipeAction.setEnableLoadMore(false);
+        swipeAction.setOnRefreshListener(this);
+
     }
 
     @Override
@@ -168,6 +180,9 @@ public class ActionFragment extends BaseFragment<ActionView, ActionPresenter>
      */
     @Override
     public void getActionPlanListSuccess(ActionPlanListBean beans) {
+        if (swipeAction.isRefreshing()){
+            swipeAction.finishRefresh();
+        }
         if(pageNo == 0){
             actionPlanBeans.clear();
             allActionPlanBeans.clear();
@@ -216,6 +231,11 @@ public class ActionFragment extends BaseFragment<ActionView, ActionPresenter>
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(CreateTaskEvent event){
         pageNo = 0 ;
+        getActionList();
+    }
+
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         getActionList();
     }
 }

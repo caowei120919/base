@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.bean.ContactOrDepartmentForActionBean;
 import com.datacvg.dimp.bean.DepartmentInAtBean;
 import com.datacvg.dimp.event.AddDepartmentEvent;
 import com.datacvg.dimp.event.DeleteDepartmentEvent;
@@ -36,19 +37,19 @@ import butterknife.ButterKnife;
 public class DepartmentAdapter extends RecyclerView.Adapter<DepartmentAdapter.ParentViewHolder> {
     private final int PARENT_VIEW = 0 ;
     private final int CHILD_VIEW = 1 ;
-    private List<DepartmentInAtBean> totalDepartmentInAtBeans = new ArrayList<>() ;
-    private List<DepartmentInAtBean> showDepartmentInAtBeans = new ArrayList<>() ;
-    private List<DepartmentInAtBean> firstLevelDepartmentInAtBeans = new ArrayList<>() ;
-    private List<DepartmentInAtBean> removeDepartmentInAtBeans = new ArrayList<>();
+    private List<ContactOrDepartmentForActionBean> totalDepartmentInAtBeans = new ArrayList<>() ;
+    private List<ContactOrDepartmentForActionBean> showDepartmentInAtBeans = new ArrayList<>() ;
+    private List<ContactOrDepartmentForActionBean> firstLevelDepartmentInAtBeans = new ArrayList<>() ;
+    private List<ContactOrDepartmentForActionBean> removeDepartmentInAtBeans = new ArrayList<>();
     private SparseIntArray addedChildNodeIds = new SparseIntArray();
     private Context mContext ;
 
-    public DepartmentAdapter(Context mContext, List<DepartmentInAtBean> departmentInAtBeans) {
+    public DepartmentAdapter(Context mContext, List<ContactOrDepartmentForActionBean> departmentInAtBeans) {
         this.mContext = mContext ;
         setDepartments(departmentInAtBeans);
     }
 
-    private void setDepartments(List<DepartmentInAtBean> departmentInAtBeans) {
+    private void setDepartments(List<ContactOrDepartmentForActionBean> departmentInAtBeans) {
         totalDepartmentInAtBeans = departmentInAtBeans ;
         reset();
         super.notifyDataSetChanged();
@@ -65,12 +66,12 @@ public class DepartmentAdapter extends RecyclerView.Adapter<DepartmentAdapter.Pa
         firstLevelDepartmentInAtBeans.clear();
         //先循环一次，获取最小的level
         int level = -1;
-        for (DepartmentInAtBean node : totalDepartmentInAtBeans) {
+        for (ContactOrDepartmentForActionBean node : totalDepartmentInAtBeans) {
             if (level == -1 || level > node.level) {
                 level = node.level;
             }
         }
-        for (DepartmentInAtBean node : totalDepartmentInAtBeans) {
+        for (ContactOrDepartmentForActionBean node : totalDepartmentInAtBeans) {
             //过滤出最外层
             if (node.level == level) {
                 firstLevelDepartmentInAtBeans.add(node);
@@ -80,11 +81,11 @@ public class DepartmentAdapter extends RecyclerView.Adapter<DepartmentAdapter.Pa
                 node.childNodes.clear();
             }
             //给节点添加子节点并排序
-            for (DepartmentInAtBean t : totalDepartmentInAtBeans) {
-                if (node.id == t.id && node != t) {
-                    throw new IllegalArgumentException("id cannot be duplicated");
+            for (ContactOrDepartmentForActionBean t : totalDepartmentInAtBeans) {
+                if (node.id.equals(t.id)  && node != t) {
+                    continue;
                 }
-                if (node.id == t.pId && node.level != t.level) {
+                if (node.id .equals(t.pId) && node.level != t.level) {
                     node.addChild(t);
                 }
             }
@@ -105,7 +106,7 @@ public class DepartmentAdapter extends RecyclerView.Adapter<DepartmentAdapter.Pa
 
     @Override
     public void onBindViewHolder(@NonNull DepartmentAdapter.ParentViewHolder holder, int position) {
-            DepartmentInAtBean node = showDepartmentInAtBeans.get(position);
+        ContactOrDepartmentForActionBean node = showDepartmentInAtBeans.get(position);
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) holder.cbExpend.getLayoutParams();
             params.leftMargin = (showDepartmentInAtBeans.get(position).level + 1 ) * dip2px(20);
             holder.cbExpend.setVisibility(showDepartmentInAtBeans.get(position).hasChild() ? View.VISIBLE : View.INVISIBLE);
@@ -130,21 +131,21 @@ public class DepartmentAdapter extends RecyclerView.Adapter<DepartmentAdapter.Pa
             });
             ((ParentViewHolder) holder).cbDepartment.setOnClickListener(v -> {
                 holder.cbDepartment.setSelected(!holder.cbDepartment.isSelected());
-                if (holder.cbDepartment.isSelected()){
-                    EventBus.getDefault().post(new AddDepartmentEvent(node.getBean()));
-                }else{
-                    EventBus.getDefault().post(new DeleteDepartmentEvent(node.getBean()));
-                }
+//                if (holder.cbDepartment.isSelected()){
+//                    EventBus.getDefault().post(new AddDepartmentEvent(node.getContactOrDepartmentBean()));
+//                }else{
+//                    EventBus.getDefault().post(new DeleteDepartmentEvent(node.getBean()));
+//                }
             });
-            ((ParentViewHolder) holder).tvDepartmentName.setText(showDepartmentInAtBeans.get(position).getBean().getD_res_clname());
+            ((ParentViewHolder) holder).tvDepartmentName.setText(showDepartmentInAtBeans.get(position).getContactOrDepartmentBean().getName());
         }
 
     /**
      * 递归删除子元素
      * @param childNodes
      */
-    private void removeChild(List<DepartmentInAtBean> childNodes) {
-        for (DepartmentInAtBean bean :childNodes) {
+    private void removeChild(List<ContactOrDepartmentForActionBean> childNodes) {
+        for (ContactOrDepartmentForActionBean bean :childNodes) {
             if(bean.hasChild()){
                 removeChild(bean.childNodes);
             }

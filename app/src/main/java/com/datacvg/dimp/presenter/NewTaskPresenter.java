@@ -76,7 +76,7 @@ public class NewTaskPresenter extends BasePresenter<NewTaskView> {
                         if(!checkJsonCode(bean)){
                             return;
                         }
-                        if(bean.getStatus() == Constants.SERVICE_CODE_SUCCESS_MOBILE){
+                        if(bean.getStatus() == Constants.SERVICE_CODE_SUCCESS_FIS){
                             getView().createTaskSuccess();
                         }else{
                             getView().createTaskFailed(bean.getMessage());

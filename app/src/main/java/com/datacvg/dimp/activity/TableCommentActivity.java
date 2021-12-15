@@ -126,7 +126,7 @@ public class TableCommentActivity extends BaseActivity<TableCommentView, TableCo
 
             case R.id.img_at :
                 PLog.e("@功能");
-                startActivity(new Intent(mContext, ContactActivity.class));
+                startActivity(new Intent(mContext, DepartmentActivity.class));
                 break;
         }
     }

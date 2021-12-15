@@ -1,6 +1,7 @@
 package com.datacvg.dimp.activity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -9,7 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.DepartmentAdapter;
+import com.datacvg.dimp.baseandroid.greendao.bean.ContactOrDepartmentBean;
+import com.datacvg.dimp.baseandroid.greendao.controller.DbContactOrDepartmentController;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
+import com.datacvg.dimp.bean.ContactOrDepartmentForActionBean;
 import com.datacvg.dimp.bean.DepartmentInAtBean;
 import com.datacvg.dimp.greendao.bean.DepartmentBean;
 import com.datacvg.dimp.greendao.controller.DbDepartmentController;
@@ -20,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * @Author : T-Bag (茶包)
@@ -43,10 +48,8 @@ public class DepartmentActivity extends BaseActivity<DepartmentView, DepartmentP
     /**
      * 根节点数据
      */
-    private List<DepartmentBean> departmentRootBeans = new ArrayList<>() ;
-    private List<DepartmentBean> departmentBeans = new ArrayList<>();
-    private List<DepartmentBean> departmentChildBeans = new ArrayList<>();
-    private List<DepartmentInAtBean> departmentInAtBeans = new ArrayList<>();
+    private List<ContactOrDepartmentBean> departmentBeans = new ArrayList<>();
+    private List<ContactOrDepartmentForActionBean> departmentInAtBeans = new ArrayList<>();
     private DepartmentAdapter adapter ;
 
     @Override
@@ -70,7 +73,12 @@ public class DepartmentActivity extends BaseActivity<DepartmentView, DepartmentP
         tvCenter.setText(resources.getString(R.string.department));
         tvRight.setText(resources.getString(R.string.confirm));
 
-        createDepartmentInAtBeans();
+        departmentBeans = DbContactOrDepartmentController.getInstance(mContext).queryDepartmentList();
+        for (ContactOrDepartmentBean contactOrDepartmentBean : departmentBeans){
+            ContactOrDepartmentForActionBean contactOrDepartmentForActionBean
+                    = new ContactOrDepartmentForActionBean(contactOrDepartmentBean.getResId(),contactOrDepartmentBean.getParentId(),contactOrDepartmentBean.getLevel(),contactOrDepartmentBean.getIsExpend(),contactOrDepartmentBean);
+            departmentInAtBeans.add(contactOrDepartmentForActionBean);
+        }
         /**
          * 添加根节点
          */
@@ -88,42 +96,13 @@ public class DepartmentActivity extends BaseActivity<DepartmentView, DepartmentP
         recycleDepartment.setItemAnimator( new DefaultItemAnimator());
     }
 
-    /**
-     * 拉取创建
-     */
-    private void createDepartmentInAtBeans() {
-        /**
-         * 存取的部门总数量
-         */
-        departmentBeans = DbDepartmentController.getInstance(mContext)
-                .queryDepartmentList();
-        departmentRootBeans = DbDepartmentController.getInstance(mContext)
-                .queryDepartmentListForParent("0") ;
-        int count = departmentBeans.size();
-        /**
-         * 是否有parent为0的根节点
-         */
-        boolean hasRootDepartment = departmentRootBeans.size() > 0;
-        int leave = 0 ;
-        /**
-         * 循环遍历部门，创建树型结构的列表
-         */
-        while (departmentInAtBeans.size() < count && hasRootDepartment){
-            if(leave != 0){
-                departmentRootBeans.clear();
-                departmentRootBeans.addAll(departmentChildBeans)  ;
-                departmentChildBeans.clear();
-            }
-            for (int i = 0 ; i < departmentRootBeans.size() ; i++){
-                DepartmentInAtBean departmentInAtBean
-                        = new DepartmentInAtBean(departmentRootBeans.get(i).getDepartment_id().toString()
-                        ,String.valueOf(DbDepartmentController.getInstance(mContext).getParentDepartmentIdForResId(departmentRootBeans.get(i).getD_res_parentid())),leave
-                        ,DbDepartmentController.getInstance(mContext).queryDepartmentListForParent(departmentRootBeans.get(i).getD_res_id()).size() > 0
-                        ,departmentRootBeans.get(i));
-                departmentInAtBeans.add(departmentInAtBean);
-                departmentChildBeans.addAll(DbDepartmentController.getInstance(mContext).queryDepartmentListForParent(departmentRootBeans.get(i).getD_res_id()));
-            }
-            leave ++ ;
+
+    @OnClick({R.id.img_left})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.img_left :
+                    finish();
+                break;
         }
     }
 }

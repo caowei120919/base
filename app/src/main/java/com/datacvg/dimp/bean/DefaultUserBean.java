@@ -2,6 +2,7 @@ package com.datacvg.dimp.bean;
 
 import androidx.annotation.Keep;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,6 +34,15 @@ public class DefaultUserBean {
     private String d_res_clname;
     private int res_level;
     private List<UserBean> user;
+    private List<DefaultUserBean> defaultUserBeans = new ArrayList<>() ;
+
+    public List<DefaultUserBean> getDefaultUserBeans() {
+        return defaultUserBeans;
+    }
+
+    public void setDefaultUserBeans(List<DefaultUserBean> defaultUserBeans) {
+        this.defaultUserBeans = defaultUserBeans;
+    }
 
     public String getD_res_rootid() {
         return d_res_rootid;

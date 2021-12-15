@@ -22,6 +22,7 @@ public class ContactOrDepartmentBean {
     private String userId;
     private Boolean isExpend = false ;
     private Boolean isContact = false ;
+    private int level = -1 ;
 
     public Boolean getContact() {
         return isContact;
@@ -30,8 +31,6 @@ public class ContactOrDepartmentBean {
     public void setContact(Boolean contact) {
         isContact = contact;
     }
-
-    private int level = -1 ;
 
     @Generated(hash = 1548651461)
     public ContactOrDepartmentBean(Long id, String name, String resId,

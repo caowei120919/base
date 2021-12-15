@@ -40,10 +40,6 @@ import com.datacvg.dimp.fragment.PersonalFragment;
 import com.datacvg.dimp.fragment.ReportFragment;
 import com.datacvg.dimp.fragment.ScreenFragment;
 import com.datacvg.dimp.fragment.TableFragment;
-import com.datacvg.dimp.greendao.bean.ContactBean;
-import com.datacvg.dimp.greendao.bean.DepartmentBean;
-import com.datacvg.dimp.greendao.controller.DbContactController;
-import com.datacvg.dimp.greendao.controller.DbDepartmentController;
 import com.datacvg.dimp.presenter.MainPresenter;
 import com.datacvg.dimp.view.MainView;
 import com.google.gson.Gson;
@@ -323,37 +319,14 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
      */
     @Override
     public void getDepartmentAndContactSuccess(DefaultUserListBean resdata) {
-        DbDepartmentController departmentController = DbDepartmentController.getInstance(mContext);
-        departmentController.deleteAllDepartment();
-        DbContactController contactController = DbContactController.getInstance(mContext);
-        contactController.deleteAllContact();
-        for (DefaultUserBean bean : resdata) {
-            DepartmentBean departmentBean = new DepartmentBean();
-            departmentBean.setD_res_clname(bean.getD_res_clname());
-            departmentBean.setD_res_flname(bean.getD_res_flname());
-            departmentBean.setD_res_id(bean.getD_res_id());
-            departmentBean.setD_res_parentid(bean.getD_res_parentid());
-            departmentBean.setD_res_pkid(bean.getD_res_pkid());
-            departmentBean.setD_res_rootid(bean.getD_res_rootid());
-            departmentController.insertOrUpdateDepartment(departmentBean);
-            for (DefaultUserBean.UserBean contact : bean.getUser()){
-                ContactBean contactBean = new ContactBean();
-                contactBean.setDepartment_id(bean.getD_res_pkid());
-                contactBean.setId(contact.getId());
-                contactBean.setUser_id(contact.getUser_id());
-                contactBean.setName(contact.getName());
-                contactController.insertOrUpdateContact(contactBean);
-            }
-        }
-        PLog.e(DbContactController.getInstance(mContext).queryContactList().size() + "");
-
+        List<DefaultUserBean> defaultUserBeanList = resetResource(resdata);
         DbContactOrDepartmentController dbContactOrDepartmentController
                 = DbContactOrDepartmentController.getInstance(mContext);
         dbContactOrDepartmentController.deleteAllResources();
-        for (DefaultUserBean bean : resdata){
+        for (DefaultUserBean bean : defaultUserBeanList){
             ContactOrDepartmentBean contactOrDepartmentBean = new ContactOrDepartmentBean() ;
             contactOrDepartmentBean.setIsContact(false);
-            contactOrDepartmentBean.setLevel(bean.getRes_level() + 1);
+            contactOrDepartmentBean.setLevel(bean.getRes_level());
             contactOrDepartmentBean.setExpend(true);
             contactOrDepartmentBean.setName(bean.getD_res_clname());
             contactOrDepartmentBean.setResId(bean.getD_res_id());
@@ -362,7 +335,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                 ContactOrDepartmentBean contactBean = new ContactOrDepartmentBean();
                 contactBean.setParentId(bean.getD_res_id());
                 contactBean.setResId(contact.getId());
-                contactBean.setLevel(bean.getRes_level() + 2);
+                contactBean.setLevel(bean.getRes_level() + 1);
                 contactBean.setUserId(contact.getUser_id());
                 contactBean.setIsContact(true);
                 contactBean.setExpend(false);
@@ -371,6 +344,54 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
             }
             dbContactOrDepartmentController.insertContactOrDepartment(contactOrDepartmentBean);
         }
+    }
+
+    /**
+     * 对数据层级进行重新处理
+     * @param resdata
+     * @return
+     */
+    private List<DefaultUserBean> resetResource(DefaultUserListBean resdata) {
+        List<DefaultUserBean> allResources = new ArrayList<>();
+        List<DefaultUserBean> rootUsers = findRootUserForList(resdata);
+        for (DefaultUserBean defaultUserBean : rootUsers){
+            defaultUserBean.setRes_level(0);
+        }
+        while (allResources.size() < resdata.size()){
+            if (rootUsers.isEmpty()){
+                return null ;
+            }else{
+                List<DefaultUserBean> childUserBeans = new ArrayList<>() ;
+                for (DefaultUserBean defaultUserBean : rootUsers){
+                    for (DefaultUserBean userBean : resdata){
+                        if(!userBean.getD_res_parentid().equals(userBean.getD_res_id())
+                                && userBean.getD_res_parentid().equals(defaultUserBean.getD_res_id())){
+                            userBean.setRes_level(defaultUserBean.getRes_level() + 1);
+                            childUserBeans.add(userBean);
+                        }
+                    }
+                }
+                allResources.addAll(rootUsers);
+                rootUsers.clear();
+                rootUsers.addAll(childUserBeans);
+            }
+        }
+        return allResources;
+    }
+
+    /**
+     * 查询根节点
+     * @param resdata
+     */
+    private List<DefaultUserBean> findRootUserForList(DefaultUserListBean resdata) {
+        List<DefaultUserBean> defaultUserBeans = new ArrayList<>() ;
+        for (DefaultUserBean rootUser : resdata){
+            if(rootUser.getD_res_id().equals(rootUser.getD_res_rootid())){
+                defaultUserBeans.add(rootUser);
+            }
+        }
+        PLog.e(new Gson().toJson(defaultUserBeans));
+        return defaultUserBeans ;
     }
 
     /**

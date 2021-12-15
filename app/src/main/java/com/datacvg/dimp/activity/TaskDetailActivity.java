@@ -335,7 +335,6 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                     taskUser.setName(bean.getName());
                     taskUser.setType(bean.getType());
                     taskUser.setChecked(true);
-                    tvHeadUser.setText(bean.getName());
                     taskUsers.add(taskUser);
                 }
             }
