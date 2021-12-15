@@ -1,6 +1,7 @@
 package com.datacvg.dimp.bean;
 
 
+import com.datacvg.dimp.baseandroid.greendao.bean.ContactOrDepartmentBean;
 import com.datacvg.dimp.greendao.bean.ContactBean;
 
 import org.greenrobot.greendao.annotation.Keep;
@@ -12,10 +13,10 @@ import org.greenrobot.greendao.annotation.Keep;
  */
 @Keep
 public class Contact {
-    private ContactBean bean ;
+    private ContactOrDepartmentBean bean ;
     private String name ;
 
-    public Contact(ContactBean contactBean, String name, boolean checked) {
+    public Contact(ContactOrDepartmentBean contactBean, String name, boolean checked) {
         this.bean = contactBean;
         this.name = name;
         this.isChecked = checked ;
@@ -43,21 +44,21 @@ public class Contact {
         this.mType = mType;
     }
 
-    public Contact(ContactBean bean, int type) {
+    public Contact(ContactOrDepartmentBean bean, int type) {
         this.bean = bean ;
         mType = type;
     }
 
-    public Contact(ContactBean bean, String name) {
+    public Contact(ContactOrDepartmentBean bean, String name) {
         this.bean = bean;
         this.name = name;
     }
 
-    public ContactBean getBean() {
+    public ContactOrDepartmentBean getBean() {
         return bean;
     }
 
-    public void setBean(ContactBean bean) {
+    public void setBean(ContactOrDepartmentBean bean) {
         this.bean = bean;
     }
 

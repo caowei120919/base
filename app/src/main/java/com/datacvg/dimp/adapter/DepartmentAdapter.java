@@ -43,6 +43,7 @@ public class DepartmentAdapter extends RecyclerView.Adapter<DepartmentAdapter.Pa
     private List<ContactOrDepartmentForActionBean> removeDepartmentInAtBeans = new ArrayList<>();
     private SparseIntArray addedChildNodeIds = new SparseIntArray();
     private Context mContext ;
+    private List<String> selectDepartments = new ArrayList<>() ;
 
     public DepartmentAdapter(Context mContext, List<ContactOrDepartmentForActionBean> departmentInAtBeans) {
         this.mContext = mContext ;
@@ -129,15 +130,17 @@ public class DepartmentAdapter extends RecyclerView.Adapter<DepartmentAdapter.Pa
                     notifyDataSetChanged();
                 }
             });
-            ((ParentViewHolder) holder).cbDepartment.setOnClickListener(v -> {
-                holder.cbDepartment.setSelected(!holder.cbDepartment.isSelected());
-//                if (holder.cbDepartment.isSelected()){
-//                    EventBus.getDefault().post(new AddDepartmentEvent(node.getContactOrDepartmentBean()));
-//                }else{
-//                    EventBus.getDefault().post(new DeleteDepartmentEvent(node.getBean()));
-//                }
+            holder.cbDepartment.setSelected(!selectDepartments.isEmpty() && selectDepartments.contains(showDepartmentInAtBeans.get(position).id));
+            holder.cbDepartment.setOnClickListener(v -> {
+                if (selectDepartments.isEmpty() || !selectDepartments.contains(showDepartmentInAtBeans.get(position).id)){
+                    selectDepartments.add(showDepartmentInAtBeans.get(position).id);
+                }else{
+                    selectDepartments.remove(showDepartmentInAtBeans.get(position).id);
+                }
+                notifyDataSetChanged();
+                EventBus.getDefault().post(new AddDepartmentEvent(selectDepartments));
             });
-            ((ParentViewHolder) holder).tvDepartmentName.setText(showDepartmentInAtBeans.get(position).getContactOrDepartmentBean().getName());
+            holder.tvDepartmentName.setText(showDepartmentInAtBeans.get(position).getContactOrDepartmentBean().getName());
         }
 
     /**

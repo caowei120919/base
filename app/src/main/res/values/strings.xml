@@ -216,6 +216,7 @@
     <string name="a_reply">展开回复</string>
     <string name="pack_up">收起</string>
     <string name="selected_people">已选择:%s人</string>
+    <string name="selected_department">已选择:%s个部门</string>
     <string name="the_time_parameter">时间参数</string>
     <string name="the_dimension_parameters">维度参数</string>
     <string name="custom_parameter">自定义参数</string>

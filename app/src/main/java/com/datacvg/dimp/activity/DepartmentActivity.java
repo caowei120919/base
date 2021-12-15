@@ -14,11 +14,14 @@ import com.datacvg.dimp.baseandroid.greendao.bean.ContactOrDepartmentBean;
 import com.datacvg.dimp.baseandroid.greendao.controller.DbContactOrDepartmentController;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.bean.ContactOrDepartmentForActionBean;
-import com.datacvg.dimp.bean.DepartmentInAtBean;
-import com.datacvg.dimp.greendao.bean.DepartmentBean;
-import com.datacvg.dimp.greendao.controller.DbDepartmentController;
+import com.datacvg.dimp.event.AddDepartmentEvent;
+import com.datacvg.dimp.event.AddDepartmentToContactEvent;
 import com.datacvg.dimp.presenter.DepartmentPresenter;
 import com.datacvg.dimp.view.DepartmentView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +54,7 @@ public class DepartmentActivity extends BaseActivity<DepartmentView, DepartmentP
     private List<ContactOrDepartmentBean> departmentBeans = new ArrayList<>();
     private List<ContactOrDepartmentForActionBean> departmentInAtBeans = new ArrayList<>();
     private DepartmentAdapter adapter ;
+    private List<String> selectDepartmentIds = new ArrayList<>() ;
 
     @Override
     protected int getLayoutId() {
@@ -97,12 +101,23 @@ public class DepartmentActivity extends BaseActivity<DepartmentView, DepartmentP
     }
 
 
-    @OnClick({R.id.img_left})
+    @OnClick({R.id.img_left,R.id.tv_right})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.img_left :
                     finish();
                 break;
+
+            case R.id.tv_right :
+                EventBus.getDefault().post(new AddDepartmentToContactEvent(selectDepartmentIds));
+                finish();
+                break;
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(AddDepartmentEvent event){
+        selectDepartmentIds.clear();
+        selectDepartmentIds.addAll(event.getSelectDepartmentIds());
     }
 }

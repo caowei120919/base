@@ -17,15 +17,11 @@ import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
-import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.ContactComparator;
-import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.PinYinUtils;
 import com.datacvg.dimp.bean.Contact;
+import com.datacvg.dimp.bean.ContactOrDepartmentForActionBean;
 import com.datacvg.dimp.event.ContactEvent;
-import com.datacvg.dimp.greendao.bean.ContactBean;
-import com.datacvg.dimp.greendao.controller.DbContactController;
-import com.datacvg.dimp.greendao.controller.DbDepartmentController;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -35,7 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -48,19 +43,20 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<ContactBean> beans = new ArrayList<>();
+    private List<ContactOrDepartmentForActionBean> beans = new ArrayList<>();
     private Context mContext ;
     private List<String> mContactList = new ArrayList<>();
     private List<Contact> resultList = new ArrayList<>();
     private List<String> characterList = new ArrayList<>();
     private final int nearCount = 5 ;
+    private List<String> selectUserIds = new ArrayList<>() ;
 
     public enum ITEM_TYPE {
         ITEM_TYPE_CHARACTER,
         ITEM_TYPE_CONTACT
     }
 
-    public ContactAdapter(Context context, List<ContactBean> beans) {
+    public ContactAdapter(Context context, List<ContactOrDepartmentForActionBean> beans) {
         mContext = context;
         this.beans = beans;
         handleContact();
@@ -71,8 +67,8 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         Map<String, Contact> map = new HashMap<>();
 
         for (int i = 0; i < beans.size(); i++) {
-            String pinyin = PinYinUtils.getPingYin(beans.get(i).getName());
-            Contact contact = new Contact(beans.get(i),beans.get(i).getName(),beans.get(i).getChecked());
+            String pinyin = PinYinUtils.getPingYin(beans.get(i).getContactOrDepartmentBean().getName());
+            Contact contact = new Contact(beans.get(i).getContactOrDepartmentBean(),beans.get(i).getContactOrDepartmentBean().getName(),beans.get(i).isChecked());
             map.put(pinyin, contact);
             mContactList.add(pinyin);
         }
@@ -85,13 +81,13 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 , ITEM_TYPE.ITEM_TYPE_CHARACTER.ordinal()));
         if(beans.size() > nearCount){
             for (int i = 0 ; i < nearCount ; i++){
-                Contact contact = new Contact(beans.get(i),beans.get(i).getName(),beans.get(i).getChecked());
+                Contact contact = new Contact(beans.get(i).getContactOrDepartmentBean(),beans.get(i).getContactOrDepartmentBean().getName(),beans.get(i).isChecked());
                 contact.setmType(ITEM_TYPE.ITEM_TYPE_CONTACT.ordinal());
                 resultList.add(contact);
             }
         }else{
             for (int i = 0 ; i < beans.size() ; i++){
-                Contact contact = new Contact(beans.get(i),beans.get(i).getName(),beans.get(i).getChecked());
+                Contact contact = new Contact(beans.get(i).getContactOrDepartmentBean(),beans.get(i).getContactOrDepartmentBean().getName(),beans.get(i).isChecked());
                 contact.setmType(ITEM_TYPE.ITEM_TYPE_CONTACT.ordinal());
                 resultList.add(contact);
             }
@@ -142,13 +138,15 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(((ContactViewHolder) holder).imgAvatar);
             ((ContactViewHolder) holder).mTextView.setText(resultList.get(position).getName());
-            ((ContactViewHolder) holder).tvContact.setSelected(resultList.get(position).getBean().getChecked());
+            ((ContactViewHolder) holder).tvContact.setSelected(!selectUserIds.isEmpty() && selectUserIds.contains(resultList.get(position).getBean().getId().toString()));
             ((ContactViewHolder) holder).tvContact.setOnClickListener(view ->  {
-                    ((ContactViewHolder) holder).tvContact.setSelected(!((ContactViewHolder) holder).tvContact.isSelected());
-                    ContactBean contactBean = resultList.get(position).getBean();
-                    contactBean.setChecked(!contactBean.getChecked());
-                    notifyDataSetChanged();
-                    EventBus.getDefault().post(new ContactEvent(contactBean));
+                if(selectUserIds.isEmpty() || !selectUserIds.contains(resultList.get(position).getBean().getId())){
+                    selectUserIds.add(resultList.get(position).getBean().getId().toString());
+                }else{
+                    selectUserIds.remove(resultList.get(position).getBean().getId().toString());
+                }
+                EventBus.getDefault().post(new ContactEvent(selectUserIds));
+                notifyDataSetChanged();
             });
         }
     }

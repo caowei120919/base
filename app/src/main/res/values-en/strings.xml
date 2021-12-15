@@ -224,6 +224,7 @@
     <string name="a_reply">A reply</string>
     <string name="pack_up">Pack up</string>
     <string name="selected_people">Selected: %s people</string>
+    <string name="selected_department">Selected: %s department</string>
     <string name="the_time_parameter">The time parameter</string>
     <string name="the_dimension_parameters">The dimension parameters</string>
     <string name="custom_parameter">Custom parameter</string>

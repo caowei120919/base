@@ -4,6 +4,8 @@ import androidx.annotation.Keep;
 
 import com.datacvg.dimp.greendao.bean.ContactBean;
 
+import java.util.List;
+
 /**
  * @Author : T-Bag (茶包)
  * @Time : 2021-07-08
@@ -11,17 +13,17 @@ import com.datacvg.dimp.greendao.bean.ContactBean;
  */
 @Keep
 public class ContactEvent {
-    private ContactBean contactBean ;
+    private List<String> selectIds ;
 
-    public ContactEvent(ContactBean contactBean) {
-        this.contactBean = contactBean ;
+    public ContactEvent(List<String> selectIds) {
+        this.selectIds = selectIds;
     }
 
-    public ContactBean getContactBean() {
-        return contactBean;
+    public List<String> getSelectIds() {
+        return selectIds;
     }
 
-    public void setContactBean(ContactBean contactBean) {
-        this.contactBean = contactBean;
+    public void setSelectIds(List<String> selectIds) {
+        this.selectIds = selectIds;
     }
 }

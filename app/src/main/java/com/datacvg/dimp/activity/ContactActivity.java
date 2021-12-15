@@ -8,18 +8,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.ContactAdapter;
-import com.datacvg.dimp.baseandroid.utils.PLog;
+import com.datacvg.dimp.baseandroid.greendao.bean.ContactOrDepartmentBean;
+import com.datacvg.dimp.baseandroid.greendao.controller.DbContactOrDepartmentController;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
-import com.datacvg.dimp.event.SelectChooseContactEvent;
+import com.datacvg.dimp.bean.ContactOrDepartmentForActionBean;
+import com.datacvg.dimp.event.AddDepartmentToContactEvent;
 import com.datacvg.dimp.event.ContactEvent;
-import com.datacvg.dimp.greendao.bean.ContactBean;
-import com.datacvg.dimp.greendao.bean.DepartmentBean;
-import com.datacvg.dimp.greendao.controller.DbContactController;
 import com.datacvg.dimp.presenter.ContactPresenter;
 import com.datacvg.dimp.view.ContactView;
-import com.datacvg.dimp.widget.LetterView;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
@@ -45,12 +42,15 @@ public class ContactActivity extends BaseActivity<ContactView, ContactPresenter>
     @BindView(R.id.tv_selectNum)
     TextView tvSelectNum ;
 
-    private List<DepartmentBean> departmentBeans = new ArrayList<>();
     private LinearLayoutManager layoutManager;
-    private LetterView letterView;
     private ContactAdapter adapter;
-    private List<ContactBean> contactBeans = new ArrayList<>();
-    private List<ContactBean> selectContactBeans = new ArrayList<>();
+    private List<ContactOrDepartmentForActionBean> contactBeans = new ArrayList<>() ;
+    private List<ContactOrDepartmentForActionBean> selectContactBeans = new ArrayList<>();
+    /**
+     * 已选择联系人,已选择部门
+     */
+    private List<String> selectUserIds = new ArrayList<>() ;
+    private List<String> selectDepartmentIds = new ArrayList<>() ;
 
     @Override
     protected int getLayoutId() {
@@ -74,14 +74,16 @@ public class ContactActivity extends BaseActivity<ContactView, ContactPresenter>
     protected void setupData(Bundle savedInstanceState) {
         tvTitle.setText(resources.getString(R.string.the_contact));
 
-        contactBeans = DbContactController.getInstance(mContext).queryContactList();
+        List<ContactOrDepartmentBean> beans
+                = DbContactOrDepartmentController.getInstance(mContext).queryContactList();
+        for (ContactOrDepartmentBean contactOrDepartmentBean : beans){
+            ContactOrDepartmentForActionBean contactOrDepartmentForActionBean
+                    = new ContactOrDepartmentForActionBean(contactOrDepartmentBean.getResId(),contactOrDepartmentBean.getParentId(),contactOrDepartmentBean.getLevel(),contactOrDepartmentBean.getIsExpend(),contactOrDepartmentBean);
+            contactBeans.add(contactOrDepartmentForActionBean);
+        }
         if(contactBeans.isEmpty()){
             finish();
             return;
-        }
-        for (ContactBean contactBean : contactBeans){
-            contactBean.setChecked(false);
-            DbContactController.getInstance(mContext).updateContact(contactBean);
         }
         layoutManager = new LinearLayoutManager(this);
         adapter = new ContactAdapter(this, contactBeans);
@@ -101,7 +103,7 @@ public class ContactActivity extends BaseActivity<ContactView, ContactPresenter>
                 break;
 
             case R.id.tv_confirm :
-                EventBus.getDefault().post(new SelectChooseContactEvent(selectContactBeans));
+//                EventBus.getDefault().post(new SelectChooseContactEvent(selectContactBeans));
                 finish();
                 break;
         }
@@ -109,13 +111,21 @@ public class ContactActivity extends BaseActivity<ContactView, ContactPresenter>
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ContactEvent event){
-        PLog.e(event.getContactBean().hashCode() + "");
-        if(event.getContactBean().getChecked()){
-            selectContactBeans.add(event.getContactBean());
-        }else{
-            selectContactBeans.remove(event.getContactBean());
-        }
+        selectUserIds.clear();
+        selectUserIds.addAll(event.getSelectIds());
         tvSelectNum.setText(String.format(resources.getString(R.string.selected_people)
-                ,selectContactBeans.size()+""));
+                ,selectUserIds.size()+""));
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(AddDepartmentToContactEvent event){
+        selectDepartmentIds.clear();
+        selectDepartmentIds.addAll(event.getSelectDepartmentIds());
+        if (selectDepartmentIds.isEmpty()){
+            tvChooseDepartment.setText("");
+        }else{
+            tvChooseDepartment.setText(String.format(resources.getString(R.string.selected_department)
+                    ,selectDepartmentIds.size()+""));
+        }
     }
 }

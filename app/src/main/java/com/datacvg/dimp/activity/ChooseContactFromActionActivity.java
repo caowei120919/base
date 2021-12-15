@@ -89,7 +89,6 @@ public class ChooseContactFromActionActivity extends BaseActivity<ChooseContactF
                     showBeans.clear();
                     searchUserForList();
                     adapter.setDepartments(showBeans);
-                    editUserName.setCursorVisible(false);
                     return true;
                 }
                 return false;
@@ -108,7 +107,7 @@ public class ChooseContactFromActionActivity extends BaseActivity<ChooseContactF
             for (ContactOrDepartmentForActionBean bean : departmentInAtBeans){
                 if(bean.getContactOrDepartmentBean().getName().contains(editUserName.getText().toString())){
                     if(isHeadChoose){
-                        bean.setUnableChoose(assistIds.contains(bean.getId()));
+                        bean.setUnableChoose((assistIds == null || assistIds.isEmpty()) ? false : assistIds.contains(bean.getId()));
                     }else{
                         bean.setUnableChoose(TextUtils.isEmpty(headContactId) ? false : bean.getId().equals(headContactId));
                     }
@@ -127,11 +126,13 @@ public class ChooseContactFromActionActivity extends BaseActivity<ChooseContactF
                 ContactOrDepartmentForActionBean contactOrDepartmentForActionBean = new ContactOrDepartmentForActionBean(contactOrDepartmentBean.getResId()
                         ,contactOrDepartmentBean.getParentId(),contactOrDepartmentBean.getLevel(),contactOrDepartmentBean.getIsExpend(),contactOrDepartmentBean);
                 if(isHeadChoose){
-                    contactOrDepartmentForActionBean.setChecked(TextUtils.isEmpty(headContactId) ? false : headContactId.equals(contactOrDepartmentBean.getId()));
+                    contactOrDepartmentForActionBean.setChecked(TextUtils.isEmpty(headContactId) ? false : headContactId.equals(contactOrDepartmentForActionBean.getId()));
                     contactOrDepartmentForActionBean.setUnableChoose((assistIds == null || assistIds.isEmpty())  ? false : assistIds.contains(contactOrDepartmentForActionBean.getId()));
                 }else{
                     contactOrDepartmentForActionBean.setChecked((assistIds == null || assistIds.isEmpty())  ? false : assistIds.contains(contactOrDepartmentForActionBean.getId()));
                     contactOrDepartmentForActionBean.setUnableChoose(TextUtils.isEmpty(headContactId) ? false : contactOrDepartmentForActionBean.getId().equals(headContactId));
+                    if(contactOrDepartmentForActionBean.isUnableChoose()){
+                    }
                 }
                 departmentInAtBeans.add(contactOrDepartmentForActionBean);
             }

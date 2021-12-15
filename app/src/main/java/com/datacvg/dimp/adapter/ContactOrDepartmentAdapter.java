@@ -145,6 +145,9 @@ public class ContactOrDepartmentAdapter extends RecyclerView.Adapter<ContactOrDe
                 holder.cbDepartment.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources()
                         ,R.mipmap.cx_unable_select));
             }else{
+                holder.cbDepartment.setImageBitmap(showDepartmentInAtBeans.get(position).isChecked() ? BitmapFactory.decodeResource(mContext.getResources()
+                        ,R.mipmap.cx_select) : BitmapFactory.decodeResource(mContext.getResources()
+                        ,R.mipmap.cx_unselect));
                 holder.cbDepartment.setOnClickListener(v -> {
                     if(showDepartmentInAtBeans.get(position).isChecked()){
                         showDepartmentInAtBeans.get(position).setChecked(false);
