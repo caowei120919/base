@@ -89,6 +89,7 @@ public class ChooseContactFromActionActivity extends BaseActivity<ChooseContactF
                     showBeans.clear();
                     searchUserForList();
                     adapter.setDepartments(showBeans);
+                    editUserName.setCursorVisible(false);
                     return true;
                 }
                 return false;
