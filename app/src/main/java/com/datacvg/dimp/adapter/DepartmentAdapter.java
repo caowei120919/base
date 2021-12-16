@@ -50,6 +50,12 @@ public class DepartmentAdapter extends RecyclerView.Adapter<DepartmentAdapter.Pa
         setDepartments(departmentInAtBeans);
     }
 
+
+    public void setSelectDepartments(List<String> selectDepartments) {
+        this.selectDepartments = selectDepartments;
+        notifyDataSetChanged();
+    }
+
     private void setDepartments(List<ContactOrDepartmentForActionBean> departmentInAtBeans) {
         totalDepartmentInAtBeans = departmentInAtBeans ;
         reset();

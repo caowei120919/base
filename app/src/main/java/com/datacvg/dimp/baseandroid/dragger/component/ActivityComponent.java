@@ -33,6 +33,7 @@ import com.datacvg.dimp.activity.ScanActivity;
 import com.datacvg.dimp.activity.ScreenDetailActivity;
 import com.datacvg.dimp.activity.ScreenResultActivity;
 import com.datacvg.dimp.activity.ScreenSettingActivity;
+import com.datacvg.dimp.activity.SearchContactOrDepartmentActivity;
 import com.datacvg.dimp.activity.SearchIndexActivity;
 import com.datacvg.dimp.activity.SearchReportActivity;
 import com.datacvg.dimp.activity.SelectDimensionActivity;
@@ -147,4 +148,6 @@ public interface ActivityComponent {
     void inject(InComeDetailActivity inComeDetailActivity);
 
     void inject(ChooseContactFromActionActivity chooseContactFromActionActivity);
+
+    void inject(SearchContactOrDepartmentActivity searchContactOrDepartmentActivity);
 }

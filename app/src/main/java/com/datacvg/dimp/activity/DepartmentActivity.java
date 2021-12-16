@@ -1,5 +1,6 @@
 package com.datacvg.dimp.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,12 +11,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.DepartmentAdapter;
+import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.greendao.bean.ContactOrDepartmentBean;
 import com.datacvg.dimp.baseandroid.greendao.controller.DbContactOrDepartmentController;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.bean.ContactOrDepartmentForActionBean;
 import com.datacvg.dimp.event.AddDepartmentEvent;
 import com.datacvg.dimp.event.AddDepartmentToContactEvent;
+import com.datacvg.dimp.event.SearchContactOrDepartmentEvent;
 import com.datacvg.dimp.presenter.DepartmentPresenter;
 import com.datacvg.dimp.view.DepartmentView;
 
@@ -54,7 +57,7 @@ public class DepartmentActivity extends BaseActivity<DepartmentView, DepartmentP
     private List<ContactOrDepartmentBean> departmentBeans = new ArrayList<>();
     private List<ContactOrDepartmentForActionBean> departmentInAtBeans = new ArrayList<>();
     private DepartmentAdapter adapter ;
-    private List<String> selectDepartmentIds = new ArrayList<>() ;
+    private ArrayList<String> selectDepartmentIds = new ArrayList<>() ;
 
     @Override
     protected int getLayoutId() {
@@ -101,7 +104,7 @@ public class DepartmentActivity extends BaseActivity<DepartmentView, DepartmentP
     }
 
 
-    @OnClick({R.id.img_left,R.id.tv_right})
+    @OnClick({R.id.img_left,R.id.tv_right,R.id.rel_search})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.img_left :
@@ -112,6 +115,13 @@ public class DepartmentActivity extends BaseActivity<DepartmentView, DepartmentP
                 EventBus.getDefault().post(new AddDepartmentToContactEvent(selectDepartmentIds));
                 finish();
                 break;
+
+            case R.id.rel_search:
+                Intent intent = new Intent(mContext,SearchContactOrDepartmentActivity.class);
+                intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,false);
+                intent.putStringArrayListExtra(Constants.EXTRA_DATA_FOR_SCAN,selectDepartmentIds);
+                startActivity(intent);
+                break;
         }
     }
 
@@ -119,5 +129,16 @@ public class DepartmentActivity extends BaseActivity<DepartmentView, DepartmentP
     public void onEvent(AddDepartmentEvent event){
         selectDepartmentIds.clear();
         selectDepartmentIds.addAll(event.getSelectDepartmentIds());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SearchContactOrDepartmentEvent event){
+        if(!event.isContact()){
+            selectDepartmentIds.clear();
+            if(event.getSelectId() != null && !event.getSelectId().isEmpty()){
+                selectDepartmentIds.addAll(event.getSelectId());
+                adapter.setSelectDepartments(selectDepartmentIds);
+            }
+        }
     }
 }

@@ -231,6 +231,9 @@
         <activity android:name=".activity.InComeDetailActivity"
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SearchContactOrDepartmentActivity"
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

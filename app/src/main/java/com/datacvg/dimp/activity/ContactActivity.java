@@ -8,12 +8,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.ContactAdapter;
+import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.greendao.bean.ContactOrDepartmentBean;
 import com.datacvg.dimp.baseandroid.greendao.controller.DbContactOrDepartmentController;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.bean.ContactOrDepartmentForActionBean;
 import com.datacvg.dimp.event.AddDepartmentToContactEvent;
 import com.datacvg.dimp.event.ContactEvent;
+import com.datacvg.dimp.event.SearchContactOrDepartmentEvent;
 import com.datacvg.dimp.presenter.ContactPresenter;
 import com.datacvg.dimp.view.ContactView;
 
@@ -49,8 +51,8 @@ public class ContactActivity extends BaseActivity<ContactView, ContactPresenter>
     /**
      * 已选择联系人,已选择部门
      */
-    private List<String> selectUserIds = new ArrayList<>() ;
-    private List<String> selectDepartmentIds = new ArrayList<>() ;
+    private ArrayList<String> selectUserIds = new ArrayList<>() ;
+    private ArrayList<String> selectDepartmentIds = new ArrayList<>() ;
 
     @Override
     protected int getLayoutId() {
@@ -91,7 +93,7 @@ public class ContactActivity extends BaseActivity<ContactView, ContactPresenter>
         recycleContacts.setAdapter(adapter);
     }
 
-    @OnClick({R.id.img_left,R.id.rel_chooseDepartment,R.id.tv_confirm})
+    @OnClick({R.id.img_left,R.id.rel_chooseDepartment,R.id.tv_confirm,R.id.rel_search})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.img_left :
@@ -105,6 +107,13 @@ public class ContactActivity extends BaseActivity<ContactView, ContactPresenter>
             case R.id.tv_confirm :
 //                EventBus.getDefault().post(new SelectChooseContactEvent(selectContactBeans));
                 finish();
+                break;
+
+            case R.id.rel_search :
+                Intent intent = new Intent(mContext,SearchContactOrDepartmentActivity.class);
+                intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,true);
+                intent.putStringArrayListExtra(Constants.EXTRA_DATA_FOR_SCAN,selectUserIds);
+                startActivity(intent);
                 break;
         }
     }
@@ -126,6 +135,19 @@ public class ContactActivity extends BaseActivity<ContactView, ContactPresenter>
         }else{
             tvChooseDepartment.setText(String.format(resources.getString(R.string.selected_department)
                     ,selectDepartmentIds.size()+""));
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SearchContactOrDepartmentEvent event){
+        if(event.isContact()){
+            selectUserIds.clear();
+            if(event.getSelectId() != null && !event.getSelectId().isEmpty()){
+                selectUserIds.addAll(event.getSelectId());
+                adapter.setSelectUserIds(selectUserIds);
+            }
+            tvSelectNum.setText(String.format(resources.getString(R.string.selected_people)
+                    ,selectUserIds.size()+""));
         }
     }
 }

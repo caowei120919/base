@@ -12,12 +12,40 @@
         android:id="@+id/include"
         layout="@layout/actionbar_title" />
 
-    <include
+    <RelativeLayout
+        android:id="@+id/rel_search"
         android:layout_width="match_parent"
         android:layout_height="@dimen/H83"
         android:layout_marginLeft="@dimen/W24"
         android:layout_marginRight="@dimen/W24"
-        layout="@layout/view_search"/>
+        android:background="@drawable/shape_search">
+
+        <ImageView
+            android:id="@+id/edit_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/H72"
+            android:padding="@dimen/H16"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/edit_delete"
+            android:layout_alignParentRight="true">
+        </ImageView>
+
+        <TextView
+            android:id="@+id/ed_search"
+            android:paddingLeft="@dimen/W35"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/search"
+            android:gravity="center_vertical"
+            android:layout_toLeftOf="@id/edit_delete"
+            android:textSize="12sp"
+            android:singleLine="true"
+            android:background="@null"
+            android:textColorHint="@color/c_b5b5b5"
+            android:drawableLeft="@mipmap/icon_search"
+            android:drawablePadding="@dimen/W32">
+        </TextView>
+    </RelativeLayout>
 
     <TextView
         android:layout_width="match_parent"

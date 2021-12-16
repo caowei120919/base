@@ -62,6 +62,11 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         handleContact();
     }
 
+    public void setSelectUserIds(List<String> selectUserIds){
+        this.selectUserIds = selectUserIds;
+        notifyDataSetChanged();
+    }
+
     private void handleContact() {
         mContactList = new ArrayList<>();
         Map<String, Contact> map = new HashMap<>();
@@ -138,12 +143,12 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(((ContactViewHolder) holder).imgAvatar);
             ((ContactViewHolder) holder).mTextView.setText(resultList.get(position).getName());
-            ((ContactViewHolder) holder).tvContact.setSelected(!selectUserIds.isEmpty() && selectUserIds.contains(resultList.get(position).getBean().getId().toString()));
+            ((ContactViewHolder) holder).tvContact.setSelected(!selectUserIds.isEmpty() && selectUserIds.contains(resultList.get(position).getBean().getResId()));
             ((ContactViewHolder) holder).tvContact.setOnClickListener(view ->  {
-                if(selectUserIds.isEmpty() || !selectUserIds.contains(resultList.get(position).getBean().getId())){
-                    selectUserIds.add(resultList.get(position).getBean().getId().toString());
+                if(selectUserIds.isEmpty() || !selectUserIds.contains(resultList.get(position).getBean().getResId())){
+                    selectUserIds.add(resultList.get(position).getBean().getResId());
                 }else{
-                    selectUserIds.remove(resultList.get(position).getBean().getId().toString());
+                    selectUserIds.remove(resultList.get(position).getBean().getResId());
                 }
                 EventBus.getDefault().post(new ContactEvent(selectUserIds));
                 notifyDataSetChanged();
