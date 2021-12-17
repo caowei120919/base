@@ -3,6 +3,7 @@ package com.datacvg.dimp.activity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,13 +24,18 @@ import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.baseandroid.utils.TimeUtils;
+import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.ActionPlanBean;
 import com.datacvg.dimp.bean.CreateTaskBean;
 import com.datacvg.dimp.bean.TaskInfoBean;
+import com.datacvg.dimp.event.CreateTaskEvent;
 import com.datacvg.dimp.presenter.TaskDetailPresenter;
 import com.datacvg.dimp.view.TaskDetailView;
 import com.datacvg.dimp.widget.FlowLayout;
 import com.enlogy.statusview.StatusRelativeLayout;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -92,6 +98,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
     private TaskInfoBean taskInfoBean ;
     private CreateTaskBean createTaskBean ;
     private boolean isEditStatus = false ;
+    private String delayData = "";
     /**
      * 时间选择器
      */
@@ -306,6 +313,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                     .replace("#1",resdata.getBaseInfo().getCreate_time()));
             tvEndTime.setText(resources.getString(R.string.expiration_date)
                     .replace("#1",resdata.getBaseInfo().getTask_deadline()));
+
             edTaskDetails.setText(resdata.getBaseInfo().getTask_text());
             statusTask.showContent();
         }
@@ -357,6 +365,16 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 flowIndex.addView(view);
             }
         }
+    }
+
+    /**
+     * 操作成功说明
+     */
+    @Override
+    public void operateTaskSuccess() {
+        ToastUtils.showLongToast(resources.getString(R.string.operation_is_successful));
+        EventBus.getDefault().post(new CreateTaskEvent());
+        finish();
     }
 
     /**
@@ -455,8 +473,9 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                     imgAddAssistant.setVisibility(View.VISIBLE);
                     statusTask.showExtendContent();
                     setStatusClick();
+                    delayData = taskInfoBean.getBaseInfo().getTask_deadline() ;
                     tvDate.setText(resources.getString(R.string.expiration_date)
-                            .replace("#1",taskInfoBean.getBaseInfo().getTask_deadline()));
+                            .replace("#1",delayData));
                     tvActionTypeCommon.setSelected(taskInfoBean.getBaseInfo().getTask_type().equals("N"));
                     tvActionTypeSpecial.setSelected(taskInfoBean.getBaseInfo().getTask_type().equals("S"));
                     tvPriorityHigh.setSelected(taskInfoBean.getBaseInfo().getTask_priority() == 1);
@@ -471,7 +490,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 break;
 
             case "do_cancel" :
-
+                showCancelDialog(id);
                 break;
 
             case "do_commit" :
@@ -483,7 +502,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 break;
 
             case "do_delay" :
-
+                showDelayDialog();
                 break;
 
             /**
@@ -493,6 +512,51 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 showConfirmDialog();
                 break;
         }
+    }
+
+    /**
+     * 撤销
+     * @param id
+     */
+    private void showCancelDialog(String id) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+        View containView = LayoutInflater.from(mContext).inflate(R.layout.item_task_cancel_confirm
+                ,null,false);
+        EditText editDescribe = containView.findViewById(R.id.edit_describe) ;
+        dialog.setView(containView);
+        AlertDialog alertDialog = dialog.create();
+        alertDialog.show();
+        containView.findViewById(R.id.tv_cancel).setOnClickListener(v -> {
+            alertDialog.dismiss();
+        });
+        containView.findViewById(R.id.tv_confirm).setOnClickListener(v -> {
+            if(TextUtils.isEmpty(editDescribe.getText().toString())){
+                ToastUtils.showLongToast(resources.getString(R.string.please_fill_in_the_instructions));
+            }else{
+                getPresenter().operateTask(id,actionPlanBean.getId(),editDescribe.getText().toString(),"0");
+            }
+        });
+    }
+
+    /**
+     * 申请延期
+     */
+    private void showDelayDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+        View containView = LayoutInflater.from(mContext).inflate(R.layout.item_task_delay_confirm
+                ,null,false);
+        TextView tvDelayTime = containView.findViewById(R.id.tv_delayTime) ;
+        tvDelayTime.setText(delayData);
+        EditText editDescribe = containView.findViewById(R.id.edit_describe) ;
+        dialog.setView(containView);
+        AlertDialog alertDialog = dialog.create();
+        alertDialog.show();
+        containView.findViewById(R.id.tv_cancel).setOnClickListener(v -> {
+            alertDialog.dismiss();
+        });
+        containView.findViewById(R.id.tv_confirm).setOnClickListener(v -> {
+            PLog.e("确定");
+        });
     }
 
     private void drawEditView() {

@@ -14,4 +14,9 @@ public interface TaskDetailView extends MvpView {
      * @param resdata
      */
     void getTaskInfoSuccess(TaskInfoBean resdata);
+
+    /**
+     * 操作成功说明
+     */
+    void operateTaskSuccess();
 }

@@ -566,4 +566,12 @@ public interface MobileApi {
     @GET("api/dataengine/dataexporler/model/recycle")
     Observable<BaseBean> clearReportOnTrash(@Query("type") String type,
                                             @Query("_t") String s);
+
+    @GET("api/ddb/actionplan/behavior/operate")
+    Observable<BaseBean> operateTask(@Query("key") String key,
+                                     @Query("taskId") String taskId,
+                                     @Query("text") String text,
+                                     @Query("time") String time,
+                                     @Query("confirm") String confirm,
+                                     @Query("t") String _t);
 }

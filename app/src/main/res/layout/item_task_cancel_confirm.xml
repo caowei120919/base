@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_marginLeft="@dimen/W100"
+    android:layout_marginRight="@dimen/W100"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_index"
+    android:layout_gravity="center">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/repeal"
+        android:textColor="@color/c_000000"
+        android:textSize="18sp"
+        android:layout_marginLeft="@dimen/W25"
+        android:layout_marginTop="@dimen/H40">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_describe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/description_required"
+        android:textColor="@color/c_303030"
+        android:textSize="16sp"
+        android:layout_alignLeft="@id/tv_title"
+        android:layout_below="@id/tv_title"
+        android:layout_marginTop="@dimen/H40">
+    </TextView>
+
+    <EditText
+        android:id="@+id/edit_describe"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/H100"
+        android:layout_below="@id/tv_describe"
+        android:layout_marginTop="@dimen/H20"
+        android:layout_marginLeft="@dimen/W25"
+        android:layout_marginRight="@dimen/W25"
+        android:background="@drawable/shape_ffffff_303030">
+    </EditText>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edit_describe"
+        android:layout_marginTop="@dimen/H20"
+        android:layout_marginBottom="@dimen/H20"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:paddingLeft="@dimen/W25"
+            android:paddingRight="@dimen/W25"
+            android:paddingTop="@dimen/H10"
+            android:paddingBottom="@dimen/H10">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/confirm"
+            android:paddingLeft="@dimen/W25"
+            android:paddingRight="@dimen/W25"
+            android:paddingTop="@dimen/H10"
+            android:paddingBottom="@dimen/H10">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2">
+        </TextView>
+    </LinearLayout>
+</RelativeLayout>

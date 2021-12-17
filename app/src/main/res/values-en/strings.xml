@@ -304,4 +304,9 @@
     <string name="confirm_deletion">Confirm deletion ?</string>
     <string name="the_size_must_be_a_value_greater_than_zero">The size must be a value greater than 0</string>
     <string name="are_you_sure_to_clear_all_data">Are you sure to clear all data?</string>
+    <string name="apply_for_an_extension">Apply for an extension</string>
+    <string name="postponed_to">Postponed to</string>
+    <string name="repeal">repeal</string>
+    <string name="please_fill_in_the_instructions">Please fill in the instructions</string>
+    <string name="operation_is_successful">Operation is successful</string>
 </resources>

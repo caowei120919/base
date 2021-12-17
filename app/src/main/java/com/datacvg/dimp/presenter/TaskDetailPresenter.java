@@ -54,4 +54,28 @@ public class TaskDetailPresenter extends BasePresenter<TaskDetailView>{
                     }
                 });
     }
+
+
+    public void operateTask(String key, String taskId, String text, String confirm) {
+        api.operateTask(key,taskId,text,"",confirm,System.currentTimeMillis()+"")
+                .compose(RxUtils.applySchedulersLifeCycle(getView()))
+                .subscribe(new RxObserver<BaseBean>(){
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                    }
+
+                    @Override
+                    public void onNext(BaseBean bean) {
+                        if(checkJsonCode(bean)){
+                            getView().operateTaskSuccess();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+                });
+    }
 }
