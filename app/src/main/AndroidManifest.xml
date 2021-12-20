@@ -183,6 +183,9 @@
         <activity android:name=".activity.ChooseContactFromActionActivity"
             android:theme="@style/ActivityDialogStyle"
             android:screenOrientation="portrait"/>
+        <activity android:name=".activity.ChooseIndexFromActionActivity"
+            android:theme="@style/ActivityDialogStyle"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activity.AddIndexPageActivity"
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait"/>

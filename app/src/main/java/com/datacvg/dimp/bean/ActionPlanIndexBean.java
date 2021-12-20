@@ -29,12 +29,11 @@ public class ActionPlanIndexBean implements Serializable {
     private String rootid;
     private String name;
     private boolean checked;
-    private Integer level = 0 ;
+    private Integer level = -1 ;
     private Boolean isSpread = false ;
     private String pid;
     private String id;
     private String index_id;
-    private List<ActionPlanIndexBean> childBeans = new ArrayList<>() ;
 
     public Boolean getSpread() {
         return isSpread;
@@ -50,14 +49,6 @@ public class ActionPlanIndexBean implements Serializable {
 
     public void setLevel(Integer level) {
         this.level = level;
-    }
-
-    public List<ActionPlanIndexBean> getChildBeans() {
-        return childBeans;
-    }
-
-    public void setChildBeans(List<ActionPlanIndexBean> childBeans) {
-        this.childBeans = childBeans;
     }
 
     public String getRelation_i_id() {

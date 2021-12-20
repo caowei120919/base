@@ -11,11 +11,6 @@ import com.datacvg.dimp.bean.IndexBean;
  * @Description :
  */
 public interface NewTaskView extends MvpView {
-    /**
-     * 获取指标成功
-     * @param resdata
-     */
-    void getIndexSuccess(ActionPlanIndexListBean resdata);
 
     /**
      * 心动方案创建成功

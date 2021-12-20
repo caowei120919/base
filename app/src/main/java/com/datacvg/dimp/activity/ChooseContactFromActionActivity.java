@@ -1,7 +1,6 @@
 package com.datacvg.dimp.activity;
 
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;

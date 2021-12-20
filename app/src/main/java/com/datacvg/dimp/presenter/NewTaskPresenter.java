@@ -31,33 +31,6 @@ public class NewTaskPresenter extends BasePresenter<NewTaskView> {
 
 
     /**
-     * 获取行动方案指标数据
-     */
-    public void getActionPlanIndex() {
-        api.getActionPlanIndex()
-                .compose(RxUtils.applySchedulersLifeCycle(getView()))
-                .subscribe(new RxObserver<BaseBean<ActionPlanIndexListBean>>(){
-                    @Override
-                    public void onComplete() {
-                        super.onComplete();
-                    }
-
-                    @Override
-                    public void onNext(BaseBean<ActionPlanIndexListBean> bean) {
-                        if(checkJsonCode(bean)){
-                            getView().getIndexSuccess(bean.getResdata());
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        PLog.e("TAG",e.getMessage());
-                    }
-                });
-    }
-
-    /**
      * 创建任务
      * @param actionPlanInfoDTO
      */

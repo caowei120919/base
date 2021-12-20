@@ -8,6 +8,7 @@ import com.datacvg.dimp.activity.AddIndexPageActivity;
 import com.datacvg.dimp.activity.AddReportToScreenActivity;
 import com.datacvg.dimp.activity.ChartDetailActivity;
 import com.datacvg.dimp.activity.ChooseContactFromActionActivity;
+import com.datacvg.dimp.activity.ChooseIndexFromActionActivity;
 import com.datacvg.dimp.activity.ConfirmInfoActivity;
 import com.datacvg.dimp.activity.ContactActivity;
 import com.datacvg.dimp.activity.DepartmentActivity;
@@ -150,4 +151,7 @@ public interface ActivityComponent {
     void inject(ChooseContactFromActionActivity chooseContactFromActionActivity);
 
     void inject(SearchContactOrDepartmentActivity searchContactOrDepartmentActivity);
+
+    void inject(ChooseIndexFromActionActivity chooseIndexFromActionActivity);
+
 }

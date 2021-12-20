@@ -43,6 +43,8 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:textSize="14sp"
+        android:singleLine="true"
+        android:ellipsize="end"
         android:textColor="@color/c_666666"
         android:layout_toRightOf="@id/img_department"
         android:layout_marginLeft="@dimen/W24">

@@ -34,6 +34,7 @@ import com.datacvg.dimp.bean.Contact;
 import com.datacvg.dimp.bean.CreateTaskIndex;
 import com.datacvg.dimp.bean.IndexTreeBean;
 import com.datacvg.dimp.bean.IndexTreeNeedBean;
+import com.datacvg.dimp.event.AddOrRemoveIndexForTaskEvent;
 import com.datacvg.dimp.event.ChooseUserForActionEvent;
 import com.datacvg.dimp.event.CreateTaskEvent;
 import com.datacvg.dimp.event.HeadOrAssistantEvent;
@@ -116,6 +117,7 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
      * 负责人
      */
     private ContactOrDepartmentForActionBean headContact ;
+    private ArrayList<String> selectIndexIds = new ArrayList<>() ;
 
     /**
      * 协助人
@@ -177,7 +179,6 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
         actionPlanInfoDTO = new CreateTaskBean.ActionPlanInfoDTO();
         actionPlanInfoDTO.setTask_priority("1");
         initCustomPickView();
-        getPresenter().getActionPlanIndex();
     }
 
     /**
@@ -395,36 +396,12 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
      * 选择指标
      */
     private void chooseIndex() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.item_index_selected,null,false);
-        EditText editIndexName = view.findViewById(R.id.edit_indexName) ;
-        RecyclerView recyclerIndex = view.findViewById(R.id.recycler_index) ;
-        LinearLayoutManager manager = new LinearLayoutManager(mContext) ;
-        TaskIndexAdapter adapter = new TaskIndexAdapter(mContext,actionPlanIndexBeans);
-        recyclerIndex.setLayoutManager(manager);
-        recyclerIndex.setAdapter(adapter);
-        editIndexName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (TextUtils.isEmpty(s.toString().trim())){
-
-                }
-            }
-        });
-        builder.setView(view);
-        builder.create();
-        builder.show();
+        ArrayList<String> assistIds = new ArrayList<>() ;
+        Intent intent = new Intent(mContext,ChooseIndexFromActionActivity.class) ;
+        if(!selectIndexIds.isEmpty()){
+            intent.putStringArrayListExtra(Constants.EXTRA_DATA_FOR_BEAN, selectIndexIds);
+        }
+        mContext.startActivity(intent);
     }
 
     /**
@@ -444,58 +421,6 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
             intent.putStringArrayListExtra(Constants.EXTRA_DATA_FOR_BEAN, assistIds);
         }
         mContext.startActivity(intent);
-    }
-
-    @Override
-    public void getIndexSuccess(ActionPlanIndexListBean resdata) {
-        actionPlanIndexBeans.addAll(resdata);
-        resetIndexList();
-    }
-
-    /**
-     * 重组指标信息组织成指标树
-     */
-    private void resetIndexList() {
-        List<ActionPlanIndexBean> results = new ArrayList<>() ;
-        for (ActionPlanIndexBean actionPlanIndexBean : actionPlanIndexBeans){
-            if(actionPlanIndexBean.getPid().equals("0")){
-                actionPlanIndexBean.setLevel(0);
-                results.add(actionPlanIndexBean);
-            }
-        }
-
-        actionPlanIndexBeans.removeAll(results);
-        searchChild(results);
-        actionPlanIndexBeans.clear();
-        actionPlanIndexBeans.addAll(results);
-    }
-
-    private void searchChild(List<ActionPlanIndexBean> results) {
-        List<ActionPlanIndexBean> childBeans = new ArrayList<>() ;
-        for (ActionPlanIndexBean actionPlanIndexBean : results){
-            String id = actionPlanIndexBean.getId() ;
-            childBeans.clear();
-            for (ActionPlanIndexBean child : actionPlanIndexBeans){
-                if(child.getPid().equals(id)){
-                    child.setLevel(actionPlanIndexBean.getLevel() + 1);
-                    childBeans.add(child);
-                }
-            }
-            actionPlanIndexBeans.removeAll(childBeans);
-            actionPlanIndexBean.getChildBeans().addAll(childBeans);
-        }
-
-        if(actionPlanIndexBeans.isEmpty()){
-            return;
-        }else{
-            for (ActionPlanIndexBean actionPlanIndexBean : results){
-                if(actionPlanIndexBean.getChildBeans().isEmpty()){
-                    continue;
-                }else{
-                    searchChild(actionPlanIndexBean.getChildBeans());
-                }
-            }
-        }
     }
 
     @Override
@@ -525,7 +450,8 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
      * @param bean
      */
     private void buildIndexFlow(ActionPlanIndexBean bean) {
-       if(bean.isChecked()){
+        String indexId = bean.getId() ;
+       if((selectIndexIds == null || selectIndexIds.isEmpty()) || !selectIndexIds.contains(indexId)){
            View view = LayoutInflater.from(mContext).inflate(R.layout.item_selected_user,null);
            TextView tv_group = view.findViewById(R.id.tv_user);
            ImageView img_delete = view.findViewById(R.id.img_delete);
@@ -533,11 +459,14 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
            img_delete.setOnClickListener(v -> {
                flowIndex.removeView(view);
                taskIndexBeans.remove(bean);
+               selectIndexIds.remove(indexId);
            });
            tv_group.setText(bean.getName());
            view.setTag(bean.getIndex_id());
+           selectIndexIds.add(indexId);
            flowIndex.addView(view);
        }else{
+           selectIndexIds.remove(indexId);
            for (int i = 0 ; i < flowIndex.getChildCount() ; i++){
                View view = flowIndex.getChildAt(i);
                if(view.getTag().equals(bean.getIndex_id())){
@@ -618,6 +547,11 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
         }else{
             buildAssistantFlow(event.getContactOrDepartmentForActionBean());
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(AddOrRemoveIndexForTaskEvent event){
+        buildIndexFlow(event.getActionPlanIndexBean());
     }
 
     /**
