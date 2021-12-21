@@ -173,7 +173,7 @@ public class ReportDetailActivity extends BaseActivity<ReportDetailView, ReportD
                 .setMainFrameErrorView(R.layout.agentweb_error_page, -1)
                 .setSecurityType(AgentWeb.SecurityType.STRICT_CHECK)
                 .setOpenOtherPageWays(DefaultWebClient.OpenOtherPageWays.ASK)
-                .interceptUnkownUrl() //拦截找不到相关页面的Scheme
+                .interceptUnkownUrl()
                 .createAgentWeb()
                 .ready()
                 .go("");
@@ -429,6 +429,8 @@ public class ReportDetailActivity extends BaseActivity<ReportDetailView, ReportD
      * 加载网页url参数整理
      */
     private void loadWebUrl() {
+//        String url = "file:///android_asset/dataexporler/mobile.html#/"+ serviceUrl + "/" + reportId + "/" + Constants.token  + "?lang=" + LanguageUtils.getLanguage(mContext)
+//                + "&themeName=dap" ;
         String url = "" ;
         if(paramsResultBean == null){
              url = Constants.BASE_MOBILE_URL + "/dataexporler/mobile.html#/" + serviceUrl + "/"  + reportId + "/" +Constants.token + "?lang=" + LanguageUtils.getLanguage(mContext) + (bean.getClassify().equals("screen") ? "&themeName=dark" : "&themeName=dap");

@@ -48,6 +48,7 @@
         android:textColor="@color/c_666666">
 
         <RadioButton
+            android:id="@+id/radio_yes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_whether"
@@ -63,8 +64,8 @@
             android:textColor="@color/c_666666">
         </RadioButton>
 
-        <CheckBox
-            android:id="@+id/cb_deny"
+        <RadioButton
+            android:id="@+id/radio_deny"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_whether"
@@ -78,11 +79,11 @@
             android:text="@string/no_end_task"
             android:textSize="13sp"
             android:textColor="@color/c_666666">
-        </CheckBox>
+        </RadioButton>
 
-        <CheckBox
-            android:layout_toRightOf="@id/cb_deny"
-            android:id="@+id/cb_negate"
+        <RadioButton
+            android:layout_toRightOf="@id/radio_deny"
+            android:id="@+id/radio_negate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_whether"
@@ -96,7 +97,7 @@
             android:text="@string/no_do_not_finish_the_task"
             android:textSize="13sp"
             android:textColor="@color/c_666666">
-        </CheckBox>
+        </RadioButton>
     </RadioGroup>
 
     <TextView

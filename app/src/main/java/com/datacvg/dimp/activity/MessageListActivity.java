@@ -1,5 +1,6 @@
 package com.datacvg.dimp.activity;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -12,11 +13,15 @@ import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.MessageListAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
+import com.datacvg.dimp.bean.ActionPlanBean;
 import com.datacvg.dimp.bean.MessageBean;
 import com.datacvg.dimp.bean.MessageIdBean;
+import com.datacvg.dimp.event.OnMessageReadEvent;
 import com.datacvg.dimp.presenter.MessageListPresenter;
 import com.datacvg.dimp.view.MessageListView;
 import com.google.gson.Gson;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -121,6 +126,7 @@ public class MessageListActivity extends BaseActivity<MessageListView, MessageLi
     @Override
     public void getMessageReadSuccess() {
         adapter.notifyDataSetChanged();
+        EventBus.getDefault().post(new OnMessageReadEvent());
     }
 
     @OnClick({R.id.img_left,R.id.tv_all,R.id.tv_unRead,R.id.tv_received})
@@ -182,7 +188,15 @@ public class MessageListActivity extends BaseActivity<MessageListView, MessageLi
      */
     @Override
     public void toDetailClick(MessageBean.ResultBean bean) {
-
+        if(bean.getModule_id().equals(Constants.MSG_ACTION)){
+            ActionPlanBean actionPlanBean = new ActionPlanBean() ;
+            String[] type = bean.getPrimary_id().split("_");
+            actionPlanBean.setId(type[0]);
+            actionPlanBean.setUser_type(Integer.valueOf(type[1]));
+            Intent intent = new Intent(mContext, TaskDetailActivity.class);
+            intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,actionPlanBean);
+            mContext.startActivity(intent);
+        }
     }
 
     /**

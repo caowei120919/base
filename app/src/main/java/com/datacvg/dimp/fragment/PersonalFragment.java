@@ -43,6 +43,7 @@ import com.datacvg.dimp.bean.UserJobsBean;
 import com.datacvg.dimp.bean.UserJobsListBean;
 import com.datacvg.dimp.event.ChangeUnReadMessageEvent;
 import com.datacvg.dimp.event.LoginOutEvent;
+import com.datacvg.dimp.event.OnMessageReadEvent;
 import com.datacvg.dimp.event.SwitchUserEvent;
 import com.datacvg.dimp.presenter.PersonPresenter;
 import com.datacvg.dimp.view.PersonView;
@@ -52,6 +53,9 @@ import com.lcw.library.imagepicker.ImagePicker;
 import com.mylhyl.superdialog.SuperDialog;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
@@ -425,5 +429,11 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
         }
         getPresenter().judgeJobAvailability(currentPkId
                 ,userJobsBean.getUser_pkid(),userJobsBean.getUser_id());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(OnMessageReadEvent event){
+        unReadMessage = 0 ;
+        getPresenter().getMessage(pageIndex+ "",pageSize + "",module_id,read_flag);
     }
 }

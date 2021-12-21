@@ -96,21 +96,23 @@ public class BoardFragment extends BaseFragment<BoardView, BoardPresenter> imple
             this.pageItemBeans.addAll(pageItemBeans);
             for (PageItemBean pageItemBean : pageItemBeans){
                 String[] dimensionArr = new Gson().fromJson(pageItemBean.getDimensions(),String[].class);
-                switch (dimensionArr.length){
-                    case 1 :
-                        pageItemBean.setmOrgDimension(dimensionArr[0]);
-                        break;
+                if(dimensionArr != null){
+                    switch (dimensionArr.length){
+                        case 1 :
+                            pageItemBean.setmOrgDimension(dimensionArr[0]);
+                            break;
 
-                    case 2 :
-                        pageItemBean.setmOrgDimension(dimensionArr[0]);
-                        pageItemBean.setmFuDimension(dimensionArr[1]);
-                        break;
+                        case 2 :
+                            pageItemBean.setmOrgDimension(dimensionArr[0]);
+                            pageItemBean.setmFuDimension(dimensionArr[1]);
+                            break;
 
-                    case 3 :
-                        pageItemBean.setmOrgDimension(dimensionArr[0]);
-                        pageItemBean.setmFuDimension(dimensionArr[1]);
-                        pageItemBean.setmPDimension(dimensionArr[2]);
-                        break;
+                        case 3 :
+                            pageItemBean.setmOrgDimension(dimensionArr[0]);
+                            pageItemBean.setmFuDimension(dimensionArr[1]);
+                            pageItemBean.setmPDimension(dimensionArr[2]);
+                            break;
+                    }
                 }
                 pageFragments.add(BoardPagerFragment.newInstance(pageItemBean));
             }

@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
@@ -33,9 +35,7 @@ import com.datacvg.dimp.presenter.TaskDetailPresenter;
 import com.datacvg.dimp.view.TaskDetailView;
 import com.datacvg.dimp.widget.FlowLayout;
 import com.enlogy.statusview.StatusRelativeLayout;
-
 import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -177,7 +177,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             finish();
             return;
         }
-        tvTitle.setText(actionPlanBean.getTitle());
+        tvTitle.setText(TextUtils.isEmpty(actionPlanBean.getTitle()) ? "" : actionPlanBean.getTitle());
         edTaskDetails.setEnabled(false);
         createTaskBean = new CreateTaskBean() ;
         getTaskInfo();
@@ -284,6 +284,9 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             return;
         }
         taskInfoBean = resdata ;
+        if(tvTitle.getText().toString().isEmpty()){
+            tvTitle.setText(taskInfoBean.getBaseInfo().getTask_title());
+        }
         tvTheSnapshotComparison.setVisibility((resdata.getPlan() != null
                 && resdata.getPlan().getPlan_flg().equals("T")) ? View.VISIBLE : View.GONE);
         tvActionPlan.setVisibility((resdata.getPlan() != null
@@ -494,24 +497,71 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 break;
 
             case "do_commit" :
-
+                showCommitDialog(id);
                 break;
 
             case "do_delete" :
-
+                showDeleteDialog(id);
                 break;
 
             case "do_delay" :
-                showDelayDialog();
+                showDelayDialog(id);
                 break;
 
             /**
              * 审核
              */
             case "do_confirm" :
-                showConfirmDialog();
+                showConfirmDialog(id);
                 break;
         }
+    }
+
+    /**
+     * 删除
+     * @param id
+     */
+    private void showDeleteDialog(String id) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+        View containView = LayoutInflater.from(mContext).inflate(R.layout.item_task_delete_confirm
+                ,null,false);
+        EditText editDescribe = containView.findViewById(R.id.edit_describe) ;
+        dialog.setView(containView);
+        AlertDialog alertDialog = dialog.create();
+        alertDialog.show();
+        containView.findViewById(R.id.tv_cancel).setOnClickListener(v -> {
+            alertDialog.dismiss();
+        });
+        containView.findViewById(R.id.tv_confirm).setOnClickListener(v -> {
+            if(TextUtils.isEmpty(editDescribe.getText().toString())){
+                ToastUtils.showLongToast(resources.getString(R.string.please_fill_in_the_instructions));
+            }else{
+                getPresenter().operateTask(id,actionPlanBean.getId(),editDescribe.getText().toString(),"0");
+            }
+        });
+    }
+
+    /**
+     * 完成
+     */
+    private void showCommitDialog(String id) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+        View containView = LayoutInflater.from(mContext).inflate(R.layout.item_task_commit_confirm
+                ,null,false);
+        EditText editDescribe = containView.findViewById(R.id.edit_describe) ;
+        dialog.setView(containView);
+        AlertDialog alertDialog = dialog.create();
+        alertDialog.show();
+        containView.findViewById(R.id.tv_cancel).setOnClickListener(v -> {
+            alertDialog.dismiss();
+        });
+        containView.findViewById(R.id.tv_confirm).setOnClickListener(v -> {
+            if(TextUtils.isEmpty(editDescribe.getText().toString())){
+                ToastUtils.showLongToast(resources.getString(R.string.please_fill_in_the_instructions));
+            }else{
+                getPresenter().operateTask(id,actionPlanBean.getId(),editDescribe.getText().toString(),"0");
+            }
+        });
     }
 
     /**
@@ -541,7 +591,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
     /**
      * 申请延期
      */
-    private void showDelayDialog() {
+    private void showDelayDialog(String id) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
         View containView = LayoutInflater.from(mContext).inflate(R.layout.item_task_delay_confirm
                 ,null,false);
@@ -555,7 +605,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             alertDialog.dismiss();
         });
         containView.findViewById(R.id.tv_confirm).setOnClickListener(v -> {
-            PLog.e("确定");
+            getPresenter().operateTask(id,actionPlanBean.getId(),editDescribe.getText().toString(),"0");
         });
     }
 
@@ -594,10 +644,37 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
     /**
      * 审核弹窗
      */
-    private void showConfirmDialog() {
+    private void showConfirmDialog(String id) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
         View containView = LayoutInflater.from(mContext).inflate(R.layout.item_task_detail_confirm
                 ,null,false);
+        RadioGroup radioSelect = containView.findViewById(R.id.radio_select) ;
+        RadioButton radioYes = containView.findViewById(R.id.radio_yes) ;
+        EditText editDescribe = containView.findViewById(R.id.edit_describe) ;
+        radioYes.setSelected(true);
+        RadioButton radioDeny = containView.findViewById(R.id.radio_deny) ;
+        RadioButton radioNegate = containView.findViewById(R.id.radio_negate) ;
+        radioSelect.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.radio_yes :
+                        radioDeny.setSelected(false);
+                        radioNegate.setSelected(false);
+                        break;
+
+                    case R.id.radio_deny :
+                        radioYes.setSelected(false);
+                        radioNegate.setSelected(false);
+                        break;
+
+                    case R.id.radio_negate :
+                        radioYes.setSelected(false);
+                        radioDeny.setSelected(false);
+                        break;
+                }
+            }
+        });
         dialog.setView(containView);
         AlertDialog alertDialog = dialog.create();
         alertDialog.show();
@@ -605,7 +682,19 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             alertDialog.dismiss();
         });
         containView.findViewById(R.id.tv_confirm).setOnClickListener(v -> {
-            PLog.e("确定");
+            switch (radioSelect.getCheckedRadioButtonId()){
+                case R.id.radio_yes :
+                    getPresenter().operateTask(id,actionPlanBean.getId(),editDescribe.getText().toString(),"0");
+                    break;
+
+                case R.id.radio_deny :
+                    getPresenter().operateTask(id,actionPlanBean.getId(),editDescribe.getText().toString(),"1");
+                    break;
+
+                case R.id.radio_negate :
+                    getPresenter().operateTask(id,actionPlanBean.getId(),editDescribe.getText().toString(),"2");
+                    break;
+            }
         });
     }
 

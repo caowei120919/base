@@ -10,9 +10,13 @@ import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.bean.MessageBean;
+import com.datacvg.dimp.event.OnMessageReadEvent;
 import com.datacvg.dimp.presenter.MessageCentrePresenter;
 import com.datacvg.dimp.view.MessageCentreView;
 import com.datacvg.dimp.widget.CircleNumberView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -172,5 +176,14 @@ public class MessageCentreActivity extends BaseActivity<MessageCentreView, Messa
         warningUnReadMessageCount.setNumber(warnUnReadCount + "");
         reportUnReadMessageCount.setNumber(reportUnReadCount + "");
         managementUnReadMessageCount.setNumber(commentUnReadCount + "");
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(OnMessageReadEvent event){
+        actionUnReadCount = 0 ;
+        warnUnReadCount = 0 ;
+        reportUnReadCount = 0 ;
+        commentUnReadCount = 0 ;
+        getMessage();
     }
 }
