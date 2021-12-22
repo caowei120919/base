@@ -253,6 +253,7 @@
     <string name="no_end_task">否(结束任务)</string>
     <string name="no_do_not_finish_the_task">否(不结束任务)</string>
     <string name="description_required">说明(*必填)</string>
+    <string name="description">说明 : #1</string>
     <string name="the_initial">初始</string>
     <string name="as_of">截止</string>
     <string name="task_status_record">任务状态记录</string>
@@ -302,4 +303,6 @@
     <string name="repeal">撤销</string>
     <string name="please_fill_in_the_instructions">请填写说明</string>
     <string name="operation_is_successful">操作成功</string>
+    <string name="reject">拒绝</string>
+    <string name="operant_hehavior">操作行为 : #1</string>
 </resources>

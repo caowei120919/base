@@ -450,11 +450,19 @@
                 </TextView>
             </LinearLayout>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_recordOrPlan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lin_actionPlan"
+                android:layout_marginTop="@dimen/H15">
+            </androidx.recyclerview.widget.RecyclerView>
+
             <TextView
                 android:id="@+id/tv_theSnapshotComparison"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/lin_actionPlan"
+                android:layout_below="@id/recycler_recordOrPlan"
                 android:text="@string/the_snapshot_comparison"
                 android:textColor="@color/c_da3a16"
                 android:textSize="16sp"

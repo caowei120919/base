@@ -290,6 +290,7 @@
     <string name="wide">wide :</string>
     <string name="restore">restore</string>
     <string name="high_">high :</string>
+    <string name="description">description : #1</string>
     <string name="the_custom">The custom</string>
     <string name="description_added_to_the_large_screen_successfully">Description Added to the large screen successfully</string>
     <string name="please_enter_a_large_screen_name">Please enter a large screen name</string>
@@ -309,4 +310,6 @@
     <string name="repeal">repeal</string>
     <string name="please_fill_in_the_instructions">Please fill in the instructions</string>
     <string name="operation_is_successful">Operation is successful</string>
+    <string name="reject">reject</string>
+    <string name="operant_hehavior">operant hehavior : #1</string>
 </resources>

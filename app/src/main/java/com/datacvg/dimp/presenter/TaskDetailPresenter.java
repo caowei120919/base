@@ -56,8 +56,8 @@ public class TaskDetailPresenter extends BasePresenter<TaskDetailView>{
     }
 
 
-    public void operateTask(String key, String taskId, String text, String confirm) {
-        api.operateTask(key,taskId,text,"",confirm,System.currentTimeMillis()+"")
+    public void operateTask(String key, String taskId, String text, String confirm,String time) {
+        api.operateTask(key,taskId,text,time,confirm,System.currentTimeMillis()+"")
                 .compose(RxUtils.applySchedulersLifeCycle(getView()))
                 .subscribe(new RxObserver<BaseBean>(){
                     @Override

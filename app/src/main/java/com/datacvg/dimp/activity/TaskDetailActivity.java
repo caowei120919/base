@@ -15,11 +15,15 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.adapter.ActionRecordAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
@@ -86,6 +90,8 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
     TextView tvActionStatus ;
     @BindView(R.id.tv_actionPlan)
     TextView tvActionPlan ;
+    @BindView(R.id.recycler_recordOrPlan)
+    RecyclerView recyclerRecordOrPlan ;
 
     TextView tvDate ;
     TextView tvActionTypeCommon ;
@@ -99,10 +105,12 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
     private CreateTaskBean createTaskBean ;
     private boolean isEditStatus = false ;
     private String delayData = "";
+    private ActionRecordAdapter actionRecordAdapter ;
     /**
      * 时间选择器
      */
     private TimePickerView pvCustomTime ;
+    private TimePickerView delayTimePicker ;
     private String taskDate = "";
 
     @Override
@@ -314,6 +322,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             tvCreateName.setText(resdata.getBaseInfo().getCreate_user_name());
             tvCreateTime.setText(resources.getString(R.string.create_date)
                     .replace("#1",resdata.getBaseInfo().getCreate_time()));
+            delayData = resdata.getBaseInfo().getTask_deadline() ;
             tvEndTime.setText(resources.getString(R.string.expiration_date)
                     .replace("#1",resdata.getBaseInfo().getTask_deadline()));
 
@@ -367,6 +376,13 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 view.setTag(bean.getIndex_id());
                 flowIndex.addView(view);
             }
+        }
+
+        if(!resdata.getDetail().isEmpty()){
+            actionRecordAdapter = new ActionRecordAdapter(mContext,resdata.getDetail());
+            LinearLayoutManager manager = new LinearLayoutManager(mContext);
+            recyclerRecordOrPlan.setLayoutManager(manager);
+            recyclerRecordOrPlan.setAdapter(actionRecordAdapter);
         }
     }
 
@@ -467,7 +483,6 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             case "do_edit" :
                 if (edTaskDetails.isEnabled()){
                     edTaskDetails.setEnabled(false);
-                    PLog.e("重新保存");
                 }else{
                     ((TextView)view).setText(resources.getString(R.string.save));
                     linHandle.removeAllViews();
@@ -489,7 +504,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 break;
 
             case "do_reject" :
-
+                showRejectDialog(id);
                 break;
 
             case "do_cancel" :
@@ -518,6 +533,31 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
     }
 
     /**
+     * 拒绝
+     * @param id
+     */
+    private void showRejectDialog(String id) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+        View containView = LayoutInflater.from(mContext).inflate(R.layout.item_task_reject_confirm
+                ,null,false);
+        EditText editDescribe = containView.findViewById(R.id.edit_describe) ;
+        dialog.setView(containView);
+        AlertDialog alertDialog = dialog.create();
+        alertDialog.show();
+        containView.findViewById(R.id.tv_cancel).setOnClickListener(v -> {
+            alertDialog.dismiss();
+        });
+        containView.findViewById(R.id.tv_confirm).setOnClickListener(v -> {
+            if(TextUtils.isEmpty(editDescribe.getText().toString())){
+                ToastUtils.showLongToast(resources.getString(R.string.please_fill_in_the_instructions));
+            }else{
+                alertDialog.dismiss();
+                getPresenter().operateTask(id,actionPlanBean.getId(),editDescribe.getText().toString(),"0","");
+            }
+        });
+    }
+
+    /**
      * 删除
      * @param id
      */
@@ -536,7 +576,8 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             if(TextUtils.isEmpty(editDescribe.getText().toString())){
                 ToastUtils.showLongToast(resources.getString(R.string.please_fill_in_the_instructions));
             }else{
-                getPresenter().operateTask(id,actionPlanBean.getId(),editDescribe.getText().toString(),"0");
+                alertDialog.dismiss();
+                getPresenter().operateTask(id,actionPlanBean.getId(),editDescribe.getText().toString(),"0","");
             }
         });
     }
@@ -559,7 +600,8 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             if(TextUtils.isEmpty(editDescribe.getText().toString())){
                 ToastUtils.showLongToast(resources.getString(R.string.please_fill_in_the_instructions));
             }else{
-                getPresenter().operateTask(id,actionPlanBean.getId(),editDescribe.getText().toString(),"0");
+                alertDialog.dismiss();
+                getPresenter().operateTask(id,actionPlanBean.getId(),editDescribe.getText().toString(),"0","");
             }
         });
     }
@@ -583,7 +625,8 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             if(TextUtils.isEmpty(editDescribe.getText().toString())){
                 ToastUtils.showLongToast(resources.getString(R.string.please_fill_in_the_instructions));
             }else{
-                getPresenter().operateTask(id,actionPlanBean.getId(),editDescribe.getText().toString(),"0");
+                alertDialog.dismiss();
+                getPresenter().operateTask(id,actionPlanBean.getId(),editDescribe.getText().toString(),"0","");
             }
         });
     }
@@ -597,6 +640,9 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 ,null,false);
         TextView tvDelayTime = containView.findViewById(R.id.tv_delayTime) ;
         tvDelayTime.setText(delayData);
+        tvDelayTime.setOnClickListener(v -> {
+            showDelayDataPop(tvDelayTime);
+        });
         EditText editDescribe = containView.findViewById(R.id.edit_describe) ;
         dialog.setView(containView);
         AlertDialog alertDialog = dialog.create();
@@ -605,8 +651,62 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             alertDialog.dismiss();
         });
         containView.findViewById(R.id.tv_confirm).setOnClickListener(v -> {
-            getPresenter().operateTask(id,actionPlanBean.getId(),editDescribe.getText().toString(),"0");
+            if(TextUtils.isEmpty(editDescribe.getText().toString())){
+                ToastUtils.showLongToast(resources.getString(R.string.please_fill_in_the_instructions));
+            }else{
+                getPresenter().operateTask(id,actionPlanBean.getId(),editDescribe.getText().toString(),"0",tvDelayTime.getText().toString());
+                alertDialog.dismiss();
+            }
         });
+    }
+
+    /**
+     *
+     * @param tvDelayTime
+     */
+    private void showDelayDataPop(TextView tvDelayTime) {
+       String[] timeArr = tvDelayTime.getText().toString().split("-");
+       Calendar selectedDate = Calendar.getInstance();
+       Calendar startDate = Calendar.getInstance();
+       Calendar endDate = Calendar.getInstance();
+       endDate.set(2100,1,1);
+       startDate.set(Integer.valueOf(timeArr[0]), Integer.valueOf(timeArr[1]) - 1,Integer.valueOf(timeArr[2]));
+       delayTimePicker = new TimePickerBuilder(mContext, new OnTimeSelectListener() {
+            @Override
+            public void onTimeSelect(Date date, View v) {
+                String dateStr = TimeUtils.date2Str(date,TimeUtils.FORMAT_YMD);
+                tvDelayTime.setText(dateStr);
+                PLog.e(dateStr);
+            }
+        })
+                .setType(new boolean[]{true, true, true, false, false, false})
+                .setLayoutRes(R.layout.pickerview_custom_time, new CustomListener() {
+                    @Override
+                    public void customLayout(View v) {
+                        final TextView tvSubmit = v.findViewById(R.id.tv_finish);
+                        TextView tvDataTitle = v.findViewById(R.id.tv_dataTitle);
+                        tvDataTitle.setVisibility(View.VISIBLE);
+                        TextView ivCancel = v.findViewById(R.id.iv_cancel);
+                        tvSubmit.setOnClickListener(view ->  {
+                            delayTimePicker.returnData();
+                            delayTimePicker.dismiss();
+                        });
+                        ivCancel.setOnClickListener(view ->  {
+                            delayTimePicker.dismiss();
+                        });
+                    }
+                })
+                .setContentTextSize(18)
+                .setTitleSize(20)
+                .setTitleText("")
+                .setOutSideCancelable(false)
+                .isCyclic(true)
+                .setDate(selectedDate)
+                .setRangDate(startDate,endDate)
+                .isCenterLabel(false)
+                .isDialog(true)
+                .build();
+        delayTimePicker.show();
     }
 
     private void drawEditView() {
@@ -682,18 +782,23 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             alertDialog.dismiss();
         });
         containView.findViewById(R.id.tv_confirm).setOnClickListener(v -> {
-            switch (radioSelect.getCheckedRadioButtonId()){
-                case R.id.radio_yes :
-                    getPresenter().operateTask(id,actionPlanBean.getId(),editDescribe.getText().toString(),"0");
-                    break;
+            if(TextUtils.isEmpty(editDescribe.getText().toString())){
+                ToastUtils.showLongToast(resources.getString(R.string.please_fill_in_the_instructions));
+            }else{
+                switch (radioSelect.getCheckedRadioButtonId()){
+                    case R.id.radio_yes :
+                        getPresenter().operateTask(id,actionPlanBean.getId(),editDescribe.getText().toString(),"0","");
+                        break;
 
-                case R.id.radio_deny :
-                    getPresenter().operateTask(id,actionPlanBean.getId(),editDescribe.getText().toString(),"1");
-                    break;
+                    case R.id.radio_deny :
+                        getPresenter().operateTask(id,actionPlanBean.getId(),editDescribe.getText().toString(),"1","");
+                        break;
 
-                case R.id.radio_negate :
-                    getPresenter().operateTask(id,actionPlanBean.getId(),editDescribe.getText().toString(),"2");
-                    break;
+                    case R.id.radio_negate :
+                        getPresenter().operateTask(id,actionPlanBean.getId(),editDescribe.getText().toString(),"2","");
+                        break;
+                }
+                alertDialog.dismiss();
             }
         });
     }
