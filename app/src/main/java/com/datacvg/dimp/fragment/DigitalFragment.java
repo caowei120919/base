@@ -145,7 +145,11 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
                 break;
 
             case R.id.img_select :
-                EventBus.getDefault().post(new SelectParamsEvent());
+                if (pageItemBean == null){
+                    ToastUtils.showLongToast(resources.getString(R.string.temporarily_no_data));
+                }else{
+                    EventBus.getDefault().post(new SelectParamsEvent());
+                }
                 break;
         }
     }

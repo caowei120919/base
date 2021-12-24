@@ -244,6 +244,11 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
 
     @OnTextChanged(value = R.id.ed_taskDetails,callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onDetailTextChange(Editable editable){
+        for(int i = editable.length(); i > 0; i--){
+            if(editable.subSequence(i-1, i).toString().equals("\n")){
+                editable.replace(i-1, i, "");
+            }
+        }
         taskDetail = editable.toString().trim() ;
     }
 

@@ -68,9 +68,6 @@ public class BudgetFragment extends BaseFragment<BudgetView, BudgetPresenter> im
     @Override
     protected void setupView(View rootView) {
         pageItemBean = (PageItemBean) getArguments().getSerializable(Constants.EXTRA_DATA_FOR_BEAN);
-        setTimeValue();
-        setDimension();
-        initAdapter();
     }
 
     /**
@@ -88,7 +85,9 @@ public class BudgetFragment extends BaseFragment<BudgetView, BudgetPresenter> im
         if(pageItemBean == null){
             return;
         }
-
+        setTimeValue();
+        setDimension();
+        initAdapter();
         HashMap params = new HashMap() ;
         params.put("time",pageItemBean.getTimeVal());
         if(!TextUtils.isEmpty(pageItemBean.getmOrgDimension())){

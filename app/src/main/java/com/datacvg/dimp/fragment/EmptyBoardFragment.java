@@ -10,9 +10,13 @@ import com.datacvg.dimp.activity.AddIndexPageActivity;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
+import com.datacvg.dimp.event.CompleteEvent;
 import com.datacvg.dimp.event.EditEvent;
+import com.datacvg.dimp.event.PageCompleteEvent;
 import com.datacvg.dimp.presenter.EmptyBoardPresenter;
 import com.datacvg.dimp.view.EmptyBoardView;
+
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import butterknife.BindView;
@@ -70,6 +74,15 @@ public class EmptyBoardFragment extends BaseFragment<EmptyBoardView, EmptyBoardP
     public void onEvent(EditEvent event){
         relAddOrDelete.setVisibility(View.VISIBLE);
         linEdit.setVisibility(View.VISIBLE);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(CompleteEvent event){
+        if(isFragmentVisible()){
+            relAddOrDelete.setVisibility(View.GONE);
+            linEdit.setVisibility(View.GONE);
+            EventBus.getDefault().post(new PageCompleteEvent());
+        }
     }
 
     public static EmptyBoardFragment newInstance() {

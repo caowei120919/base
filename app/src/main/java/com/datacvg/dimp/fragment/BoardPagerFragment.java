@@ -460,6 +460,12 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
     public void onEvent(CompleteEvent event){
         isComplete = true ;
         if(isFragmentVisible()){
+            if(pageItemBean == null){
+                EventBus.getDefault().post(new PageCompleteEvent());
+                relAddOrDelete.setVisibility(View.GONE);
+                statusBoard.showContent();
+                tvPageName.setVisibility(View.GONE);
+            }
             savePageIndex();
         }
     }

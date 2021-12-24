@@ -23,7 +23,9 @@ import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.adapter.ActionPlanAdapter;
 import com.datacvg.dimp.adapter.ActionRecordAdapter;
+import com.datacvg.dimp.adapter.PlanOnActionAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
@@ -106,6 +108,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
     private boolean isEditStatus = false ;
     private String delayData = "";
     private ActionRecordAdapter actionRecordAdapter ;
+    private PlanOnActionAdapter planOnActionAdapter ;
     /**
      * 时间选择器
      */
@@ -222,6 +225,12 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             case R.id.tv_actionStatus :
                 tvActionStatus.setSelected(true);
                 tvActionPlan.setSelected(false);
+                if(!taskInfoBean.getDetail().isEmpty()){
+                    actionRecordAdapter = new ActionRecordAdapter(mContext,taskInfoBean.getDetail());
+                    LinearLayoutManager manager = new LinearLayoutManager(mContext);
+                    recyclerRecordOrPlan.setLayoutManager(manager);
+                    recyclerRecordOrPlan.setAdapter(actionRecordAdapter);
+                }
                 break;
 
             /**
@@ -477,6 +486,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
      *             "do_delete",   //删除
      *             "do_delay",    //申请延期
      *             "do_confirm",  //审核
+     *             "do_accept"    //同意
      */
     private void taskOperate(View view ,String id) {
         switch (id){
@@ -528,6 +538,10 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
              */
             case "do_confirm" :
                 showConfirmDialog(id);
+                break;
+
+            case "do_accept" :
+                getPresenter().operateTask(id,actionPlanBean.getId(),"","0","");
                 break;
         }
     }
