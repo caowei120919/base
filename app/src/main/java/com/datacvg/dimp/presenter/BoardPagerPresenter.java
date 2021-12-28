@@ -53,6 +53,7 @@ public class BoardPagerPresenter extends BasePresenter<BoardPagerView>{
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
+                        PLog.e(e.getMessage());
                     }
                 });
     }
@@ -81,6 +82,7 @@ public class BoardPagerPresenter extends BasePresenter<BoardPagerView>{
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
+                        PLog.e(e.getMessage());
                     }
                 });
     }
@@ -103,6 +105,7 @@ public class BoardPagerPresenter extends BasePresenter<BoardPagerView>{
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
+                        PLog.e(e.getMessage());
                     }
                 });
     }
@@ -126,6 +129,7 @@ public class BoardPagerPresenter extends BasePresenter<BoardPagerView>{
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
+                        PLog.e(e.getMessage());
                     }
                 });
     }
@@ -152,6 +156,7 @@ public class BoardPagerPresenter extends BasePresenter<BoardPagerView>{
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
+                        PLog.e(e.getMessage());
                     }
                 });
     }

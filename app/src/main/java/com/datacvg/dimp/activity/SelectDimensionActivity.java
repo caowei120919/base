@@ -122,6 +122,7 @@ public class SelectDimensionActivity extends BaseActivity<SelectDimensionView, S
     public  boolean onEditorAction(KeyEvent key) {
         DisplayUtils.hideSoftInput(mContext);
         searchForKeyWord(edSearch.getText().toString());
+        edSearch.setCursorVisible(false);
         return true;
     }
 

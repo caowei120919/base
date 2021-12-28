@@ -20,7 +20,7 @@ public class IndexChartBean implements Serializable {
      * name : 毛利
      * index_description : 毛利=收入*0.35
      （测试使用）
-     * index_default_color : #FFCE00
+     * index_default_color:#FFCE00
      * chart_unit : 万元
      * chart_type : bullet_map
      * chart_top_title :

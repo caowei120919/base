@@ -312,4 +312,7 @@
     <string name="operation_is_successful">Operation is successful</string>
     <string name="reject">reject</string>
     <string name="operant_hehavior">operant hehavior : #1</string>
+    <string name="no_action_plan">No action plan</string>
+    <string name="commencement_date">Commencement date :#1</string>
+    <string name="plan_details">Plan details :#1</string>
 </resources>

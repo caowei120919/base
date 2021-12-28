@@ -117,6 +117,7 @@ public class SearchIndexActivity extends BaseActivity<SearchIndexView, SearchInd
     @OnEditorAction(R.id.ed_search)
     public  boolean onEditorAction(KeyEvent key) {
         DisplayUtils.hideSoftInput(mContext);
+        edSearch.setCursorVisible(false);
         searchForKeyWord(edSearch.getText().toString());
         checkAllIndex();
         return true;

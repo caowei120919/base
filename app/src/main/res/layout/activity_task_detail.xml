@@ -450,19 +450,66 @@
                 </TextView>
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_recordOrPlan"
+            <RelativeLayout
+                android:id="@+id/rel_recordOrPlan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lin_actionPlan"
                 android:layout_marginTop="@dimen/H15">
-            </androidx.recyclerview.widget.RecyclerView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_record"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <ImageView
+                    android:id="@+id/img_planUserImage"
+                    android:layout_width="@dimen/W30"
+                    android:layout_height="@dimen/H30"
+                    android:layout_marginLeft="@dimen/W24"
+                    android:layout_marginTop="@dimen/H20"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone"
+                    android:src="@mipmap/icon_plan_user">
+                </ImageView>
+
+                <TextView
+                    android:id="@+id/tv_planUserName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/H30"
+                    android:layout_alignTop="@id/img_planUserImage"
+                    android:layout_toRightOf="@id/img_planUserImage"
+                    android:gravity="center_vertical"
+                    android:visibility="gone"
+                    android:layout_marginLeft="@dimen/W20">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/tv_notPlan"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/H100"
+                    android:layout_below="@id/img_planUserImage"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:text="@string/no_action_plan">
+                </TextView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_plan"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="@dimen/W24"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/img_planUserImage"
+                    android:visibility="gone">
+                </androidx.recyclerview.widget.RecyclerView>
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/tv_theSnapshotComparison"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/recycler_recordOrPlan"
+                android:layout_below="@id/rel_recordOrPlan"
                 android:text="@string/the_snapshot_comparison"
                 android:textColor="@color/c_da3a16"
                 android:textSize="16sp"

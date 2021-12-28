@@ -17,13 +17,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.datacvg.dimp.R;
-import com.datacvg.dimp.adapter.ActionPlanAdapter;
 import com.datacvg.dimp.adapter.ActionRecordAdapter;
 import com.datacvg.dimp.adapter.PlanOnActionAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
@@ -92,8 +90,16 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
     TextView tvActionStatus ;
     @BindView(R.id.tv_actionPlan)
     TextView tvActionPlan ;
-    @BindView(R.id.recycler_recordOrPlan)
-    RecyclerView recyclerRecordOrPlan ;
+    @BindView(R.id.recycler_record)
+    RecyclerView recyclerRecord;
+    @BindView(R.id.recycler_plan)
+    RecyclerView recyclerPlan ;
+    @BindView(R.id.tv_planUserName)
+    TextView tvPlanUserName ;
+    @BindView(R.id.tv_notPlan)
+    TextView tvNotPlan ;
+    @BindView(R.id.img_planUserImage)
+    ImageView imgPlanUserImage ;
 
     TextView tvDate ;
     TextView tvActionTypeCommon ;
@@ -225,12 +231,11 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             case R.id.tv_actionStatus :
                 tvActionStatus.setSelected(true);
                 tvActionPlan.setSelected(false);
-                if(!taskInfoBean.getDetail().isEmpty()){
-                    actionRecordAdapter = new ActionRecordAdapter(mContext,taskInfoBean.getDetail());
-                    LinearLayoutManager manager = new LinearLayoutManager(mContext);
-                    recyclerRecordOrPlan.setLayoutManager(manager);
-                    recyclerRecordOrPlan.setAdapter(actionRecordAdapter);
-                }
+                recyclerPlan.setVisibility(View.GONE);
+                tvPlanUserName.setVisibility(View.GONE);
+                tvNotPlan.setVisibility(View.GONE);
+                imgPlanUserImage.setVisibility(View.GONE);
+                recyclerRecord.setVisibility(View.VISIBLE);
                 break;
 
             /**
@@ -239,7 +244,16 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             case R.id.tv_actionPlan :
                 tvActionStatus.setSelected(false);
                 tvActionPlan.setSelected(true);
-                break;
+                recyclerRecord.setVisibility(View.GONE);
+                recyclerPlan.setVisibility(View.VISIBLE);
+                tvPlanUserName.setVisibility(View.VISIBLE);
+                imgPlanUserImage.setVisibility(View.VISIBLE);
+                if(taskInfoBean.getPlan() !=null && taskInfoBean.getPlan().getPlan_detail_list().isEmpty()){
+                    tvNotPlan.setVisibility(View.VISIBLE);
+                }else{
+                    tvNotPlan.setVisibility(View.GONE);
+                }
+            break;
         }
     }
 
@@ -338,6 +352,19 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             edTaskDetails.setText(resdata.getBaseInfo().getTask_text());
             statusTask.showContent();
         }
+        if(!taskInfoBean.getDetail().isEmpty()){
+            actionRecordAdapter = new ActionRecordAdapter(mContext,taskInfoBean.getDetail());
+            LinearLayoutManager manager = new LinearLayoutManager(mContext);
+            recyclerRecord.setLayoutManager(manager);
+            recyclerRecord.setAdapter(actionRecordAdapter);
+        }
+        if(taskInfoBean.getPlan() != null){
+            tvPlanUserName.setText(taskInfoBean.getPlan().getLast_updater());
+            planOnActionAdapter = new PlanOnActionAdapter(mContext,taskInfoBean.getPlan().getPlan_detail_list());
+            LinearLayoutManager manager = new LinearLayoutManager(mContext);
+            recyclerPlan.setLayoutManager(manager);
+            recyclerPlan.setAdapter(planOnActionAdapter);
+        }
         if(resdata.getHandle() != null && resdata.getHandle().size() > 0){
             drawHandleView(resdata.getHandle());
         }
@@ -379,7 +406,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
          */
         if (!resdata.getIndexList().isEmpty()){
             for (TaskInfoBean.IndexListBean bean : resdata.getIndexList()){
-                View view = LayoutInflater.from(mContext).inflate(R.layout.item_selected_user,null);
+                View view = LayoutInflater.from(mContext).inflate(R.layout.item_selected_user,null) ;
                 TextView tv_group = view.findViewById(R.id.tv_user);
                 tv_group.setText(bean.getIndex_name());
                 view.setTag(bean.getIndex_id());
@@ -390,8 +417,8 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
         if(!resdata.getDetail().isEmpty()){
             actionRecordAdapter = new ActionRecordAdapter(mContext,resdata.getDetail());
             LinearLayoutManager manager = new LinearLayoutManager(mContext);
-            recyclerRecordOrPlan.setLayoutManager(manager);
-            recyclerRecordOrPlan.setAdapter(actionRecordAdapter);
+            recyclerRecord.setLayoutManager(manager);
+            recyclerRecord.setAdapter(actionRecordAdapter);
         }
     }
 
