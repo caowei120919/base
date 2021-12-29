@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -100,6 +101,8 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
     TextView tvNotPlan ;
     @BindView(R.id.img_planUserImage)
     ImageView imgPlanUserImage ;
+    @BindView(R.id.rel_addPlan)
+    RelativeLayout relAddPlan ;
 
     TextView tvDate ;
     TextView tvActionTypeCommon ;
@@ -209,7 +212,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 , LanguageUtils.getLanguage(mContext));
     }
 
-    @OnClick({R.id.img_left,R.id.tv_theSnapshotComparison,R.id.tv_actionStatus,R.id.tv_actionPlan})
+    @OnClick({R.id.img_left,R.id.tv_theSnapshotComparison,R.id.tv_actionStatus,R.id.tv_actionPlan,R.id.img_addPlan})
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.img_left :
@@ -236,6 +239,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 tvNotPlan.setVisibility(View.GONE);
                 imgPlanUserImage.setVisibility(View.GONE);
                 recyclerRecord.setVisibility(View.VISIBLE);
+                relAddPlan.setVisibility(View.GONE);
                 break;
 
             /**
@@ -249,11 +253,25 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 tvPlanUserName.setVisibility(View.VISIBLE);
                 imgPlanUserImage.setVisibility(View.VISIBLE);
                 if(taskInfoBean.getPlan() !=null && taskInfoBean.getPlan().getPlan_detail_list().isEmpty()){
-                    tvNotPlan.setVisibility(View.VISIBLE);
+                    for (TaskInfoBean.TaskUserBean taskUserBean : taskInfoBean.getTaskUser()){
+                        if(taskUserBean.getType().equals("2")){
+                            if(taskUserBean.getUser_pkid().equals(PreferencesHelper.get(Constants.USER_ID,""))){
+                                relAddPlan.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    }
+                    tvNotPlan.setVisibility(relAddPlan.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+                    imgPlanUserImage.setVisibility(relAddPlan.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+                    tvPlanUserName.setVisibility(relAddPlan.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
                 }else{
+                    relAddPlan.setVisibility(View.GONE);
                     tvNotPlan.setVisibility(View.GONE);
                 }
             break;
+
+            case R.id.img_addPlan :
+                PLog.e("添加行动方案");
+                break;
         }
     }
 

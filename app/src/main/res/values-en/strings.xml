@@ -315,4 +315,5 @@
     <string name="no_action_plan">No action plan</string>
     <string name="commencement_date">Commencement date :#1</string>
     <string name="plan_details">Plan details :#1</string>
+    <string name="add_a_plan_of_action">Add a plan of action</string>
 </resources>
