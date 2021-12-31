@@ -26,6 +26,8 @@ import com.datacvg.dimp.bean.ModuleBean;
 import com.datacvg.dimp.bean.ModuleListBean;
 import com.datacvg.dimp.bean.TableBean;
 import com.datacvg.dimp.bean.TableListBean;
+import com.datacvg.dimp.event.AddDepartmentCompleteEvent;
+import com.datacvg.dimp.event.AddDepartmentToContactEvent;
 import com.datacvg.dimp.event.ChangeUnReadMessageEvent;
 import com.datacvg.dimp.event.EditEvent;
 import com.datacvg.dimp.event.HideNavigationEvent;
@@ -44,6 +46,8 @@ import com.datacvg.dimp.presenter.MainPresenter;
 import com.datacvg.dimp.view.MainView;
 import com.google.gson.Gson;
 import com.next.easynavigation.view.EasyNavigationBar;
+
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
@@ -344,6 +348,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
             }
             dbContactOrDepartmentController.insertContactOrDepartment(contactOrDepartmentBean);
         }
+        EventBus.getDefault().post(new AddDepartmentCompleteEvent());
     }
 
     /**

@@ -38,6 +38,7 @@ import com.datacvg.dimp.bean.ActionPlanBean;
 import com.datacvg.dimp.bean.ContactOrDepartmentForActionBean;
 import com.datacvg.dimp.bean.CreateTaskBean;
 import com.datacvg.dimp.bean.TaskInfoBean;
+import com.datacvg.dimp.event.AddDepartmentCompleteEvent;
 import com.datacvg.dimp.event.ChooseUserForActionEvent;
 import com.datacvg.dimp.event.CreateTaskEvent;
 import com.datacvg.dimp.presenter.TaskDetailPresenter;
@@ -133,6 +134,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
     private TimePickerView pvCustomTime ;
     private TimePickerView delayTimePicker ;
     private String taskDate = "";
+    private CreateTaskBean.ActionPlanInfoDTO actionPlanInfoDTO ;
 
     /**
      * 负责人
@@ -188,6 +190,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             tvPriorityHigh.setSelected(true);
             tvPriorityMiddle.setSelected(false);
             tvPriorityLow.setSelected(false);
+            actionPlanInfoDTO.setTask_priority("1");
             imgLevel.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources()
                 ,R.mipmap.action_high));
         });
@@ -195,6 +198,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             tvPriorityHigh.setSelected(false);
             tvPriorityMiddle.setSelected(true);
             tvPriorityLow.setSelected(false);
+            actionPlanInfoDTO.setTask_priority("2");
             imgLevel.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources()
                 ,R.mipmap.action_mid));
         });
@@ -202,6 +206,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             tvPriorityHigh.setSelected(false);
             tvPriorityMiddle.setSelected(false);
             tvPriorityLow.setSelected(true);
+            actionPlanInfoDTO.setTask_priority("3");
             imgLevel.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources()
                 ,R.mipmap.action_low));
         });
@@ -219,6 +224,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 ? "" : actionPlanBean.getTitle());
         edTaskDetails.setEnabled(false);
         createTaskBean = new CreateTaskBean() ;
+        actionPlanInfoDTO = new CreateTaskBean.ActionPlanInfoDTO();
         getTaskInfo();
     }
 
@@ -326,6 +332,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             public void onTimeSelect(Date date, View v) {
                 taskDate = TimeUtils.date2Str(date,TimeUtils.FORMAT_YMD);
                 tvDate.setText(resources.getString(R.string.expiration_date).replace("#1", taskDate));
+                actionPlanInfoDTO.setTask_deadline(taskDate);
             }
         })
                 .setType(new boolean[]{true, true, true, false, false, false})
@@ -384,16 +391,19 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 case 1 :
                     imgLevel.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources()
                             ,R.mipmap.action_high));
+                    actionPlanInfoDTO.setTask_priority("1");
                     break;
 
                 case 2 :
                     imgLevel.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources()
                             ,R.mipmap.action_mid));
+                    actionPlanInfoDTO.setTask_priority("2");
                     break;
 
                 default:
                     imgLevel.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources()
                             ,R.mipmap.action_low));
+                    actionPlanInfoDTO.setTask_priority("3");
                     break;
             }
             tvCreateName.setText(resdata.getBaseInfo().getCreate_user_name());
@@ -876,7 +886,44 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
      * 保存重新编辑详情
      */
     private void saveTaskDetail() {
-
+//        List<CreateTaskBean.TaskUser> taskUsers = new ArrayList<>();
+//        CreateTaskBean.TaskUser taskUser = new CreateTaskBean.TaskUser();
+//        taskUser.setChecked(true);
+//        taskUser.setId(headContact.getContactOrDepartmentBean().getUserId());
+//        taskUser.setName(headContact.getContactOrDepartmentBean().getName());
+//        taskUser.setType("2");
+//        taskUsers.add(taskUser);
+//        for (ContactOrDepartmentForActionBean contact : assistantBeans){
+//            CreateTaskBean.TaskUser taskAssistant = new CreateTaskBean.TaskUser();
+//            taskAssistant.setType("3");
+//            taskAssistant.setName(contact.getContactOrDepartmentBean().getName());
+//            taskAssistant.setId(contact.getContactOrDepartmentBean().getUserId());
+//            taskAssistant.setChecked(true);
+//            taskUsers.add(taskAssistant);
+//        }
+//        actionPlanInfoDTO.setTask_deadline(taskDate);
+//        actionPlanInfoDTO.setTask_parent_id("0");
+//        createTaskBean.setLang(LanguageUtils.isZh(mContext) ? "zh" : "en");
+//        if(!fromActionFragment){
+//            createTaskBean.setStartTime(indexTreeNeedBean.getTimeVal());
+//            createTaskBean.setFuDimension(indexTreeNeedBean.getFuDimension());
+//            createTaskBean.setpDimension(indexTreeNeedBean.getpDimension());
+//            createTaskBean.setOrgDimension(indexTreeNeedBean.getOrgDimension());
+//            createTaskBean.setAllDeimension(indexTreeNeedBean.getOrgName() + ","
+//                    + indexTreeNeedBean.getFuName()
+//                    + "," + indexTreeNeedBean.getpName());
+//        }else{
+//            createTaskBean.setStartTime("");
+//            createTaskBean.setFuDimension("");
+//            createTaskBean.setpDimension("");
+//            createTaskBean.setOrgDimension("");
+//            createTaskBean.setAllDeimension("");
+//        }
+//        createTaskBean.setIndexList(new Gson().toJson(indexTreeBeans));
+//        createTaskBean.setUserMsg(new Gson().toJson(taskUsers));
+//        createTaskBean.setIndex(new Gson().toJson(taskIndexBeans));
+//        createTaskBean.setActionType(actionType);
+//        createTaskBean.setActionPlanInfoDTO(actionPlanInfoDTO);
     }
 
     /**
@@ -983,5 +1030,10 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             }
         }
         buildAssistantFlow(event.getContactOrDepartmentForActionBean());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(AddDepartmentCompleteEvent event){
+
     }
 }

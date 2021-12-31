@@ -366,7 +366,6 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
                         createTaskBean.setOrgDimension("");
                         createTaskBean.setAllDeimension("");
                     }
-                    List<CreateTaskIndex> createTaskIndices = new ArrayList<>() ;
                     createTaskBean.setIndexList(new Gson().toJson(indexTreeBeans));
                     createTaskBean.setUserMsg(new Gson().toJson(taskUsers));
                     createTaskBean.setIndex(new Gson().toJson(taskIndexBeans));
