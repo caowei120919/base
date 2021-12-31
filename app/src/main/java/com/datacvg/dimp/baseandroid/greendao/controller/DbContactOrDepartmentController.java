@@ -7,6 +7,8 @@ import com.datacvg.dimp.baseandroid.greendao.bean.ContactOrDepartmentBean;
 import com.datacvg.dimp.baseandroid.greendao.bean.ContactOrDepartmentBeanDao;
 import com.datacvg.dimp.baseandroid.greendao.bean.DaoMaster;
 import com.datacvg.dimp.baseandroid.greendao.bean.DaoSession;
+import com.datacvg.dimp.baseandroid.greendao.bean.ModuleInfo;
+import com.datacvg.dimp.baseandroid.greendao.bean.ModuleInfoDao;
 import com.datacvg.dimp.greendao.bean.DepartmentBean;
 import com.datacvg.dimp.greendao.bean.DepartmentBeanDao;
 
@@ -161,5 +163,15 @@ public class DbContactOrDepartmentController {
         qb.where(ContactOrDepartmentBeanDao.Properties.IsContact.eq(true));
         List<ContactOrDepartmentBean> list = qb.list();
         return list;
+    }
+
+    public ContactOrDepartmentBean queryContact(String id) {
+        DaoMaster daoMaster = new DaoMaster(getReadableDatabase());
+        DaoSession daoSession = daoMaster.newSession();
+        ContactOrDepartmentBeanDao userDao = daoSession.getContactOrDepartmentBeanDao();
+        QueryBuilder<ContactOrDepartmentBean> qb = userDao.queryBuilder();
+        qb.where(ContactOrDepartmentBeanDao.Properties.UserId.eq(id));
+        ContactOrDepartmentBean contactOrDepartmentBean = qb.build().unique();
+        return contactOrDepartmentBean ;
     }
 }

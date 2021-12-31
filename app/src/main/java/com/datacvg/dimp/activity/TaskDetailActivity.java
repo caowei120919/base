@@ -26,6 +26,8 @@ import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.ActionRecordAdapter;
 import com.datacvg.dimp.adapter.PlanOnActionAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
+import com.datacvg.dimp.baseandroid.greendao.bean.ContactOrDepartmentBean;
+import com.datacvg.dimp.baseandroid.greendao.controller.DbContactOrDepartmentController;
 import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
@@ -33,14 +35,21 @@ import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.baseandroid.utils.TimeUtils;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.ActionPlanBean;
+import com.datacvg.dimp.bean.ContactOrDepartmentForActionBean;
 import com.datacvg.dimp.bean.CreateTaskBean;
 import com.datacvg.dimp.bean.TaskInfoBean;
+import com.datacvg.dimp.event.ChooseUserForActionEvent;
 import com.datacvg.dimp.event.CreateTaskEvent;
 import com.datacvg.dimp.presenter.TaskDetailPresenter;
 import com.datacvg.dimp.view.TaskDetailView;
 import com.datacvg.dimp.widget.FlowLayout;
 import com.enlogy.statusview.StatusRelativeLayout;
+import com.google.gson.Gson;
+
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -125,6 +134,15 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
     private TimePickerView delayTimePicker ;
     private String taskDate = "";
 
+    /**
+     * 负责人
+     */
+    private ContactOrDepartmentForActionBean headContact ;
+    /**
+     * 协助人
+     */
+    private List<ContactOrDepartmentForActionBean> assistantBeans = new ArrayList<>() ;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_task_detail;
@@ -197,7 +215,8 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             finish();
             return;
         }
-        tvTitle.setText(TextUtils.isEmpty(actionPlanBean.getTitle()) ? "" : actionPlanBean.getTitle());
+        tvTitle.setText(TextUtils.isEmpty(actionPlanBean.getTitle())
+                ? "" : actionPlanBean.getTitle());
         edTaskDetails.setEnabled(false);
         createTaskBean = new CreateTaskBean() ;
         getTaskInfo();
@@ -212,7 +231,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 , LanguageUtils.getLanguage(mContext));
     }
 
-    @OnClick({R.id.img_left,R.id.tv_theSnapshotComparison,R.id.tv_actionStatus,R.id.tv_actionPlan,R.id.img_addPlan})
+    @OnClick({R.id.img_left,R.id.tv_theSnapshotComparison,R.id.tv_actionStatus,R.id.tv_actionPlan,R.id.img_addPlan,R.id.img_addAssistant})
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.img_left :
@@ -271,6 +290,23 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
 
             case R.id.img_addPlan :
                 PLog.e("添加行动方案");
+                break;
+
+            case R.id.img_addAssistant :
+                PLog.e("选择协助人");
+                ArrayList<String> assistIds = new ArrayList<>() ;
+                Intent assistantIntent = new Intent(mContext,ChooseContactFromActionActivity.class) ;
+                assistantIntent.putExtra(Constants.EXTRA_DATA_FOR_ALBUM,false);
+                if(headContact != null){
+                    assistantIntent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,headContact.getId()) ;
+                }
+                if(!assistantBeans.isEmpty()){
+                    for (ContactOrDepartmentForActionBean contact : assistantBeans){
+                        assistIds.add(contact.getId());
+                    }
+                    assistantIntent.putStringArrayListExtra(Constants.EXTRA_DATA_FOR_BEAN, assistIds);
+                }
+                mContext.startActivity(assistantIntent);
                 break;
         }
     }
@@ -402,6 +438,11 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                     tvHeadUser.setText(bean.getName());
                     taskUsers.add(taskUser);
                     tvHeadUser.setVisibility(View.VISIBLE);
+                    ContactOrDepartmentBean contactOrDepartmentBean = DbContactOrDepartmentController
+                            .getInstance(mContext).queryContact(taskUser.getId());
+                    ContactOrDepartmentForActionBean contactOrDepartmentForActionBean = new ContactOrDepartmentForActionBean(contactOrDepartmentBean.getResId()
+                            ,contactOrDepartmentBean.getParentId(),contactOrDepartmentBean.getLevel(),contactOrDepartmentBean.getIsExpend(),contactOrDepartmentBean);
+                    headContact = contactOrDepartmentForActionBean ;
                 }
                 if(bean.getType().equals("3")){
                     CreateTaskBean.TaskUser taskUser = new CreateTaskBean.TaskUser();
@@ -410,12 +451,11 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                     taskUser.setType(bean.getType());
                     taskUser.setChecked(true);
                     taskUsers.add(taskUser);
+                    addAssistantForList(taskUser.getId());
                 }
             }
-            for (CreateTaskBean.TaskUser user : taskUsers){
-                if(user.getType().equals("3")){
-                    buildAssistantFlow(user,true);
-                }
+            for (ContactOrDepartmentForActionBean contactOrDepartmentForActionBean : assistantBeans){
+                    buildAssistantFlow(contactOrDepartmentForActionBean);
             }
         }
 
@@ -440,6 +480,17 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
         }
     }
 
+    private void addAssistantForList(String id) {
+        PLog.e(id);
+        ContactOrDepartmentBean contactOrDepartmentBean = DbContactOrDepartmentController
+                .getInstance(mContext).queryContact(id);
+        PLog.e(new Gson().toJson(contactOrDepartmentBean));
+        ContactOrDepartmentForActionBean contactOrDepartmentForActionBean = new ContactOrDepartmentForActionBean(contactOrDepartmentBean.getResId()
+                ,contactOrDepartmentBean.getParentId(),contactOrDepartmentBean.getLevel(),contactOrDepartmentBean.getIsExpend(),contactOrDepartmentBean);
+        contactOrDepartmentForActionBean.setChecked(true);
+        assistantBeans.add(contactOrDepartmentForActionBean);
+    }
+
     /**
      * 操作成功说明
      */
@@ -453,17 +504,23 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
     /**
      * 构建协助人视图
      */
-    public void buildAssistantFlow(CreateTaskBean.TaskUser taskUser , boolean isAddView){
-        if(isAddView){
+    public void buildAssistantFlow(ContactOrDepartmentForActionBean contact){
+        if(contact.isChecked()){
             View view = LayoutInflater.from(mContext).inflate(R.layout.item_selected_user,null);
             TextView tv_group = view.findViewById(R.id.tv_user);
-            tv_group.setText(taskUser.getName());
-            view.setTag(taskUser.getId());
+            ImageView img_delete =view.findViewById(R.id.img_delete);
+            img_delete.setVisibility(View.VISIBLE);
+            img_delete.setOnClickListener(v -> {
+                flowAssistant.removeView(view);
+                assistantBeans.remove(contact);
+            });
+            tv_group.setText(contact.getContactOrDepartmentBean().getName());
+            view.setTag(contact.getId());
             flowAssistant.addView(view);
         }else{
-            for (int i = 0 ; i < flowAssistant.getChildCount() ; i++){
+            for (int i = 0 ; i < flowAssistant.getChildCount(); i++){
                 View view = flowAssistant.getChildAt(i);
-                if(view.getTag().equals(taskUser.getId())){
+                if(view.getTag().equals(contact.getId())){
                     flowAssistant.removeView(view);
                     break;
                 }
@@ -541,6 +598,16 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 }else{
                     ((TextView)view).setText(resources.getString(R.string.save));
                     linHandle.removeAllViews();
+                    if(flowAssistant.getChildCount() > 0){
+                        for (int i=0 ; i < flowAssistant.getChildCount();i ++){
+                            View containView = flowAssistant.getChildAt(i);
+                            ImageView imgDelete = containView.findViewById(R.id.img_delete) ;
+                            imgDelete.setVisibility(View.VISIBLE);
+                            imgDelete.setOnClickListener(v -> {
+                                PLog.e("删除协助人");
+                            });
+                        }
+                    }
                     drawEditView();
                     edTaskDetails.setEnabled(true);
                     imgAddAssistant.setVisibility(View.VISIBLE);
@@ -790,14 +857,26 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             int finalI = i;
             operateView.setOnClickListener(view -> {
                 if(finalI == 0){
-                    PLog.e("保存");
+                    saveTaskDetail();
                 }else{
-                    PLog.e("取消");
-                    recreate();
+                    edTaskDetails.setEnabled(false);
+                    imgAddAssistant.setVisibility(View.GONE);
+                    statusTask.showContent();
+                    linHandle.removeAllViews();
+                    if(taskInfoBean.getHandle() != null && taskInfoBean.getHandle().size() > 0){
+                        drawHandleView(taskInfoBean.getHandle());
+                    }
                 }
             });
             linHandle.addView(operateView);
         }
+    }
+
+    /**
+     * 保存重新编辑详情
+     */
+    private void saveTaskDetail() {
+
     }
 
     /**
@@ -892,5 +971,17 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 break;
         }
         tvStateStatus.setText(detailBean.getState_desc());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ChooseUserForActionEvent event){
+        if (!event.isHeadChoose()){
+            if(event.getContactOrDepartmentForActionBean().isChecked()){
+                assistantBeans.add(event.getContactOrDepartmentForActionBean());
+            }else{
+                assistantBeans.remove(event.getContactOrDepartmentForActionBean());
+            }
+        }
+        buildAssistantFlow(event.getContactOrDepartmentForActionBean());
     }
 }
