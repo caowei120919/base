@@ -314,7 +314,7 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
         }
     }
 
-    @OnClick({R.id.lin_deletePage,R.id.lin_addPage})
+    @OnClick({R.id.lin_deletePage,R.id.lin_addPage,R.id.tv_pageTime})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.lin_deletePage :
@@ -333,6 +333,14 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
                     isComplete = false ;
                     String padName = ((EditText)statusBoard.findViewById(R.id.edit_pageName)).getText().toString() ;
                     EventBus.getDefault().post(new CheckPageNameEvent(padName));
+                }
+                break;
+
+            case R.id.tv_pageTime :
+                if(isFragmentVisible()){
+                    Intent intent = new Intent(mContext, SelectFilterActivity.class);
+                    intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,pageItemBean);
+                    mContext.startActivity(intent);
                 }
                 break;
         }

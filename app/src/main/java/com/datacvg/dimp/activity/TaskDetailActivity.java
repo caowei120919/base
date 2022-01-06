@@ -140,10 +140,12 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
      * 负责人
      */
     private ContactOrDepartmentForActionBean headContact ;
+    private String headContactId = "" ;
     /**
      * 协助人
      */
     private List<ContactOrDepartmentForActionBean> assistantBeans = new ArrayList<>() ;
+    private List<String> assistantBeanIds = new ArrayList<>() ;
 
     @Override
     protected int getLayoutId() {
@@ -303,8 +305,9 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 ArrayList<String> assistIds = new ArrayList<>() ;
                 Intent assistantIntent = new Intent(mContext,ChooseContactFromActionActivity.class) ;
                 assistantIntent.putExtra(Constants.EXTRA_DATA_FOR_ALBUM,false);
-                if(headContact != null){
-                    assistantIntent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,headContact.getId()) ;
+                if(TextUtils.isEmpty(headContactId)){
+                    String headId = DbContactOrDepartmentController.getInstance(mContext).queryContact(headContactId).getResId();
+                    assistantIntent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,headId) ;
                 }
                 if(!assistantBeans.isEmpty()){
                     for (ContactOrDepartmentForActionBean contact : assistantBeans){
@@ -448,11 +451,12 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                     tvHeadUser.setText(bean.getName());
                     taskUsers.add(taskUser);
                     tvHeadUser.setVisibility(View.VISIBLE);
-                    ContactOrDepartmentBean contactOrDepartmentBean = DbContactOrDepartmentController
-                            .getInstance(mContext).queryContact(taskUser.getId());
-                    ContactOrDepartmentForActionBean contactOrDepartmentForActionBean = new ContactOrDepartmentForActionBean(contactOrDepartmentBean.getResId()
-                            ,contactOrDepartmentBean.getParentId(),contactOrDepartmentBean.getLevel(),contactOrDepartmentBean.getIsExpend(),contactOrDepartmentBean);
-                    headContact = contactOrDepartmentForActionBean ;
+//                    ContactOrDepartmentBean contactOrDepartmentBean = DbContactOrDepartmentController
+//                            .getInstance(mContext).queryContact(taskUser.getId());
+//                    ContactOrDepartmentForActionBean contactOrDepartmentForActionBean = new ContactOrDepartmentForActionBean(contactOrDepartmentBean.getResId()
+//                            ,contactOrDepartmentBean.getParentId(),contactOrDepartmentBean.getLevel(),contactOrDepartmentBean.getIsExpend(),contactOrDepartmentBean);
+                    headContactId = taskUser.getId() ;
+//                    headContact = contactOrDepartmentForActionBean ;
                 }
                 if(bean.getType().equals("3")){
                     CreateTaskBean.TaskUser taskUser = new CreateTaskBean.TaskUser();
@@ -461,11 +465,10 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                     taskUser.setType(bean.getType());
                     taskUser.setChecked(true);
                     taskUsers.add(taskUser);
-                    addAssistantForList(taskUser.getId());
+                    assistantBeanIds.add(taskUser.getId());
+//                    addAssistantForList(taskUser.getId());
+                    buildAssistantFlow(taskUser,true);
                 }
-            }
-            for (ContactOrDepartmentForActionBean contactOrDepartmentForActionBean : assistantBeans){
-                    buildAssistantFlow(contactOrDepartmentForActionBean);
             }
         }
 
@@ -514,17 +517,17 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
     /**
      * 构建协助人视图
      */
-    public void buildAssistantFlow(ContactOrDepartmentForActionBean contact){
-        if(contact.isChecked()){
+    public void buildAssistantFlow(CreateTaskBean.TaskUser contact,boolean addOrRemove){
+        if(addOrRemove){
             View view = LayoutInflater.from(mContext).inflate(R.layout.item_selected_user,null);
             TextView tv_group = view.findViewById(R.id.tv_user);
             ImageView img_delete =view.findViewById(R.id.img_delete);
-            img_delete.setVisibility(View.VISIBLE);
+            img_delete.setVisibility(isEditStatus ? View.VISIBLE : View.GONE);
             img_delete.setOnClickListener(v -> {
                 flowAssistant.removeView(view);
                 assistantBeans.remove(contact);
             });
-            tv_group.setText(contact.getContactOrDepartmentBean().getName());
+            tv_group.setText(contact.getName());
             view.setTag(contact.getId());
             flowAssistant.addView(view);
         }else{
@@ -869,7 +872,15 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 if(finalI == 0){
                     saveTaskDetail();
                 }else{
+                    isEditStatus = false ;
                     edTaskDetails.setEnabled(false);
+                    if(flowAssistant.getChildCount() > 0){
+                        for (int j=0 ; j < flowAssistant.getChildCount();j ++){
+                            View containView = flowAssistant.getChildAt(j);
+                            ImageView imgDelete = containView.findViewById(R.id.img_delete) ;
+                            imgDelete.setVisibility(View.GONE);
+                        }
+                    }
                     imgAddAssistant.setVisibility(View.GONE);
                     statusTask.showContent();
                     linHandle.removeAllViews();
@@ -1029,7 +1040,12 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 assistantBeans.remove(event.getContactOrDepartmentForActionBean());
             }
         }
-        buildAssistantFlow(event.getContactOrDepartmentForActionBean());
+        ContactOrDepartmentForActionBean actionBean = event.getContactOrDepartmentForActionBean() ;
+        CreateTaskBean.TaskUser taskUser = new CreateTaskBean.TaskUser() ;
+        taskUser.setId(actionBean.getId());
+        taskUser.setName(actionBean.getContactOrDepartmentBean().getName());
+        taskUser.setType("3");
+        buildAssistantFlow(taskUser,actionBean.isChecked());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
