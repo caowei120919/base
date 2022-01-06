@@ -84,7 +84,7 @@ public class SnapFragment extends BaseFragment<SnapView, SnapPresenter> implemen
         if(fastPhotoOldBean == null){
             return;
         }
-        if (!TextUtils.isEmpty(fastPhotoOldBean.getTree_type()) && fastPhotoOldBean.getTree_type().equals("4")){
+        if (TextUtils.isEmpty(fastPhotoOldBean.getTree_type()) || fastPhotoOldBean.getTree_type().equals("4")){
             statusSnapTop.showContent();
             statusSnap.showExtendContent();
             statusSnapTop.findViewById(R.id.rel_dimension).setOnClickListener(view -> {
@@ -116,7 +116,7 @@ public class SnapFragment extends BaseFragment<SnapView, SnapPresenter> implemen
             viewNone.setVisibility(View.VISIBLE);
             viewSnap.setVisibility(View.GONE);
             if(!TextUtils.isEmpty(fastPhotoOldBean.getNo_permission_name())){
-                ((TextView)viewNone.findViewById(R.id.tv_permission)).setText(fastPhotoOldBean.getNo_permission_name());
+                ((TextView)viewNone.findViewById(R.id.tv_permission)).setText(resources.getString(R.string.the_current_user_does_not_have_permission_for_dimension).replace("#1",fastPhotoOldBean.getNo_permission_name()));
             }
         }else{
             viewNone.setVisibility(View.GONE);

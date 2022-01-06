@@ -305,13 +305,13 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 ArrayList<String> assistIds = new ArrayList<>() ;
                 Intent assistantIntent = new Intent(mContext,ChooseContactFromActionActivity.class) ;
                 assistantIntent.putExtra(Constants.EXTRA_DATA_FOR_ALBUM,false);
-                if(TextUtils.isEmpty(headContactId)){
+                if(!TextUtils.isEmpty(headContactId)){
                     String headId = DbContactOrDepartmentController.getInstance(mContext).queryContact(headContactId).getResId();
                     assistantIntent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,headId) ;
                 }
-                if(!assistantBeans.isEmpty()){
-                    for (ContactOrDepartmentForActionBean contact : assistantBeans){
-                        assistIds.add(contact.getId());
+                if(!assistantBeanIds.isEmpty()){
+                    for (String assistantBeanId : assistantBeanIds){
+                        assistIds.add(DbContactOrDepartmentController.getInstance(mContext).queryContact(assistantBeanId).getResId());
                     }
                     assistantIntent.putStringArrayListExtra(Constants.EXTRA_DATA_FOR_BEAN, assistIds);
                 }
@@ -451,12 +451,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                     tvHeadUser.setText(bean.getName());
                     taskUsers.add(taskUser);
                     tvHeadUser.setVisibility(View.VISIBLE);
-//                    ContactOrDepartmentBean contactOrDepartmentBean = DbContactOrDepartmentController
-//                            .getInstance(mContext).queryContact(taskUser.getId());
-//                    ContactOrDepartmentForActionBean contactOrDepartmentForActionBean = new ContactOrDepartmentForActionBean(contactOrDepartmentBean.getResId()
-//                            ,contactOrDepartmentBean.getParentId(),contactOrDepartmentBean.getLevel(),contactOrDepartmentBean.getIsExpend(),contactOrDepartmentBean);
                     headContactId = taskUser.getId() ;
-//                    headContact = contactOrDepartmentForActionBean ;
                 }
                 if(bean.getType().equals("3")){
                     CreateTaskBean.TaskUser taskUser = new CreateTaskBean.TaskUser();
@@ -466,7 +461,6 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                     taskUser.setChecked(true);
                     taskUsers.add(taskUser);
                     assistantBeanIds.add(taskUser.getId());
-//                    addAssistantForList(taskUser.getId());
                     buildAssistantFlow(taskUser,true);
                 }
             }
@@ -491,17 +485,6 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             recyclerRecord.setLayoutManager(manager);
             recyclerRecord.setAdapter(actionRecordAdapter);
         }
-    }
-
-    private void addAssistantForList(String id) {
-        PLog.e(id);
-        ContactOrDepartmentBean contactOrDepartmentBean = DbContactOrDepartmentController
-                .getInstance(mContext).queryContact(id);
-        PLog.e(new Gson().toJson(contactOrDepartmentBean));
-        ContactOrDepartmentForActionBean contactOrDepartmentForActionBean = new ContactOrDepartmentForActionBean(contactOrDepartmentBean.getResId()
-                ,contactOrDepartmentBean.getParentId(),contactOrDepartmentBean.getLevel(),contactOrDepartmentBean.getIsExpend(),contactOrDepartmentBean);
-        contactOrDepartmentForActionBean.setChecked(true);
-        assistantBeans.add(contactOrDepartmentForActionBean);
     }
 
     /**
@@ -533,7 +516,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
         }else{
             for (int i = 0 ; i < flowAssistant.getChildCount(); i++){
                 View view = flowAssistant.getChildAt(i);
-                if(view.getTag().equals(contact.getId())){
+                if(view.getTag().equals(contact.getName())){
                     flowAssistant.removeView(view);
                     break;
                 }
@@ -915,25 +898,10 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
 //        actionPlanInfoDTO.setTask_deadline(taskDate);
 //        actionPlanInfoDTO.setTask_parent_id("0");
 //        createTaskBean.setLang(LanguageUtils.isZh(mContext) ? "zh" : "en");
-//        if(!fromActionFragment){
-//            createTaskBean.setStartTime(indexTreeNeedBean.getTimeVal());
-//            createTaskBean.setFuDimension(indexTreeNeedBean.getFuDimension());
-//            createTaskBean.setpDimension(indexTreeNeedBean.getpDimension());
-//            createTaskBean.setOrgDimension(indexTreeNeedBean.getOrgDimension());
-//            createTaskBean.setAllDeimension(indexTreeNeedBean.getOrgName() + ","
-//                    + indexTreeNeedBean.getFuName()
-//                    + "," + indexTreeNeedBean.getpName());
-//        }else{
-//            createTaskBean.setStartTime("");
-//            createTaskBean.setFuDimension("");
-//            createTaskBean.setpDimension("");
-//            createTaskBean.setOrgDimension("");
-//            createTaskBean.setAllDeimension("");
-//        }
 //        createTaskBean.setIndexList(new Gson().toJson(indexTreeBeans));
 //        createTaskBean.setUserMsg(new Gson().toJson(taskUsers));
 //        createTaskBean.setIndex(new Gson().toJson(taskIndexBeans));
-//        createTaskBean.setActionType(actionType);
+//        createTaskBean.setActionType("");
 //        createTaskBean.setActionPlanInfoDTO(actionPlanInfoDTO);
     }
 
@@ -1033,19 +1001,18 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ChooseUserForActionEvent event){
-        if (!event.isHeadChoose()){
-            if(event.getContactOrDepartmentForActionBean().isChecked()){
-                assistantBeans.add(event.getContactOrDepartmentForActionBean());
-            }else{
-                assistantBeans.remove(event.getContactOrDepartmentForActionBean());
-            }
+        if(event.getContactOrDepartmentForActionBean().isChecked()){
+            assistantBeanIds.add(event.getContactOrDepartmentForActionBean().getContactOrDepartmentBean().getUserId());
+        }else{
+            assistantBeanIds.remove(event.getContactOrDepartmentForActionBean().getContactOrDepartmentBean().getUserId());
         }
-        ContactOrDepartmentForActionBean actionBean = event.getContactOrDepartmentForActionBean() ;
+        ContactOrDepartmentBean actionBean = DbContactOrDepartmentController.getInstance(mContext)
+                .queryContact(event.getContactOrDepartmentForActionBean().getContactOrDepartmentBean().getUserId()) ;
         CreateTaskBean.TaskUser taskUser = new CreateTaskBean.TaskUser() ;
-        taskUser.setId(actionBean.getId());
-        taskUser.setName(actionBean.getContactOrDepartmentBean().getName());
+        taskUser.setId(actionBean.getResId());
+        taskUser.setName(actionBean.getName());
         taskUser.setType("3");
-        buildAssistantFlow(taskUser,actionBean.isChecked());
+        buildAssistantFlow(taskUser,event.getContactOrDepartmentForActionBean().isChecked());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

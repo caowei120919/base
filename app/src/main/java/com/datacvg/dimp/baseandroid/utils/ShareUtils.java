@@ -84,12 +84,14 @@ public class ShareUtils {
             Intent shareIntent = createShareIntent();
 
             if (shareIntent == null) {
+                ToastUtils.showLongToast("shareBySystem cancel.");
                 PLog.e(TAG, "shareBySystem cancel.");
                 return;
             }
 
             if (title == null) {
                 title = "";
+                ToastUtils.showLongToast("title = \"\"");
             }
 
             if (forcedUseSystemChooser) {
@@ -104,6 +106,7 @@ public class ShareUtils {
                         activity.startActivity(shareIntent);
                     }
                 } catch (Exception e) {
+                    ToastUtils.showLongToast(e.getMessage());
                     PLog.e(TAG, e.getMessage());
                 }
             }

@@ -309,4 +309,5 @@
     <string name="commencement_date">起止日期 :#1</string>
     <string name="plan_details">计划详情 :#1</string>
     <string name="add_a_plan_of_action">赶紧添加行动方案吧</string>
+    <string name="the_current_user_does_not_have_permission_for_dimension">当前用户没有该指标#1维度权限</string>
 </resources>
