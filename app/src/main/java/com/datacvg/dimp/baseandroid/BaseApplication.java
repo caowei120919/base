@@ -137,6 +137,10 @@ public class BaseApplication extends Application {
         mAppComponent = DaggerAppComponent.builder()
                 .appModule(new AppModule((Application) context))
                 .build();
+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        builder.detectFileUriExposure();
     }
 
     public static AppComponent getAppComponent() {

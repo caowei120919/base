@@ -123,33 +123,21 @@ public class TableFolderActivity extends BaseActivity<TableFolderView, TableFold
      */
     @Override
     public void onItemClick(TableBean tableBean) {
+        PLog.e(tableBean.getRes_showtype());
         switch (tableBean.getRes_showtype()){
             case "FOLDER" :
                 Intent intent = new Intent(mContext, TableFolderActivity.class);
                 intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,tableBean);
                 mContext.startActivity(intent);
                 break;
-            case "MODEL" :
-            case "CUSTOMJUMP" :
-            case "CUSTOMRPT" :
-            case "powerbi" :
-            case "powerbi_install" :
-            case "TABLEAU" :
-            case "BO_DASHBOARD" :
-            case "CI":
+            case "CX" :
+                PLog.e("jump to CX");
+                break;
+            default:
                 Intent tableIntent = new Intent(mContext, TableDetailActivity.class);
                 tableIntent.putExtra(Constants
                         .EXTRA_DATA_FOR_BEAN,tableBean);
                 mContext.startActivity(tableIntent);
-                break;
-
-            case "CX" :
-                PLog.e("jump to CX");
-                break;
-
-            default:
-                ToastUtils.showLongToast(resources
-                        .getString(R.string.the_current_version_is_not_supported));
                 break;
         }
     }

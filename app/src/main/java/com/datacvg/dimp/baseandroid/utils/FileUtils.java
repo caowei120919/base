@@ -965,6 +965,7 @@ public class FileUtils {
     }
 
     public static void writeTxtToFile(String strcontent, String filePath, String fileName) {
+        PLog.e(fileName);
         makeFilePath(filePath, fileName);
         String strFilePath = filePath+fileName;
         String strContent = strcontent;
@@ -980,6 +981,7 @@ public class FileUtils {
             raf.write(strContent.getBytes());
             raf.close();
         } catch (Exception e) {
+            ToastUtils.showLongToast(e.getMessage());
         }
     }
 

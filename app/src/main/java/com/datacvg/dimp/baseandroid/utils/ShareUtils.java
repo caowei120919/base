@@ -91,7 +91,6 @@ public class ShareUtils {
 
             if (title == null) {
                 title = "";
-                ToastUtils.showLongToast("title = \"\"");
             }
 
             if (forcedUseSystemChooser) {

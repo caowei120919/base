@@ -134,6 +134,7 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
                                                 .Builder(getActivity())
                                                 .setContentType(ShareContentType.IMAGE)
                                                 .setShareFileUri(mUri)
+                                                .setTitle("DIMP")
                                                 .build()
                                                 .shareBySystem();
                                     }

@@ -141,33 +141,15 @@ public class TableFragment extends BaseFragment<TableView, TablePresenter> imple
                     mContext.startActivity(folderIntent);
                 break;
 
-            case "MODEL" :
-                    PLog.e("jump to model");
-            case "CUSTOMJUMP" :
-                    PLog.e("jump to customJump");
-            case "CUSTOMRPT" :
-                    PLog.e("jump to customRpt");
-            case "powerbi" :
-                    PLog.e("jump to powerbi");
-            case "powerbi_install" :
-                    PLog.e("jump to powerbi_install");
-            case "TABLEAU" :
-                    PLog.e("jump to TABLEAU");
-            case "BO_DASHBOARD" :
-                    PLog.e("jump to BO_DASHBOARD");
-                    Intent tableIntent = new Intent(mContext, TableDetailActivity.class);
-                    tableIntent.putExtra(Constants
-                            .EXTRA_DATA_FOR_BEAN,tableBean);
-                    mContext.startActivity(tableIntent);
-                break;
-
             case "CX" :
                     PLog.e("jump to CX");
                 break;
 
             default:
-                    ToastUtils.showLongToast(resources
-                            .getString(R.string.the_current_version_is_not_supported));
+                Intent tableIntent = new Intent(mContext, TableDetailActivity.class);
+                tableIntent.putExtra(Constants
+                        .EXTRA_DATA_FOR_BEAN,tableBean);
+                mContext.startActivity(tableIntent);
                 break;
         }
     }
