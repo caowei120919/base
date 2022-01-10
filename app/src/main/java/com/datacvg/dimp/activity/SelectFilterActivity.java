@@ -203,7 +203,7 @@ public class SelectFilterActivity extends BaseActivity<SelectFilterView, SelectF
                         calendar.setTime(date);
                         switch (pageItemBean.getTime_type()){
                             case "year" :
-                                tvParameterTime.setText(calendar.get(Calendar.YEAR));
+                                tvParameterTime.setText(calendar.get(Calendar.YEAR)+"");
                                 pageItemBean.setTimeVal(calendar.get(Calendar.YEAR) + "");
                                 break;
 
