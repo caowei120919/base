@@ -8,6 +8,7 @@
         android:id="@+id/rel_title"
         android:layout_width="match_parent"
         android:background="@color/c_FFFFFF"
+        android:visibility="gone"
         android:layout_height="?actionBarSize">
         <ImageView
             android:id="@+id/img_left"
@@ -63,6 +64,7 @@
 
     <LinearLayout
         android:id="@+id/lin_style"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/H60"
         android:layout_below="@id/rel_title"
@@ -119,6 +121,7 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:visibility="gone"
         android:background="@color/c_f2f2f2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -144,9 +147,8 @@
         </TextView>
     </RelativeLayout>
 
-
-
     <RelativeLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -199,11 +201,13 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="@dimen/H4"
+        android:visibility="gone"
         android:background="@color/c_f2f2f2"
         android:layout_marginLeft="@dimen/W40">
     </TextView>
 
     <RelativeLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -253,12 +257,14 @@
         </TextView>
     </RelativeLayout>
     <TextView
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/H4"
         android:background="@color/c_f2f2f2"
         android:layout_marginLeft="@dimen/W40">
     </TextView>
     <RelativeLayout
+        android:visibility="gone"
         android:background="@color/c_f2f2f2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -285,6 +291,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -334,12 +341,14 @@
         </TextView>
     </RelativeLayout>
     <TextView
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/H4"
         android:background="@color/c_f2f2f2"
         android:layout_marginLeft="@dimen/W40">
     </TextView>
     <RelativeLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -390,12 +399,14 @@
     </RelativeLayout>
 
     <TextView
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/H4"
         android:background="@color/c_f2f2f2"
         android:layout_marginLeft="@dimen/W40">
     </TextView>
     <RelativeLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -446,12 +457,14 @@
     </RelativeLayout>
 
     <TextView
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/H4"
         android:background="@color/c_f2f2f2"
         android:layout_marginLeft="@dimen/W40">
     </TextView>
     <RelativeLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -501,12 +514,14 @@
         </TextView>
     </RelativeLayout>
     <TextView
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/H4"
         android:background="@color/c_f2f2f2"
         android:layout_marginLeft="@dimen/W40">
     </TextView>
     <RelativeLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -556,12 +571,14 @@
         </TextView>
     </RelativeLayout>
     <TextView
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/H4"
         android:background="@color/c_f2f2f2"
         android:layout_marginLeft="@dimen/W40">
     </TextView>
     <RelativeLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -612,12 +629,14 @@
     </RelativeLayout>
 
     <TextView
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/H4"
         android:background="@color/c_f2f2f2"
         android:layout_marginLeft="@dimen/W40">
     </TextView>
     <RelativeLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -667,12 +686,14 @@
         </TextView>
     </RelativeLayout>
     <TextView
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/H4"
         android:background="@color/c_f2f2f2"
         android:layout_marginLeft="@dimen/W40">
     </TextView>
     <RelativeLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -723,12 +744,14 @@
     </RelativeLayout>
 
     <TextView
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/H4"
         android:background="@color/c_f2f2f2"
         android:layout_marginLeft="@dimen/W40">
     </TextView>
     <RelativeLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -778,12 +801,14 @@
         </TextView>
     </RelativeLayout>
     <TextView
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/H4"
         android:background="@color/c_f2f2f2"
         android:layout_marginLeft="@dimen/W40">
     </TextView>
     <RelativeLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -832,4 +857,11 @@
             android:text="已扣款">
         </TextView>
     </RelativeLayout>
+
+    <com.datacvg.dimp.widget.VerticalProgressBar
+        android:id="@+id/verticalPro"
+        android:layout_width="@dimen/W15"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+    </com.datacvg.dimp.widget.VerticalProgressBar>
 </LinearLayout>

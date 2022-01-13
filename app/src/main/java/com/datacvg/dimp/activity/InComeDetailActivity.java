@@ -6,6 +6,9 @@ import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.presenter.InComeDetailPresenter;
 import com.datacvg.dimp.view.InComeDetailView;
+import com.datacvg.dimp.widget.VerticalProgressBar;
+
+import butterknife.BindView;
 
 /**
  * @Author : T-Bag (茶包)
@@ -14,6 +17,9 @@ import com.datacvg.dimp.view.InComeDetailView;
  */
 public class InComeDetailActivity extends BaseActivity<InComeDetailView, InComeDetailPresenter>
         implements InComeDetailView {
+    @BindView(R.id.verticalPro)
+    VerticalProgressBar verticalPro ;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_income;
@@ -32,6 +38,6 @@ public class InComeDetailActivity extends BaseActivity<InComeDetailView, InComeD
 
     @Override
     protected void setupData(Bundle savedInstanceState) {
-
+        verticalPro.setProgress(60);
     }
 }

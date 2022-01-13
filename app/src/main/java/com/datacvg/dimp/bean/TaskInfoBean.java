@@ -874,7 +874,7 @@ public class TaskInfoBean implements Serializable {
          * index_root_id :
          * relation_i_id : 85054292732340667634
          * orgdimension : 14860367656855969470
-         * action_type : 4
+         * action_type : 4 sand
          * alldeimension : 数聚股份,所有地区,实施与服务
          * relation_i_pkid : 1254091048124535621024
          * task_id : 160732483302825516
@@ -947,7 +947,7 @@ public class TaskInfoBean implements Serializable {
         private String fudimension;
         private String save_data;
         private List<DementionInfoBean> demention_info;
-        private Object newval;
+        private String newval;
 
         public String getTree_type() {
             return tree_type;
@@ -957,7 +957,7 @@ public class TaskInfoBean implements Serializable {
             this.tree_type = tree_type;
         }
 
-        public void setNewval(Object newval) {
+        public void setNewval(String newval) {
             this.newval = newval;
         }
 
@@ -1105,12 +1105,8 @@ public class TaskInfoBean implements Serializable {
             this.demention_info = demention_info;
         }
 
-        public Object getNewval() {
+        public String getNewval() {
             return newval;
-        }
-
-        public void setNewval(String newval) {
-            this.newval = newval;
         }
 
         @Keep

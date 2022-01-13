@@ -11,11 +11,13 @@ import android.widget.TextView;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.utils.PLog;
+import com.datacvg.dimp.baseandroid.utils.TimeUtils;
 import com.datacvg.dimp.bean.KpiPermissionDataBean;
 import com.datacvg.dimp.bean.SaveDataListBean;
 import com.datacvg.dimp.bean.TaskInfoBean;
 import com.datacvg.dimp.presenter.SnapPresenter;
 import com.datacvg.dimp.view.SnapView;
+import com.datacvg.dimp.widget.VerticalProgressBar;
 import com.enlogy.statusview.StatusRelativeLayout;
 import com.google.gson.Gson;
 import java.util.Arrays;
@@ -60,6 +62,10 @@ public class SnapFragment extends BaseFragment<SnapView, SnapPresenter> implemen
     TextView tvStartValue ;
     @BindView(R.id.tv_endTime)
     TextView tvEndTime ;
+    @BindView(R.id.tv_currentTime)
+    TextView tvCurrentTime ;
+    @BindView(R.id.verticalPro)
+    VerticalProgressBar verticalPro ;
 
     private TaskInfoBean.FastPhotoOldBean fastPhotoOldBean ;
     private PopupWindow timeTypePop ;
@@ -180,6 +186,14 @@ public class SnapFragment extends BaseFragment<SnapView, SnapPresenter> implemen
             tvStartValue.setText(saveDataBeans.get(0).getIndex_data());
         }
         tvEndTime.setText(TextUtils.isEmpty(fastPhotoOldBean.getDeadline()) ? "" : fastPhotoOldBean.getDeadline());
+        if(!TextUtils.isEmpty(fastPhotoOldBean.getAction_time()) && !TextUtils.isEmpty(fastPhotoOldBean.getDeadline())){
+            if(fastPhotoOldBean.getNewval().isEmpty()){
+                verticalPro.setProgress(0);
+            }else{
+                verticalPro.setProgress((int) ((float)TimeUtils.countDays(fastPhotoOldBean.getAction_time())/(float) (TimeUtils.differentDays(TimeUtils.parse(fastPhotoOldBean.getAction_time())
+                        ,TimeUtils.parse(fastPhotoOldBean.getDeadline()))) * 100));
+            }
+        }
     }
 
 

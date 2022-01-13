@@ -85,6 +85,7 @@
             android:background="@drawable/shape_fbebe7_round"
             android:textColor="@color/c_da3a16"
             android:textSize="12sp"
+            android:visibility="gone"
             android:text="2019.02.10"
             android:drawablePadding="@dimen/W20"
             android:paddingRight="@dimen/W20"
@@ -93,12 +94,12 @@
         </TextView>
 
         <TextView
+            android:id="@+id/tv_currentValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/W25"
             android:layout_alignTop="@id/tv_currentTime"
-            android:text="6789"
             android:textStyle="bold"
             android:layout_marginTop="@dimen/H5"
             android:textColor="@color/c_da3a16">
@@ -143,12 +144,23 @@
             android:layout_width="@dimen/W2"
             android:layout_height="match_parent"
             android:layout_below="@id/img_start"
-            android:layout_gravity="center"
             android:layout_above="@id/img_arrow"
+            android:layout_gravity="center"
             android:layout_marginLeft="@dimen/W9"
             android:layout_alignLeft="@id/img_arrow"
             android:background="@drawable/dotted_line_bg">
         </View>
+
+        <com.datacvg.dimp.widget.VerticalProgressBar
+            android:id="@+id/verticalPro"
+            android:layout_width="@dimen/W5"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/W9"
+            android:layout_below="@id/img_initial"
+            android:layout_above="@id/img_end"
+            android:layout_alignLeft="@id/img_arrow">
+        </com.datacvg.dimp.widget.VerticalProgressBar>
     </RelativeLayout>
 
     <TextView

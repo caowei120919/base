@@ -21,7 +21,9 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:textSize="18sp"
-        android:maxWidth="@dimen/W500"
+        android:maxWidth="@dimen/W400"
+        android:singleLine="true"
+        android:ellipsize="end"
         android:textColor="@color/c_666666"
         android:gravity="center">
     </TextView>

@@ -146,7 +146,7 @@ public class TimeUtils {
     }
 
 
-    public static String date2Str(Calendar c) {// yyyy-MM-dd HH:mm:ss
+    public static String date2Str(Calendar c) {
         return date2Str(c, null);
     }
 
@@ -641,5 +641,39 @@ public class TimeUtils {
         calendar.clear();
         calendar.set(year,month,day);
         return calendar.getTime();
+    }
+
+    /**
+     * date2比date1多的天数
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    public static int differentDays(Date startTime,Date endTime)
+    {
+        Calendar cal1 = Calendar.getInstance();
+        cal1.setTime(startTime);
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(endTime);
+        int day1= cal1.get(Calendar.DAY_OF_YEAR);
+        int day2 = cal2.get(Calendar.DAY_OF_YEAR);
+        int year1 = cal1.get(Calendar.YEAR);
+        int year2 = cal2.get(Calendar.YEAR);
+        if(year1 != year2)
+        {
+            int timeDistance = 0 ;
+            for(int i = year1 ; i < year2 ; i ++)
+            {
+                if(i%4==0 && i%100!=0 || i%400==0){
+                    timeDistance += 366;
+                }else{
+                    timeDistance += 365;
+                }
+            }
+
+            return timeDistance + (day2-day1) ;
+        }else{
+            return day2-day1;
+        }
     }
 }
