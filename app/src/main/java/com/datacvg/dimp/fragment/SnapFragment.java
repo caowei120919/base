@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
@@ -66,6 +67,8 @@ public class SnapFragment extends BaseFragment<SnapView, SnapPresenter> implemen
     TextView tvCurrentTime ;
     @BindView(R.id.verticalPro)
     VerticalProgressBar verticalPro ;
+    @BindView(R.id.rel_current)
+    RelativeLayout relCurrent ;
 
     private TaskInfoBean.FastPhotoOldBean fastPhotoOldBean ;
     private PopupWindow timeTypePop ;
@@ -164,9 +167,9 @@ public class SnapFragment extends BaseFragment<SnapView, SnapPresenter> implemen
                         if(fastPhotoOldBean.getAction_type().equals("sand")){
                             if(!saveDataBeans.isEmpty() && saveDataBeans.size() > 0){
                                 tvTargetValue.setText(saveDataBeans.get(0).getGoal_value() + saveDataBeans.get(0).getValue_unit());
+                            }else {
+                                tvTargetValue.setText(saveDataBeans.get(0).getGoal_value() + saveDataBeans.get(0).getValue_unit());
                             }
-                        }else {
-                            tvTargetValue.setText(saveDataBeans.get(0).getGoal_value() + saveDataBeans.get(0).getValue_unit());
                         }
                         break;
 

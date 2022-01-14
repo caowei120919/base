@@ -15,6 +15,7 @@
     <string name="Enter_your_enterprise_id_or_configure_the_semf_service_address">
         Enter your enterprise id or configure the SEMF service address
     </string>
+    <string name="current">current</string>
     <string name="detail">detail</string>
     <string name="confirm_the_reduction">Confirm the reduction?</string>
     <string name="report">report</string>

@@ -174,4 +174,14 @@ public class DbContactOrDepartmentController {
         ContactOrDepartmentBean contactOrDepartmentBean = qb.build().unique();
         return contactOrDepartmentBean ;
     }
+
+    public ContactOrDepartmentBean queryContactForName(String name) {
+        DaoMaster daoMaster = new DaoMaster(getReadableDatabase());
+        DaoSession daoSession = daoMaster.newSession();
+        ContactOrDepartmentBeanDao userDao = daoSession.getContactOrDepartmentBeanDao();
+        QueryBuilder<ContactOrDepartmentBean> qb = userDao.queryBuilder();
+        qb.where(ContactOrDepartmentBeanDao.Properties.Name.eq(name));
+        ContactOrDepartmentBean contactOrDepartmentBean = qb.build().unique();
+        return contactOrDepartmentBean ;
+    }
 }

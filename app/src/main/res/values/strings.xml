@@ -245,6 +245,7 @@
     <string name="unit">单位</string>
     <string name="dimension_details">维度详情</string>
     <string name="the_current_user_does_not_have_permission_for_the_metric_dimension">当前用户没有该指标维度权限</string>
+    <string name="current">当前</string>
     <string name="submit">提交</string>
     <string name="please_input_feedback">请输入反馈信息</string>
     <string name="review_the_task">审核任务</string>

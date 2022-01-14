@@ -306,8 +306,10 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 Intent assistantIntent = new Intent(mContext,ChooseContactFromActionActivity.class) ;
                 assistantIntent.putExtra(Constants.EXTRA_DATA_FOR_ALBUM,false);
                 if(!TextUtils.isEmpty(headContactId)){
-                    String headId = DbContactOrDepartmentController.getInstance(mContext).queryContact(headContactId).getResId();
-                    assistantIntent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,headId) ;
+                    ContactOrDepartmentBean head = DbContactOrDepartmentController.getInstance(mContext).queryContact(headContactId);
+                    if(head != null){
+                        assistantIntent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,head.getResId()) ;
+                    }
                 }
                 if(!assistantBeanIds.isEmpty()){
                     for (String assistantBeanId : assistantBeanIds){
@@ -601,6 +603,8 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                             imgDelete.setVisibility(View.VISIBLE);
                             imgDelete.setOnClickListener(v -> {
                                 PLog.e("删除协助人");
+                                flowAssistant.removeView(containView);
+                                assistantBeanIds.remove(containView.getTag());
                             });
                         }
                     }

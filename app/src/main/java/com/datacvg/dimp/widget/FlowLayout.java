@@ -2,15 +2,10 @@ package com.datacvg.dimp.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-
 import com.datacvg.dimp.R;
-import com.datacvg.dimp.baseandroid.utils.PLog;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,23 +62,12 @@ public class FlowLayout extends ViewGroup {
         int count = getChildCount();
         int width = getWidth();
 
-
-        int startOffsetX = paddingLeft;// 横坐标开始
-        int startOffsety = 0;//纵坐标开始
-        int rowCount = 1;
-
-        int preEndOffsetX = startOffsetX;
-
         for (int i = 0; i < count; i++) {
                 final View childView = getChildAt(i);
-
                 int w = childView.getMeasuredWidth();
                 int h = childView.getMeasuredHeight();
-
                 int x = listX.get(i);
                 int y = listY.get(i);
-
-                // 布局子控件
                 childView.layout(x, y, x + w, y + h);
             }
         }
@@ -92,24 +76,20 @@ public class FlowLayout extends ViewGroup {
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
                 int count = getChildCount();
                 int width = measureWidth(widthMeasureSpec);
-                int startOffsetX = paddingLeft;// 横坐标开始
-                int startOffsety = 0+paddingTop;//纵坐标开始
+                int startOffsetX = paddingLeft;
+                int startOffsety = 0+paddingTop;
                 int rowCount = 1;
                 int preEndOffsetX = startOffsetX;
                 listX.clear();
                 listY.clear();
                 for (int i = 0; i < count; i++) {
                 final View childView = getChildAt(i);
-                // 设置子空间Child的宽高
                 childView.measure(0,0);
-                /* 获取子控件Child的宽高 */
                 int childWidth = childView.getMeasuredWidth();
                 int childHeight = childView.getMeasuredHeight();
-                preEndOffsetX = startOffsetX + childWidth /*+ CHILD_MARGIN*/;
-                //TODO [yaojian]margin属性？
+                preEndOffsetX = startOffsetX + childWidth ;
                 if (preEndOffsetX > width - paddingRight ) {
                     if (startOffsetX > paddingLeft) {
-                            /* 换行  */
                             startOffsetX = paddingLeft;
                             startOffsety += childHeight+verticalSpace;
                             rowCount++;
@@ -132,11 +112,7 @@ public class FlowLayout extends ViewGroup {
         private int measureWidth(int measureSpec) {
             int specMode = MeasureSpec.getMode(measureSpec);
             int specSize = MeasureSpec.getSize(measureSpec);
-
-
-            // Default size if no limits are specified.
             int result = 400;
-
             if (specMode == MeasureSpec.AT_MOST) {
                     result = specSize;
                 } else if (specMode == MeasureSpec.EXACTLY) {
