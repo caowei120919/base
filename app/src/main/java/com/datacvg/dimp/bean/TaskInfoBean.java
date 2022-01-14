@@ -900,6 +900,7 @@ public class TaskInfoBean implements Serializable {
         private String relation_i_pkid;
         private String task_id;
         private String pdimension;
+        private String fudimension ;
         private String update_time;
         private String dimention_preid;
         private String update_user;
@@ -911,13 +912,22 @@ public class TaskInfoBean implements Serializable {
         private String fast_code ;
         private String no_permission_name ;
         private String deadline ;
+        private String index_value_unit ;
+
+        public String getIndex_value_unit() {
+            return index_value_unit;
+        }
+
+        public void setIndex_value_unit(String index_value_unit) {
+            this.index_value_unit = index_value_unit;
+        }
 
         public String getDeadline() {
             return deadline;
         }
 
         public void setDeadline(String deadline) {
-            this.deadline = deadline;
+           this.deadline = deadline;
         }
 
         public String getFast_code() {
@@ -944,10 +954,11 @@ public class TaskInfoBean implements Serializable {
             this.index_unit = index_unit;
         }
 
-        private String fudimension;
         private String save_data;
         private List<DementionInfoBean> demention_info;
-        private String newval;
+        private List<NewvalBean> newval;
+        private String index_mnt_description ;
+        private String index_value_mnt ;
 
         public String getTree_type() {
             return tree_type;
@@ -957,7 +968,7 @@ public class TaskInfoBean implements Serializable {
             this.tree_type = tree_type;
         }
 
-        public void setNewval(String newval) {
+        public void setNewval(List<NewvalBean> newval) {
             this.newval = newval;
         }
 
@@ -1105,7 +1116,7 @@ public class TaskInfoBean implements Serializable {
             this.demention_info = demention_info;
         }
 
-        public String getNewval() {
+        public List<NewvalBean> getNewval() {
             return newval;
         }
 
@@ -1133,6 +1144,7 @@ public class TaskInfoBean implements Serializable {
             private String index_mnt_description;
             private String index_value_mnt;
             private String index_threshold_value;
+
 
             public String getIndex_value_unit() {
                 return index_value_unit;

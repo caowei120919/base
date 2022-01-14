@@ -20,6 +20,7 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:textSize="18sp"
+        android:maxWidth="@dimen/W350"
         android:singleLine="true"
         android:ellipsize="end"
         android:textColor="@color/c_666666"

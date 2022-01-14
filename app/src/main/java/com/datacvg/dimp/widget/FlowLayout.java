@@ -1,6 +1,7 @@
 package com.datacvg.dimp.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
@@ -21,125 +22,175 @@ import java.util.List;
  */
 
 public class FlowLayout extends ViewGroup {
-    private int mScreenWidth;
-    private int horizontalSpace, verticalSpace;
-    private float mDensity;
+    /**
+     * 左间距
+     */
+     private int paddingLeft = 10;
+    /**
+     * 右间距
+     */
+     private int paddingRight = 10;
+    /**
+    *
+     * */
+    private int paddingTop = 10;
+    /**
+    *
+    */
+    private int paddingBottom = 10;
+    /**
+     * 水平方向间距
+     */
+     private int horizontalSpace = 10;
+    /**
+     * 行间距
+     */
+     private int verticalSpace = 5;
+     private List<Integer> listX;
+     private List<Integer> listY;
+     public FlowLayout(Context context) {
+        super(context);
 
-    public FlowLayout(Context context) {
-        this(context, null);
     }
-
-    public FlowLayout(Context context, AttributeSet attrs) {
+     public FlowLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mScreenWidth = context.getResources().getDisplayMetrics().widthPixels;
-        mDensity = context.getResources().getDisplayMetrics().density;
-    }
+        init(attrs);
+     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        //确定此容器的宽高
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+      public FlowLayout(Context context, AttributeSet attrs, int defStyle) {
+         super(context, attrs, defStyle);
+         init(attrs);
+      }
 
-        //测量子View的宽高
-        int childCount = getChildCount();
-        View child = null;
-        //子view摆放的起始位置
-        int left = getPaddingLeft();
-        //一行view中将最大的高度存于此变量，用于子view进行换行时高度的计算
-        int maxHeightInLine = 0;
-        //存储所有行的高度相加，用于确定此容器的高度
-        int allHeight = 0;
-        for (int i = 0; i < childCount; i++) {
-            child = getChildAt(i);
-            //测量子View宽高
-            measureChild(child, widthMeasureSpec, heightMeasureSpec);
-            //两两对比，取得一行中最大的高度
-            if (child.getMeasuredHeight() + child.getPaddingTop() + child.getPaddingBottom() > maxHeightInLine) {
-                maxHeightInLine = child.getMeasuredHeight() + child.getPaddingTop() + child.getPaddingBottom();
-            }
-            left += child.getMeasuredWidth() + dip2px(horizontalSpace) + child.getPaddingLeft() + child.getPaddingRight();
-            if (left >= widthSize - getPaddingRight() - getPaddingLeft()) {
-                left = getPaddingLeft();
-                //累积行的总高度
-                allHeight += maxHeightInLine + dip2px(verticalSpace);
-                maxHeightInLine = 0;
+       @Override
+       protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        int count = getChildCount();
+        int width = getWidth();
+
+
+        int startOffsetX = paddingLeft;// 横坐标开始
+        int startOffsety = 0;//纵坐标开始
+        int rowCount = 1;
+
+        int preEndOffsetX = startOffsetX;
+
+        for (int i = 0; i < count; i++) {
+                final View childView = getChildAt(i);
+
+                int w = childView.getMeasuredWidth();
+                int h = childView.getMeasuredHeight();
+
+                int x = listX.get(i);
+                int y = listY.get(i);
+
+                // 布局子控件
+                childView.layout(x, y, x + w, y + h);
             }
         }
-        allHeight += maxHeightInLine;
 
-        if (widthMode != MeasureSpec.EXACTLY) {
-            widthSize = mScreenWidth;
-        }
-
-        if (heightMode != MeasureSpec.EXACTLY) {
-            heightSize = allHeight + getPaddingBottom() + getPaddingTop();
-        }
-
-        setMeasuredDimension(widthSize, heightSize);
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        if (changed) {
-            //摆放子view
-            View child = null;
-            //初始子view摆放的左上位置
-            int left = getPaddingLeft();
-            int top = getPaddingTop();
-            //一行view中将最大的高度存于此变量，用于子view进行换行时高度的计算
-            int maxHeightInLine = 0;
-            for (int i = 0, len = getChildCount(); i < len; i++) {
-                child = getChildAt(i);
-                //从第二个子view开始算起
-                //因为第一个子view默认从头开始摆放
-                if (i > 0) {
-                    //两两对比，取得一行中最大的高度
-                    if (getChildAt(i - 1).getMeasuredHeight() > maxHeightInLine) {
-                        maxHeightInLine = getChildAt(i - 1).getMeasuredHeight();
-                    }
-                    //当前子view的起始left为 上一个子view的宽度+水平间距
-                    left += getChildAt(i - 1).getMeasuredWidth() + dip2px(horizontalSpace);
-                    if (left + child.getMeasuredWidth() >= getWidth() - getPaddingRight() - getPaddingLeft()) {
-                        left = getPaddingLeft();
-                        top += maxHeightInLine + dip2px(verticalSpace);
-                        maxHeightInLine = 0;
-                    }
+        @Override
+        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+                int count = getChildCount();
+                int width = measureWidth(widthMeasureSpec);
+                int startOffsetX = paddingLeft;// 横坐标开始
+                int startOffsety = 0+paddingTop;//纵坐标开始
+                int rowCount = 1;
+                int preEndOffsetX = startOffsetX;
+                listX.clear();
+                listY.clear();
+                for (int i = 0; i < count; i++) {
+                final View childView = getChildAt(i);
+                // 设置子空间Child的宽高
+                childView.measure(0,0);
+                /* 获取子控件Child的宽高 */
+                int childWidth = childView.getMeasuredWidth();
+                int childHeight = childView.getMeasuredHeight();
+                preEndOffsetX = startOffsetX + childWidth /*+ CHILD_MARGIN*/;
+                //TODO [yaojian]margin属性？
+                if (preEndOffsetX > width - paddingRight ) {
+                    if (startOffsetX > paddingLeft) {
+                            /* 换行  */
+                            startOffsetX = paddingLeft;
+                            startOffsety += childHeight+verticalSpace;
+                            rowCount++;
+                        }
                 }
-                //摆放子view
-                child.layout(left, top, left + child.getMeasuredWidth(), top + child.getMeasuredHeight());
+            listX.add(startOffsetX);
+            listY.add(startOffsety);
+
+              childView.layout(startOffsetX, startOffsety, preEndOffsetX, startOffsety+childHeight);
+            startOffsetX = startOffsetX + childWidth + horizontalSpace;
             }
+            int lastLineHeight = 0;
+            View lastChild = getChildAt(count-1);
+            if(null != lastChild){
+                lastLineHeight = lastChild.getMeasuredHeight();
+            }
+            setMeasuredDimension(measureWidth(widthMeasureSpec), startOffsety+lastLineHeight+paddingBottom);
         }
-    }
 
-    /**
-     * dp转为px
-     *
-     * @param dpValue
-     * @return
-     */
-    private int dip2px(float dpValue) {
-        return (int) (dpValue * mDensity + 0.5f);
-    }
+        private int measureWidth(int measureSpec) {
+            int specMode = MeasureSpec.getMode(measureSpec);
+            int specSize = MeasureSpec.getSize(measureSpec);
 
-    /**
-     * 设置子view间的水平间距 单位dp
-     *
-     * @param horizontalSpace
-     */
-    public void setHorizontalSpace(int horizontalSpace) {
-        this.horizontalSpace = horizontalSpace;
-    }
 
-    /**
-     * 设置子view间的垂直间距 单位dp
-     *
-     * @param verticalSpace
-     */
-    public void setVerticalSpace(int verticalSpace) {
-        this.verticalSpace = verticalSpace;
-    }
+            // Default size if no limits are specified.
+            int result = 400;
+
+            if (specMode == MeasureSpec.AT_MOST) {
+                    result = specSize;
+                } else if (specMode == MeasureSpec.EXACTLY) {
+                    result = specSize;
+                }
+            return result;
+     }
+
+     private void init(AttributeSet attrs) {
+        TypedArray attrArray = getContext().obtainStyledAttributes(attrs, R.styleable.AutoLineFeedLayout);
+        int attrCount = attrArray.getIndexCount();
+        for (int i = 0; i < attrCount; i++) {
+            int attrId = attrArray.getIndex(i);
+            switch (attrId) {
+                    case R.styleable.AutoLineFeedLayout_horizontalSpacing:{
+                            float dimen = attrArray.getDimension(attrId, 0);
+                            horizontalSpace = (int) dimen;
+                        }
+                    break;
+                    case R.styleable.AutoLineFeedLayout_verticalSpacing:{
+                            float dimen = attrArray.getDimension(attrId, 0);
+                            verticalSpace = (int) dimen;
+                        }
+                    break;
+                    case R.styleable.AutoLineFeedLayout_paddingBottom:{
+                            float dimen = attrArray.getDimension(attrId, 0);
+                            paddingBottom = (int) dimen;
+                        }
+                    break;
+                    case R.styleable.AutoLineFeedLayout_paddingLeft:{
+                            float dimen = attrArray.getDimension(attrId, 0);
+                            paddingLeft = (int) dimen;
+                        }
+                    break;
+                    case R.styleable.AutoLineFeedLayout_paddingRight:{
+                            float dimen = attrArray.getDimension(attrId, 0);
+                            paddingRight = (int) dimen;
+                        }
+                    break;
+                    case R.styleable.AutoLineFeedLayout_paddingTop:{
+                            float dimen = attrArray.getDimension(attrId, 0);
+                            paddingTop = (int) dimen;
+                        }
+                    break;
+                    case R.styleable.AutoLineFeedLayout_debug:{
+
+                        }
+                    break;
+
+                    default:
+                            break;
+                }
+        }
+        listX = new ArrayList<Integer>();
+        listY = new ArrayList<Integer>();
+     }
 }

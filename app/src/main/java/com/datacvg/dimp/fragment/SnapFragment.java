@@ -128,6 +128,7 @@ public class SnapFragment extends BaseFragment<SnapView, SnapPresenter> implemen
             viewNone.setVisibility(View.GONE);
             viewSnap.setVisibility(View.VISIBLE);
         }
+        List<TaskInfoBean.FastPhotoOldBean.SaveDataBean> saveDataBeans = new Gson().fromJson(fastPhotoOldBean.getSave_data(), SaveDataListBean.class);
         if(!fastPhotoOldBean.getDemention_info().isEmpty()){
             for (TaskInfoBean.FastPhotoOldBean.DementionInfoBean bean : fastPhotoOldBean.getDemention_info()){
                 switch (bean.getType()){
@@ -160,6 +161,13 @@ public class SnapFragment extends BaseFragment<SnapView, SnapPresenter> implemen
                             tvTarget.setText(resources.getString(R.string.target));
                         }
                         tvTargetValue.setText(bean.getThreshold_value() + " " + bean.getIndex_value_unit());
+                        if(fastPhotoOldBean.getAction_type().equals("sand")){
+                            if(!saveDataBeans.isEmpty() && saveDataBeans.size() > 0){
+                                tvTargetValue.setText(saveDataBeans.get(0).getGoal_value() + saveDataBeans.get(0).getValue_unit());
+                            }
+                        }else {
+                            tvTargetValue.setText(saveDataBeans.get(0).getGoal_value() + saveDataBeans.get(0).getValue_unit());
+                        }
                         break;
 
                     /**
@@ -177,11 +185,23 @@ public class SnapFragment extends BaseFragment<SnapView, SnapPresenter> implemen
                         tvChallengeValue.setText(bean.getThreshold_value() + " " + bean.getIndex_value_unit());
                         break;
                 }
+                switch (bean.getIndex_threshold_type()){
+                    case "1" :
+                        double value = 0 ;
+
+                        break;
+
+                    case "2" :
+
+                        break;
+
+                    default:
+
+                        break;
+                }
             }
         }
         tvStartTime.setText(TextUtils.isEmpty(fastPhotoOldBean.getAction_time()) ? "" : fastPhotoOldBean.getAction_time());
-        List<TaskInfoBean.FastPhotoOldBean.SaveDataBean> saveDataBeans = new Gson().fromJson(fastPhotoOldBean.getSave_data(), SaveDataListBean.class);
-        PLog.e(new Gson().toJson(saveDataBeans));
         if (!saveDataBeans.isEmpty() && !TextUtils.isEmpty(saveDataBeans.get(0).getIndex_data())){
             tvStartValue.setText(saveDataBeans.get(0).getIndex_data());
         }
