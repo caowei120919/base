@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.activity.ChartDetailActivity;
 import com.datacvg.dimp.activity.IndexTreeActivity;
 import com.datacvg.dimp.adapter.BudgetIndexAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
@@ -253,7 +254,10 @@ public class BudgetFragment extends BaseFragment<BudgetView, BudgetPresenter> im
 
     @Override
     public void OnTitleClick(DimensionPositionBean.IndexPositionBean bean) {
-
+        Intent intent = new Intent(mContext, ChartDetailActivity.class);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,bean);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,pageItemBean);
+        startActivity(intent);
     }
 
     @Override

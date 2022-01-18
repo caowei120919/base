@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -61,6 +62,8 @@ public class SelectChartTypeAdapter extends RecyclerView.Adapter<SelectChartType
     public class ViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.tv_typeName)
         TextView tvTypeName ;
+        @BindView(R.id.rel_item)
+        RelativeLayout relItem;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

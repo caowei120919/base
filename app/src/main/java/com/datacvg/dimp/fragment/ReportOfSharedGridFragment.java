@@ -142,8 +142,8 @@ public class ReportOfSharedGridFragment extends BaseFragment<ReportOfSharedView,
         listButton.add(resources.getString(R.string.confirm_the_deletion));
         new SuperDialog.Builder(getActivity())
                 .setCanceledOnTouchOutside(false)
-                .setTitle(resources.getString(R.string.are_you_sure_to_clear_all_data),resources.getColor(R.color.c_303030),24,80)
-                .setItems(listButton,resources.getColor(R.color.c_da3a16),24,80
+                .setTitle(resources.getString(R.string.are_you_sure_to_clear_all_data),resources.getColor(R.color.c_303030),36,120)
+                .setItems(listButton,resources.getColor(R.color.c_da3a16),36,120
                         , new SuperDialog.OnItemClickListener() {
                             @Override
                             public void onItemClick(int position) {
@@ -151,7 +151,7 @@ public class ReportOfSharedGridFragment extends BaseFragment<ReportOfSharedView,
                             }
                         })
                 .setNegativeButton(resources.getString(R.string.cancel)
-                        ,resources.getColor(R.color.c_303030),24,80, null)
+                        ,resources.getColor(R.color.c_303030),36,120, null)
                 .build();
     }
 

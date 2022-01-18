@@ -53,7 +53,7 @@
     <com.enlogy.statusview.StatusRelativeLayout
         android:id="@+id/status_chart"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/H400"
+        android:layout_height="@dimen/H600"
         android:background="@color/c_FFFFFF"
         android:layout_below="@id/lin_type"
         android:layout_marginTop="@dimen/H24"

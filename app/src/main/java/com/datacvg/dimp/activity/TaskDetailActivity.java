@@ -361,7 +361,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 .setTitleSize(20)
                 .setTitleText("")
                 .setOutSideCancelable(false)
-                .isCyclic(true)
+                .isCyclic(false)
                 .setDate(selectedDate)
                 .setRangDate(startDate,endDate)
                 .isCenterLabel(false)
@@ -826,7 +826,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
                 .setTitleSize(20)
                 .setTitleText("")
                 .setOutSideCancelable(false)
-                .isCyclic(true)
+                .isCyclic(false)
                 .setDate(selectedDate)
                 .setRangDate(startDate,endDate)
                 .isCenterLabel(false)
@@ -1011,7 +1011,7 @@ public class TaskDetailActivity extends BaseActivity<TaskDetailView, TaskDetailP
             assistantBeanIds.remove(event.getContactOrDepartmentForActionBean().getContactOrDepartmentBean().getUserId());
         }
         ContactOrDepartmentBean actionBean = DbContactOrDepartmentController.getInstance(mContext)
-                .queryContact(event.getContactOrDepartmentForActionBean().getContactOrDepartmentBean().getUserId()) ;
+                .queryContact(event.getContactOrDepartmentForActionBean().getContactOrDepartmentBean().getUserId());
         CreateTaskBean.TaskUser taskUser = new CreateTaskBean.TaskUser() ;
         taskUser.setId(actionBean.getResId());
         taskUser.setName(actionBean.getName());

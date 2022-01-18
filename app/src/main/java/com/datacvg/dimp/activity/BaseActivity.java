@@ -4,9 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.Window;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+
 import com.datacvg.dimp.MyApplication;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.BaseApplication;
@@ -29,6 +34,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Method;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 

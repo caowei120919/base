@@ -359,7 +359,7 @@ public class BulletChart extends View {
         mHeight = h ;
         mWidth = w ;
         mSize = mWidth/20 ;
-        mUnitSize = mWidth /20 ;
+        mUnitSize = 30 ;
     }
 
     private void initPoints(float mChartPlan, float mChartSamePeriod, float mChartActual) {
@@ -408,16 +408,16 @@ public class BulletChart extends View {
         for (IndexChartBean.ChartDataBean chartBean : bean.getChart_data()){
             if(chartBean.getValue_type().equals("actual")){
                 hasActual = true ;
-                mPlan = Float.valueOf(chartBean.getValue_data()) ;
+                mPlan = Float.valueOf(chartBean.getValue_data().replaceAll(",","")) ;
             }
 
             if(chartBean.getValue_type().equals("same_period")){
-                mSamePeriod = Float.valueOf(chartBean.getValue_data());
+                mSamePeriod = Float.valueOf(chartBean.getValue_data().replaceAll(",",""));
                 hasPeriod = true ;
             }
 
             if(chartBean.getValue_type().equals("plan")){
-                mActual = Float.valueOf(chartBean.getValue_data()) ;
+                mActual = Float.valueOf(chartBean.getValue_data().replaceAll(",","")) ;
                 hasPlan = true ;
             }
 

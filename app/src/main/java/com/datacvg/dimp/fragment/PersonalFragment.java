@@ -206,7 +206,7 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
                 listButton.add(resources.getString(R.string.photo_album));
                 new SuperDialog.Builder(getActivity())
                         .setCanceledOnTouchOutside(true)
-                        .setItems(listButton,resources.getColor(R.color.c_303030),24,80
+                        .setItems(listButton,resources.getColor(R.color.c_303030),36,120
                                 , new SuperDialog.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(int position) {
@@ -222,7 +222,7 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
                                     }
                                 })
                         .setNegativeButton(resources.getString(R.string.cancel)
-                                ,resources.getColor(R.color.c_da3a16),24,80
+                                ,resources.getColor(R.color.c_da3a16),36,120
                                 , null)
                         .build();
                 break;

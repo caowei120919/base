@@ -10,6 +10,7 @@ import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.PageItemBean;
 import com.datacvg.dimp.event.AddPageEvent;
 import com.datacvg.dimp.event.CheckIndexEvent;
+import com.datacvg.dimp.event.CompleteEvent;
 import com.datacvg.dimp.event.DeletePageEvent;
 import com.datacvg.dimp.event.EditEvent;
 import com.datacvg.dimp.event.EmptyFragmentEvent;
@@ -185,7 +186,7 @@ public class BoardFragment extends BaseFragment<BoardView, BoardPresenter> imple
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(PageCompleteEvent event){
+    public void onEvent(CompleteEvent event){
         vpBoard.setScroll(true);
         magicIndicator.setVisibility(View.VISIBLE);
         magicIndicator.getNavigator().notifyDataSetChanged();

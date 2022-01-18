@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:background="@color/c_f8f8fa">
 
-
     <net.lucode.hackware.magicindicator.MagicIndicator
         android:id="@+id/magic_indicator"
         android:layout_width="wrap_content"

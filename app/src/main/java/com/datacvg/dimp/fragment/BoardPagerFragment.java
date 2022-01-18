@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.activity.AddIndexActivity;
 import com.datacvg.dimp.activity.AddIndexPageActivity;
+import com.datacvg.dimp.activity.ChartDetailActivity;
 import com.datacvg.dimp.activity.IndexTreeActivity;
 import com.datacvg.dimp.activity.SelectFilterActivity;
 import com.datacvg.dimp.adapter.DimensionIndexAdapter;
@@ -19,7 +21,6 @@ import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
-import com.datacvg.dimp.baseandroid.utils.TimeUtils;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.baseandroid.utils.UiHandlers;
 import com.datacvg.dimp.bean.ChangeChartRequestBean;
@@ -297,11 +298,16 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
      */
     @Override
     public void savePageSuccess() {
-        String padName = ((EditText)statusBoard.findViewById(R.id.edit_pageName)).getText().toString();
+        String padName="" ;
+        try {
+            padName = ((EditText)statusBoard.findViewById(R.id.edit_pageName)).getText().toString();
+        }catch (NullPointerException e){
+
+        }
         pageItemBean.setPad_name(padName);
-        ToastUtils.showLongToast(resources.getString(R.string.save_success));
         if(isComplete){
             PLog.e("完成");
+            ToastUtils.showLongToast(resources.getString(R.string.save_success));
             EventBus.getDefault().post(new PageCompleteEvent());
             relAddOrDelete.setVisibility(View.GONE);
             statusBoard.showContent();
@@ -384,8 +390,8 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
         listButton.add(resources.getString(R.string.confirm_the_deletion));
         new SuperDialog.Builder(getActivity())
                 .setCanceledOnTouchOutside(false)
-                .setTitle(message,resources.getColor(R.color.c_303030),24,80)
-                .setItems(listButton,resources.getColor(R.color.c_da3a16),24,80
+                .setTitle(message,resources.getColor(R.color.c_303030),36,120)
+                .setItems(listButton,resources.getColor(R.color.c_da3a16),36,120
                         , new SuperDialog.OnItemClickListener() {
                     @Override
                     public void onItemClick(int position) {
@@ -393,7 +399,7 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
                     }
                 })
                 .setNegativeButton(resources.getString(R.string.cancel)
-                        ,resources.getColor(R.color.c_303030),24,80, null)
+                        ,resources.getColor(R.color.c_303030),36,120, null)
                 .build();
     }
 
@@ -487,6 +493,9 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
         relAddOrDelete.setVisibility(View.VISIBLE);
         statusBoard.showExtendContent();
         ((EditText)statusBoard.findViewById(R.id.edit_pageName)).setText(pageItemBean.getPad_name());
+        ((ImageView)statusBoard.findViewById(R.id.img_delete)).setOnClickListener(v -> {
+            ((EditText)statusBoard.findViewById(R.id.edit_pageName)).setText("");
+        });
     }
 
     /**
@@ -635,7 +644,10 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
      */
     @Override
     public void OnTitleClick(DimensionPositionBean.IndexPositionBean bean) {
-
+        Intent intent = new Intent(mContext, ChartDetailActivity.class);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,bean);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,pageItemBean);
+        startActivity(intent);
     }
 
     /**

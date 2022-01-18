@@ -530,7 +530,7 @@ public class DimensionIndexAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                 new AAPie()
                                         .name("")
                                         .innerSize("20%")
-                                        .size(150f)
+                                        .size(100f)
                                         .allowPointSelect(false)
                                         .showInLegend(false)
                                         .dataLabels(new AADataLabels()

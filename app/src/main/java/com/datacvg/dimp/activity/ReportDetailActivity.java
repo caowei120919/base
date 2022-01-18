@@ -587,7 +587,7 @@ public class ReportDetailActivity extends BaseActivity<ReportDetailView, ReportD
                 .setTitleSize(20)
                 .setTitleText("")
                 .setOutSideCancelable(false)
-                .isCyclic(true)
+                .isCyclic(false)
                 .setDate(selectedDate)
                 .setRangDate(startDate,endDate)
                 .isCenterLabel(false)

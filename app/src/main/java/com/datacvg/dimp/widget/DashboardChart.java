@@ -104,7 +104,7 @@ public class DashboardChart extends View {
     /**
      * 圆和view的距离
      */
-    private float PADDING = 80 ;
+    private float PADDING = 60 ;
     /**
      * 文字缩放比例
      */
@@ -155,7 +155,7 @@ public class DashboardChart extends View {
         mLeft = ((mWidth - mHeight) / 2 + PADDING) ;
         mRight = ((mWidth - mHeight) / 2 + mHeight - PADDING) ;
         mTop = PADDING ;
-        mBottom = (mHeight - PADDING) ;
+        mBottom = mHeight - 20;
         mRadius = (mRight - mLeft) / 2 ;
         mTextSize = mTextScale * mWidth ;
         initPaint() ;

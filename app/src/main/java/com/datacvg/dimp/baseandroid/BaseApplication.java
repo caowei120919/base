@@ -22,6 +22,7 @@ import com.facebook.stetho.Stetho;
 import com.orhanobut.hawk.Hawk;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
+import com.tencent.bugly.crashreport.CrashReport;
 
 /**
  * @Author : T-Bag (茶包)
@@ -137,7 +138,7 @@ public class BaseApplication extends Application {
         mAppComponent = DaggerAppComponent.builder()
                 .appModule(new AppModule((Application) context))
                 .build();
-
+        CrashReport.initCrashReport(getApplicationContext(), "55e8093054", false);
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         builder.detectFileUriExposure();

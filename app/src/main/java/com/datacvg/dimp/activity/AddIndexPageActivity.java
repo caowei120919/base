@@ -1,6 +1,5 @@
 package com.datacvg.dimp.activity;
 
-import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Editable;
@@ -158,7 +157,7 @@ public class AddIndexPageActivity extends BaseActivity<AddIndexPageView, AddInde
         StatusBarUtil.setStatusBarColor(mContext
                 ,mContext.getResources().getColor(R.color.c_FFFFFF));
         tvTitle.setText(resources.getString(R.string.setup_board));
-        imgRight.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_search));
+//        imgRight.setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.icon_search));
         initAdapter();
         tvTimeType.setText(resources.getString(R.string.month));
         initTitleNavigator();

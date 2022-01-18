@@ -55,6 +55,7 @@ public class TitleNavigator extends CommonNavigator {
         public IPagerTitleView getTitleView(Context context, int index) {
             ColorTransitionPagerTitleView colorTransitionPagerTitleView
                     = new ColorTransitionPagerTitleView(context);
+            colorTransitionPagerTitleView.setTextSize(20);
             colorTransitionPagerTitleView
                     .setNormalColor(mContext.getResources().getColor(R.color.c_333333));
             colorTransitionPagerTitleView

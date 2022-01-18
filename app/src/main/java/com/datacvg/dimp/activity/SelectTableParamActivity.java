@@ -421,7 +421,7 @@ public class SelectTableParamActivity extends BaseActivity<SelectTableParamView,
                 .setTitleSize(20)
                 .setTitleText("")
                 .setOutSideCancelable(false)
-                .isCyclic(true)
+                .isCyclic(false)
                 .setDate(selectedDate)
                 .setRangDate(startDate,endDate)
                 .isCenterLabel(false)

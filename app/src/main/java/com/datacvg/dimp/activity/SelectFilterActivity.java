@@ -227,7 +227,7 @@ public class SelectFilterActivity extends BaseActivity<SelectFilterView, SelectF
                 .setContentTextSize(18)
                 .setTitleText("")
                 .setOutSideCancelable(false)
-                .isCyclic(true)
+                .isCyclic(false)
                 .setDate(selectedDate)
                 .setRangDate(startDate,endDate)
                 .isCenterLabel(false)

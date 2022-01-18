@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
-
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
@@ -32,6 +31,7 @@ import com.datacvg.dimp.AAChartCoreLib.AAOptionsModel.AAStyle;
 import com.datacvg.dimp.AAChartCoreLib.AAOptionsModel.AATitle;
 import com.datacvg.dimp.AAChartCoreLib.AAOptionsModel.AATooltip;
 import com.datacvg.dimp.AAChartCoreLib.AAOptionsModel.AAXAxis;
+import com.datacvg.dimp.AAChartCoreLib.AAOptionsModel.AAYAxis;
 import com.datacvg.dimp.AAChartCoreLib.AATools.AAColor;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.SelectChartDimensionAdapter;
@@ -58,9 +58,7 @@ import com.datacvg.dimp.widget.DialogForChartType;
 import com.datacvg.dimp.widget.DialogForDimension;
 import com.enlogy.statusview.StatusRelativeLayout;
 import com.google.gson.Gson;
-
 import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -132,7 +130,7 @@ public class ChartDetailActivity extends BaseActivity<ChartDetailView, ChartDeta
         if(bean.getChartBean() == null){
             return;
         }
-        switch (bean.getTime_type()){
+        switch (itemBean.getTime_type()){
             case "month" :
                 initCustomPickView(true,true,false,TimeUtils.FORMAT_YM_EN);
                 tvTitle.setText(PreferencesHelper.get(Constants.USER_DEFAULT_MONTH,"")
@@ -184,7 +182,7 @@ public class ChartDetailActivity extends BaseActivity<ChartDetailView, ChartDeta
             dimensionTypeBeanOfOrg.setDimensionId(itemBean.getmPDimension());
             dimensionTypeBeans.add(dimensionTypeBeanOfOrg);
         }
-
+        tvDimensionType.setText(dimensionTypeBeans.get(0).getName());
         dialogForDimension = new DialogForDimension(mContext,dimensionTypeBeans,this);
         dialogForChartType.setCanceledOnTouchOutside(true);
     }
@@ -392,6 +390,12 @@ public class ChartDetailActivity extends BaseActivity<ChartDetailView, ChartDeta
                         .y(0f);
 
                 Object[] aaSeriesElement ;
+                AAYAxis[] aayAxes = new AAYAxis[barChartBaseBean.getyAxis().size()];
+                for (int i = 0 ; i < barChartBaseBean.getyAxis().size() ; i++){
+                    AAYAxis aayAxis = new AAYAxis()
+                            .title(new AATitle().text(barChartBaseBean.getyAxis().get(i).getName())).opposite(i!= 0);
+                    aayAxes[i] = aayAxis ;
+                }
                 if(barChartBaseBean != null && barChartBaseBean.getSeries()!= null && barChartBaseBean.getSeries().size() > 0) {
                     aaSeriesElement = new Object[barChartBaseBean.getSeries().size()];
                     for (int i = 0; i < barChartBaseBean.getSeries().size(); i++) {
@@ -419,7 +423,9 @@ public class ChartDetailActivity extends BaseActivity<ChartDetailView, ChartDeta
                     }
                     AAOptions aaOptions = new AAOptions()
                             .title(new AATitle().text(""))
+                            .touchEventEnabled(false)
                             .xAxis(aaXAxis)
+                            .yAxisArray(aayAxes)
                             .tooltip(aaTooltip)
                             .plotOptions(aaPlotOptions)
                             .legend(aaLegend)
@@ -466,7 +472,7 @@ public class ChartDetailActivity extends BaseActivity<ChartDetailView, ChartDeta
                                         new AAPie()
                                                 .name("")
                                                 .innerSize("20%")
-                                                .size(150f)
+                                                .size(120f)
                                                 .dataLabels(new AADataLabels()
                                                         .enabled(true)
                                                         .useHTML(true)
@@ -481,7 +487,7 @@ public class ChartDetailActivity extends BaseActivity<ChartDetailView, ChartDeta
         }
     }
 
-    @OnClick({R.id.img_left,R.id.tv_chartType,R.id.tv_title})
+    @OnClick({R.id.img_left,R.id.tv_chartType,R.id.tv_title,R.id.tv_dimensionType})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.img_left :
@@ -491,6 +497,10 @@ public class ChartDetailActivity extends BaseActivity<ChartDetailView, ChartDeta
 
             case R.id.tv_chartType :
                     dialogForChartType.show();
+                break;
+
+            case R.id.tv_dimensionType :
+                dialogForDimension.show();
                 break;
 
             case R.id.tv_title :
@@ -553,7 +563,7 @@ public class ChartDetailActivity extends BaseActivity<ChartDetailView, ChartDeta
                 .setTitleSize(20)
                 .setTitleText("")
                 .setOutSideCancelable(false)
-                .isCyclic(true)
+                .isCyclic(false)
                 .setDate(selectedDate)
                 .setRangDate(startDate,endDate)
                 .isCenterLabel(false)
@@ -603,6 +613,7 @@ public class ChartDetailActivity extends BaseActivity<ChartDetailView, ChartDeta
     public void onDimensionClick(DimensionTypeBean chartTypeBean) {
         dialogForDimension.dismiss();
         dimensionSelect = chartTypeBean.getDimensionId();
+        tvDimensionType.setText(chartTypeBean.getName());
         getEChart();
     }
 }
