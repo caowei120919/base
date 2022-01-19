@@ -236,6 +236,10 @@ public class IndexTreeActivity extends BaseActivity<IndexTreeView, IndexTreePres
                 tvMiddleSize.setTextColor(resources.getColor(R.color.c_999999));
                 indexTreeView.drawIndexTree(indexTreeBean,1);
                 break;
+
+            case R.id.rel_detail :
+
+                break;
         }
     }
 

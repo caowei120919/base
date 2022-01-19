@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/H150">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/tv_userName"
@@ -13,17 +13,6 @@
     </TextView>
 
     <TextView
-        android:id="@+id/tv_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_userName"
-        android:layout_alignLeft="@id/tv_userName"
-        android:layout_marginLeft="@dimen/W20"
-        android:textSize="16sp"
-        android:layout_marginTop="@dimen/H25">
-    </TextView>
-
-    <TextView
         android:id="@+id/tv_createTime"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -32,5 +21,18 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/W25"
         android:textSize="18sp">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_userName"
+        android:layout_alignLeft="@id/tv_userName"
+        android:layout_toLeftOf="@id/tv_createTime"
+        android:layout_marginLeft="@dimen/W20"
+        android:minHeight="@dimen/H75"
+        android:textSize="16sp"
+        android:layout_marginTop="@dimen/H25">
     </TextView>
 </RelativeLayout>
