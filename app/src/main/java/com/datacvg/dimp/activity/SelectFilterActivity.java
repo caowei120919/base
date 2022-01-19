@@ -178,11 +178,10 @@ public class SelectFilterActivity extends BaseActivity<SelectFilterView, SelectF
      */
     private void initCustomPickView(boolean hasYear, boolean hasMonth, boolean hasDay) {
         Calendar selectedDate = Calendar.getInstance();
-        selectedDate.setTime(new Date(TimeUtils.parse(pageItemBean.getTimeVal()).getTime()));
         Calendar startDate = Calendar.getInstance();
         Calendar endDate = Calendar.getInstance();
         startDate.set(2000,1,1);
-        endDate.set(selectedDate.get(Calendar.YEAR), endDate.get(Calendar.MONTH)
+        endDate.set(endDate.get(Calendar.YEAR), endDate.get(Calendar.MONTH)
                 , endDate.get(Calendar.DATE));
         pvCustomTime = new TimePickerBuilder(mContext, new OnTimeSelectListener() {
             @Override
@@ -227,7 +226,7 @@ public class SelectFilterActivity extends BaseActivity<SelectFilterView, SelectF
                 .setContentTextSize(18)
                 .setTitleText("")
                 .setOutSideCancelable(false)
-                .isCyclic(false)
+                .isCyclic(true)
                 .setDate(selectedDate)
                 .setRangDate(startDate,endDate)
                 .isCenterLabel(false)

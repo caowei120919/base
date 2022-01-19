@@ -39,6 +39,7 @@ import com.datacvg.dimp.adapter.SelectChartTypeAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
+import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.baseandroid.utils.TimeUtils;
 import com.datacvg.dimp.bean.ChartTypeBean;
@@ -225,7 +226,8 @@ public class ChartDetailActivity extends BaseActivity<ChartDetailView, ChartDeta
             chartTypeBeans.add(chartTypeBean);
         }
         refreshChartValue(showChartTypeBean);
-        tvChartType.setText(chartTypeBeans.get(0).getChartName());
+        PLog.e(new Gson().toJson(chartTypeBeans));
+        tvChartType.setText(showChartTypeBean.getChartName());
         dialogForChartType = new DialogForChartType(mContext,chartTypeBeans,this);
         dialogForChartType.setCanceledOnTouchOutside(true);
     }
@@ -563,7 +565,7 @@ public class ChartDetailActivity extends BaseActivity<ChartDetailView, ChartDeta
                 .setTitleSize(20)
                 .setTitleText("")
                 .setOutSideCancelable(false)
-                .isCyclic(false)
+                .isCyclic(true)
                 .setDate(selectedDate)
                 .setRangDate(startDate,endDate)
                 .isCenterLabel(false)

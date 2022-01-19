@@ -214,7 +214,7 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
                 .setTitleSize(20)
                 .setTitleText("")
                 .setOutSideCancelable(false)
-                .isCyclic(false)
+                .isCyclic(true)
                 .setDate(selectedDate)
                 .setRangDate(startDate,endDate)
                 .isCenterLabel(false)
