@@ -372,6 +372,7 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
                     createTaskBean.setActionType(actionType);
                     createTaskBean.setActionPlanInfoDTO(actionPlanInfoDTO);
                     getPresenter().createTask(createTaskBean);
+                    PLog.e(new Gson().toJson(createTaskBean));
                 break;
 
             case R.id.img_delete :
@@ -444,6 +445,24 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
     private void buildIndexFlow(ActionPlanIndexBean bean) {
         String indexId = bean.getId() ;
        if((selectIndexIds == null || selectIndexIds.isEmpty()) || !selectIndexIds.contains(indexId)){
+           /**
+            * relation_i_id : 1874210758208575801734
+            * rootid : 83967606548302484211
+            * name : 运维收入
+            * checked : false
+            * pid : 83967606548302484211
+            * id : 1874210758208575801734
+            * index_id : 15341079964696855071
+            */
+           ActionPlanIndexBean indexTreeBean = new ActionPlanIndexBean() ;
+           indexTreeBean.setName(bean.getName());
+           indexTreeBean.setChecked(true);
+           indexTreeBean.setId(bean.getId());
+           indexTreeBean.setIndex_id(bean.getIndex_id());
+           indexTreeBean.setPid(bean.getPid());
+           indexTreeBean.setRootid(bean.getRootid());
+           indexTreeBean.setRelation_i_id(bean.getRelation_i_id());
+           taskIndexBeans.add(indexTreeBean);
            View view = LayoutInflater.from(mContext).inflate(R.layout.item_selected_user,null);
            TextView tv_group = view.findViewById(R.id.tv_user);
            ImageView img_delete = view.findViewById(R.id.img_delete);
@@ -459,6 +478,12 @@ public class NewTaskActivity extends BaseActivity<NewTaskView, NewTaskPresenter>
            flowIndex.addView(view);
        }else{
            selectIndexIds.remove(indexId);
+           for (ActionPlanIndexBean indexTreeBean : taskIndexBeans){
+               if(indexTreeBean.getIndex_id().equals(indexId)){
+                   taskIndexBeans.remove(indexTreeBean);
+                   return;
+               }
+           }
            for (int i = 0 ; i < flowIndex.getChildCount() ; i++){
                View view = flowIndex.getChildAt(i);
                if(view.getTag().equals(bean.getIndex_id())){
