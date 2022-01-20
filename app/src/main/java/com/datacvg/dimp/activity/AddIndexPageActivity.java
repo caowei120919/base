@@ -13,10 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.DimensionNameAreaAdapter;
 import com.datacvg.dimp.adapter.DimensionNameOrgAdapter;
@@ -42,18 +40,14 @@ import com.datacvg.dimp.view.AddIndexPageView;
 import com.datacvg.dimp.widget.IndexForDimensionTitleNavigator;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-
 import net.lucode.hackware.magicindicator.FragmentContainerHelper;
 import net.lucode.hackware.magicindicator.MagicIndicator;
-
 import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;

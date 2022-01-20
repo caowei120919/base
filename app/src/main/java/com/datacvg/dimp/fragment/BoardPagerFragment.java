@@ -8,6 +8,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.dimp.R;
@@ -40,6 +42,7 @@ import com.datacvg.dimp.event.DeletePageEvent;
 import com.datacvg.dimp.event.EditEvent;
 import com.datacvg.dimp.event.FilterEvent;
 import com.datacvg.dimp.event.PageCompleteEvent;
+import com.datacvg.dimp.event.RefreshEvent;
 import com.datacvg.dimp.event.SavePageEvent;
 import com.datacvg.dimp.event.SelectParamsEvent;
 import com.datacvg.dimp.event.ToAddIndexEvent;
@@ -49,6 +52,9 @@ import com.enlogy.statusview.StatusRelativeLayout;
 import com.facebook.stetho.common.android.HandlerUtil;
 import com.google.gson.Gson;
 import com.mylhyl.superdialog.SuperDialog;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -68,7 +74,7 @@ import butterknife.OnClick;
  * @Description :
  */
 public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerPresenter>
-        implements BoardPagerView, DimensionIndexAdapter.IndexClickListener {
+        implements BoardPagerView, DimensionIndexAdapter.IndexClickListener, OnRefreshListener {
 
     @BindView(R.id.tv_pageName)
     TextView tvPageName ;
@@ -82,6 +88,8 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
     RecyclerView recycleIndex ;
     @BindView(R.id.rel_addOrDelete)
     RelativeLayout relAddOrDelete ;
+    @BindView(R.id.smart_board)
+    SmartRefreshLayout smartBoard ;
 
     private final static String ORG_TAG = "ORG" ;
     private final static String AREA_TAG = "AREA" ;
@@ -105,6 +113,9 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
     protected void setupView(View rootView) {
         pageItemBean = (PageItemBean) getArguments().getSerializable(Constants.EXTRA_DATA_FOR_BEAN);
         setTimeValue();
+        smartBoard.setEnableAutoLoadMore(false);
+        smartBoard.setOnRefreshListener(this);
+        smartBoard.setEnableRefresh(true);
         initChartAdapter() ;
     }
 
@@ -185,6 +196,9 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
 
     @Override
     public void getIndexPositionSuccess(List<DimensionPositionBean.IndexPositionBean> indexPosition) {
+        if(smartBoard.isRefreshing()){
+            smartBoard.finishRefresh() ;
+        }
         this.indexPositionBeans.clear();
         this.indexPositionBeans.addAll(indexPosition);
         sortChart();
@@ -298,11 +312,11 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
      */
     @Override
     public void savePageSuccess() {
-        String padName="" ;
+        String padName=pageItemBean.getPad_name() ;
         try {
             padName = ((EditText)statusBoard.findViewById(R.id.edit_pageName)).getText().toString();
         }catch (NullPointerException e){
-
+            PLog.e(e.getMessage());
         }
         pageItemBean.setPad_name(padName);
         if(isComplete){
@@ -314,9 +328,11 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
             tvPageName.setText(resources.getString(R.string.the_current_page)
                     + padName);
         }else{
-            Intent intent = new Intent(mContext, AddIndexPageActivity.class);
-            intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,pageItemBean.getPage());
-            mContext.startActivity(intent);
+            if(isFragmentVisible()){
+                Intent intent = new Intent(mContext, AddIndexPageActivity.class);
+                intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,pageItemBean.getPage());
+                mContext.startActivity(intent);
+            }
         }
     }
 
@@ -684,5 +700,19 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
     @Override
     public void OnIndexDeleteClick(DimensionPositionBean.IndexPositionBean bean) {
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(RefreshEvent event){
+        Map positionMap = new HashMap() ;
+        positionMap.put("page",pageItemBean.getPage());
+        getPresenter().getPosition(positionMap);
+    }
+
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        Map positionMap = new HashMap() ;
+        positionMap.put("page",pageItemBean.getPage());
+        getPresenter().getPosition(positionMap);
     }
 }

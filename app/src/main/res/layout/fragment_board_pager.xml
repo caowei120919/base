@@ -4,91 +4,107 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.enlogy.statusview.StatusRelativeLayout
-        android:id="@+id/status_board"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/H100"
-        app:rContentView="@layout/item_board_common"
-        app:rExtendView="@layout/item_board_edit">
-    </com.enlogy.statusview.StatusRelativeLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycle_index"
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/smart_board"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/status_board"
-        android:layout_above="@id/rel_addOrDelete">
-    </androidx.recyclerview.widget.RecyclerView>
+        app:srlEnablePreviewInEditMode="true">
 
-    <RelativeLayout
-        android:id="@+id/rel_addOrDelete"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/H100"
-        android:visibility="gone"
-        android:background="@color/c_FFFFFF"
-        android:layout_alignParentBottom="true">
+        <com.scwang.smart.refresh.header.ClassicsHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </com.scwang.smart.refresh.header.ClassicsHeader>
 
-        <LinearLayout
-            android:id="@+id/lin_deletePage"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/H24"
-            android:layout_marginBottom="@dimen/H24"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="@dimen/W24"
-            android:paddingLeft="@dimen/W27"
-            android:paddingRight="@dimen/W27"
-            android:background="@drawable/shape_bg_white"
-            android:orientation="horizontal">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.enlogy.statusview.StatusRelativeLayout
+                android:id="@+id/status_board"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/H100"
+                app:rContentView="@layout/item_board_common"
+                app:rExtendView="@layout/item_board_edit">
+            </com.enlogy.statusview.StatusRelativeLayout>
 
-            <ImageView
-                android:layout_width="@dimen/W24"
-                android:layout_height="@dimen/H24"
-                android:layout_gravity="center_vertical"
-                android:src="@mipmap/icon_delete_page">
-            </ImageView>
-
-            <TextView
-                android:layout_width="wrap_content"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycle_index"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/delete_the_page"
-                android:layout_marginLeft="@dimen/W15"
-                android:gravity="center_vertical"
-                android:textSize="12sp"
-                android:textColor="@color/c_da3a16">
-            </TextView>
-        </LinearLayout>
+                android:layout_below="@id/status_board"
+                android:layout_above="@id/rel_addOrDelete">
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <RelativeLayout
+                android:id="@+id/rel_addOrDelete"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/H100"
+                android:visibility="gone"
+                android:background="@color/c_FFFFFF"
+                android:layout_alignParentBottom="true">
+
+                <LinearLayout
+                    android:id="@+id/lin_deletePage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/H24"
+                    android:layout_marginBottom="@dimen/H24"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/W24"
+                    android:paddingLeft="@dimen/W27"
+                    android:paddingRight="@dimen/W27"
+                    android:background="@drawable/shape_bg_white"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/W24"
+                        android:layout_height="@dimen/H24"
+                        android:layout_gravity="center_vertical"
+                        android:src="@mipmap/icon_delete_page">
+                    </ImageView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/delete_the_page"
+                        android:layout_marginLeft="@dimen/W15"
+                        android:gravity="center_vertical"
+                        android:textSize="12sp"
+                        android:textColor="@color/c_da3a16">
+                    </TextView>
+                </LinearLayout>
 
 
-        <LinearLayout
-            android:id="@+id/lin_addPage"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/H24"
-            android:layout_marginBottom="@dimen/H24"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/W24"
-            android:paddingLeft="@dimen/W27"
-            android:paddingRight="@dimen/W27"
-            android:background="@drawable/shape_bg_gray"
-            android:orientation="horizontal">
+                <LinearLayout
+                    android:id="@+id/lin_addPage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/H24"
+                    android:layout_marginBottom="@dimen/H24"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/W24"
+                    android:paddingLeft="@dimen/W27"
+                    android:paddingRight="@dimen/W27"
+                    android:background="@drawable/shape_bg_gray"
+                    android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="@dimen/W24"
-                android:layout_height="@dimen/H24"
-                android:layout_gravity="center_vertical"
-                android:src="@mipmap/icon_add_index">
-            </ImageView>
+                    <ImageView
+                        android:layout_width="@dimen/W24"
+                        android:layout_height="@dimen/H24"
+                        android:layout_gravity="center_vertical"
+                        android:src="@mipmap/icon_add_index">
+                    </ImageView>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/the_new_page"
-                android:layout_marginLeft="@dimen/W15"
-                android:gravity="center_vertical"
-                android:textSize="12sp"
-                android:textColor="@color/c_303030">
-            </TextView>
-        </LinearLayout>
-    </RelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/the_new_page"
+                        android:layout_marginLeft="@dimen/W15"
+                        android:gravity="center_vertical"
+                        android:textSize="12sp"
+                        android:textColor="@color/c_303030">
+                    </TextView>
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </RelativeLayout>
