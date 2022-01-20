@@ -463,6 +463,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PageCompleteEvent event){
+        PLog.e("=====================");
         tabModule.setVisibility(View.VISIBLE);
     }
 

@@ -296,13 +296,21 @@ public class SelectFilterActivity extends BaseActivity<SelectFilterView, SelectF
             case ORG_TAG :
                 orgDimensions.clear();
                 orgDimensions.addAll(dimensions);
+                PLog.e(new Gson().toJson(dimensions));
                 orgDimensionAdapter.notifyDataSetChanged();
                 break;
 
             case AREA_TAG :
                 areaDimensions.clear();
                 areaDimensions.addAll(dimensions);
+                PLog.e(new Gson().toJson(dimensions));
                 areaDimensionAdapter.notifyDataSetChanged();
+                break;
+
+            case PRO_TAG :
+                proDimensions.clear();
+                proDimensions.addAll(dimensions);
+                PLog.e(new Gson().toJson(dimensions));
                 if(!TextUtils.isEmpty(pageItemBean.getmPDimension())){
                     List pArr = new ArrayList() ;
                     pArr.add(pageItemBean.getmOrgDimension());
@@ -313,11 +321,6 @@ public class SelectFilterActivity extends BaseActivity<SelectFilterView, SelectF
                     paramOfFu.put("dimensionArr",pArr);
                     getPresenter().getOtherDimension(paramOfFu,AREA_TAG);
                 }
-                break;
-
-            case PRO_TAG :
-                proDimensions.clear();
-                proDimensions.addAll(dimensions);
                 proDimensionAdapter.notifyDataSetChanged();
                 break;
         }
