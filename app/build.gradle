@@ -105,7 +105,7 @@ android {
                 buildType = "-" + variant.buildType.name
             }
 
-            String fileName = "${"DIMP"}-${"v" + variant.versionName + buildType}-${productFlavor}.apk".toLowerCase()
+            String fileName = "SEMPMobile_dev.apk"
             outputFileName = new File(fileName)
         }
     }
