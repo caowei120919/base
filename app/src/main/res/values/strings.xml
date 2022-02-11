@@ -264,6 +264,7 @@
     <string name="the_editor">编辑</string>
     <string name="restore">还原</string>
     <string name="confirm_the_reduction">确认还原?</string>
+    <string name="confirm_the_restore">确认还原</string>
     <string name="empty">清空</string>
     <string name="restore_successful">还原成功</string>
     <string name="upload_thumbnails">上传缩略图</string>

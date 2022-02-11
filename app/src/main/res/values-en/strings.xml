@@ -17,6 +17,7 @@
     </string>
     <string name="current">current</string>
     <string name="detail">detail</string>
+    <string name="confirm_the_restore">Confirm the restore</string>
     <string name="confirm_the_reduction">Confirm the reduction?</string>
     <string name="report">report</string>
     <string name="to_generate_the_qr_code_you_need_read_and_write_permission_please_authorize_it_and_try_again">

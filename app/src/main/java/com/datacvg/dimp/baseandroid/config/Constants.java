@@ -20,9 +20,6 @@ public class Constants {
     public static final String EXTRA_DATA_FOR_BEAN = "EXTRA_DATA_FOR_BEAN" ;
     public static final String EXTRA_DATA_FOR_ALBUM = "EXTRA_DATA_FOR_ALBUM";
     public static final String EXTRA_DATA_FOR_SCAN = "EXTRA_DATA_FOR_SCAN";
-    public static final String DIMENSION_FIRST = "DIMENSION_FIRST";
-    public static final String DIMENSION_SECOND = "DIMENSION_SECOND";
-    public static final String DIMENSION_THIRD = "DIMENSION_THIRD";
     public static final String SECOND = "second" ;
     public static final String MINUTE = "minute" ;
     public static final String HOUR = "hour" ;
@@ -33,7 +30,6 @@ public class Constants {
      * 选择联系人类型
      */
     public static int CHOOSE_TYPE_HEAD = 0x00001029 ;
-    public static int CHOOSE_TYPE_ASSISTANT = 0x00001028 ;
 
     public static final int SCAN_FOR_VPN = 0x00001027 ;
     public static final int SCAN_FOR_SCREEN = 0x00001026 ;
@@ -69,7 +65,6 @@ public class Constants {
     public static String BASE_MOBILE_URL = "" ;
     public static String BASE_FIS_URL = "" ;
     public static String BASE_UPLOAD_URL = "http://semp.datacvg.com/" ;
-    public static String BASE_DDB_URL = "" ;
     public static String ACTION_HEAD_IMG = "api/mobile" ;
     public static String HEAD_IMG_URL = "api/mobile/login/readheadimg?userPkid=" ;
     public static String IMG_TAB_URL = "api/file/data/download?fileName=%s&fileType=resimg" ;

@@ -74,6 +74,17 @@
                     android:layout_centerInParent="true"
                     android:src="@mipmap/icon_report_restore">
                 </ImageView>
+
+                <TextView
+                    android:id="@+id/tv_confirmRestore"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:text="@string/confirm_the_restore"
+                    android:textSize="18sp"
+                    android:textColor="@color/c_FFFFFF">
+                </TextView>
             </RelativeLayout>
 
             <RelativeLayout

@@ -29,6 +29,7 @@ import com.datacvg.dimp.bean.TableListBean;
 import com.datacvg.dimp.event.AddDepartmentCompleteEvent;
 import com.datacvg.dimp.event.AddDepartmentToContactEvent;
 import com.datacvg.dimp.event.ChangeUnReadMessageEvent;
+import com.datacvg.dimp.event.DigitalEditEvent;
 import com.datacvg.dimp.event.EditEvent;
 import com.datacvg.dimp.event.HideNavigationEvent;
 import com.datacvg.dimp.event.LoginOutEvent;
@@ -134,7 +135,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                         .getString(R.string.click_again_exit_app));
                 firstTime = secondTime;
             } else {
-                //执行返回桌面
                 Intent intent = new Intent(Intent.ACTION_MAIN);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addCategory(Intent.CATEGORY_HOME);
@@ -463,7 +463,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PageCompleteEvent event){
-        PLog.e("=====================");
         tabModule.setVisibility(View.VISIBLE);
     }
 
@@ -483,5 +482,10 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ReportTrashEvent event){
             tabModule.setVisibility(event.getEdit() ? View.VISIBLE : View.GONE);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(DigitalEditEvent editEvent){
+        tabModule.setVisibility(editEvent.getShowBottom() ? View.VISIBLE : View.GONE);
     }
 }

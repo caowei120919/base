@@ -97,6 +97,7 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
     public void restoreSuccess() {
         reportTrashBeans.clear();
         ToastUtils.showLongToast(resources.getString(R.string.restore_successful));
+        EventBus.getDefault().post(new RestoreSuccessEvent());
         queryReportOnTrash();
     }
 
@@ -168,24 +169,42 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
 
     @Override
     public void deleteReport(ReportTrashBean bean) {
-        String type = "" ;
-        switch (bean.getRes_type()){
-            case Constants.REPORT_TEMPLATE_TYPE :
-            case Constants.REPORT_TEMPLATE_FOLDER_TYPE :
-                type = "TEMPLATE" ;
-                break;
+        List<String> listButton = new ArrayList<>();
+        listButton.add(resources.getString(R.string.confirm_the_deletion));
+        new SuperDialog.Builder(getActivity())
+                .setCanceledOnTouchOutside(false)
+                .setTitle(resources.getString(R.string.confirm_deletion),resources.getColor(R.color.c_303030),36,120)
+                .setItems(listButton,resources.getColor(R.color.c_da3a16),36,120
+                        , new SuperDialog.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(int position) {
+                                for (ReportTrashBean trashBean:reportTrashBeans){
+                                    if(trashBean.getChecked()) {
+                                        String type = "";
+                                        switch (trashBean.getRes_type()) {
+                                            case Constants.REPORT_TEMPLATE_TYPE:
+                                            case Constants.REPORT_TEMPLATE_FOLDER_TYPE:
+                                                type = "TEMPLATE";
+                                                break;
 
-            case Constants.REPORT_MINE_TYPE :
-            case Constants.REPORT_MINE_FOLDER_TYPE :
-                type = "MODEL" ;
-                break;
+                                            case Constants.REPORT_MINE_TYPE:
+                                            case Constants.REPORT_MINE_FOLDER_TYPE:
+                                                type = "MODEL";
+                                                break;
 
-            case Constants.REPORT_SHARE_TYPE :
-            case Constants.REPORT_SHARE_FOLDER_TYPE :
-                type = "SHARE" ;
-                break;
-        }
-        getPresenter().deleteReportOnTrash(type,bean.getRes_id());
+                                            case Constants.REPORT_SHARE_TYPE:
+                                            case Constants.REPORT_SHARE_FOLDER_TYPE:
+                                                type = "SHARE";
+                                                break;
+                                        }
+                                        getPresenter().deleteReportOnTrash(type, trashBean.getRes_id());
+                                    }
+                                }
+                            }
+                        })
+                .setNegativeButton(resources.getString(R.string.cancel)
+                        ,resources.getColor(R.color.c_303030),36,120, null)
+                .build();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -198,25 +217,42 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
 
     @Override
     public void restoreReport(ReportTrashBean bean) {
-        String type = "" ;
-        switch (bean.getRes_type()){
-            case Constants.REPORT_TEMPLATE_TYPE :
-            case Constants.REPORT_TEMPLATE_FOLDER_TYPE :
-                type = "TEMPLATE" ;
-                break;
+        List<String> listButton = new ArrayList<>();
+        listButton.add(resources.getString(R.string.confirm_the_reduction));
+        new SuperDialog.Builder(getActivity())
+                .setCanceledOnTouchOutside(false)
+                .setTitle(resources.getString(R.string.confirm_the_reduction),resources.getColor(R.color.c_303030),36,120)
+                .setItems(listButton,resources.getColor(R.color.c_da3a16),36,120
+                        , new SuperDialog.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(int position) {
+                                for (ReportTrashBean trashBean : reportTrashBeans){
+                                    if(trashBean.getChecked()){
+                                        String type = "" ;
+                                        switch (trashBean.getRes_type()){
+                                            case Constants.REPORT_TEMPLATE_TYPE :
+                                            case Constants.REPORT_TEMPLATE_FOLDER_TYPE :
+                                                type = "TEMPLATE" ;
+                                                break;
 
-            case Constants.REPORT_MINE_TYPE :
-            case Constants.REPORT_MINE_FOLDER_TYPE :
-                type = "MODEL" ;
-                break;
+                                            case Constants.REPORT_MINE_TYPE :
+                                            case Constants.REPORT_MINE_FOLDER_TYPE :
+                                                type = "MODEL" ;
+                                                break;
 
-            case Constants.REPORT_SHARE_TYPE :
-            case Constants.REPORT_SHARE_FOLDER_TYPE :
-                type = "SHARE" ;
-                break;
-        }
-        getPresenter().restoreOnTrash(type,bean.getRes_id());
-        EventBus.getDefault().post(new RestoreSuccessEvent());
+                                            case Constants.REPORT_SHARE_TYPE :
+                                            case Constants.REPORT_SHARE_FOLDER_TYPE :
+                                                type = "SHARE" ;
+                                                break;
+                                        }
+                                        getPresenter().restoreOnTrash(type,trashBean.getRes_id());
+                                    }
+                                }
+                            }
+                        })
+                .setNegativeButton(resources.getString(R.string.cancel)
+                        ,resources.getColor(R.color.c_303030),36,120, null)
+                .build();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

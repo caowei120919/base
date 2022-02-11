@@ -17,6 +17,7 @@ import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.PageItemBean;
 import com.datacvg.dimp.event.CompleteEvent;
+import com.datacvg.dimp.event.DigitalEditEvent;
 import com.datacvg.dimp.event.EditEvent;
 import com.datacvg.dimp.event.PageCompleteEvent;
 import com.datacvg.dimp.event.SelectPageEvent;
@@ -24,6 +25,7 @@ import com.datacvg.dimp.event.SelectParamsEvent;
 import com.datacvg.dimp.event.ToAddIndexEvent;
 import com.datacvg.dimp.presenter.DigitalPresenter;
 import com.datacvg.dimp.view.DigitalView;
+import com.datacvg.dimp.widget.DigitalTitleNavigator;
 import com.datacvg.dimp.widget.TitleNavigator;
 import com.enlogy.statusview.StatusRelativeLayout;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -34,6 +36,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -44,7 +47,7 @@ import butterknife.OnClick;
  * @Description : 数字神经
  */
 public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
-        implements DigitalView, TitleNavigator.OnTabSelectedListener {
+        implements DigitalView, DigitalTitleNavigator.OnTabSelectedListener {
     @BindView(R.id.status_title)
     StatusRelativeLayout statusTitle ;
     @BindView(R.id.tv_manage)
@@ -54,7 +57,7 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
     @BindView(R.id.rel_share)
     RelativeLayout relShare ;
 
-    private TitleNavigator titleNavigator ;
+    private DigitalTitleNavigator titleNavigator ;
     private FragmentContainerHelper mTitleFragmentContainerHelper ;
     private FragmentTransaction fragmentTransaction;
     private BoardFragment boardFragment ;
@@ -77,7 +80,7 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
                 ,mContext.getResources().getColor(R.color.c_FFFFFF));
         statusTitle.setOnItemClickListener(R.id.tv_complete,view -> {
             PLog.e("完成");
-            EventBus.getDefault().post(new CompleteEvent());
+            statusTitle.showContent();
         });
         initTitleMagicTitle();
     }
@@ -87,7 +90,7 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
      */
     private void initTitleMagicTitle() {
         List<String> titles = Arrays.asList(resources.getStringArray(R.array.digital_title));
-        titleNavigator = new TitleNavigator(mContext,titles,false);
+        titleNavigator = new DigitalTitleNavigator(mContext,titles,false);
         titleNavigator.setOnTabSelectedListener(this);
         magicTitle.setNavigator(titleNavigator);
         mTitleFragmentContainerHelper = new FragmentContainerHelper() ;
@@ -105,12 +108,8 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
         switch (view.getId()){
             case R.id.tv_manage :
                 PLog.e("管理");
-                EventBus.getDefault().post(new EditEvent());
                 statusTitle.showExtendContent();
-                statusTitle.setOnItemClickListener(R.id.img_addIndex,view1 -> {
-                    PLog.e("添加选择指标");
-                    EventBus.getDefault().post(new ToAddIndexEvent());
-                });
+                EventBus.getDefault().post(new DigitalEditEvent(true));
                 break;
 
             case R.id.img_share :

@@ -8,7 +8,7 @@
         android:id="@+id/rel_title"
         android:layout_width="match_parent"
         android:background="@color/c_FFFFFF"
-        android:visibility="gone"
+        
         android:layout_height="?actionBarSize">
         <ImageView
             android:id="@+id/img_left"
@@ -64,7 +64,7 @@
 
     <LinearLayout
         android:id="@+id/lin_style"
-        android:visibility="gone"
+        
         android:layout_width="match_parent"
         android:layout_height="@dimen/H60"
         android:layout_below="@id/rel_title"
@@ -121,7 +121,7 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:visibility="gone"
+        
         android:background="@color/c_f2f2f2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -133,7 +133,7 @@
             android:layout_marginTop="@dimen/H15"
             android:layout_height="wrap_content"
             android:textColor="@color/c_303030"
-            android:text="2021-12-09">
+            android:text="2021-02-09">
         </TextView>
 
         <TextView
@@ -148,7 +148,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:visibility="gone"
+        
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -170,7 +170,7 @@
             android:layout_marginTop="@dimen/H10"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/H15"
-            android:text="12-09 19:16">
+            android:text="02-09 11:16">
         </TextView>
 
         <TextView
@@ -201,13 +201,13 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="@dimen/H4"
-        android:visibility="gone"
+        
         android:background="@color/c_f2f2f2"
         android:layout_marginLeft="@dimen/W40">
     </TextView>
 
     <RelativeLayout
-        android:visibility="gone"
+        
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -229,7 +229,7 @@
             android:layout_marginTop="@dimen/H10"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/H15"
-            android:text="12-09 19:16">
+            android:text="02-09 11:16">
         </TextView>
 
         <TextView
@@ -253,18 +253,18 @@
             android:layout_marginRight="@dimen/W24"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="@dimen/H15"
-            android:text="提现中">
+            android:text="提现中(预计02-10 12:00前到账)">
         </TextView>
     </RelativeLayout>
     <TextView
-        android:visibility="gone"
+        
         android:layout_width="match_parent"
         android:layout_height="@dimen/H4"
         android:background="@color/c_f2f2f2"
         android:layout_marginLeft="@dimen/W40">
     </TextView>
     <RelativeLayout
-        android:visibility="gone"
+        
         android:background="@color/c_f2f2f2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -276,7 +276,7 @@
             android:layout_marginTop="@dimen/H15"
             android:layout_height="wrap_content"
             android:textColor="@color/c_303030"
-            android:text="2021-12-08">
+            android:text="2022-01-24">
         </TextView>
 
         <TextView
@@ -291,7 +291,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:visibility="gone"
+        
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -313,7 +313,7 @@
             android:layout_marginTop="@dimen/H10"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/H15"
-            android:text="12-08 22:46">
+            android:text="01-24 22:46">
         </TextView>
 
         <TextView
@@ -341,14 +341,14 @@
         </TextView>
     </RelativeLayout>
     <TextView
-        android:visibility="gone"
+        
         android:layout_width="match_parent"
         android:layout_height="@dimen/H4"
         android:background="@color/c_f2f2f2"
         android:layout_marginLeft="@dimen/W40">
     </TextView>
     <RelativeLayout
-        android:visibility="gone"
+        
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -370,7 +370,7 @@
             android:layout_marginTop="@dimen/H10"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/H15"
-            android:text="12-08 22:41">
+            android:text="01-24 22:41">
         </TextView>
 
         <TextView
@@ -399,14 +399,14 @@
     </RelativeLayout>
 
     <TextView
-        android:visibility="gone"
+        
         android:layout_width="match_parent"
         android:layout_height="@dimen/H4"
         android:background="@color/c_f2f2f2"
         android:layout_marginLeft="@dimen/W40">
     </TextView>
     <RelativeLayout
-        android:visibility="gone"
+        
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -428,7 +428,7 @@
             android:layout_marginTop="@dimen/H10"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/H15"
-            android:text="12-08 22:33">
+            android:text="01-24 22:33">
         </TextView>
 
         <TextView
@@ -457,14 +457,14 @@
     </RelativeLayout>
 
     <TextView
-        android:visibility="gone"
+        
         android:layout_width="match_parent"
         android:layout_height="@dimen/H4"
         android:background="@color/c_f2f2f2"
         android:layout_marginLeft="@dimen/W40">
     </TextView>
     <RelativeLayout
-        android:visibility="gone"
+        
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -486,7 +486,7 @@
             android:layout_marginTop="@dimen/H10"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/H15"
-            android:text="12-08 22:18">
+            android:text="01-24 22:18">
         </TextView>
 
         <TextView
@@ -514,14 +514,14 @@
         </TextView>
     </RelativeLayout>
     <TextView
-        android:visibility="gone"
+        
         android:layout_width="match_parent"
         android:layout_height="@dimen/H4"
         android:background="@color/c_f2f2f2"
         android:layout_marginLeft="@dimen/W40">
     </TextView>
     <RelativeLayout
-        android:visibility="gone"
+        
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -543,7 +543,7 @@
             android:layout_marginTop="@dimen/H10"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/H15"
-            android:text="12-08 22:12">
+            android:text="01-24 22:12">
         </TextView>
 
         <TextView
@@ -571,14 +571,14 @@
         </TextView>
     </RelativeLayout>
     <TextView
-        android:visibility="gone"
+        
         android:layout_width="match_parent"
         android:layout_height="@dimen/H4"
         android:background="@color/c_f2f2f2"
         android:layout_marginLeft="@dimen/W40">
     </TextView>
     <RelativeLayout
-        android:visibility="gone"
+        
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -600,7 +600,7 @@
             android:layout_marginTop="@dimen/H10"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/H15"
-            android:text="12-08 22:07">
+            android:text="01-24 22:07">
         </TextView>
 
         <TextView
@@ -629,14 +629,14 @@
     </RelativeLayout>
 
     <TextView
-        android:visibility="gone"
+        
         android:layout_width="match_parent"
         android:layout_height="@dimen/H4"
         android:background="@color/c_f2f2f2"
         android:layout_marginLeft="@dimen/W40">
     </TextView>
     <RelativeLayout
-        android:visibility="gone"
+        
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -658,7 +658,7 @@
             android:layout_marginTop="@dimen/H10"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/H15"
-            android:text="12-08 21:58">
+            android:text="01-24 21:58">
         </TextView>
 
         <TextView
@@ -686,14 +686,14 @@
         </TextView>
     </RelativeLayout>
     <TextView
-        android:visibility="gone"
+        
         android:layout_width="match_parent"
         android:layout_height="@dimen/H4"
         android:background="@color/c_f2f2f2"
         android:layout_marginLeft="@dimen/W40">
     </TextView>
     <RelativeLayout
-        android:visibility="gone"
+        
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -715,7 +715,7 @@
             android:layout_marginTop="@dimen/H10"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/H15"
-            android:text="12-08 21:36">
+            android:text="01-24 21:36">
         </TextView>
 
         <TextView
@@ -744,14 +744,14 @@
     </RelativeLayout>
 
     <TextView
-        android:visibility="gone"
+        
         android:layout_width="match_parent"
         android:layout_height="@dimen/H4"
         android:background="@color/c_f2f2f2"
         android:layout_marginLeft="@dimen/W40">
     </TextView>
     <RelativeLayout
-        android:visibility="gone"
+        
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -773,7 +773,7 @@
             android:layout_marginTop="@dimen/H10"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/H15"
-            android:text="12-08 21:36">
+            android:text="01-24 21:36">
         </TextView>
 
         <TextView
@@ -801,14 +801,14 @@
         </TextView>
     </RelativeLayout>
     <TextView
-        android:visibility="gone"
+        
         android:layout_width="match_parent"
         android:layout_height="@dimen/H4"
         android:background="@color/c_f2f2f2"
         android:layout_marginLeft="@dimen/W40">
     </TextView>
     <RelativeLayout
-        android:visibility="gone"
+        
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

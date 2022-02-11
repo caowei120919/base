@@ -72,17 +72,24 @@ public class ReportListOfTrashAdapter extends RecyclerView.Adapter<ReportListOfT
             @Override
             public void closeSwipe() {
                 holder.imgFunctionDelete.setVisibility(View.VISIBLE);
+                holder.relRestore.setVisibility(View.VISIBLE);
                 holder.tvConfirmDelete.setVisibility(View.GONE);
             }
         });
         holder.relDelete.setOnClickListener(v -> {
             holder.imgFunctionDelete.setVisibility(View.GONE);
+            holder.relRestore.setVisibility(View.GONE);
             holder.tvConfirmDelete.setVisibility(View.VISIBLE);
         });
         holder.tvConfirmDelete.setOnClickListener(v -> {
             listener.onReportDelete(reportBean);
         });
         holder.relRestore.setOnClickListener(v -> {
+            holder.relDelete.setVisibility(View.GONE);
+            holder.imgFunctionDownload.setVisibility(View.GONE);
+            holder.tvConfirmRestore.setVisibility(View.VISIBLE);
+        });
+        holder.tvConfirmRestore.setOnClickListener(v -> {
             listener.onReportRestore(reportBean);
         });
     }
@@ -105,8 +112,12 @@ public class ReportListOfTrashAdapter extends RecyclerView.Adapter<ReportListOfT
         RelativeLayout relDelete ;
         @BindView(R.id.img_functionDelete)
         ImageView imgFunctionDelete ;
+        @BindView(R.id.img_functionDownload)
+        ImageView imgFunctionDownload ;
         @BindView(R.id.tv_confirmDelete)
         TextView tvConfirmDelete ;
+        @BindView(R.id.tv_confirmRestore)
+        TextView tvConfirmRestore ;
         @BindView(R.id.swipe_trash)
         SwipeMenuLayout swipeTrash ;
 

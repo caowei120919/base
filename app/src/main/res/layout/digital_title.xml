@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="?actionBarSize"
+    android:layout_height="@dimen/H88"
     android:background="@color/c_FFFFFF">
 
     <TextView
@@ -11,10 +11,10 @@
         android:text="@string/management"
         android:gravity="center"
         android:textColor="@color/c_303030"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:layout_centerVertical="true"
-        android:paddingLeft="@dimen/W30"
-        android:paddingRight="@dimen/W30">
+        android:paddingLeft="@dimen/W24"
+        android:paddingRight="@dimen/W24">
     </TextView>
 
     <TextView
@@ -33,7 +33,9 @@
     <ImageView
         android:id="@+id/img_share"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/H40"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/H28"
+        android:paddingBottom="@dimen/H28"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:src="@mipmap/icon_digital_share"
@@ -44,7 +46,9 @@
     <ImageView
         android:id="@+id/img_select"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/H40"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/H28"
+        android:paddingBottom="@dimen/H28"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@id/img_share"
         android:src="@mipmap/icon_filter_index"

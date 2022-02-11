@@ -11,10 +11,10 @@
         android:text="@string/complete"
         android:gravity="center"
         android:textColor="@color/c_303030"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:layout_centerVertical="true"
-        android:paddingLeft="@dimen/W30"
-        android:paddingRight="@dimen/W30">
+        android:paddingLeft="@dimen/W24"
+        android:paddingRight="@dimen/W24">
     </TextView>
 
     <TextView

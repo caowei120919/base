@@ -168,7 +168,7 @@ public class TableFragment extends BaseFragment<TableView, TablePresenter> imple
 
     @OnTextChanged(value = R.id.ed_search,callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onCodeTextChange(Editable editable){
-        if(TextUtils.isEmpty(editable)){
+        if(TextUtils.isEmpty(editable.toString().trim())){
             tableBeans.clear();
             tableBeans.addAll(showTables);
             adapter.notifyDataSetChanged();
