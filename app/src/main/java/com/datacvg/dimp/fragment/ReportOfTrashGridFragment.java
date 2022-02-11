@@ -170,16 +170,15 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
     @Override
     public void deleteReport(ReportTrashBean bean) {
         List<String> listButton = new ArrayList<>();
-        listButton.add(resources.getString(R.string.confirm_the_deletion));
+        listButton.add(resources.getString(R.string.confirm_deletion));
         new SuperDialog.Builder(getActivity())
                 .setCanceledOnTouchOutside(false)
-                .setTitle(resources.getString(R.string.confirm_deletion),resources.getColor(R.color.c_303030),36,120)
+                .setTitle(resources.getString(R.string.whether_to_delete_the_file),resources.getColor(R.color.c_303030),36,120)
                 .setItems(listButton,resources.getColor(R.color.c_da3a16),36,120
                         , new SuperDialog.OnItemClickListener() {
                             @Override
                             public void onItemClick(int position) {
                                 for (ReportTrashBean trashBean:reportTrashBeans){
-                                    if(trashBean.getChecked()) {
                                         String type = "";
                                         switch (trashBean.getRes_type()) {
                                             case Constants.REPORT_TEMPLATE_TYPE:
@@ -199,7 +198,6 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
                                         }
                                         getPresenter().deleteReportOnTrash(type, trashBean.getRes_id());
                                     }
-                                }
                             }
                         })
                 .setNegativeButton(resources.getString(R.string.cancel)
@@ -221,13 +219,12 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
         listButton.add(resources.getString(R.string.confirm_the_reduction));
         new SuperDialog.Builder(getActivity())
                 .setCanceledOnTouchOutside(false)
-                .setTitle(resources.getString(R.string.confirm_the_reduction),resources.getColor(R.color.c_303030),36,120)
+                .setTitle(resources.getString(R.string.whether_to_restore_the_file),resources.getColor(R.color.c_303030),36,120)
                 .setItems(listButton,resources.getColor(R.color.c_da3a16),36,120
                         , new SuperDialog.OnItemClickListener() {
                             @Override
                             public void onItemClick(int position) {
                                 for (ReportTrashBean trashBean : reportTrashBeans){
-                                    if(trashBean.getChecked()){
                                         String type = "" ;
                                         switch (trashBean.getRes_type()){
                                             case Constants.REPORT_TEMPLATE_TYPE :
@@ -248,7 +245,6 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
                                         getPresenter().restoreOnTrash(type,trashBean.getRes_id());
                                     }
                                 }
-                            }
                         })
                 .setNegativeButton(resources.getString(R.string.cancel)
                         ,resources.getColor(R.color.c_303030),36,120, null)
@@ -266,10 +262,10 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
             return;
         }
         List<String> listButton = new ArrayList<>();
-        listButton.add(resources.getString(R.string.confirm_the_deletion));
+        listButton.add(resources.getString(R.string.confirm_deletion));
         new SuperDialog.Builder(getActivity())
                 .setCanceledOnTouchOutside(false)
-                .setTitle(resources.getString(R.string.confirm_deletion),resources.getColor(R.color.c_303030),36,120)
+                .setTitle(resources.getString(R.string.whether_to_delete_the_file),resources.getColor(R.color.c_303030),36,120)
                 .setItems(listButton,resources.getColor(R.color.c_da3a16),36,120
                         , new SuperDialog.OnItemClickListener() {
                             @Override
@@ -312,7 +308,7 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
         listButton.add(resources.getString(R.string.confirm_the_reduction));
         new SuperDialog.Builder(getActivity())
                 .setCanceledOnTouchOutside(false)
-                .setTitle(resources.getString(R.string.confirm_the_reduction),resources.getColor(R.color.c_303030),36,120)
+                .setTitle(resources.getString(R.string.whether_to_restore_the_file),resources.getColor(R.color.c_303030),36,120)
                 .setItems(listButton,resources.getColor(R.color.c_da3a16),36,120
                         , new SuperDialog.OnItemClickListener() {
                             @Override

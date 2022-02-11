@@ -263,7 +263,7 @@
     <string name="the_file_cannot_be_downloaded_because_the_permission_is_not_allowed">权限未允许,无法下载文件</string>
     <string name="the_editor">编辑</string>
     <string name="restore">还原</string>
-    <string name="confirm_the_reduction">确认还原?</string>
+    <string name="confirm_the_reduction">确认还原</string>
     <string name="confirm_the_restore">确认还原</string>
     <string name="empty">清空</string>
     <string name="restore_successful">还原成功</string>
@@ -282,6 +282,8 @@
     <string name="basic_information">基础信息</string>
     <string name="screen_name">屏幕名称:</string>
     <string name="please_enter_a_screen_name">请输入屏幕名称</string>
+    <string name="whether_to_delete_the_file">是否删除该文件?</string>
+    <string name="whether_to_restore_the_file">是否还原该文件?</string>
     <string name="orientation">方向 :</string>
     <string name="the_screen_size">屏幕尺寸 :</string>
     <string name="wide">宽 :</string>
@@ -297,7 +299,7 @@
     <string name="the_image_size_cannot_exceed_5m">图片大小不能超过5M</string>
     <string name="only_jpg_and_png_formats_are_supported">仅支持jpg和png格式</string>
     <string name="download_successfully">下载成功</string>
-    <string name="confirm_deletion">确认删除?</string>
+    <string name="confirm_deletion">确认删除</string>
     <string name="the_size_must_be_a_value_greater_than_zero">尺寸必须为大于0的数值</string>
     <string name="are_you_sure_to_clear_all_data">确认清空所有数据?</string>
     <string name="apply_for_an_extension">申请延期</string>

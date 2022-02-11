@@ -160,6 +160,7 @@ public class SearchReportActivity extends BaseActivity<SearchReportView, SearchR
         if(reportBean.getFolder()){
             Intent intent = new Intent(mContext,ReportFolderActivity.class);
             intent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,reportType);
+            intent.putExtra(Constants.EXTRA_DATA_FOR_ALBUM,Constants.REPORT_LIST);
             intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,reportBean);
             mContext.startActivity(intent);
         }else{

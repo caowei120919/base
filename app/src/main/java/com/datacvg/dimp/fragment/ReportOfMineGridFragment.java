@@ -215,7 +215,7 @@ public class ReportOfMineGridFragment extends BaseFragment<ReportOfMineView, Rep
         listButton.add(resources.getString(R.string.confirm_the_deletion));
         new SuperDialog.Builder(getActivity())
                 .setCanceledOnTouchOutside(false)
-                .setTitle(resources.getString(R.string.are_you_sure_to_clear_all_data),resources.getColor(R.color.c_303030),36,120)
+                .setTitle(resources.getString(R.string.whether_to_delete_the_file),resources.getColor(R.color.c_303030),36,120)
                 .setItems(listButton,resources.getColor(R.color.c_da3a16),36,120
                         , new SuperDialog.OnItemClickListener() {
                             @Override

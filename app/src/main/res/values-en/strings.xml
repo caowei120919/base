@@ -18,7 +18,9 @@
     <string name="current">current</string>
     <string name="detail">detail</string>
     <string name="confirm_the_restore">Confirm the restore</string>
-    <string name="confirm_the_reduction">Confirm the reduction?</string>
+    <string name="confirm_the_reduction">Confirm the reduction</string>
+    <string name="whether_to_delete_the_file">Whether to delete the file?</string>
+    <string name="whether_to_restore_the_file">Whether to restore the file?</string>
     <string name="report">report</string>
     <string name="to_generate_the_qr_code_you_need_read_and_write_permission_please_authorize_it_and_try_again">
         To generate the QR code, you need read and write permission. Please authorize it and try again
@@ -304,7 +306,7 @@
     <string name="the_image_size_cannot_exceed_5m">The image size cannot exceed 5M</string>
     <string name="only_jpg_and_png_formats_are_supported">Only JPG and PNG formats are supported</string>
     <string name="download_successfully">download successfully</string>
-    <string name="confirm_deletion">Confirm deletion ?</string>
+    <string name="confirm_deletion">Confirm deletion</string>
     <string name="the_size_must_be_a_value_greater_than_zero">The size must be a value greater than 0</string>
     <string name="are_you_sure_to_clear_all_data">Are you sure to clear all data?</string>
     <string name="apply_for_an_extension">Apply for an extension</string>
