@@ -30,11 +30,11 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_below="@id/tv_filtrate"
-            android:layout_height="@dimen/H666">
+            android:layout_height="@dimen/H776">
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/H678">
+                android:layout_height="@dimen/H668">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
