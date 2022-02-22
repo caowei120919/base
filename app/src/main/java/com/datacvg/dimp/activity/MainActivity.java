@@ -461,10 +461,10 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         tabModule.setVisibility(View.GONE);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(PageCompleteEvent event){
-        tabModule.setVisibility(View.VISIBLE);
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onEvent(PageCompleteEvent event){
+//        tabModule.setVisibility(View.VISIBLE);
+//    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SwitchUserEvent event){

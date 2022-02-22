@@ -39,6 +39,7 @@ import com.datacvg.dimp.event.BudgetItemEvent;
 import com.datacvg.dimp.event.CheckIndexEvent;
 import com.datacvg.dimp.event.CompleteEvent;
 import com.datacvg.dimp.event.DeletePageEvent;
+import com.datacvg.dimp.event.DigitalEditEvent;
 import com.datacvg.dimp.event.EditEvent;
 import com.datacvg.dimp.event.FilterEvent;
 import com.datacvg.dimp.event.PageCompleteEvent;
@@ -98,6 +99,7 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
     private List<DimensionPositionBean.IndexPositionBean> indexPositionBeans = new ArrayList<>() ;
     private DimensionIndexAdapter adapter ;
     private Boolean isComplete = false ;
+    private Boolean isManageStatus = false ;
 
     @Override
     protected int getLayoutId() {
@@ -345,9 +347,7 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
                 break;
 
             case R.id.lin_addPage :
-                if(!isFragmentVisible()){
-                    return;
-                }
+
                 PLog.e("新增页");
                 if(indexPositionBeans.isEmpty()){
                     showDeleteDialog(resources.getString(R.string.this_page_is_empty_after_deleting_the_data_and_will_be_deleted_here));
@@ -359,11 +359,9 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
                 break;
 
             case R.id.tv_pageTime :
-                if(isFragmentVisible()){
                     Intent intent = new Intent(mContext, SelectFilterActivity.class);
                     intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,pageItemBean);
                     mContext.startActivity(intent);
-                }
                 break;
         }
     }
@@ -660,6 +658,9 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
      */
     @Override
     public void OnTitleClick(DimensionPositionBean.IndexPositionBean bean) {
+        if (isManageStatus){
+            return;
+        }
         Intent intent = new Intent(mContext, ChartDetailActivity.class);
         intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,bean);
         intent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,pageItemBean);
@@ -672,6 +673,9 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
      */
     @Override
     public void OnItemClick(DimensionPositionBean.IndexPositionBean bean) {
+        if (isManageStatus){
+            return;
+        }
         IndexTreeNeedBean indexTreeNeedBean = new IndexTreeNeedBean();
         indexTreeNeedBean.setAnalysisDimension(bean.getAnalysis_dimension());
         indexTreeNeedBean.setOrgDimension(pageItemBean.getmOrgDimension());
@@ -704,9 +708,11 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RefreshEvent event){
-        Map positionMap = new HashMap() ;
-        positionMap.put("page",pageItemBean.getPage());
-        getPresenter().getPosition(positionMap);
+        if(isFragmentVisible()){
+            Map positionMap = new HashMap() ;
+            positionMap.put("page",pageItemBean.getPage());
+            getPresenter().getPosition(positionMap);
+        }
     }
 
     @Override
@@ -714,5 +720,21 @@ public class BoardPagerFragment extends BaseFragment<BoardPagerView, BoardPagerP
         Map positionMap = new HashMap() ;
         positionMap.put("page",pageItemBean.getPage());
         getPresenter().getPosition(positionMap);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(DigitalEditEvent event){
+        smartBoard.setEnableRefresh(event.getShowBottom());
+        isManageStatus = !event.getShowBottom() ;
+        relAddOrDelete.setVisibility(event.getShowBottom() ? View.GONE : View.VISIBLE);
+        if (event.getShowBottom()){
+            statusBoard.showContent();
+        }else{
+            statusBoard.showExtendContent();
+        }
+        ((EditText)statusBoard.findViewById(R.id.edit_pageName)).setText(pageItemBean.getPad_name());
+        ((ImageView)statusBoard.findViewById(R.id.img_delete)).setOnClickListener(v -> {
+            ((EditText)statusBoard.findViewById(R.id.edit_pageName)).setText("");
+        });
     }
 }

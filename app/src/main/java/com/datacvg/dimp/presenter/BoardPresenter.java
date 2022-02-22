@@ -3,12 +3,15 @@ package com.datacvg.dimp.presenter;
 import com.datacvg.dimp.baseandroid.config.MobileApi;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
+import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.bean.DigitalPageBean;
 import com.datacvg.dimp.bean.PageItemBean;
 import com.datacvg.dimp.bean.PageItemListBean;
 import com.datacvg.dimp.view.BoardView;
 import com.google.gson.Gson;
+
+import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -40,6 +43,8 @@ public class BoardPresenter extends BasePresenter<BoardView>{
                                     .fromJson(new Gson().toJson(boardPageBean.getData()),DigitalPageBean.class);
                             List<PageItemBean> pageItemBeans
                                     = new Gson().fromJson(digitalPageBean.getPositionPage(), PageItemListBean.class);
+                            Collections.sort(pageItemBeans);
+                            PLog.e(new Gson().toJson(pageItemBeans));
                             getView().getPageSuccess(pageItemBeans);
                         }
                     }

@@ -16,9 +16,7 @@ import com.datacvg.dimp.baseandroid.utils.ShareUtils;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.PageItemBean;
-import com.datacvg.dimp.event.CompleteEvent;
 import com.datacvg.dimp.event.DigitalEditEvent;
-import com.datacvg.dimp.event.EditEvent;
 import com.datacvg.dimp.event.PageCompleteEvent;
 import com.datacvg.dimp.event.SelectPageEvent;
 import com.datacvg.dimp.event.SelectParamsEvent;
@@ -26,7 +24,6 @@ import com.datacvg.dimp.event.ToAddIndexEvent;
 import com.datacvg.dimp.presenter.DigitalPresenter;
 import com.datacvg.dimp.view.DigitalView;
 import com.datacvg.dimp.widget.DigitalTitleNavigator;
-import com.datacvg.dimp.widget.TitleNavigator;
 import com.enlogy.statusview.StatusRelativeLayout;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import net.lucode.hackware.magicindicator.FragmentContainerHelper;
@@ -36,7 +33,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -81,6 +77,7 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
         statusTitle.setOnItemClickListener(R.id.tv_complete,view -> {
             PLog.e("完成");
             statusTitle.showContent();
+            EventBus.getDefault().post(new DigitalEditEvent(true));
         });
         initTitleMagicTitle();
     }
@@ -93,7 +90,7 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
         titleNavigator = new DigitalTitleNavigator(mContext,titles,false);
         titleNavigator.setOnTabSelectedListener(this);
         magicTitle.setNavigator(titleNavigator);
-        mTitleFragmentContainerHelper = new FragmentContainerHelper() ;
+        mTitleFragmentContainerHelper = new FragmentContainerHelper();
         mTitleFragmentContainerHelper.attachMagicIndicator(magicTitle);
         showFragment(0);
     }
@@ -109,7 +106,11 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
             case R.id.tv_manage :
                 PLog.e("管理");
                 statusTitle.showExtendContent();
-                EventBus.getDefault().post(new DigitalEditEvent(true));
+                EventBus.getDefault().post(new DigitalEditEvent(false));
+//                EventBus.getDefault().post(new EditEvent());
+                statusTitle.setOnItemClickListener(R.id.img_addIndex,v -> {
+                    EventBus.getDefault().post(new ToAddIndexEvent());
+                });
                 break;
 
             case R.id.img_share :

@@ -183,7 +183,15 @@ public class ChartDetailActivity extends BaseActivity<ChartDetailView, ChartDeta
             dimensionTypeBeanOfOrg.setDimensionId(itemBean.getmPDimension());
             dimensionTypeBeans.add(dimensionTypeBeanOfOrg);
         }
-        tvDimensionType.setText(dimensionTypeBeans.get(0).getName());
+        for (DimensionTypeBean bean : dimensionTypeBeans){
+            if(bean.getDimensionId().equals(this.bean.getAnalysis_dimension())){
+                tvDimensionType.setText(bean.getName());
+                dimensionSelect = bean.getDimensionId() ;
+            }
+        }
+        if(tvDimensionType.getText().toString().trim().isEmpty()){
+            tvDimensionType.setText("--");
+        }
         dialogForDimension = new DialogForDimension(mContext,dimensionTypeBeans,this);
         dialogForChartType.setCanceledOnTouchOutside(true);
     }
@@ -591,7 +599,7 @@ public class ChartDetailActivity extends BaseActivity<ChartDetailView, ChartDeta
             arr.add(itemBean.getmPDimension()) ;
         }
         params.put("dimensionArr",arr);
-        params.put("page",itemBean.getPage());
+        params.put("page",itemBean  .getPage());
         List<ChatTypeRequestBean.ChartTypeBean> beans = new ArrayList<>();
         ChatTypeRequestBean.ChartTypeBean chartTypeBean = new ChatTypeRequestBean.ChartTypeBean() ;
         chartTypeBean.setIndexId(bean.getIndex_id());

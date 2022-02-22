@@ -416,6 +416,7 @@
                     android:hint="@string/please_enter_a_screen_name"
                     android:background="@null"
                     android:maxLength="100"
+                    android:textSize="14sp"
                     android:gravity="left|center_vertical"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/W24"

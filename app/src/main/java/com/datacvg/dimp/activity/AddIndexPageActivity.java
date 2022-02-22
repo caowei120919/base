@@ -195,12 +195,16 @@ public class AddIndexPageActivity extends BaseActivity<AddIndexPageView, AddInde
                 break;
             case R.id.img_deleteDimension :
                 relDimensionTwo.setVisibility(View.GONE);
+                dimensionNameProAdapter.setSelectedBean(null);
                 imgAddDimensionOne
                         .setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.add));
-                tvDimensionNameTwo.setText("");
                 DimensionForTimeBean.DimensionRelationBean.DimensionNameBean bean
                         = (DimensionForTimeBean.DimensionRelationBean.DimensionNameBean) tvDimensionNameTwo.getTag();
-                bean.setSelected(false);
+                for (DimensionForTimeBean.DimensionRelationBean.DimensionNameBean nodeBean : dimensionNameBeans){
+                    if(nodeBean.getD_res_id().equals(bean.getD_res_id())){
+                        nodeBean.setSelected(false);
+                    }
+                }
                 dimensionNameOrgAdapter.setDimensionNameBeans(dimensionNameBeans);
                 dimensionNameProAdapter.setDimensionNameBeans(dimensionNameBeans);
                 dimensionNameAreaAdapter.setDimensionNameBeans(dimensionNameBeans);
@@ -210,12 +214,16 @@ public class AddIndexPageActivity extends BaseActivity<AddIndexPageView, AddInde
                 break;
             case R.id.img_deleteDimensionTwo :
                 relDimensionThree.setVisibility(View.GONE);
+                dimensionNameAreaAdapter.setSelectedBean(null);
                 imgAddDimensionOne
                         .setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.add));
-
                 DimensionForTimeBean.DimensionRelationBean.DimensionNameBean dimensionNameBean
-                        = (DimensionForTimeBean.DimensionRelationBean.DimensionNameBean) tvDimensionNameTwo.getTag();
-                dimensionNameBean.setSelected(false);
+                        = (DimensionForTimeBean.DimensionRelationBean.DimensionNameBean) tvDimensionNameThree.getTag();
+                for (DimensionForTimeBean.DimensionRelationBean.DimensionNameBean nodeBean : dimensionNameBeans){
+                    if(nodeBean.getD_res_id().equals(dimensionNameBean.getD_res_id())){
+                        nodeBean.setSelected(false);
+                    }
+                }
                 dimensionNameOrgAdapter.setDimensionNameBeans(dimensionNameBeans);
                 dimensionNameProAdapter.setDimensionNameBeans(dimensionNameBeans);
                 dimensionNameAreaAdapter.setDimensionNameBeans(dimensionNameBeans);
@@ -245,8 +253,18 @@ public class AddIndexPageActivity extends BaseActivity<AddIndexPageView, AddInde
                         ? View.GONE : View.VISIBLE);
                 linDimensionPopTwo.setVisibility(View.GONE);
                 linDimensionPopThree.setVisibility(View.GONE);
+                DimensionForTimeBean.DimensionRelationBean.DimensionNameBean orgSelectedBean
+                        = (DimensionForTimeBean.DimensionRelationBean.DimensionNameBean) tvDimensionNameOne.getTag();
+                if(orgSelectedBean != null){
+                    for (DimensionForTimeBean.DimensionRelationBean.DimensionNameBean nodeBean : dimensionNameBeans){
+                        if(orgSelectedBean.getD_res_id().equals(nodeBean.getD_res_id())){
+                            nodeBean.setSelected(false);
+                        }
+                    }
+                }
                 if(linDimensionPopOne.getVisibility() == View.VISIBLE){
                     recycleDimensionDetailOne.setVisibility(View.INVISIBLE);
+                    dimensionNameOrgAdapter.notifyDataSetChanged();
                     recycleDimensionOne.setVisibility(View.VISIBLE);
                 }
                 break;
@@ -255,8 +273,18 @@ public class AddIndexPageActivity extends BaseActivity<AddIndexPageView, AddInde
                         ? View.GONE : View.VISIBLE);
                 linDimensionPopOne.setVisibility(View.GONE);
                 linDimensionPopThree.setVisibility(View.GONE);
+                DimensionForTimeBean.DimensionRelationBean.DimensionNameBean proSelectedBean
+                        = (DimensionForTimeBean.DimensionRelationBean.DimensionNameBean) tvDimensionNameTwo.getTag();
+                if(proSelectedBean != null){
+                    for (DimensionForTimeBean.DimensionRelationBean.DimensionNameBean nodeBean : dimensionNameBeans){
+                        if(proSelectedBean.getD_res_id().equals(nodeBean.getD_res_id())){
+                            nodeBean.setSelected(false);
+                        }
+                    }
+                }
                 if(linDimensionPopTwo.getVisibility() == View.VISIBLE){
                     recycleDimensionTwo.setVisibility(View.VISIBLE);
+                    dimensionNameProAdapter.notifyDataSetChanged();
                     recycleDimensionDetailTwo.setVisibility(View.INVISIBLE);
                 }
                 break;
@@ -265,7 +293,17 @@ public class AddIndexPageActivity extends BaseActivity<AddIndexPageView, AddInde
                         ? View.GONE : View.VISIBLE);
                 linDimensionPopOne.setVisibility(View.GONE);
                 linDimensionPopTwo.setVisibility(View.GONE);
+                DimensionForTimeBean.DimensionRelationBean.DimensionNameBean selectedBean
+                        = (DimensionForTimeBean.DimensionRelationBean.DimensionNameBean) tvDimensionNameThree.getTag();
+                if(selectedBean != null){
+                    for (DimensionForTimeBean.DimensionRelationBean.DimensionNameBean nodeBean : dimensionNameBeans){
+                        if(selectedBean.getD_res_id().equals(nodeBean.getD_res_id())){
+                            nodeBean.setSelected(false);
+                        }
+                    }
+                }
                 if(linDimensionPopThree.getVisibility() == View.VISIBLE){
+                    dimensionNameAreaAdapter.notifyDataSetChanged();
                     recycleDimensionThree.setVisibility(View.VISIBLE);
                     recycleDimensionDetailThree.setVisibility(View.INVISIBLE);
                 }

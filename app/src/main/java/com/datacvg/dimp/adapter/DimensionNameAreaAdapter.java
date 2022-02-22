@@ -28,11 +28,19 @@ public class DimensionNameAreaAdapter extends RecyclerView.Adapter<DimensionName
             = new ArrayList<>() ;
     private LayoutInflater inflater ;
     private DimensionNameAreaClickListener clickListener ;
+    private DimensionForTimeBean.DimensionRelationBean.DimensionNameBean selectedBean ;
+
+    public void setSelectedBean(DimensionForTimeBean.DimensionRelationBean.DimensionNameBean selectedBean) {
+        this.selectedBean = selectedBean;
+    }
 
     public void setDimensionNameBeans(List<DimensionForTimeBean.DimensionRelationBean.DimensionNameBean> dimensionNameBeans) {
         this.dimensionNameBeans.clear();
         for (DimensionForTimeBean.DimensionRelationBean.DimensionNameBean bean : dimensionNameBeans){
             if (!bean.getSelected()){
+                this.dimensionNameBeans.add(bean);
+            }
+            if(selectedBean != null && selectedBean.getD_res_id().equals(bean.getD_res_id()) && bean.getSelected()){
                 this.dimensionNameBeans.add(bean);
             }
         }
@@ -59,6 +67,7 @@ public class DimensionNameAreaAdapter extends RecyclerView.Adapter<DimensionName
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.tvDimensionName.setText(dimensionNameBeans.get(position).getD_res_name());
         holder.itemView.setOnClickListener(v -> {
+            setSelectedBean(dimensionNameBeans.get(position));
             clickListener.onDimensionAreaClick(dimensionNameBeans.get(position));
         });
     }

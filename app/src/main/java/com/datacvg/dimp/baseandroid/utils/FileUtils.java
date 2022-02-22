@@ -279,7 +279,6 @@ public class FileUtils {
         if (isExternalStorageMounted()) {
             return Environment.getExternalStorageDirectory().getPath() + File.separator;
         } else {
-            // ignore
             return null;
         }
     }

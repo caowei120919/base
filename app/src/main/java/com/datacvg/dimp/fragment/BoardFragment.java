@@ -12,6 +12,7 @@ import com.datacvg.dimp.event.AddPageEvent;
 import com.datacvg.dimp.event.CheckIndexEvent;
 import com.datacvg.dimp.event.CompleteEvent;
 import com.datacvg.dimp.event.DeletePageEvent;
+import com.datacvg.dimp.event.DigitalEditEvent;
 import com.datacvg.dimp.event.EditEvent;
 import com.datacvg.dimp.event.EmptyFragmentEvent;
 import com.datacvg.dimp.event.FilterEvent;
@@ -145,14 +146,20 @@ public class BoardFragment extends BaseFragment<BoardView, BoardPresenter> imple
 
     }
 
-    /**
-     * 编辑
-     * @param event
-     */
+//    /**
+//     * 编辑
+//     * @param event
+//     */
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onEvent(EditEvent event){
+//        vpBoard.setScroll(false);
+//        magicIndicator.setVisibility(View.GONE);
+//    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(EditEvent event){
-        vpBoard.setScroll(false);
-        magicIndicator.setVisibility(View.GONE);
+    public void onEvent(DigitalEditEvent editEvent){
+        vpBoard.setScroll(editEvent.getShowBottom());
+        magicIndicator.setVisibility(editEvent.getShowBottom() ? View.VISIBLE : View.GONE);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
