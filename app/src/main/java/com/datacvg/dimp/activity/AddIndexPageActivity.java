@@ -200,17 +200,20 @@ public class AddIndexPageActivity extends BaseActivity<AddIndexPageView, AddInde
                         .setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.add));
                 DimensionForTimeBean.DimensionRelationBean.DimensionNameBean bean
                         = (DimensionForTimeBean.DimensionRelationBean.DimensionNameBean) tvDimensionNameTwo.getTag();
-                for (DimensionForTimeBean.DimensionRelationBean.DimensionNameBean nodeBean : dimensionNameBeans){
-                    if(nodeBean.getD_res_id().equals(bean.getD_res_id())){
-                        nodeBean.setSelected(false);
+                if(bean !=null){
+                    for (DimensionForTimeBean.DimensionRelationBean.DimensionNameBean nodeBean : dimensionNameBeans){
+                        if(nodeBean.getD_res_id().equals(bean.getD_res_id())){
+                            nodeBean.setSelected(false);
+                        }
                     }
                 }
                 dimensionNameOrgAdapter.setDimensionNameBeans(dimensionNameBeans);
                 dimensionNameProAdapter.setDimensionNameBeans(dimensionNameBeans);
                 dimensionNameAreaAdapter.setDimensionNameBeans(dimensionNameBeans);
-
                 tvDimensionNodeNameTwo.setText("");
                 tvDimensionNodeNameTwo.setTag(null);
+                tvDimensionNameTwo.setText("");
+                tvDimensionNameTwo.setTag(null);
                 break;
             case R.id.img_deleteDimensionTwo :
                 relDimensionThree.setVisibility(View.GONE);
@@ -219,10 +222,12 @@ public class AddIndexPageActivity extends BaseActivity<AddIndexPageView, AddInde
                         .setImageBitmap(BitmapFactory.decodeResource(resources,R.mipmap.add));
                 DimensionForTimeBean.DimensionRelationBean.DimensionNameBean dimensionNameBean
                         = (DimensionForTimeBean.DimensionRelationBean.DimensionNameBean) tvDimensionNameThree.getTag();
-                for (DimensionForTimeBean.DimensionRelationBean.DimensionNameBean nodeBean : dimensionNameBeans){
-                    if(nodeBean.getD_res_id().equals(dimensionNameBean.getD_res_id())){
-                        nodeBean.setSelected(false);
-                    }
+                if(dimensionNameBean != null){
+                    for (DimensionForTimeBean.DimensionRelationBean.DimensionNameBean nodeBean : dimensionNameBeans){
+                        if(nodeBean.getD_res_id().equals(dimensionNameBean.getD_res_id())){
+                            nodeBean.setSelected(false);
+                        }
+                }
                 }
                 dimensionNameOrgAdapter.setDimensionNameBeans(dimensionNameBeans);
                 dimensionNameProAdapter.setDimensionNameBeans(dimensionNameBeans);
@@ -230,6 +235,8 @@ public class AddIndexPageActivity extends BaseActivity<AddIndexPageView, AddInde
 
                 tvDimensionNodeNameThree.setText("");
                 tvDimensionNodeNameThree.setTag(null);
+                tvDimensionNameThree.setText("");
+                tvDimensionNameThree.setTag(null);
                 break;
             case R.id.tv_addOrCancel :
                 tvAddOrCancel.setSelected(!tvAddOrCancel.isSelected());

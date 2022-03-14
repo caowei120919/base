@@ -5,6 +5,7 @@ import android.view.View;
 import androidx.fragment.app.Fragment;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.BoardPagerAdapter;
+import com.datacvg.dimp.baseandroid.utils.AndroidUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.PageItemBean;
@@ -160,6 +161,7 @@ public class BoardFragment extends BaseFragment<BoardView, BoardPresenter> imple
     public void onEvent(DigitalEditEvent editEvent){
         vpBoard.setScroll(editEvent.getShowBottom());
         magicIndicator.setVisibility(editEvent.getShowBottom() ? View.VISIBLE : View.GONE);
+        PLog.e(magicIndicator.getWidth()+"=========="+ getActivity().getWindowManager().getDefaultDisplay().getWidth());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

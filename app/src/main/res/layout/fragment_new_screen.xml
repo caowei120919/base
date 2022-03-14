@@ -34,7 +34,7 @@
             <LinearLayout
                 android:id="@+id/lin_screenSize"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/H100"
+                android:layout_height="@dimen/H105"
                 android:layout_marginTop="@dimen/H35"
                 android:layout_below="@id/tv_informationTitle"
                 android:orientation="horizontal">
@@ -318,6 +318,7 @@
                                 android:layout_weight="1"
                                 android:maxLength="6"
                                 android:hint="2000"
+                                android:textSize="14sp"
                                 android:background="@null"
                                 android:inputType="number"
                                 android:layout_marginLeft="@dimen/W15">
@@ -359,6 +360,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:maxLength="6"
+                                android:textSize="14sp"
                                 android:hint="2000"
                                 android:background="@null"
                                 android:inputType="number"

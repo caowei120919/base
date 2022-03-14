@@ -3,7 +3,7 @@
     android:layout_width="@dimen/W320"
     android:layout_height="@dimen/H225"
     android:layout_marginTop="@dimen/H24"
-    android:background="@color/c_FFFFFF">
+    android:background="@drawable/bg_round_white">
 
     <ImageView
         android:id="@+id/img_picture"

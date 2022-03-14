@@ -7,10 +7,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectChangeListener;
@@ -21,25 +19,20 @@ import com.datacvg.dimp.adapter.SelectAreaDimensionAdapter;
 import com.datacvg.dimp.adapter.SelectOrgDimensionAdapter;
 import com.datacvg.dimp.adapter.SelectProDimensionAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
-import com.datacvg.dimp.baseandroid.utils.LanguageUtils;
 import com.datacvg.dimp.baseandroid.utils.PLog;
-import com.datacvg.dimp.baseandroid.utils.TimeUtils;
 import com.datacvg.dimp.bean.DimensionBean;
 import com.datacvg.dimp.bean.PageItemBean;
 import com.datacvg.dimp.event.FilterEvent;
 import com.datacvg.dimp.presenter.SelectFilterPresenter;
 import com.datacvg.dimp.view.SelectFilterView;
 import com.google.gson.Gson;
-
 import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -180,7 +173,7 @@ public class SelectFilterActivity extends BaseActivity<SelectFilterView, SelectF
         Calendar selectedDate = Calendar.getInstance();
         Calendar startDate = Calendar.getInstance();
         Calendar endDate = Calendar.getInstance();
-        startDate.set(2000,1,1);
+        startDate.set(1970,1,1);
         endDate.set(endDate.get(Calendar.YEAR), endDate.get(Calendar.MONTH)
                 , endDate.get(Calendar.DATE));
         pvCustomTime = new TimePickerBuilder(mContext, new OnTimeSelectListener() {
@@ -216,7 +209,7 @@ public class SelectFilterActivity extends BaseActivity<SelectFilterView, SelectF
                                 tvParameterTime.setText(calendar.get(Calendar.YEAR) + "-"
                                         + ((calendar.get(Calendar.MONTH) + 1) > 9 ? (calendar.get(Calendar.MONTH) + 1) : "0" + (calendar.get(Calendar.MONTH) + 1))
                                         + "-" + (calendar.get(Calendar.DATE) > 9 ? calendar.get(Calendar.DATE) : "0" + calendar.get(Calendar.DATE)));
-                                pageItemBean.setTimeVal(calendar.get(Calendar.YEAR) + ""
+                                pageItemBean.setTimeVal(calendar.get                              (Calendar.YEAR) + ""
                                         + ((calendar.get(Calendar.MONTH) + 1) > 9 ? (calendar.get(Calendar.MONTH) + 1) : "0" + (calendar.get(Calendar.MONTH) + 1))
                                         + "" + (calendar.get(Calendar.DATE) > 9 ? calendar.get(Calendar.DATE) : "0" + calendar.get(Calendar.DATE)));
                                 break;
@@ -226,11 +219,12 @@ public class SelectFilterActivity extends BaseActivity<SelectFilterView, SelectF
                 .setContentTextSize(18)
                 .setTitleText("")
                 .setOutSideCancelable(false)
-                .isCyclic(true)
+                .isCyclic(false)
                 .setDate(selectedDate)
                 .setRangDate(startDate,endDate)
                 .isCenterLabel(false)
                 .setDecorView(timePicker)
+                .isDialog(false)
                 .build();
         pvCustomTime.show();
     }

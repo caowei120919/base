@@ -116,9 +116,10 @@ public class IndexDetailActivity extends BaseActivity<IndexDetailView, IndexDeta
                 ,selectedDate.getTime().toString())).getTime()));
         Calendar startDate = Calendar.getInstance();
         Calendar endDate = Calendar.getInstance();
-        startDate.set(1900,1,1);
+        startDate.set(1970,1,1);
         endDate.set(selectedDate.get(Calendar.YEAR), selectedDate.get(Calendar.MONTH)
                 , selectedDate.get(Calendar.DATE));
+        PLog.e(TimeUtils.date2Str(selectedDate));
         pvCustomTime = new TimePickerBuilder(mContext, new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
@@ -178,7 +179,7 @@ public class IndexDetailActivity extends BaseActivity<IndexDetailView, IndexDeta
                 .setTitleSize(20)
                 .setTitleText("")
                 .setOutSideCancelable(false)
-                .isCyclic(true)
+                .isCyclic(false)
                 .setDate(selectedDate)
                 .setRangDate(startDate,endDate)
                 .isCenterLabel(false)

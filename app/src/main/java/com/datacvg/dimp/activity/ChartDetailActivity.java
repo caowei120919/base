@@ -517,6 +517,11 @@ public class ChartDetailActivity extends BaseActivity<ChartDetailView, ChartDeta
                 if(pvCustomTime.isShowing()){
                     pvCustomTime.dismiss();
                 }else{
+                    Calendar selectedDate = Calendar.getInstance();
+                    selectedDate.setTime(new Date(TimeUtils.parse(PreferencesHelper.get(Constants.USER_DEFAULT_TIME
+                            ,selectedDate.getTime().toString())).getTime()));
+                    pvCustomTime.setDate(selectedDate);
+                    pvCustomTime.returnData();
                     pvCustomTime.show();
                 }
                 break;
@@ -544,7 +549,7 @@ public class ChartDetailActivity extends BaseActivity<ChartDetailView, ChartDeta
                 ,selectedDate.getTime().toString())).getTime()));
         Calendar startDate = Calendar.getInstance();
         Calendar endDate = Calendar.getInstance();
-        startDate.set(2000,1,1);
+        startDate.set(1970,1,1);
         endDate.set(selectedDate.get(Calendar.YEAR), endDate.get(Calendar.MONTH)
                 , endDate.get(Calendar.DATE));
         pvCustomTime = new TimePickerBuilder(mContext, new OnTimeSelectListener() {
@@ -558,7 +563,7 @@ public class ChartDetailActivity extends BaseActivity<ChartDetailView, ChartDeta
                 .setLayoutRes(R.layout.pickerview_custom_time, new CustomListener() {
                     @Override
                     public void customLayout(View v) {
-                        final TextView tvSubmit = v.findViewById(R.id.tv_finish);
+                        TextView tvSubmit = v.findViewById(R.id.tv_finish);
                         TextView ivCancel = v.findViewById(R.id.iv_cancel);
                         tvSubmit.setOnClickListener(view -> {
                             pvCustomTime.returnData();
@@ -573,7 +578,7 @@ public class ChartDetailActivity extends BaseActivity<ChartDetailView, ChartDeta
                 .setTitleSize(20)
                 .setTitleText("")
                 .setOutSideCancelable(false)
-                .isCyclic(true)
+                .isCyclic(false)
                 .setDate(selectedDate)
                 .setRangDate(startDate,endDate)
                 .isCenterLabel(false)

@@ -112,11 +112,11 @@ public class IndexTreeActivity extends BaseActivity<IndexTreeView, IndexTreePres
         if (!TextUtils.isEmpty(indexTreeNeedBean.getOrgName())){
             titles.add(indexTreeNeedBean.getOrgName());
         }
-        if (!TextUtils.isEmpty(indexTreeNeedBean.getFuName())){
-            titles.add(indexTreeNeedBean.getFuName());
-        }
         if (!TextUtils.isEmpty(indexTreeNeedBean.getpName())){
             titles.add(indexTreeNeedBean.getpName());
+        }
+        if (!TextUtils.isEmpty(indexTreeNeedBean.getFuName())){
+            titles.add(indexTreeNeedBean.getFuName());
         }
         titleNavigator = new TitleNavigator(mContext,titles,false);
         titleNavigator.setOnTabSelectedListener(this);

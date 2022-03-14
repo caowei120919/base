@@ -100,6 +100,7 @@ public class ReportListOfMineFragment extends BaseFragment<ReportListOfMineView,
             smartReportOfMine.finishRefresh();
         }
         this.showReportBeans.clear();
+        this.originalBeans.clear();
         for (ReportBean bean : data){
             if(!bean.getModel_id().equals(Constants.REPORT_MINE_PARENT_ID)){
                this.originalBeans.add(bean);

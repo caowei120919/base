@@ -6,14 +6,11 @@
         android:id="@+id/layout_actionBar"
         layout="@layout/actionbar_title"/>
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/H100"
-        android:layout_below="@id/layout_actionBar">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/H100"
+            android:layout_below="@id/layout_actionBar">
 
             <LinearLayout
                 android:id="@+id/lin_pageName"
@@ -423,7 +420,6 @@
                 android:layout_below="@id/magic_indicator">
             </androidx.recyclerview.widget.RecyclerView>
         </RelativeLayout>
-    </androidx.core.widget.NestedScrollView>
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -1,4 +1,5 @@
 package com.datacvg.dimp.presenter;
+import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.config.MobileApi;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
@@ -94,6 +95,38 @@ public class ScreenDetailPresenter extends BasePresenter<ScreenDetailView> {
                             default :
                                 getView().forScreenSuccess(scPlayStatus);
                                 break;
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+                });
+    }
+
+    public void deleteOnTheScreen(String deviceId, String clientIp, String scPlayTime, String scPlayInfo, String targetIp, String scPlayStatus, int scIndexStatus, String code, String message) {
+        Map<String,String> params = new HashMap<>();
+        params.put("deviceId",deviceId);
+        params.put("clientIp",clientIp);
+        params.put("scPlayTime",scPlayTime);
+        params.put("scPlayInfo",scPlayInfo);
+        params.put("scPlayStatus",scPlayStatus);
+        params.put("scIndexStatus",scIndexStatus + "");
+        params.put("code",code);
+        params.put("targetIp",targetIp);
+        params.put("message",message);
+        api.deleteOnTheScreen(params).compose(RxUtils.applySchedulersLifeCycle(getView()))
+                .subscribe(new RxObserver<BaseBean<String>>(){
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                    }
+
+                    @Override
+                    public void onNext(BaseBean<String> bean) {
+                        if(bean.getStatus() == Constants.SERVICE_CODE_SUCCESS_FIS){
+                            getView().deleteSuccess(scIndexStatus);
                         }
                     }
 

@@ -25,4 +25,10 @@ public interface ScreenDetailView extends MvpView {
      * @param scIndexStatus
      */
     void forScreenSuccess(String scIndexStatus);
+
+    /**
+     * 删除成功
+     * @param scIndexStatus
+     */
+    void deleteSuccess(int scIndexStatus);
 }

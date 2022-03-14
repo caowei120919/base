@@ -228,6 +228,7 @@ public class ScreenDetailActivity extends BaseActivity<ScreenDetailView, ScreenD
                         ,new Gson().toJson(bean),isStart ? Constants.SCREEN_CLOSE : Constants.SCREEN_START
                         ,linkBean.getCurrentPosition() + ""
                         ,Constants.COMMON_CODE,linkBean.getTargetIp());
+                adapter.setCurrentPosition(-1);
             }
         });
         dialogOKCancel.setOnClickListenerNegativeBtn(view -> {
@@ -304,13 +305,32 @@ public class ScreenDetailActivity extends BaseActivity<ScreenDetailView, ScreenD
         }
     }
 
+    @Override
+    public void deleteSuccess(int scIndexStatus) {
+        beans.remove(scIndexStatus);
+        adapter.notifyDataSetChanged();
+    }
+
     /**
      * 单个删除
      * @param position
      */
     @Override
     public void onDeleteClick(int position) {
-
+        CVGOKCancelWithTitle dialogOKCancel = new CVGOKCancelWithTitle(mContext);
+        dialogOKCancel.setMessage(mContext.getResources()
+                .getString(R.string.are_you_sure_you_want_to_delete_it));
+        dialogOKCancel.setCancelable(false);
+        dialogOKCancel.setOnClickPositiveButtonListener(view -> {
+            getPresenter().deleteOnTheScreen("app",Constants.token,linkBean.getScreenTime()
+                    ,new Gson().toJson(bean), bean.getScreen_id(),Constants.SCREEN_PAUSE
+                    ,position
+                    ,Constants.DELETE_CODE,position+"");
+        });
+        dialogOKCancel.setOnClickListenerNegativeBtn(view -> {
+            dialogOKCancel.dismiss();
+        });
+        dialogOKCancel.show();
     }
 
     /**
@@ -322,6 +342,14 @@ public class ScreenDetailActivity extends BaseActivity<ScreenDetailView, ScreenD
         Intent intent = new Intent(mContext,ScreenSettingActivity.class);
         intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,beans.get(position));
         startActivity(intent);
+    }
+
+    @Override
+    public void onSelectedClick(int position) {
+        getPresenter().confirmOnTheScreen("app",Constants.token,linkBean.getScreenTime()
+                ,new Gson().toJson(bean),isStart ? Constants.SCREEN_PAUSE : Constants.SCREEN_START
+                ,position + ""
+                ,Constants.COMMON_CODE,linkBean.getTargetIp());
     }
 
     /**
@@ -344,7 +372,7 @@ public class ScreenDetailActivity extends BaseActivity<ScreenDetailView, ScreenD
                 .connectTimeout(60,TimeUnit.SECONDS)
                 .pingInterval(30, TimeUnit.SECONDS)
                 .build();
-        String webSocketUrl = Constants.BASE_FIS_URL + "largescreen?code=" + Constants.token ;
+        String webSocketUrl = Constants.BASE_URL.replace("http","ws") + "api/dataengine/largescreen?code=" + Constants.token ;
         Request request = new Request.Builder().url(webSocketUrl).build() ;
         webSocket = okHttpClient.newWebSocket(request,screenWebSocket);
     }
@@ -393,6 +421,13 @@ public class ScreenDetailActivity extends BaseActivity<ScreenDetailView, ScreenD
         }
         linkBean.setCurrentPosition(Integer
                     .parseInt(webSocketMessageBean.getScIndexStatus()));
+        Integer currentPosition = Integer.valueOf(webSocketMessageBean.getScIndexStatus());
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adapter.setCurrentPosition(currentPosition);
+            }
+        });
     }
 
     @Override

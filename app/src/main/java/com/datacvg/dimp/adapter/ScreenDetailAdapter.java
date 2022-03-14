@@ -28,6 +28,7 @@ public class ScreenDetailAdapter extends RecyclerView.Adapter<ScreenDetailAdapte
     private OnScreenDetailClick click ;
     private boolean isEditFlag = true ;
     private boolean isDeleteFlag = true ;
+    private Integer currentPosition = -1 ;
 
 
     public ScreenDetailAdapter(Context mContext, List<ScreenDetailBean.ListBean> beans
@@ -47,9 +48,17 @@ public class ScreenDetailAdapter extends RecyclerView.Adapter<ScreenDetailAdapte
         return new ViewHolder(view);
     }
 
+    public void setCurrentPosition(Integer currentPosition) {
+        this.currentPosition = currentPosition;
+        notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.tvName.setText(beans.get(position).getImg_name());
+        holder.tvName.setTextColor(position == currentPosition ?
+                mContext.getResources().getColor(R.color.c_da3a16) :
+                mContext.getResources().getColor(R.color.c_666666));
         if(beans.get(position).getRes_type().equals("img")){
             holder.imgTitle.setImageBitmap(BitmapFactory
                     .decodeResource(mContext.getResources(),R.mipmap.icon_img_screen));
@@ -66,6 +75,12 @@ public class ScreenDetailAdapter extends RecyclerView.Adapter<ScreenDetailAdapte
         if(isEditFlag){
             holder.imgSetting.setOnClickListener(view -> {
                 click.onSettingClick(position);
+            });
+        }
+
+        if(currentPosition != -1){
+            holder.itemView.setOnClickListener(v -> {
+
             });
         }
     }
@@ -106,5 +121,11 @@ public class ScreenDetailAdapter extends RecyclerView.Adapter<ScreenDetailAdapte
          * @param position
          */
         void onSettingClick(int position);
+
+        /**
+         * 选择播放
+         * @param position
+         */
+        void onSelectedClick(int position);
     }
 }

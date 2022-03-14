@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.bean.IndexTreeBean;
@@ -23,7 +24,7 @@ import java.util.List;
  * @Time : 2020-12-11
  * @Description :
  */
-public class IndexTreeViewFlower extends ViewGroup{
+public class IndexTreeViewFlower extends ViewGroup {
 
     public enum IndexTreeType {
         INDEX_LARGE(1),

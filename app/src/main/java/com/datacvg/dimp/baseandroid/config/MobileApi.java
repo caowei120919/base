@@ -244,8 +244,11 @@ public interface MobileApi {
      * @param params
      * @return
      */
-    @POST("largescreen/websocket")
+    @POST("api/dataengine/largescreen/websocket")
     Observable<BaseBean<String>> confirmOnTheScreen(@Body Map<String, String> params);
+
+    @POST("api/dataengine/largescreen/websocket")
+    Observable<BaseBean<String>> deleteOnTheScreen(@Body Map<String, String> params);
 
     /**
      * 获取报表参数
@@ -308,7 +311,7 @@ public interface MobileApi {
 
     @GET("api/mobile/actionplan/infodetail")
     Observable<BaseBean<TaskInfoBean>> getTaskInfo(@Query("taskId") String taskId,
-                                                   @Query("userType") int user_type,
+                                                   @Query("userType") int userType,
                                                    @Query("userId") String userId,
                                                    @Query("language") String language);
 

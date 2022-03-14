@@ -155,6 +155,7 @@ public class DigitalFragment extends BaseFragment<DigitalView, DigitalPresenter>
         }
     }
 
+
     /**
      * 标题切换
      * @param position

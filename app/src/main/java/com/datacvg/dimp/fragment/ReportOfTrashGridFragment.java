@@ -178,26 +178,24 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
                         , new SuperDialog.OnItemClickListener() {
                             @Override
                             public void onItemClick(int position) {
-                                for (ReportTrashBean trashBean:reportTrashBeans){
-                                        String type = "";
-                                        switch (trashBean.getRes_type()) {
-                                            case Constants.REPORT_TEMPLATE_TYPE:
-                                            case Constants.REPORT_TEMPLATE_FOLDER_TYPE:
-                                                type = "TEMPLATE";
-                                                break;
+                                String type = "" ;
+                                switch (bean.getRes_type()) {
+                                    case Constants.REPORT_TEMPLATE_TYPE:
+                                    case Constants.REPORT_TEMPLATE_FOLDER_TYPE:
+                                        type = "TEMPLATE";
+                                        break;
 
-                                            case Constants.REPORT_MINE_TYPE:
-                                            case Constants.REPORT_MINE_FOLDER_TYPE:
-                                                type = "MODEL";
-                                                break;
+                                    case Constants.REPORT_MINE_TYPE:
+                                    case Constants.REPORT_MINE_FOLDER_TYPE:
+                                        type = "MODEL";
+                                        break;
 
-                                            case Constants.REPORT_SHARE_TYPE:
-                                            case Constants.REPORT_SHARE_FOLDER_TYPE:
-                                                type = "SHARE";
-                                                break;
-                                        }
-                                        getPresenter().deleteReportOnTrash(type, trashBean.getRes_id());
+                                    case Constants.REPORT_SHARE_TYPE:
+                                    case Constants.REPORT_SHARE_FOLDER_TYPE:
+                                        type = "SHARE";
+                                        break;
                                     }
+                                getPresenter().deleteReportOnTrash(type, bean.getRes_id());
                             }
                         })
                 .setNegativeButton(resources.getString(R.string.cancel)
