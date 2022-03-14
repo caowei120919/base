@@ -38,6 +38,7 @@ import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.event.ReportRefreshEvent;
 import com.datacvg.dimp.presenter.ReportGridOnFolderPresenter;
 import com.datacvg.dimp.view.ReportGridOnFolderView;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lcw.library.imagepicker.ImagePicker;
 import com.mylhyl.superdialog.SuperDialog;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -83,6 +84,8 @@ public class ReportGridOnFolderActivity extends BaseActivity<ReportGridOnFolderV
     private String listType ;
     private PopupWindow sortPop ;
     private String changeAvatarPath;
+
+    private KProgressHUD mPDialog;
 
     @Override
     protected int getLayoutId() {
@@ -472,6 +475,16 @@ public class ReportGridOnFolderActivity extends BaseActivity<ReportGridOnFolderV
     public void downloadReport(ReportBean bean) {
         this.chooseReportBean = bean ;
         downloadFile();
+        if(mPDialog == null){
+            mPDialog = KProgressHUD.create(this)
+                    .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                    .setDetailsLabel("下载中")
+                    .setCancellable(true)
+                    .setAnimationSpeed(2)
+                    .setDimAmount(0.5f)
+                    .setSize(120, 120);
+        }
+        mPDialog.show() ;
     }
 
     /**

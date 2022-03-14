@@ -222,9 +222,8 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
                         , new SuperDialog.OnItemClickListener() {
                             @Override
                             public void onItemClick(int position) {
-                                for (ReportTrashBean trashBean : reportTrashBeans){
                                         String type = "" ;
-                                        switch (trashBean.getRes_type()){
+                                        switch (bean.getRes_type()){
                                             case Constants.REPORT_TEMPLATE_TYPE :
                                             case Constants.REPORT_TEMPLATE_FOLDER_TYPE :
                                                 type = "TEMPLATE" ;
@@ -240,9 +239,8 @@ public class ReportOfTrashGridFragment extends BaseFragment<ReportOfTrashView, R
                                                 type = "SHARE" ;
                                                 break;
                                         }
-                                        getPresenter().restoreOnTrash(type,trashBean.getRes_id());
+                                        getPresenter().restoreOnTrash(type,bean.getRes_id());
                                     }
-                                }
                         })
                 .setNegativeButton(resources.getString(R.string.cancel)
                         ,resources.getColor(R.color.c_303030),36,120, null)

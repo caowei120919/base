@@ -34,6 +34,7 @@ import com.datacvg.dimp.event.SortForNameEvent;
 import com.datacvg.dimp.event.SortForSystemEvent;
 import com.datacvg.dimp.presenter.ReportOfTemplatePresenter;
 import com.datacvg.dimp.view.ReportOfTemplateView;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lcw.library.imagepicker.ImagePicker;
 import com.mylhyl.superdialog.SuperDialog;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
@@ -81,6 +82,8 @@ public class ReportOfTemplateGridFragment extends BaseFragment<ReportOfTemplateV
     private GridLayoutManager gridLayoutManager ;
     private ReportBean reportBean ;
     private String changeAvatarPath ;
+    private KProgressHUD mPDialog;
+
 
     @Override
     protected int getLayoutId() {
@@ -164,6 +167,16 @@ public class ReportOfTemplateGridFragment extends BaseFragment<ReportOfTemplateV
     public void downloadReport(ReportBean bean) {
         this.reportBean = bean ;
         downloadFile();
+        if(mPDialog == null){
+            mPDialog = KProgressHUD.create(getActivity())
+                    .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                    .setDetailsLabel("下载中")
+                    .setCancellable(true)
+                    .setAnimationSpeed(2)
+                    .setDimAmount(0.5f)
+                    .setSize(120, 120);
+        }
+        mPDialog.show() ;
     }
 
     /**

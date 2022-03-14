@@ -36,6 +36,7 @@ import com.datacvg.dimp.bean.ReportListBean;
 import com.datacvg.dimp.event.ReportRefreshEvent;
 import com.datacvg.dimp.presenter.ReportFolderPresenter;
 import com.datacvg.dimp.view.ReportFolderView;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.mylhyl.superdialog.SuperDialog;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -75,6 +76,8 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
     private String listType ;
     private PopupWindow sortPop ;
     private ReportBean selectedReportBean ;
+
+    private KProgressHUD mPDialog;
 
     @Override
     protected int getLayoutId() {
@@ -353,6 +356,18 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
     public void onReportDownload(ReportBean reportBean) {
         this.selectedReportBean = reportBean ;
         downloadFile();
+        if(mPDialog != null){
+            mPDialog.show();
+        }else{
+            mPDialog = KProgressHUD.create(this)
+                    .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                    .setDetailsLabel("下载中")
+                    .setCancellable(true)
+                    .setAnimationSpeed(2)
+                    .setDimAmount(0.5f)
+                    .setSize(120, 120);
+            mPDialog.show() ;
+        }
     }
 
     private void downloadFile() {

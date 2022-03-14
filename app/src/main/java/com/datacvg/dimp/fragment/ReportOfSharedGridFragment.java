@@ -33,6 +33,7 @@ import com.datacvg.dimp.event.SortForNameEvent;
 import com.datacvg.dimp.event.SortForSystemEvent;
 import com.datacvg.dimp.presenter.ReportOfSharedPresenter;
 import com.datacvg.dimp.view.ReportOfSharedView;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lcw.library.imagepicker.ImagePicker;
 import com.mylhyl.superdialog.SuperDialog;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
@@ -74,6 +75,7 @@ public class ReportOfSharedGridFragment extends BaseFragment<ReportOfSharedView,
     private GridLayoutManager gridLayoutManager ;
     private ReportBean reportBean ;
     private String changeAvatarPath;
+    private KProgressHUD mPDialog;
 
     @Override
     protected int getLayoutId() {
@@ -159,6 +161,16 @@ public class ReportOfSharedGridFragment extends BaseFragment<ReportOfSharedView,
     public void downloadReport(ReportBean bean) {
         this.reportBean = bean ;
         downloadFile();
+        if(mPDialog == null){
+            mPDialog = KProgressHUD.create(getActivity())
+                    .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                    .setDetailsLabel("下载中")
+                    .setCancellable(true)
+                    .setAnimationSpeed(2)
+                    .setDimAmount(0.5f)
+                    .setSize(120, 120);
+        }
+        mPDialog.show() ;
     }
 
     private void downloadFile() {

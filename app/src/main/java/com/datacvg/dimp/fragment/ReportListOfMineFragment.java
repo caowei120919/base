@@ -31,6 +31,7 @@ import com.datacvg.dimp.event.SortForNameEvent;
 import com.datacvg.dimp.event.SortForSystemEvent;
 import com.datacvg.dimp.presenter.ReportListOfMinePresenter;
 import com.datacvg.dimp.view.ReportListOfMineView;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.mylhyl.superdialog.SuperDialog;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
@@ -64,6 +65,7 @@ public class ReportListOfMineFragment extends BaseFragment<ReportListOfMineView,
     private List<ReportBean> sortBeans = new ArrayList<>() ;
     private ReportListAdapter adapter ;
     private ReportBean reportBean ;
+    private KProgressHUD mPDialog;
 
     @Override
     protected int getLayoutId() {
@@ -139,6 +141,9 @@ public class ReportListOfMineFragment extends BaseFragment<ReportListOfMineView,
         String mFileName = "dimp_" + reportBean.getModel_id() + ".canvas";
         FileUtils.writeTxtToFile(bean,mFolder,mFileName);
         ToastUtils.showLongToast(resources.getString(R.string.download_successfully));
+        if(mPDialog.isShowing()){
+            mPDialog.dismiss();
+        }
     }
 
     @Override
@@ -198,6 +203,16 @@ public class ReportListOfMineFragment extends BaseFragment<ReportListOfMineView,
     public void onReportDownload(ReportBean reportBean) {
         this.reportBean = reportBean ;
         downloadFile(reportBean);
+        if(mPDialog == null){
+            mPDialog = KProgressHUD.create(getActivity())
+                    .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                    .setDetailsLabel("下载中")
+                    .setCancellable(true)
+                    .setAnimationSpeed(2)
+                    .setDimAmount(0.5f)
+                    .setSize(120, 120);
+        }
+        mPDialog.show() ;
     }
 
     @Override

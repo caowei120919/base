@@ -34,6 +34,7 @@ import com.datacvg.dimp.event.SortForSystemEvent;
 import com.datacvg.dimp.presenter.ReportOfMinePresenter;
 import com.datacvg.dimp.view.ReportOfMineView;
 import com.google.gson.Gson;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lcw.library.imagepicker.ImagePicker;
 import com.mylhyl.superdialog.SuperDialog;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
@@ -69,6 +70,8 @@ public class ReportOfMineGridFragment extends BaseFragment<ReportOfMineView, Rep
     SmartRefreshLayout swipeReportOfMine ;
     @BindView(R.id.recycler_reportOfMine)
     RecyclerView recyclerReportOfMine ;
+
+    private KProgressHUD mPDialog;
 
     public final static int MINE_REPORT_THUMB_REQUEST = 0x000001 ;
     private String changeAvatarPath;
@@ -232,6 +235,16 @@ public class ReportOfMineGridFragment extends BaseFragment<ReportOfMineView, Rep
     public void downloadReport(ReportBean bean) {
         this.reportBean = bean ;
         downloadFile();
+        if(mPDialog == null){
+            mPDialog = KProgressHUD.create(getActivity())
+                    .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                    .setDetailsLabel("下载中")
+                    .setCancellable(true)
+                    .setAnimationSpeed(2)
+                    .setDimAmount(0.5f)
+                    .setSize(120, 120);
+        }
+        mPDialog.show() ;
     }
 
     /**

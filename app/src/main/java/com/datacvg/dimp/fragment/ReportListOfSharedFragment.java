@@ -31,6 +31,7 @@ import com.datacvg.dimp.event.SortForNameEvent;
 import com.datacvg.dimp.event.SortForSystemEvent;
 import com.datacvg.dimp.presenter.ReportListOfSharedPresenter;
 import com.datacvg.dimp.view.ReportListOfSharedView;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.mylhyl.superdialog.SuperDialog;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
@@ -63,6 +64,8 @@ public class ReportListOfSharedFragment extends BaseFragment<ReportListOfSharedV
     private List<ReportBean> sortBeans = new ArrayList<>() ;
     private ReportListAdapter adapter ;
     private ReportBean reportBean ;
+
+    private KProgressHUD mPDialog;
 
     @Override
     protected int getLayoutId() {
@@ -197,6 +200,18 @@ public class ReportListOfSharedFragment extends BaseFragment<ReportListOfSharedV
     public void onReportDownload(ReportBean reportBean) {
         this.reportBean = reportBean ;
         downloadFile();
+        if(mPDialog != null){
+            mPDialog.show();
+        }else{
+            mPDialog = KProgressHUD.create(getActivity())
+                    .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                    .setDetailsLabel("下载中")
+                    .setCancellable(true)
+                    .setAnimationSpeed(2)
+                    .setDimAmount(0.5f)
+                    .setSize(120, 120);
+            mPDialog.show() ;
+        }
     }
 
     private void downloadFile() {

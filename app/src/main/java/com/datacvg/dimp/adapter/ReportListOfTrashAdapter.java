@@ -72,8 +72,11 @@ public class ReportListOfTrashAdapter extends RecyclerView.Adapter<ReportListOfT
             @Override
             public void closeSwipe() {
                 holder.imgFunctionDelete.setVisibility(View.VISIBLE);
+                holder.imgFunctionDownload.setVisibility(View.VISIBLE);
+                holder.relDelete.setVisibility(View.VISIBLE);
                 holder.relRestore.setVisibility(View.VISIBLE);
                 holder.tvConfirmDelete.setVisibility(View.GONE);
+                holder.tvConfirmRestore.setVisibility(View.GONE);
             }
         });
         holder.relDelete.setOnClickListener(v -> {

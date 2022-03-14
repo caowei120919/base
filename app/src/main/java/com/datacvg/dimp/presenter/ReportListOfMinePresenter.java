@@ -98,6 +98,7 @@ public class ReportListOfMinePresenter extends BasePresenter<ReportListOfMineVie
         api.downReportFile(reportId,type)
                 .compose(RxUtils.applySchedulersLifeCycle(getView()))
                 .subscribe(new RxObserver<String>(){
+
                     @Override
                     public void onComplete() {
                         super.onComplete();
