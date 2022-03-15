@@ -19,6 +19,7 @@ import com.datacvg.dimp.bean.ScreenBean;
 import com.datacvg.dimp.bean.ScreenDetailBean;
 import com.datacvg.dimp.presenter.ScreenSettingPresenter;
 import com.datacvg.dimp.view.ScreenSettingView;
+import com.google.gson.Gson;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -49,6 +50,8 @@ public class ScreenSettingActivity extends BaseActivity<ScreenSettingView, Scree
     TextView tvAnimationStyle ;
     @BindView(R.id.cb_circulation)
     CheckBox cbCirculation ;
+    @BindView(R.id.edit_animationTime)
+    EditText editAnimationTime ;
 
 
     private ScreenDetailBean.ListBean bean ;
@@ -85,13 +88,23 @@ public class ScreenSettingActivity extends BaseActivity<ScreenSettingView, Scree
                 .getSerializableExtra(Constants.EXTRA_DATA_FOR_BEAN);
         tvTitle.setText(resources.getString(R.string.set));
         tvName.setText(bean.getImg_name());
-        addToScreenAttrBean = new AddToScreenAttrBean() ;
-        addToScreenAttrBean.setStayUnit(Constants.SECOND);
-        addToScreenAttrBean.setStayTime(stayTimeValue);
-        addToScreenAttrBean.setLoadTimeUnit(Constants.SECOND);
-        addToScreenAttrBean.setLoadTime(previewTimeValue);
-        addToScreenAttrBean.setAnimationTime(animationTimeValue);
-        addToScreenAttrBean.setAnimationEffect(Constants.SCREEN_FADE_IN_AND_OUT);
+        addToScreenAttrBean = new Gson().fromJson(bean.getRes_attribute(),AddToScreenAttrBean.class);
+        editStayTime.setText(addToScreenAttrBean.getStayTime() + "");
+        editPreviewTime.setText(addToScreenAttrBean.getLoadTime() + "");
+        editAnimationTime.setText(addToScreenAttrBean.getAnimationTime() + "");
+        switch (addToScreenAttrBean.getStayUnit()){
+            case Constants.HOUR :
+                tvStayTimeUnit.setText(resources.getString(R.string.hour));
+                break;
+
+            case Constants.MINUTE :
+                tvStayTimeUnit.setText(resources.getString(R.string.minute));
+                break;
+
+            case Constants.SECOND :
+                tvStayTimeUnit.setText(resources.getString(R.string.second));
+                break;
+        }
     }
 
 
