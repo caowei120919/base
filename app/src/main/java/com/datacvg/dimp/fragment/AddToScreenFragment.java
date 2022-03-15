@@ -73,6 +73,7 @@ public class AddToScreenFragment extends BaseFragment<AddToScreenView, AddToScre
     private int animationTimeValue = 300 ;
     private AddToScreenAttrBean addToScreenAttrBean ;
     private ScreenBean screenBean ;
+    private int chooseScreenPosition = 0 ;
 
     @Override
     protected int getLayoutId() {
@@ -199,14 +200,14 @@ public class AddToScreenFragment extends BaseFragment<AddToScreenView, AddToScre
 
         View animationContentView = LayoutInflater.from(mContext)
                 .inflate(R.layout.item_pup_screen_animation, null);
-        animationContentView.findViewById(R.id.tv_hour).setOnClickListener(v -> {
+        animationContentView.findViewById(R.id.tv_minute).setOnClickListener(v -> {
             tvAnimationStyle.setText(resources.getString(R.string.the_level_of_translation));
             addToScreenAttrBean.setAnimationEffect(Constants.SCREEN_PAN_HORIZONTAL);
             if(animationPop != null && animationPop.isShowing()){
                 animationPop.dismiss();
             }
         });
-        animationContentView.findViewById(R.id.tv_minute).setOnClickListener(v -> {
+        animationContentView.findViewById(R.id.tv_hour).setOnClickListener(v -> {
             tvAnimationStyle.setText(resources.getString(R.string.fade_in_fade_out));
             addToScreenAttrBean.setAnimationEffect(Constants.SCREEN_FADE_IN_AND_OUT);
             if(animationPop != null && animationPop.isShowing()){
@@ -273,7 +274,7 @@ public class AddToScreenFragment extends BaseFragment<AddToScreenView, AddToScre
         View contentView = LayoutInflater.from(mContext)
                 .inflate(R.layout.item_pup_choose_screen, null);
         RecyclerView recyclerScreen = contentView.findViewById(R.id.recycler_screen);
-        ChooseScreenAdapter adapter = new ChooseScreenAdapter(mContext,this,screenBeans);
+        ChooseScreenAdapter adapter = new ChooseScreenAdapter(mContext,this,screenBeans,chooseScreenPosition);
         LinearLayoutManager manager = new LinearLayoutManager(mContext);
         recyclerScreen.setLayoutManager(manager);
         recyclerScreen.setAdapter(adapter);
@@ -312,6 +313,7 @@ public class AddToScreenFragment extends BaseFragment<AddToScreenView, AddToScre
     @Override
     public void onChooseClick(int position) {
         tvSelectName.setText(screenBeans.get(position).getScreen_name());
+        chooseScreenPosition = position ;
         this.screenBean = screenBeans.get(position);
         if(popupWindow.isShowing()){
             popupWindow.dismiss();

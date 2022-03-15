@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.datacvg.dimp.R;
+import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.bean.ScreenBean;
 
 import java.util.ArrayList;
@@ -28,13 +29,15 @@ public class ChooseScreenAdapter extends RecyclerView.Adapter<ChooseScreenAdapte
     private LayoutInflater inflater ;
     private List<ScreenBean> screenBeans = new ArrayList<>() ;
     private OnScreenChooseClick click ;
+    private int position = 0 ;
 
-    public ChooseScreenAdapter(Context mContext,OnScreenChooseClick click,
-                               List<ScreenBean> screenBeans) {
+    public ChooseScreenAdapter(Context mContext, OnScreenChooseClick click,
+                               List<ScreenBean> screenBeans, int chooseScreenPosition) {
         this.mContext = mContext;
         inflater = LayoutInflater.from(mContext);
         this.click = click ;
         this.screenBeans = screenBeans;
+        this.position = chooseScreenPosition ;
     }
 
     @NonNull
@@ -46,10 +49,17 @@ public class ChooseScreenAdapter extends RecyclerView.Adapter<ChooseScreenAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        if(position == this.position){
+            holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.c_7fdedede));
+        }else{
+            holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.c_FFFFFF));
+        }
         ScreenBean screenBean = screenBeans.get(position);
         holder.tvScreen.setText(screenBean.getScreen_name());
         holder.itemView.setOnClickListener(v -> {
             click.onChooseClick(position);
+            this.position = position ;
+            notifyDataSetChanged();
         });
     }
 
