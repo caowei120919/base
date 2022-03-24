@@ -55,8 +55,6 @@ import java.util.Locale;
 import java.util.Map;
 import butterknife.BindView;
 import okhttp3.RequestBody;
-import top.zibin.luban.Luban;
-import top.zibin.luban.OnCompressListener;
 import static android.app.Activity.RESULT_OK;
 
 /**

@@ -34,6 +34,7 @@ import com.datacvg.dimp.bean.ReportTrashListBean;
 import com.datacvg.dimp.bean.SavePageBean;
 import com.datacvg.dimp.bean.ScreenDetailBean;
 import com.datacvg.dimp.bean.ScreenListBean;
+import com.datacvg.dimp.bean.ScreenReportListBean;
 import com.datacvg.dimp.bean.SearchListReportBean;
 import com.datacvg.dimp.bean.SetDefaultResBean;
 import com.datacvg.dimp.bean.TableInfoBean;
@@ -577,4 +578,19 @@ public interface MobileApi {
                                      @Query("time") String time,
                                      @Query("confirm") String confirm,
                                      @Query("t") String _t);
+
+    /**
+     * 获取大屏报告列表
+     * @return
+     */
+    @GET("api/dataengine/largescreen/data/report")
+    Observable<BaseBean<ScreenReportListBean>> getReportInScreen();
+
+    /**
+     * 添加到大屏
+     * @param params
+     * @return
+     */
+    @POST("api/dataengine/largescreen/app/report")
+    Observable<BaseBean> addScreenReport(@Body Map params);
 }

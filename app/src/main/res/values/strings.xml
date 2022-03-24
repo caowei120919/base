@@ -165,6 +165,7 @@
     <string name="please_fill_in_the_task_details">请填写任务详情</string>
     <string name="dont_allow_permissions">权限未被允许</string>
     <string name="select_picture">选择图片</string>
+    <string name="picture">图片</string>
     <string name="taking_pictures">拍照</string>
     <string name="photo_album">相册</string>
     <string name="target">目标</string>
@@ -269,6 +270,7 @@
     <string name="restore_successful">还原成功</string>
     <string name="upload_thumbnails">上传缩略图</string>
     <string name="add_to_large_screen">添加到大屏</string>
+    <string name="upload_success">上传成功</string>
     <string name="delete">删除</string>
     <string name="download_the_report">下载报告</string>
     <string name="by_system_default">按系统默认</string>
@@ -315,4 +317,7 @@
     <string name="add_a_plan_of_action">赶紧添加行动方案吧</string>
     <string name="the_current_user_does_not_have_permission_for_dimension">当前用户没有该指标#1维度权限</string>
     <string name="are_you_sure_you_want_to_delete_it">您确定要删除吗?</string>
+    <string name="the_image_size_exceeds_500k_cannot_be_uploaded">图片大小超过500k,不能上传</string>
+    <string name="add_the_statements">添加报表</string>
+    <string name="report_not_selected">尚未选择报表</string>
 </resources>

@@ -104,25 +104,35 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_playList"
-        android:layout_below="@id/lin_top"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="match_parent"
+        android:layout_below="@id/lin_top">
 
-    <TextView
-        android:id="@+id/tv_add"
-        android:layout_width="@dimen/W600"
-        android:layout_height="@dimen/H200"
-        android:layout_below="@id/recycler_playList"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/H100"
-        android:text="@string/add_a_report_or_picture"
-        android:gravity="center"
-        android:paddingRight="@dimen/W80"
-        android:paddingLeft="@dimen/W80"
-        android:drawableLeft="@mipmap/icon_add"
-        android:background="@mipmap/screen_add_outline">
-    </TextView>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_playList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/tv_add"
+                android:layout_width="@dimen/W600"
+                android:layout_height="@dimen/H200"
+                android:layout_below="@id/recycler_playList"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/H100"
+                android:text="@string/add_a_report_or_picture"
+                android:gravity="center"
+                android:paddingRight="@dimen/W80"
+                android:paddingLeft="@dimen/W80"
+                android:drawableLeft="@mipmap/icon_add"
+                android:background="@mipmap/screen_add_outline">
+            </TextView>
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

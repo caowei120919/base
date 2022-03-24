@@ -216,14 +216,14 @@ public class ScreenSettingActivity extends BaseActivity<ScreenSettingView, Scree
         View animationContentView = LayoutInflater.from(mContext)
                 .inflate(R.layout.item_pup_screen_animation, null);
         animationContentView.findViewById(R.id.tv_hour).setOnClickListener(v -> {
-            tvAnimationStyle.setText(resources.getString(R.string.the_level_of_translation));
+            tvAnimationStyle.setText(resources.getString(R.string.fade_in_fade_out));
             addToScreenAttrBean.setAnimationEffect(Constants.SCREEN_PAN_HORIZONTAL);
             if(animationPop != null && animationPop.isShowing()){
                 animationPop.dismiss();
             }
         });
         animationContentView.findViewById(R.id.tv_minute).setOnClickListener(v -> {
-            tvAnimationStyle.setText(resources.getString(R.string.fade_in_fade_out));
+            tvAnimationStyle.setText(resources.getString(R.string.the_level_of_translation));
             addToScreenAttrBean.setAnimationEffect(Constants.SCREEN_FADE_IN_AND_OUT);
             if(animationPop != null && animationPop.isShowing()){
                 animationPop.dismiss();

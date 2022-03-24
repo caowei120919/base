@@ -7,6 +7,7 @@
     <string name="enterprise_id_code">Enterprise identification code</string>
     <string name="remember_userinfo">Remember user information</string>
     <string name="use_vpn">Using VPN</string>
+    <string name="picture">picture</string>
     <string name="login">login</string>
     <string name="setting_up">Setting up</string>
     <string name="please_check_the_network">Please check the network</string>
@@ -319,7 +320,11 @@
     <string name="no_action_plan">No action plan</string>
     <string name="commencement_date">Commencement date :#1</string>
     <string name="plan_details">Plan details :#1</string>
+    <string name="upload_success">upload success</string>
     <string name="add_a_plan_of_action">Add a plan of action</string>
     <string name="the_current_user_does_not_have_permission_for_dimension">The current user does not have permission for dimension #1</string>
     <string name="are_you_sure_you_want_to_delete_it">Are you sure you want to delete it ?</string>
+    <string name="the_image_size_exceeds_500k_cannot_be_uploaded">The image size exceeds 500K, cannot be uploaded</string>
+    <string name="add_the_statements">Add the statements</string>
+    <string name="report_not_selected">Report not selected</string>
 </resources>

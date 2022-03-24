@@ -32,6 +32,7 @@ import com.datacvg.dimp.activity.ReportFolderActivity;
 import com.datacvg.dimp.activity.ReportGridOnFolderActivity;
 import com.datacvg.dimp.activity.ScanActivity;
 import com.datacvg.dimp.activity.ScreenDetailActivity;
+import com.datacvg.dimp.activity.ScreenReportActivity;
 import com.datacvg.dimp.activity.ScreenResultActivity;
 import com.datacvg.dimp.activity.ScreenSettingActivity;
 import com.datacvg.dimp.activity.SearchContactOrDepartmentActivity;
@@ -154,4 +155,5 @@ public interface ActivityComponent {
 
     void inject(ChooseIndexFromActionActivity chooseIndexFromActionActivity);
 
+    void inject(ScreenReportActivity screenReportActivity);
 }

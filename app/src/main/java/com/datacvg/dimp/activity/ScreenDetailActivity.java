@@ -2,29 +2,40 @@ package com.datacvg.dimp.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Base64;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.adapter.ScreenDetailAdapter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
+import com.datacvg.dimp.baseandroid.utils.GlideLoader;
+import com.datacvg.dimp.baseandroid.utils.MultipartUtil;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
 import com.datacvg.dimp.baseandroid.utils.Handlers;
+import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.baseandroid.widget.CVGOKCancelWithTitle;
 import com.datacvg.dimp.bean.ScreenBean;
 import com.datacvg.dimp.bean.ScreenDetailBean;
 import com.datacvg.dimp.bean.ScreenFormatBean;
 import com.datacvg.dimp.bean.WebSocketLinkBean;
 import com.datacvg.dimp.bean.WebSocketMessageBean;
+import com.datacvg.dimp.event.AddToScreenReportEvent;
 import com.datacvg.dimp.event.ForScreenSuccessEvent;
 import com.datacvg.dimp.presenter.ScreenDetailPresenter;
 import com.datacvg.dimp.socket.ScreenWebSocket;
@@ -32,22 +43,33 @@ import com.datacvg.dimp.socket.listener.ScreenWebSocketListener;
 import com.datacvg.dimp.view.ScreenDetailView;
 import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.lcw.library.imagepicker.ImagePicker;
+import com.mylhyl.superdialog.SuperDialog;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okio.ByteString;
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
 
 /**
  * @Author : T-Bag (茶包)
@@ -65,6 +87,7 @@ public class ScreenDetailActivity extends BaseActivity<ScreenDetailView, ScreenD
     TextView tvName ;
     @BindView(R.id.tv_size)
     TextView tvSize ;
+
     @BindView(R.id.rel_screenPlayControl)
     RelativeLayout relScreenPlayControl ;
     @BindView(R.id.img_playOrStop)
@@ -77,7 +100,6 @@ public class ScreenDetailActivity extends BaseActivity<ScreenDetailView, ScreenD
     private String title ;
     private ScreenBean bean ;
     private IntentIntegrator mIntentIntegrator ;
-
     private ScreenDetailAdapter adapter ;
     private List<ScreenDetailBean.ListBean> beans = new ArrayList<>();
     private ScreenWebSocket screenWebSocket;
@@ -155,11 +177,11 @@ public class ScreenDetailActivity extends BaseActivity<ScreenDetailView, ScreenD
                             .subscribe(new RxObserver<Boolean>(){
                                 @Override
                                 public void onNext(Boolean aBoolean) {
-                                    if (aBoolean) {      //授权通过拍摄照片
+                                    if (aBoolean) {
                                         mIntentIntegrator = new IntentIntegrator(mContext);
                                         mIntentIntegrator.addExtra(Constants.EXTRA_DATA_FOR_ALBUM,false) ;
                                         mIntentIntegrator.addExtra(Constants.EXTRA_DATA_FOR_SCAN
-                                                ,Constants.SCAN_FOR_SCREEN) ;
+                                                ,Constants.SCAN_FOR_SCREEN);
                                         mIntentIntegrator.addExtra("title",title);
                                         mIntentIntegrator.setCaptureActivity(ScanActivity.class);
                                         mIntentIntegrator.initiateScan();
@@ -210,8 +232,51 @@ public class ScreenDetailActivity extends BaseActivity<ScreenDetailView, ScreenD
              */
             case R.id.tv_add :
                 PLog.e("添加报表或图片");
+                showAddReportDialog();
                 break;
         }
+    }
+
+    /**
+     * 添加报表或图片
+     */
+    private void showAddReportDialog() {
+        List<String> listButton = new ArrayList<>();
+        listButton.add(resources.getString(R.string.the_theme_report));
+        listButton.add(resources.getString(R.string.picture));
+        new SuperDialog.Builder(mContext)
+                .setCanceledOnTouchOutside(false)
+                .setTitle(resources.getString(R.string.the_image_size_exceeds_500k_cannot_be_uploaded),resources.getColor(R.color.c_303030),36,120)
+                .setItems(listButton,resources.getColor(R.color.c_da3a16),36,120
+                        , new SuperDialog.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(int position) {
+                                switch (position){
+                                    case 0 :
+                                        PLog.e("主题报表");
+                                        Intent intent = new Intent(mContext,ScreenReportActivity.class);
+                                        intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,bean);
+                                        mContext.startActivity(intent);
+                                        break;
+
+                                    case 1 :
+                                        ImagePicker.getInstance()
+                                                .setTitle(mContext.getResources().getString(R.string.select_picture))
+                                                .setImageLoader(new GlideLoader())
+                                                .showCamera(false)
+                                                .showImage(true)
+                                                .showVideo(false)
+                                                .setSingleType(true)
+                                                .setMaxCount(1)
+                                                .start(mContext, Constants.REQUEST_OPEN_CAMERA);
+                                        break;
+                                }
+                            }
+                        })
+                .setNegativeButton(resources.getString(R.string.cancel)
+                        ,resources.getColor(R.color.c_303030),36,120, null)
+                .setGravity(Gravity.CENTER)
+                .build();
     }
 
     /**
@@ -309,6 +374,12 @@ public class ScreenDetailActivity extends BaseActivity<ScreenDetailView, ScreenD
     public void deleteSuccess(int scIndexStatus) {
         beans.remove(scIndexStatus);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void uploadSuccess() {
+        getPresenter().getScreenDetail(bean.getScreen_id());
+        ToastUtils.showLongToast(resources.getString(R.string.upload_success));
     }
 
     /**
@@ -479,5 +550,45 @@ public class ScreenDetailActivity extends BaseActivity<ScreenDetailView, ScreenD
             webSocket = null ;
         }
         super.onDestroy();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==RESULT_OK){
+            switch (requestCode) {
+                case Constants.REQUEST_OPEN_CAMERA :
+                    List<String> photos = data.getStringArrayListExtra(ImagePicker.EXTRA_SELECT_IMAGES);
+                    for (String pictureUri : photos){
+                        Luban.with(mContext).load(pictureUri).ignoreBy(100).setCompressListener(new OnCompressListener() {
+                            @Override
+                            public void onStart() {
+
+                            }
+
+                            @Override
+                            public void onSuccess(File file) {
+                                Map<String, String> options = new HashMap<>();
+                                final Map<String, RequestBody> params = MultipartUtil.getRequestBodyMap(options, "img", file);
+                                getPresenter().uploadPicture(bean.getScreen_id(),params);
+                                PLog.e(new Gson().toJson(params));
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+                        }).launch();
+                    }
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + requestCode);
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(AddToScreenReportEvent event){
+        getPresenter().getScreenDetail(bean.getScreen_id());
     }
 }

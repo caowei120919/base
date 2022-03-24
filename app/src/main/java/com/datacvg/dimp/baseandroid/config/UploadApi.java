@@ -11,6 +11,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PartMap;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -29,6 +30,11 @@ public interface UploadApi {
     @POST("api/dataengine/dataexporler/report/upload_thumbnails")
     Observable<BaseBean> uploadFile(@Query("reportId") String reportId
             ,@Query("modelType") String type
+            ,@PartMap Map<String, RequestBody> partMap);
+
+    @Multipart
+    @POST("api/dataengine/largescreen/app/image_upload/{screenId}")
+    Observable<BaseBean> uploadScreenPicture(@Path("screenId") String reportId
             ,@PartMap Map<String, RequestBody> partMap);
 
     @POST("updateapp/getVersion")

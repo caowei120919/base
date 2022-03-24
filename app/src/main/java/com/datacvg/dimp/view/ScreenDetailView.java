@@ -31,4 +31,9 @@ public interface ScreenDetailView extends MvpView {
      * @param scIndexStatus
      */
     void deleteSuccess(int scIndexStatus);
+
+    /**
+     * 上传成功
+     */
+    void uploadSuccess();
 }

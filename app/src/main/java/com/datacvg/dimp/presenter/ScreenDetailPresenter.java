@@ -1,10 +1,13 @@
 package com.datacvg.dimp.presenter;
 import com.datacvg.dimp.baseandroid.config.Constants;
 import com.datacvg.dimp.baseandroid.config.MobileApi;
+import com.datacvg.dimp.baseandroid.config.UploadApi;
 import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
+import com.datacvg.dimp.baseandroid.retrofit.helper.PreferencesHelper;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
+import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.ScreenDetailBean;
 import com.datacvg.dimp.view.ScreenDetailView;
 
@@ -21,10 +24,12 @@ import javax.inject.Inject;
 public class ScreenDetailPresenter extends BasePresenter<ScreenDetailView> {
 
     MobileApi api ;
+    UploadApi uploadApi ;
 
     @Inject
-    public ScreenDetailPresenter(MobileApi api) {
+    public ScreenDetailPresenter(MobileApi api,UploadApi uploadApi) {
         this.api = api;
+        this.uploadApi  = uploadApi ;
     }
 
     /**
@@ -127,6 +132,33 @@ public class ScreenDetailPresenter extends BasePresenter<ScreenDetailView> {
                     public void onNext(BaseBean<String> bean) {
                         if(bean.getStatus() == Constants.SERVICE_CODE_SUCCESS_FIS){
                             getView().deleteSuccess(scIndexStatus);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+                });
+    }
+
+    /**
+     * 上传图片
+     * @param params
+     */
+    public void uploadPicture(String screenId,Map params) {
+        uploadApi.uploadScreenPicture(screenId,params)
+                .compose(RxUtils.applySchedulersLifeCycle(getView()))
+                .subscribe(new RxObserver<BaseBean>(){
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                    }
+
+                    @Override
+                    public void onNext(BaseBean bean) {
+                        if(checkJsonCode(bean)){
+                            getView().uploadSuccess();
                         }
                     }
 
