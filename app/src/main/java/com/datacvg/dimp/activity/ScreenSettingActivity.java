@@ -21,6 +21,9 @@ import com.datacvg.dimp.presenter.ScreenSettingPresenter;
 import com.datacvg.dimp.view.ScreenSettingView;
 import com.google.gson.Gson;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
@@ -86,12 +89,21 @@ public class ScreenSettingActivity extends BaseActivity<ScreenSettingView, Scree
     protected void setupData(Bundle savedInstanceState) {
         bean = (ScreenDetailBean.ListBean) getIntent()
                 .getSerializableExtra(Constants.EXTRA_DATA_FOR_BEAN);
+        screenBean = (ScreenBean) getIntent()
+                .getSerializableExtra(Constants.EXTRA_DATA_FOR_SCAN);
         tvTitle.setText(resources.getString(R.string.set));
         tvName.setText(bean.getImg_name());
         addToScreenAttrBean = new Gson().fromJson(bean.getRes_attribute(),AddToScreenAttrBean.class);
+        addToScreenAttrBean.setAnimationMode(new Gson().fromJson(screenBean.getScreen_attribute()
+                ,AddToScreenAttrBean.class).getAnimationMode());
         editStayTime.setText(addToScreenAttrBean.getStayTime() + "");
         editPreviewTime.setText(addToScreenAttrBean.getLoadTime() + "");
         editAnimationTime.setText(addToScreenAttrBean.getAnimationTime() + "");
+        if(addToScreenAttrBean.getAnimationEffect().equals(Constants.SCREEN_FADE_IN_AND_OUT)){
+            tvAnimationStyle.setText(resources.getString(R.string.fade_in_fade_out));
+        }else{
+            tvAnimationStyle.setText(resources.getString(R.string.the_level_of_translation));
+        }
         switch (addToScreenAttrBean.getStayUnit()){
             case Constants.HOUR :
                 tvStayTimeUnit.setText(resources.getString(R.string.hour));
@@ -244,7 +256,25 @@ public class ScreenSettingActivity extends BaseActivity<ScreenSettingView, Scree
                 break;
 
             case R.id.btn_save :
-
+                Map params = new HashMap() ;
+                Map globalMap = new HashMap();
+                Map resAttrMap = new HashMap() ;
+                globalMap.put("animationMode",addToScreenAttrBean.getAnimationMode());
+                resAttrMap.put("animationTime",TextUtils.isEmpty(editAnimationTime.getText().toString())?editAnimationTime.getHint().toString() : editAnimationTime.getText().toString());
+                resAttrMap.put("stayTime",TextUtils.isEmpty(editStayTime.getText().toString()) ? editStayTime.getHint().toString() : editStayTime.getText().toString());
+                resAttrMap.put("stayUnit",tvStayTimeUnit.getText().toString());
+                resAttrMap.put("loadTime",TextUtils.isEmpty(editPreviewTime.getText().toString()) ? editPreviewTime.getHint().toString() : editPreviewTime.getText().toString());
+                resAttrMap.put("loadTimeUnit",tvPreviewTimeUnit.getText().toString());
+                if(tvAnimationStyle.getText().toString().equals(resources.getString(R.string.the_level_of_translation))){
+                    resAttrMap.put("animationEffect","panHorizontal");
+                }else{
+                    resAttrMap.put("animationEffect","fadeInAndOut");
+                }
+                params.put("globalAttr",new Gson().toJson(globalMap));
+                params.put("screenId",screenBean.getScreen_id());
+                params.put("resPkId",bean.getPkid());
+                params.put("resAttribute",new Gson().toJson(resAttrMap));
+                getPresenter().saveResAttr(params);
                 break;
 
             case R.id.tv_stayTimeUnit :

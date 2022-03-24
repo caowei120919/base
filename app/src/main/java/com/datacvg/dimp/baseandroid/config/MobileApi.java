@@ -593,4 +593,12 @@ public interface MobileApi {
      */
     @POST("api/dataengine/largescreen/app/report")
     Observable<BaseBean> addScreenReport(@Body Map params);
+
+    /**
+     * 保存设置
+     * @param params
+     * @return
+     */
+    @POST("api/dataengine/largescreen/app/resattr")
+    Observable<BaseBean> saveResAttr(@Body Map params);
 }

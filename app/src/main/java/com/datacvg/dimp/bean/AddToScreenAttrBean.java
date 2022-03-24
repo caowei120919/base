@@ -25,6 +25,15 @@ public class AddToScreenAttrBean {
     private String stayUnit;
     private Integer animationTime;
     private String animationEffect;
+    private String animationMode ;
+
+    public String getAnimationMode() {
+        return animationMode;
+    }
+
+    public void setAnimationMode(String animationMode) {
+        this.animationMode = animationMode;
+    }
 
     public Integer getLoadTime() {
         return loadTime;

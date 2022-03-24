@@ -411,6 +411,7 @@ public class ScreenDetailActivity extends BaseActivity<ScreenDetailView, ScreenD
     @Override
     public void onSettingClick(int position) {
         Intent intent = new Intent(mContext,ScreenSettingActivity.class);
+        intent.putExtra(Constants.EXTRA_DATA_FOR_SCAN,bean);
         intent.putExtra(Constants.EXTRA_DATA_FOR_BEAN,beans.get(position));
         startActivity(intent);
     }
