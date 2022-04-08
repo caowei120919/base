@@ -129,7 +129,7 @@ public class Constants {
     /**
      * 实时添加
      */
-    public static final String ADD_CODE = "2004" ;
+    public static final String ADD_CODE = "2001" ;
     /**
      * 当前大屏页信息
      */

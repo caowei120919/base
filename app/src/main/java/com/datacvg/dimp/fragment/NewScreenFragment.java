@@ -448,6 +448,7 @@ public class NewScreenFragment extends BaseFragment<NewScreenView, NewScreenPres
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AddToScreenEvent event){
+        PLog.e("================>" + isFragmentVisible() );
         if(isFragmentVisible()){
             if(TextUtils.isEmpty(screenName)){
                 ToastUtils.showLongToast(resources.getString(R.string.please_enter_a_large_screen_name));
@@ -455,6 +456,10 @@ public class NewScreenFragment extends BaseFragment<NewScreenView, NewScreenPres
             }
             if(screenWide == 0 || screenHeight == 0){
                 ToastUtils.showLongToast(resources.getString(R.string.the_size_must_be_a_value_greater_than_zero));
+                return;
+            }
+            if(stayTimeValue == 0){
+                ToastUtils.showLongToast(resources.getString(R.string.the_report_residence_time_cannot_be_zero));
                 return;
             }
             AddToScreenRequestBean requestBean = new AddToScreenRequestBean();

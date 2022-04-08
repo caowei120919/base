@@ -956,7 +956,7 @@ public class TaskInfoBean implements Serializable {
 
         private String save_data;
         private List<DementionInfoBean> demention_info;
-        private List<NewvalBean> newval;
+        private Object newval;
         private String index_mnt_description ;
         private String index_value_mnt ;
 
@@ -968,7 +968,7 @@ public class TaskInfoBean implements Serializable {
             this.tree_type = tree_type;
         }
 
-        public void setNewval(List<NewvalBean> newval) {
+        public void setNewval(Object newval) {
             this.newval = newval;
         }
 
@@ -1116,7 +1116,7 @@ public class TaskInfoBean implements Serializable {
             this.demention_info = demention_info;
         }
 
-        public List<NewvalBean> getNewval() {
+        public Object getNewval() {
             return newval;
         }
 

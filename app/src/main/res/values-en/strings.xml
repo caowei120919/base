@@ -327,4 +327,6 @@
     <string name="the_image_size_exceeds_500k_cannot_be_uploaded">The image size exceeds 500K, cannot be uploaded</string>
     <string name="add_the_statements">Add the statements</string>
     <string name="report_not_selected">Report not selected</string>
+    <string name="no_position_information_has_been_configured">No position information has been configured</string>
+    <string name="the_report_residence_time_cannot_be_zero">The report residence time cannot be 0</string>
 </resources>

@@ -328,6 +328,9 @@ public class PersonalFragment extends BaseFragment<PersonView, PersonPresenter> 
     public void getUseJobsSuccess(UserJobsListBean resdata) {
         userJobsBeans = resdata ;
         String currentPkId = PreferencesHelper.get(Constants.USER_PKID,"") ;
+        if(resdata.isEmpty()){
+            ToastUtils.showLongToast(resources.getString(R.string.no_position_information_has_been_configured));
+        }
         for (UserJobsBean bean: resdata) {
             if(TextUtils.isEmpty(bean.getUser_pkid())){
                 continue;

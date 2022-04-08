@@ -160,6 +160,9 @@ public class ReportListOfTemplateFragment extends BaseFragment<ReportListOfTempl
                 .getAbsolutePath();
         String mFileName = "dimp_" + reportBean.getTemplate_id() + ".canvas";
         FileUtils.writeTxtToFile(bean,mFolder,mFileName);
+        if( mPDialog!=null && mPDialog.isShowing()){
+            mPDialog.dismiss();
+        }
         ToastUtils.showLongToast(resources.getString(R.string.download_successfully));
     }
 

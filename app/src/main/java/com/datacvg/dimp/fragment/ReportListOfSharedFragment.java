@@ -152,6 +152,9 @@ public class ReportListOfSharedFragment extends BaseFragment<ReportListOfSharedV
                 .getAbsolutePath();
         String mFileName = "dimp_" + reportBean.getShare_id() + ".canvas";
         FileUtils.writeTxtToFile(bean,mFolder,mFileName);
+        if( mPDialog!=null && mPDialog.isShowing()){
+            mPDialog.dismiss();
+        }
         ToastUtils.showLongToast(resources.getString(R.string.download_successfully));
     }
 

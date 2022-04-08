@@ -80,7 +80,7 @@ public class ScreenDetailAdapter extends RecyclerView.Adapter<ScreenDetailAdapte
 
         if(currentPosition != -1){
             holder.itemView.setOnClickListener(v -> {
-
+                click.onSelectedClick(position);
             });
         }
     }

@@ -320,4 +320,6 @@
     <string name="the_image_size_exceeds_500k_cannot_be_uploaded">图片大小超过500k,不能上传</string>
     <string name="add_the_statements">添加报表</string>
     <string name="report_not_selected">尚未选择报表</string>
+    <string name="no_position_information_has_been_configured">尚未配置岗位信息</string>
+    <string name="the_report_residence_time_cannot_be_zero">报表停留时间不能为0</string>
 </resources>

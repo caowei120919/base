@@ -13,13 +13,18 @@ import android.widget.TextView;
 
 import com.datacvg.dimp.R;
 import com.datacvg.dimp.baseandroid.config.Constants;
+import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.StatusBarUtil;
+import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.AddToScreenAttrBean;
 import com.datacvg.dimp.bean.ScreenBean;
 import com.datacvg.dimp.bean.ScreenDetailBean;
+import com.datacvg.dimp.event.ScreenAttrSaveEvent;
 import com.datacvg.dimp.presenter.ScreenSettingPresenter;
 import com.datacvg.dimp.view.ScreenSettingView;
 import com.google.gson.Gson;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -295,5 +300,12 @@ public class ScreenSettingActivity extends BaseActivity<ScreenSettingView, Scree
                 }
                 break;
         }
+    }
+
+    @Override
+    public void saveSuccess() {
+        ToastUtils.showLongToast(resources.getString(R.string.save_success));
+        EventBus.getDefault().post(new ScreenAttrSaveEvent());
+        finish();
     }
 }

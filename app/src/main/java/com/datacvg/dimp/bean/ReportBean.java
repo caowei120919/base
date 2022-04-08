@@ -4,6 +4,8 @@ import android.text.TextUtils;
 
 import androidx.annotation.Keep;
 import com.datacvg.dimp.baseandroid.config.Constants;
+import com.datacvg.dimp.baseandroid.utils.StringUtils;
+
 import java.io.Serializable;
 
 /**
@@ -94,7 +96,7 @@ public class ReportBean implements Serializable {
     }
 
     public Boolean isEditAble(){
-        return sign.equals("p");
+        return !StringUtils.isEmpty(pkid) && !pkid.equals("1953619");
     }
 
     public String getTemplate_id() {

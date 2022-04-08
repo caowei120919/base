@@ -16,6 +16,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,6 +39,10 @@ import com.datacvg.dimp.presenter.ReportFolderPresenter;
 import com.datacvg.dimp.view.ReportFolderView;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.mylhyl.superdialog.SuperDialog;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.greenrobot.eventbus.EventBus;
@@ -66,6 +71,8 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
     ImageView imgOther ;
     @BindView(R.id.recycler_reportOfFolder)
     RecyclerView recyclerReportOfFolder ;
+    @BindView(R.id.swipe_reportOfFolder)
+    SmartRefreshLayout swipeReportOfFolder ;
 
     private ReportBean reportBean ;
     private List<ReportBean> showReportBeans = new ArrayList<>() ;
@@ -124,6 +131,32 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         recyclerReportOfFolder.setLayoutManager(linearLayoutManager);
         recyclerReportOfFolder.setAdapter(adapter);
+        swipeReportOfFolder.setEnableLoadMore(false);
+        swipeReportOfFolder.setEnableRefresh(true);
+        swipeReportOfFolder.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                switch (folderType){
+                    case Constants.REPORT_MINE :
+                        getPresenter().getReportOnFolder(folderType
+                                ,reportBean.getModel_id()
+                                ,String.valueOf(System.currentTimeMillis()));
+                        break;
+
+                    case Constants.REPORT_SHARE :
+                        getPresenter().getReportOnFolder(folderType
+                                ,reportBean.getShare_id()
+                                ,String.valueOf(System.currentTimeMillis()));
+                        break;
+
+                    case Constants.REPORT_TEMPLATE :
+                        getPresenter().getReportOnFolder(folderType
+                                ,reportBean.getTemplate_id()
+                                ,String.valueOf(System.currentTimeMillis()));
+                        break;
+                }
+            }
+        });
     }
 
     @Override
@@ -211,6 +244,9 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
 
     @Override
     public void getReportSuccess(ReportListBean data) {
+        if(swipeReportOfFolder.isRefreshing()){
+            swipeReportOfFolder.finishRefresh();
+        }
         this.originalBeans.addAll(data);
         showReportBeans.clear();
         showReportBeans.addAll(data);
@@ -405,6 +441,9 @@ public class ReportFolderActivity extends BaseActivity<ReportFolderView, ReportF
                 .getAbsolutePath();
         String mFileName = "dimp_" + selectedReportBean.getShare_id() + ".canvas";
         FileUtils.writeTxtToFile(bean,mFolder,mFileName);
+        if( mPDialog!=null && mPDialog.isShowing()){
+            mPDialog.dismiss();
+        }
         ToastUtils.showLongToast(resources.getString(R.string.download_successfully));
     }
 

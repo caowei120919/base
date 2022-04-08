@@ -37,7 +37,7 @@ public class ScreenSettingPresenter extends BasePresenter<ScreenSettingView>{
                     @Override
                     public void onNext(BaseBean bean) {
                         if(checkJsonCode(bean)){
-//                            getView().getIndexSuccess(bean.getResdata());
+                            getView().saveSuccess();
                         }
                     }
 

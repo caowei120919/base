@@ -165,6 +165,9 @@ public class ReportOfMineGridFragment extends BaseFragment<ReportOfMineView, Rep
                 .getAbsolutePath();
         String mFileName = "dimp_" + reportBean.getModel_id() + ".canvas";
         FileUtils.writeTxtToFile(bean,mFolder,mFileName);
+        if( mPDialog!=null && mPDialog.isShowing()){
+            mPDialog.dismiss();
+        }
         ToastUtils.showLongToast(resources.getString(R.string.download_successfully));
     }
 

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -62,6 +63,16 @@
             android:layout_toLeftOf="@id/img_search">
         </ImageView>
     </RelativeLayout>
+
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/swipe_reportOfFolder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srlEnablePreviewInEditMode="true">
+    <com.scwang.smart.refresh.header.ClassicsHeader
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.scwang.smart.refresh.header.ClassicsHeader>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_report"
         android:layout_width="match_parent"
@@ -70,4 +81,5 @@
         android:layout_marginTop="@dimen/H24"
         android:layout_marginBottom="@dimen/H24">
     </androidx.recyclerview.widget.RecyclerView>
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </LinearLayout>

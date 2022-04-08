@@ -8,4 +8,5 @@ import com.datacvg.dimp.baseandroid.mvp.MvpView;
  * @Description :
  */
 public interface ScreenSettingView extends MvpView {
+    void saveSuccess();
 }

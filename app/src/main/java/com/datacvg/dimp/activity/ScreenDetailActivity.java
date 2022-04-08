@@ -37,6 +37,7 @@ import com.datacvg.dimp.bean.WebSocketLinkBean;
 import com.datacvg.dimp.bean.WebSocketMessageBean;
 import com.datacvg.dimp.event.AddToScreenReportEvent;
 import com.datacvg.dimp.event.ForScreenSuccessEvent;
+import com.datacvg.dimp.event.ScreenAttrSaveEvent;
 import com.datacvg.dimp.presenter.ScreenDetailPresenter;
 import com.datacvg.dimp.socket.ScreenWebSocket;
 import com.datacvg.dimp.socket.listener.ScreenWebSocketListener;
@@ -373,12 +374,20 @@ public class ScreenDetailActivity extends BaseActivity<ScreenDetailView, ScreenD
     @Override
     public void deleteSuccess(int scIndexStatus) {
         beans.remove(scIndexStatus);
+        getPresenter().confirmOnTheScreen("app",Constants.token,linkBean.getScreenTime()
+                ,new Gson().toJson(bean),Constants.DELETE_CODE
+                ,scIndexStatus + ""
+                ,Constants.COMMON_CODE,linkBean.getTargetIp());
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public void uploadSuccess() {
         getPresenter().getScreenDetail(bean.getScreen_id());
+        getPresenter().confirmOnTheScreen("app",Constants.token,linkBean.getScreenTime()
+                ,new Gson().toJson(bean),Constants.ADD_CODE
+                ,linkBean.getCurrentPosition() + ""
+                ,Constants.COMMON_CODE,linkBean.getTargetIp());
         ToastUtils.showLongToast(resources.getString(R.string.upload_success));
     }
 
@@ -393,8 +402,8 @@ public class ScreenDetailActivity extends BaseActivity<ScreenDetailView, ScreenD
                 .getString(R.string.are_you_sure_you_want_to_delete_it));
         dialogOKCancel.setCancelable(false);
         dialogOKCancel.setOnClickPositiveButtonListener(view -> {
-            getPresenter().deleteOnTheScreen("app",Constants.token,linkBean.getScreenTime()
-                    ,new Gson().toJson(bean), bean.getScreen_id(),Constants.SCREEN_PAUSE
+            getPresenter().deleteOnTheScreen("app",Constants.token,TextUtils.isEmpty(linkBean.getScreenTime()) ? "1" : linkBean.getScreenTime()
+                    ,new Gson().toJson(bean), bean.getScreen_id(),isStart ? Constants.DELETE_CODE : Constants.SCREEN_PAUSE
                     ,position
                     ,Constants.DELETE_CODE,position+"");
         });
@@ -419,7 +428,7 @@ public class ScreenDetailActivity extends BaseActivity<ScreenDetailView, ScreenD
     @Override
     public void onSelectedClick(int position) {
         getPresenter().confirmOnTheScreen("app",Constants.token,linkBean.getScreenTime()
-                ,new Gson().toJson(bean),isStart ? Constants.SCREEN_PAUSE : Constants.SCREEN_START
+                ,new Gson().toJson(bean),isStart ? Constants.SCREEN_START : Constants.SCREEN_PAUSE
                 ,position + ""
                 ,Constants.COMMON_CODE,linkBean.getTargetIp());
     }
@@ -433,6 +442,10 @@ public class ScreenDetailActivity extends BaseActivity<ScreenDetailView, ScreenD
         createWebSocket();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ScreenAttrSaveEvent event){
+        getPresenter().getScreenDetail(bean.getScreen_id());
+    }
     /**
      * 建立websocket
      */
@@ -591,5 +604,9 @@ public class ScreenDetailActivity extends BaseActivity<ScreenDetailView, ScreenD
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AddToScreenReportEvent event){
         getPresenter().getScreenDetail(bean.getScreen_id());
+        getPresenter().confirmOnTheScreen("app",Constants.token,linkBean.getScreenTime()
+                ,new Gson().toJson(bean),Constants.ADD_CODE
+                ,linkBean.getCurrentPosition() + ""
+                ,Constants.COMMON_CODE,linkBean.getTargetIp());
     }
 }

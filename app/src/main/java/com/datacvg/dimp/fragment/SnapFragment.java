@@ -210,12 +210,17 @@ public class SnapFragment extends BaseFragment<SnapView, SnapPresenter> implemen
         }
         tvEndTime.setText(TextUtils.isEmpty(fastPhotoOldBean.getDeadline()) ? "" : fastPhotoOldBean.getDeadline());
         if(!TextUtils.isEmpty(fastPhotoOldBean.getAction_time()) && !TextUtils.isEmpty(fastPhotoOldBean.getDeadline())){
-            if(fastPhotoOldBean.getNewval().isEmpty()){
-                verticalPro.setProgress(0);
-            }else{
-                verticalPro.setProgress((int) ((float)TimeUtils.countDays(fastPhotoOldBean.getAction_time())/(float) (TimeUtils.differentDays(TimeUtils.parse(fastPhotoOldBean.getAction_time())
-                        ,TimeUtils.parse(fastPhotoOldBean.getDeadline()))) * 100));
+            if (fastPhotoOldBean != null && fastPhotoOldBean.getNewval() != null){
+
             }
+//            String newValString = new Gson().toJson(fastPhotoOldBean.getNewval());
+//
+//            if(fastPhotoOldBean.getNewval().isEmpty()){
+//                verticalPro.setProgress(0);
+//            }else{
+//                verticalPro.setProgress((int) ((float)TimeUtils.countDays(fastPhotoOldBean.getAction_time())/(float) (TimeUtils.differentDays(TimeUtils.parse(fastPhotoOldBean.getAction_time())
+//                        ,TimeUtils.parse(fastPhotoOldBean.getDeadline()))) * 100));
+//            }
         }
     }
 

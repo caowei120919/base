@@ -99,6 +99,7 @@
                 android:layout_toRightOf="@id/tv_basicStayTime"
                 android:layout_marginLeft="@dimen/W170"
                 android:hint="300"
+                android:maxLength="6"
                 android:paddingLeft="@dimen/W24"
                 android:textColor="@color/c_303030"
                 android:textColorHint="@color/c_BCBCBC"
@@ -150,6 +151,8 @@
                 android:textColorHint="@color/c_BCBCBC"
                 android:textColor="@color/c_303030"
                 android:paddingLeft="@dimen/W24"
+
+                android:maxLength="6"
                 android:singleLine="true"
                 android:inputType="number"
                 android:background="@drawable/shape_round_8_f2f2f2">
@@ -289,6 +292,7 @@
                     android:background="@null"
                     android:inputType="number"
                     android:hint="300"
+                    android:maxLength="6"
                     android:textColorHint="@color/c_BCBCBC"
                     android:textColor="@color/c_303030"
                     android:gravity="center_vertical|left"

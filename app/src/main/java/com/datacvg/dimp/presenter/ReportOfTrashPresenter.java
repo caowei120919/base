@@ -6,13 +6,18 @@ import com.datacvg.dimp.baseandroid.retrofit.RxObserver;
 import com.datacvg.dimp.baseandroid.retrofit.bean.BaseBean;
 import com.datacvg.dimp.baseandroid.utils.PLog;
 import com.datacvg.dimp.baseandroid.utils.RxUtils;
+import com.datacvg.dimp.baseandroid.utils.ToastUtils;
 import com.datacvg.dimp.bean.ReportTrashListBean;
 import com.datacvg.dimp.view.ReportOfTrashView;
+import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
+
+import retrofit2.HttpException;
 
 /**
  * @Author : T-Bag (茶包)
@@ -186,6 +191,17 @@ public class ReportOfTrashPresenter extends BasePresenter<ReportOfTrashView>{
                     public void onError(Throwable e) {
                         super.onError(e);
                         PLog.e("onError()" + e.getMessage());
+                        if (((HttpException) e).code() == 500) {
+                            BaseBean baseBean = null;
+                            try {
+                                baseBean = new Gson().fromJson(((HttpException) e).response().errorBody().string(), BaseBean.class);
+                            } catch (IOException ioException) {
+                                ioException.printStackTrace();
+                            }
+                            if (baseBean != null) {
+                                ToastUtils.showLongToast(baseBean.getMessage());
+                            }
+                        }
                     }
                 });
     }

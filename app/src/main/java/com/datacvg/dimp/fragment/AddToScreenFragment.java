@@ -323,6 +323,10 @@ public class AddToScreenFragment extends BaseFragment<AddToScreenView, AddToScre
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AddToScreenEvent event){
         if(isFragmentVisible()){
+            if(stayTimeValue == 0){
+                ToastUtils.showLongToast(resources.getString(R.string.the_report_residence_time_cannot_be_zero));
+                return;
+            }
             AddToScreenRequestBean requestBean = new AddToScreenRequestBean();
             switch (event.getReportBean().getReport_type()){
                 case Constants.REPORT_MINE :

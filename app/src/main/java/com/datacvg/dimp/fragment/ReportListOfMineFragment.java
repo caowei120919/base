@@ -141,7 +141,7 @@ public class ReportListOfMineFragment extends BaseFragment<ReportListOfMineView,
         String mFileName = "dimp_" + reportBean.getModel_id() + ".canvas";
         FileUtils.writeTxtToFile(bean,mFolder,mFileName);
         ToastUtils.showLongToast(resources.getString(R.string.download_successfully));
-        if(mPDialog.isShowing()){
+        if( mPDialog!=null && mPDialog.isShowing()){
             mPDialog.dismiss();
         }
     }

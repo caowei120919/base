@@ -62,7 +62,8 @@
                         android:text="16:9"
                         android:layout_centerHorizontal="true"
                         android:layout_below="@id/img_sixteenToNine"
-                        android:textColor="@color/c_303030">
+                        android:textColor="@color/c_303030"
+                        android:layout_marginBottom="@dimen/H8">
                     </TextView>
                 </RelativeLayout>
 
@@ -89,7 +90,8 @@
                         android:text="16:10"
                         android:layout_centerHorizontal="true"
                         android:layout_below="@id/img_sixteenToTen"
-                        android:textColor="@color/c_303030">
+                        android:textColor="@color/c_303030"
+                        android:layout_marginBottom="@dimen/H8">
                     </TextView>
                 </RelativeLayout>
 
@@ -116,7 +118,8 @@
                         android:text="1:1"
                         android:layout_centerHorizontal="true"
                         android:layout_below="@id/img_oneToOne"
-                        android:textColor="@color/c_303030">
+                        android:textColor="@color/c_303030"
+                        android:layout_marginBottom="@dimen/H8">
                     </TextView>
                 </RelativeLayout>
 
@@ -417,7 +420,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/please_enter_a_screen_name"
                     android:background="@null"
-                    android:maxLength="100"
+                    android:maxLength="50"
                     android:textSize="14sp"
                     android:gravity="left|center_vertical"
                     android:layout_gravity="center_vertical"
@@ -475,6 +478,7 @@
                     android:layout_toRightOf="@id/tv_basicStayTime"
                     android:layout_marginLeft="@dimen/W170"
                     android:hint="15"
+                    android:maxLength="6"
                     android:paddingLeft="@dimen/W24"
                     android:textColor="@color/c_303030"
                     android:textColorHint="@color/c_303030"
@@ -523,6 +527,7 @@
                     android:layout_toRightOf="@id/tv_basicPreviewTime"
                     android:layout_marginLeft="@dimen/W170"
                     android:hint="5"
+                    android:maxLength="6"
                     android:textColorHint="@color/c_303030"
                     android:textColor="@color/c_303030"
                     android:paddingLeft="@dimen/W24"
@@ -664,6 +669,7 @@
                         android:layout_toLeftOf="@id/tv_globalTimeUnit"
                         android:background="@null"
                         android:hint="300"
+                        android:maxLength="6"
                         android:textColor="@color/c_303030"
                         android:textColorHint="@color/c_303030"
                         android:inputType="number"
